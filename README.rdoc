@@ -4,7 +4,7 @@
 SimSearch is an investment search application that presents investment value 
 information based on historical performance and simulation.
 
-SimSearch is a Ruby on Rails application. {Rails related information is below}[https://github.com/euclidjda/simsearch#rails].
+SimSearch is a Ruby on Rails application. {Rails related information is below}[#rails].
 
 == Development Environment
 
