@@ -9,10 +9,21 @@ SimSearch is a Ruby on Rails application. {Rails related information is below}[h
 == Development Environment
 This tutorial assumes you are running on Mac OSX. 
 
-- If you are running on Mountain Lion, you need to re-enable the web sharing. 
+1.If you are running on Mountain Lion, you need to re-enable the web sharing. 
 
-1. Switch to root
-        $ sudo su -
+  - Switch to root
+      $ sudo su -
+  - Go to /etc/apache2/users
+      $ cd /etc/apache2/users
+  - Copy Guest.conf to username.conf (replace username with your own)
+      $ cp Guest.conf <myusername>.conf
+  - Edit the username.conf file to point Apache to your sites directory.
+    <Directory "/Users/rwilson/Sites/">
+      Options Indexes MultiViews
+      AllowOverride None
+      Order allow,deny
+      Allow from all
+    </Directory>
 
 == Rails Primer
 
