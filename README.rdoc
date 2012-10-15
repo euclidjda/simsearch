@@ -82,6 +82,8 @@ pushed already to GitHub repository on the master branch to Heroku and making He
   $ bundle install
   $ rails s
 
+The application running on Heroku can be accessed at [http://simsearch.herokuapp.com]
+
 ----
 
 == Rails Primer
