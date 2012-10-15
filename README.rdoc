@@ -9,7 +9,7 @@ SimSearch is a Ruby on Rails application. {Rails related information is below}[h
 == Development Environment
 This tutorial assumes you are running on Mac OSX. 
 
-1.If you are running on Mountain Lion, you need to re-enable the web sharing. 
+If you are running on Mountain Lion, you need to re-enable the web sharing. 
 
 - Switch to root
       $ sudo su -
@@ -25,15 +25,27 @@ This tutorial assumes you are running on Mac OSX.
       Allow from all
     </Directory>
 
-2. You need to install Ruby and Rails. You can use this tutorial to get you going with Ruby, Rails and RVM. 
+You need to install Ruby and Rails. You can use this tutorial to get you going with Ruby, Rails and RVM. 
 The sample used sqlite3 which is already installed on your machine. It should work before you continue.
   http://pragmaticstudio.com/blog/2010/9/23/install-rails-ruby-mac/
 
-3. Install MySQL and MySQL Workbench from here.
+Install MySQL and MySQL Workbench from here.
 
-  http://dev.mysql.com/doc/refman/5.5/en//installing.html
+  {MySQL Installation}[http://dev.mysql.com/doc/refman/5.5/en//installing.html]
 
-  http://dev.mysql.com/doc/index-gui.html
+  {MySQL Workbench Installation}[http://dev.mysql.com/doc/index-gui.html]
+
+Install Heroku Toolbelt from {here}[https://toolbelt.heroku.com/]
+
+Once you cloned this project to your disk, you can use SSH auth to make it so that you don't have to reenter
+your credentials every time. For that to work, run:
+  git config --edit
+and make sure the <em>origin</em> remote looks like this:
+  [remote "origin"]
+        fetch = +refs/heads/*:refs/remotes/origin/*
+        url = git@github.com:euclidjda/simsearch.git
+
+----
 
 == Rails Primer
 
