@@ -7,8 +7,8 @@ information based on historical performance and simulation.
 SimSearch is a Ruby on Rails application. {Rails related information is below}[https://github.com/euclidjda/simsearch#rails].
 
 == Development Environment
-This tutorial assumes you are running on Mac OSX. 
 
+=== Mac OSX
 If you are running on Mountain Lion, you need to re-enable the web sharing. 
 
 - Switch to root
@@ -25,9 +25,13 @@ If you are running on Mountain Lion, you need to re-enable the web sharing.
       Allow from all
     </Directory>
 
+=== Ruby and Rails
+
 You need to install Ruby and Rails. You can use this tutorial to get you going with Ruby, Rails and RVM. 
 The sample used sqlite3 which is already installed on your machine. It should work before you continue.
   http://pragmaticstudio.com/blog/2010/9/23/install-rails-ruby-mac/
+
+In the end of this process you should be able to run the test app and access it.
 
 Install MySQL and MySQL Workbench from here.
 
@@ -35,15 +39,48 @@ Install MySQL and MySQL Workbench from here.
 
   {MySQL Workbench Installation}[http://dev.mysql.com/doc/index-gui.html]
 
-Install Heroku Toolbelt from {here}[https://toolbelt.heroku.com/]
+=== Git and GitHub
 
-Once you cloned this project to your disk, you can use SSH auth to make it so that you don't have to reenter
-your credentials every time. For that to work, run:
-  git config --edit
+Install Git command line tools and/or GitHub app. Having both does not hurt. Then you can configure Git not to 
+prompt you every time, by using SSH. First clone this project to a directory on your disk. Second, follow these steps to get SSH working.
+  https://help.github.com/articles/generating-ssh-keys
+
+For SSH to work with no prompts, run:
+  $ git config --edit
 and make sure the <em>origin</em> remote looks like this:
   [remote "origin"]
         fetch = +refs/heads/*:refs/remotes/origin/*
         url = git@github.com:euclidjda/simsearch.git
+
+Now you should not be prompted to pull/push with GitHub.
+
+=== Heroku
+
+Install Heroku Toolbelt from {here}[https://toolbelt.heroku.com/]
+
+  $ heroku apps
+
+should show you the simsearch application.
+
+Add Heroku remote to your remotes, so you can push changes to Heroku.
+  $ git remote add heroku git@heroku.com:simsearch.git
+
+Now when you run 
+  $ git remote -v 
+
+You should see this:
+  heroku  git@heroku.com:simsearch.git (fetch)
+  heroku  git@heroku.com:simsearch.git (push)
+  origin  git@github.com:euclidjda/simsearch.git (fetch)
+  origin  git@github.com:euclidjda/simsearch.git (push)
+
+To push changes to Heroku, use the following command. 
+  $ git push heroku master
+
+Remember, this is pushing all the changes that you 
+pushed already to GitHub repository on the master branch to Heroku and making Heroku run the equivalent of 
+  $ bundle install
+  $ rails s
 
 ----
 
