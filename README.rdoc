@@ -11,13 +11,13 @@ This tutorial assumes you are running on Mac OSX.
 
 1.If you are running on Mountain Lion, you need to re-enable the web sharing. 
 
-  - Switch to root
+- Switch to root
       $ sudo su -
-  - Go to /etc/apache2/users
+- Go to /etc/apache2/users
       $ cd /etc/apache2/users
-  - Copy Guest.conf to username.conf (replace username with your own)
+- Copy Guest.conf to username.conf (replace username with your own)
       $ cp Guest.conf <myusername>.conf
-  - Edit the username.conf file to point Apache to your sites directory.
+- Edit the username.conf file to point Apache to your sites directory.
     <Directory "/Users/rwilson/Sites/">
       Options Indexes MultiViews
       AllowOverride None
