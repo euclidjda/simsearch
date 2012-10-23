@@ -8,10 +8,11 @@ class FrontdoorController < ApplicationController
   end
 
   def login
+
   end
 
   def home
-    end
+
   end
 
   def standby

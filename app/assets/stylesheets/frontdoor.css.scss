@@ -1,3 +1,65 @@
-// Place all the styles related to the Frontdoor controller here.
+// Place all the styles related to the frontdoor controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "shared";
+
+.navbar-inner {
+
+  // white thin border line under the banner, for contrast.
+  border-bottom-color: #E0E0E0;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+
+  // adjust height to fit our logo.
+  height: 70px;
+
+  // use our own coloring for the site.
+  color: $neutralColor;
+  background-color: $darkColor;
+  background-image: -webkit-gradient(linear, left top, left bottom, from($accentColor2), to($darkColor));
+  background-image:  -moz-linear-gradient(top, $darkColor, $accentColor2);
+
+  font-size: 14px;
+
+  // position the links a bit lower since we have made the banner higher than the default
+  .banner-link {
+	 margin-top: 16px;
+  }
+}
+
+.hero-unit {
+  background-color: white;
+  margin-top: 36px;
+}
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #999;
+
+  a {
+	color: #555;
+
+	hover {
+		color: #222;
+	}
+  }  
+
+  small {
+  	float: left;
+  	margin-left: 20px;
+  }
+
+  ul {
+  	float: right;
+  	margin-right: 20px;
+  	list-style: none;
+	
+	li {
+	  float: left;
+	  margin-left: 20px;
+	}
+  }
+}
