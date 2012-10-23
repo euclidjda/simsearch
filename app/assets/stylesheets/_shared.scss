@@ -1,0 +1,67 @@
+
+$backgroundColor: #F6F6F6;
+$panelColor: white;
+
+$redColor: #B33B3B;
+$neutralColor: #E9EAF0;
+$accentColor1: #B0C7D6;
+$accentColor2: #6090A8;
+$darkColor: #1A344D;
+
+$titleTextColor: #666;
+$contentTextColor: #333;
+
+@mixin content-box($size) {
+    padding: $size;
+    // margin: $size * 1.5;
+    margin: -18px 0 0 0;
+    // border: 1px solid $accentColor1;
+    border-radius: $size * 0.7 ;
+}
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: $darkColor;
+}
+
+h2 {
+  font-size: 1.7em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: $darkColor;
+}
+
+h3 {
+	color: $titleTextColor;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+.nr {
+    padding-top: 64px;
+    background: $backgroundColor;
+    color: $contentTextColor;
+    font-family: "Lucida Grande" , "Lucida Sans Unicode" , Arial, Verdana, sans-serif;
+    width: 1024px;
+    margin: 0 auto 0 auto;
+    font-size: 14px;
+}
+
+.top_level_navigation_bar {
+  margin-top: 10px;
+  width: 100%;
+}
