@@ -4,7 +4,7 @@
 
 @import "shared";
 
-.xxxnavbar-inner {
+.navbar-inner {
 
   // white thin border line under the banner, for contrast.
   border-bottom-color: #E0E0E0;
@@ -12,7 +12,7 @@
   border-bottom-width: 1px;
 
   // adjust height to fit our logo.
-  height: 70px;
+  // height: 50px;
 
   // use our own coloring for the site.
   color: $neutralColor;
@@ -24,7 +24,7 @@
 
   // position the links a bit lower since we have made the banner higher than the default
   .banner-link {
-	 margin-top: 16px;
+	  // margin-top: 16px;
   }
 }
 

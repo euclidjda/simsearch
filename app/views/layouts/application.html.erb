@@ -7,15 +7,13 @@
   <%= csrf_meta_tags %>
 </head>
 
-<body>
+<body class="nr">
 	<%= render "layouts/header" %>
 
 	<% if current_page?(home_path) %>
-		this is home path and content from application.html
 		<%= yield %>
 	<% else %>
 		<div class="content">
-			this is content from application.html
 			<%= yield %>
 		</div>
 	<% end %>
