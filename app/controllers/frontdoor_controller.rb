@@ -1,22 +1,25 @@
 class FrontdoorController < ApplicationController
 
   def root
-    if current_user
-      redirect_to :action => :home
-    else
-      redirect_to :action => :login
-    end
+    # always redirect to home, redundant actually since routes.rb also does this.
+    redirect_to :action => :home
   end
 
   def login
-
   end
 
   def home
-
+    # If the user has already established a session, no need to ask for auth again.
+    if current_user
+      redirect_to :action => :search
+    end
   end
 
   def standby
+  end
+
+  def search
+    # actual search content
   end
 
   def destroy_session

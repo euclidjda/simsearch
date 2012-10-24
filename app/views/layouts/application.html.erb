@@ -10,10 +10,12 @@
 <body>
 	<%= render "layouts/header" %>
 
-	<% if current_page?(login_path) %>
+	<% if current_page?(home_path) %>
+		this is home path and content from application.html
 		<%= yield %>
 	<% else %>
 		<div class="content">
+			this is content from application.html
 			<%= yield %>
 		</div>
 	<% end %>

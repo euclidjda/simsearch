@@ -57,8 +57,9 @@ Simsearch::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   root :to => 'frontdoor#root'
-
-  get "login" => "frontdoor#login"
+  
   get "home" => "frontdoor#home"
+  get "login" => "frontdoor#login"
   get "standby" => "frontdoor#standby"
+
 end
