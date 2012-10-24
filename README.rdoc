@@ -41,7 +41,7 @@ Install MySQL and MySQL Workbench from here.
 
 {MySQL Workbench Installation}[http://dev.mysql.com/doc/index-gui.html]
 
-In order to make the project use the right libraries, you need to add the MySQL library to path.
+In order to make the project use the right libraries, you need to add the MySQL library to path. You can add the following lines to your .bash_profile file to make them permanently added to your terminal environment.
 
   MYSQL=/usr/local/mysql/bin
   export PATH=$PATH:$MYSQL

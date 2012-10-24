@@ -5,6 +5,7 @@ class FrontdoorController < ApplicationController
       redirect_to :action => :home
     else
       redirect_to :action => :login
+    end
   end
 
   def login
