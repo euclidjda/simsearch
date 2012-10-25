@@ -11,5 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require underscore
+//= require nautil
+//= require nr-config
 //= require jquery_ujs
 //= require_tree .
