@@ -18,11 +18,10 @@ class User < ActiveRecord::Base
 
   # return the display name of the user.
   def display_name 
-  	name
+  	email
   end
 
   def self.create_with_email(email)
-    logger.info "Creating user with email: " + email
 
     # try to find the user first
     user = find_by_email(email)
@@ -32,6 +31,9 @@ class User < ActiveRecord::Base
     # a separate form later. When we do Google / LinkedIn, etc. auth, we will get name details from
     # those providers' profile of the user.
     if ! user
+
+      logger.info "Creating user with email: " + email
+
       user = create! do |user|
         user.email = email
         user.provider = "manual"  # Indicating this was a manual user information entry.
@@ -44,6 +46,9 @@ class User < ActiveRecord::Base
 
 private
   def find_by_email(email)
+  
+    logger.info "Looking up user with email: " + email
+
   	begin
   	  return self.find_by(:mail => email)
     rescue

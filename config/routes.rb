@@ -59,7 +59,7 @@ Simsearch::Application.routes.draw do
   root :to => 'frontdoor#root'
   
   get "home" => "frontdoor#home"
-  get "login" => "frontdoor#login"
+  post "login" => "frontdoor#login"
   get "standby" => "frontdoor#standby"
 
 end

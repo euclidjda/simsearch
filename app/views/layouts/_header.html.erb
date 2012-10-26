@@ -2,14 +2,17 @@
 <header class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-
-      <!--
-      <%= link_to (image_tag "", :id => 'bannerLogo', :alt => 'Logo'), root_path, id: "logo" %>
-      -->
+      <a class="brand" href="#">simsearch</a>
       <nav>
+        <ul class="nav">
+          <% if current_user %>
+            <li class="banner-link"><%= link_to "Home",  "#" %></li>
+          <% else %>
+            <li class="banner-link"><%= link_to "Contact",  "mailto:" %></li>
+          <% end %>
+        </ul>
+
         <ul class="nav pull-right">
-          <li class="banner-link"><%= link_to "Overview",     root_path %></li>
-          <li class="banner-link"><%= link_to "Contact",  "mailto:" %></li>
           <% if current_user %>
             <li class="dropdown banner-link">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -22,7 +25,17 @@
               </ul>
             </li>  
           <% else %>
-            <li class="banner-link"><%= link_to "Sign in", 'login', :id => 'banner-login-btn' %></li>
+
+            <%= form_tag("/login", :method => "post", :class => "navbar-form") do %>
+              <%= text_field_tag(:mail_address_entry, nil, :placeholder => "Email") %>
+              <%= submit_tag("Sign in", :class => "btn") %>
+            <% end %>
+            <!--
+            <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <button type="submit" class="btn" >Sign in</button>
+            </form>
+            --> 
           <% end %>
         </ul>
       </nav>

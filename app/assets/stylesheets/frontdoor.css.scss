@@ -5,14 +5,10 @@
 @import "shared";
 
 .navbar-inner {
-
   // white thin border line under the banner, for contrast.
   border-bottom-color: #E0E0E0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-
-  // adjust height to fit our logo.
-  // height: 50px;
 
   // use our own coloring for the site.
   color: $neutralColor;
@@ -22,9 +18,12 @@
 
   font-size: 14px;
 
-  // position the links a bit lower since we have made the banner higher than the default
-  .banner-link {
-	  // margin-top: 16px;
+  height: 50px;
+}
+
+.navbar {
+  .btn {
+    margin-bottom: 0px;
   }
 }
 
@@ -40,11 +39,11 @@ footer {
   color: #999;
 
   a {
-	color: #555;
+	 color: #555;
 
-	hover {
-		color: #222;
-	}
+  	hover {
+  		color: #222;
+  	}
   }  
 
   small {
@@ -57,9 +56,9 @@ footer {
   	margin-right: 20px;
   	list-style: none;
 	
-	li {
-	  float: left;
-	  margin-left: 20px;
-	}
+  	li {
+  	  float: left;
+  	  margin-left: 20px;
+  	}
   }
 }

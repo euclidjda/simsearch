@@ -3,12 +3,6 @@
 
 $(function() {
 
-    $("#banner-login-btn").click(function() {
-        login_action_handler();
-    });
-    $("#login-btn").click(function() {
-        login_action_handler();
-    });
     $("#banner-logout-btn").click(function(){
         logout_action_handler();
     });
@@ -17,19 +11,6 @@ $(function() {
         $(this).addClass("active");
     });
 });
-
-
-function login_action_handler() {
-    NAU.log("Login");
-
-    $.ajax({
-        url: '/login',
-        type: 'GET',
-        success: function() {
-            NAU.log("Navigating to login page.");
-        }
-    });
-}
 
 function logout_action_handler() {
     NAU.log("Logout");

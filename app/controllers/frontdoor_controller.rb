@@ -6,6 +6,15 @@ class FrontdoorController < ApplicationController
   end
 
   def login
+    mail_id = params[:mail_address_entry];
+
+    # find the user, if not create one.
+    user = User.create_with_email(mail_id)
+
+    if user
+      session[:user_id] = user.id
+    end
+
   end
 
   def home
