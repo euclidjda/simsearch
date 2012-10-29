@@ -60,6 +60,7 @@ Simsearch::Application.routes.draw do
   
   get "home" => "frontdoor#home"
   post "login" => "frontdoor#login"
+  get "logout" => "frontdoor#destroy_session"
   get "standby" => "frontdoor#standby"
-
+  get "search" => "search#search"
 end

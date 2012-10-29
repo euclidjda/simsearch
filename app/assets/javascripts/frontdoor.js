@@ -20,7 +20,7 @@ function logout_action_handler() {
         type: 'GET',
         success: function() {
             NAU.log("Session destroyed. Navigating back to the homepage.");
-            // NAU.navigate("/");
+            NAU.navigate("/");
         }
     });
 }

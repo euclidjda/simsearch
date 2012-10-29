@@ -1,3 +1,12 @@
+
+module Roles
+  Default = 0
+  Alpha = 1
+  Beta = 2
+  Production = 3
+  Admin = 4
+end
+
 class User < ActiveRecord::Base
 =begin
   #if we use mongo / mongoid one day, we would use this notation. 
@@ -44,7 +53,22 @@ class User < ActiveRecord::Base
     user
   end
 
+  def has_role(role)
+    if self['role'] == Roles::Default
+        return false
+    end
+
+    # For superuser, all roles are valid.
+    if self['role'] == [Roles::Admin]
+        return true
+    end
+
+    # Return value based on parameter.
+    return self['role'] == role
+  end
+
 private
+
   def find_by_email(email)
   
     logger.info "Looking up user with email: " + email
