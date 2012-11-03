@@ -13,7 +13,6 @@ $contentTextColor: #333;
 
 @mixin content-box($size) {
     padding: $size;
-    // margin: $size * 1.5;
     margin: 0 0 0 0;
     // border: 1px solid $accentColor1;
     border-radius: $size * 0.7 ;

@@ -63,4 +63,5 @@ Simsearch::Application.routes.draw do
   get "logout" => "frontdoor#destroy_session"
   get "standby" => "frontdoor#standby"
   get "search" => "search#search"
+  post "search/ticker" => "search#ticker"
 end
