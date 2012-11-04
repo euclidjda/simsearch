@@ -22,6 +22,21 @@
 .content {
     @include content-box(8px);
     background: white;
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.header {
+	width: auto;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.footer {
+	width: auto;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .content-inner {
@@ -29,7 +44,7 @@
 }
 
 .pump-up {
-	color: #333;
+	color: $contentTextColor;
 	margin: 70px 22px 35px;
 	font-weight: bold;
 	text-align: center;

@@ -10,12 +10,14 @@
 	<div class="full-search-bar">
 		<ul>
 			<li>
-				<div class="search-bar-form">
-					<input type="text" placeholder="IBM, GOOG, MSFT, AAPL, etc." id="search-entry" />
-					<button class="btn btn-large btn-inverse" id="search-button">
-						<i class="icon-search icon-white"></i>
-					</button>
-				</div>
+				<%= form_tag("/search/ticker", :method => "post", :class => "search-bar-form") do %>
+	      			<%= text_field_tag(:ticker_entry, nil, :placeholder => "IBM, GOOG, MSFT, AAPL, etc.", :id => "search-entry") %>
+	      			<!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
+	      			<%= button_tag(nil, :class => "btn btn-large btn-inverse", :id => "search-button")  do %>
+	      				<i class="icon-search icon-white"></i>
+	      			<% end %>
+	    		<% end %>
+
 			</li>
 		</ul>
 	</div>

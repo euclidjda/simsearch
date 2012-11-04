@@ -4,18 +4,6 @@
     <div class="container">
       <a class="brand" href="#">simsearch</a>
       <nav>
-        <ul class="nav">
-          <% if current_user %>
-            <!--
-              <li class="banner-link"><%= link_to "Home",  "#" %></li>
-            -->
-          <% else %>
-            <!--
-              <li class="banner-link"><%= link_to "Contact",  "mailto:" %></li>
-            -->
-          <% end %>
-        </ul>
-
         <ul class="nav pull-right">
           <% if current_user %>
             <li class="dropdown banner-link">
@@ -30,32 +18,13 @@
               </ul>
             </li>  
           <% else %>
-
             <%= form_tag("/login", :method => "post", :class => "navbar-form") do %>
               <%= text_field_tag(:mail_address_entry, nil, :placeholder => "Email") %>
               <%= submit_tag("Sign in", :class => "btn") %>
             <% end %>
-            <!--
-            <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Email">
-              <button type="submit" class="btn" >Sign in</button>
-            </form>
-            --> 
           <% end %>
         </ul>
       </nav>
     </div>
   </div>
 </header>
-
-<% if current_user %>
-<!--
-  <div class="tabbable top_level_navigation_bar">
-    <ul class="nav nav-tabs">
-      <li class="<%= 'active' if current_page?(home_path) %> span3">
-          <%= link_to "Overview", root_path %>
-      </li>
-    </ul>
-  </div>
--->
-<% end %>
