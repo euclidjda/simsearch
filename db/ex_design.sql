@@ -92,7 +92,7 @@ CREATE TABLE ex_funddata (
        che	 FLOAT, -- Cash & Short Term Investments
        rect	 FLOAT, -- Accounts Receivables
        invt	 FLOAT, -- Total Inventory
-       aco	 FLOAT, --Other Current Assets, Total
+       aco	 FLOAT, -- Other Current Assets, Total
        act	 FLOAT, -- Total Current Assets
        ppent	 FLOAT, -- Property/Plant/Equipment, Net
        gdwl	 FLOAT, -- Goodwill, Net
