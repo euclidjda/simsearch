@@ -8,11 +8,10 @@
 CREATE TABLE ex_factdata (
        
        cid VARCHAR(6) NOT NULL PRIMARY KEY,   -- company id
-       sid VARCHAR(3) NOT NULL,	              -- security id
 
-       datadate DATE, -- financial period end date
-       fromdate DATE, -- data available from this date
-       thrudate DATE, -- new data available after this date
+       fromdate DATE NOT NULL, -- data available from this date
+       thrudate DATE NOT NULL, -- new data available after this date
+       datadate DATE NOT NULL, -- financial period end date
       
        --
        -- search index data
@@ -40,8 +39,11 @@ CREATE TABLE ex_factdata (
        atq_mrq       FLOAT, -- Total Assets
        dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
-       pstkq_mrq     FLOAT  -- Prefered
+       pstkq_mrq     FLOAT, -- Prefered
        
+       INDEX ex_factdata_ix01 (cid,fromdate,thrudate), -- point-in-time index
+       INDEX ex_factdata_ix02 (indidx,lcapidx,hcapidx,lvalidx,hvalidx,ldividx,hdividx) -- sim search idx
+
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ex_funddata
@@ -51,82 +53,86 @@ CREATE TABLE ex_factdata (
 
 CREATE TABLE ex_funddata (
 
-       cid VARCHAR(6) NOT NULL PRIMARY KEY,
+       cid  VARCHAR(6) NOT NULL PRIMARY KEY, -- company id (gvkey in compustat)
 
-       type CHAR(3) NOT NULL, -- 'QTR' or 'ANN'
-
-       datadate DATE NOT NULL,
        fromdate DATE NOT NULL,
-       thrudate DATE,
+       thrudate DATE NOT NULL,
+       datadate DATE NOT NULL,
+
+       type CHAR(3) NOT NULL, -- 'ANN' or 'QTR'
 
        -- INCOME STATEMENT
-       saleq	 FLOAT, -- Revenue
-       cogsq	 FLOAT, -- Cost of Revenue
-       grossq	 FLOAT, -- Gross Profit = [saleq - cogsq]
-       xsgnaq	 FLOAT, -- Selling/General/Admin. Expenses
-       xrdq	 FLOAT, -- Research & Development
-       dpq	 FLOAT, -- Depreciation/Amortization
-       xintq	 FLOAT, -- Interest Expense
-       xopitq    FLOAT, -- Total Operating Expense (xsgnq + xrdq + dpq + xintx) 
-       opiq	 FLOAT, -- Operating Income (oiadpq - xintq)
-       noothq	 FLOAT, -- Non-Operating Income (Expenses) (nopiq+spiq)
-       piq	 FLOAT, -- Income Before Tax
-       txtq	 FLOAT, -- Income Taxes
-       miiq	 FLOAT, -- Minority Interest
-       dvpq	 FLOAT, -- Dividends Preferred
-       xidoq	 FLOAT, -- Extraordinary Items & Discontinued Operations
-       niq	 FLOAT, -- Net Inocme
+       sale	 FLOAT, -- Revenue
+       cogs	 FLOAT, -- Cost of Revenue
+       gross	 FLOAT, -- Gross Profit = [saleq - cogsq]
+       xsgna	 FLOAT, -- Selling/General/Admin. Expenses
+       xrd	 FLOAT, -- Research & Development
+       dp	 FLOAT, -- Depreciation/Amortization
+       xint	 FLOAT, -- Interest Expense
+       xopit     FLOAT, -- Total Operating Expense (xsgnq + xrdq + dpq + xintx) 
+       opi	 FLOAT, -- Operating Income (oiadpq - xintq)
+       nooth	 FLOAT, -- Non-Operating Income (Expenses) (nopiq+spiq)
+       pi	 FLOAT, -- Income Before Tax
+       txt	 FLOAT, -- Income Taxes
+       mii	 FLOAT, -- Minority Interest
+       dvp	 FLOAT, -- Dividends Preferred
+       xido	 FLOAT, -- Extraordinary Items & Discontinued Operations
+       ni	 FLOAT, -- Net Inocme
 
-       epspxq    FLOAT, -- Earnings per Share - Basic  Excluding Extraordinary Items
-       epspiq    FLOAT, -- Earnings per Share - Basic  Including Extraordinary Items
-       epsfxq	 FLOAT, -- Earnings per Share - Diluted  Excluding Extraordinary Items
-       epsfiq    FLOAT, -- Earnings per Share - Diluted  Including Extraordinary Items
+       epspx     FLOAT, -- Earnings per Share - Basic  Excluding Extraordinary Items
+       epspi     FLOAT, -- Earnings per Share - Basic  Including Extraordinary Items
+       epsfx	 FLOAT, -- Earnings per Share - Diluted  Excluding Extraordinary Items
+       epsfi     FLOAT, -- Earnings per Share - Diluted  Including Extraordinary Items
 
-       cshprq    FLOAT, -- Common Shares Used to Calculate EPS Basic
-       cshfdq	 FLOAT, -- Common Shares Used to Calculate EPS Diluted
+       cshpr     FLOAT, -- Common Shares Used to Calculate EPS Basic
+       cshfd	 FLOAT, -- Common Shares Used to Calculate EPS Diluted
 
        -- BALANCE SHEET
 
-       cheq	 FLOAT, -- Cash & Short Term Investments
-       rectq	 FLOAT, -- Accounts Receivables
-       invtq	 FLOAT, -- Total Inventory
-       acoq	 FLOAT, --Other Current Assets, Total
-       actq	 FLOAT, -- Total Current Assets
-       ppentq	 FLOAT, -- Property/Plant/Equipment, Net
-       gdwlq	 FLOAT, -- Goodwill, Net
-       intanoq	 FLOAT, -- Intangibles, Net
-       ivltq	 FLOAT, -- Long Term Investments
-       altoq	 FLOAT, -- Other Long Term Assets, Total
-       atq	 FLOAT, -- Total Assets
-       dlcq	 FLOAT, -- Debt in Current Liabilities 
-       apq	 FLOAT, -- Accounts Payable/Creditors - Trade
-       txpq	 FLOAT, -- Income Taxes Payable                      
-       lcoq	 FLOAT, -- Current Liabilities - Other                    
-       lctq	 FLOAT, -- Current Liabilities - Total                
-       dlttq	 FLOAT, -- Long-Term Debt - Total
-       txditcq	 FLOAT, -- Deferred Taxes and Investment Tax Credit
-       loq	 FLOAT, -- Liabilities - Other                            
-       ltq	 FLOAT, -- Liabilities - Total                      
+       che	 FLOAT, -- Cash & Short Term Investments
+       rect	 FLOAT, -- Accounts Receivables
+       invt	 FLOAT, -- Total Inventory
+       aco	 FLOAT, --Other Current Assets, Total
+       act	 FLOAT, -- Total Current Assets
+       ppent	 FLOAT, -- Property/Plant/Equipment, Net
+       gdwl	 FLOAT, -- Goodwill, Net
+       intano	 FLOAT, -- Intangibles, Net
+       ivlt	 FLOAT, -- Long Term Investments
+       alto	 FLOAT, -- Other Long Term Assets, Total
+       at	 FLOAT, -- Total Assets
+       dlc	 FLOAT, -- Debt in Current Liabilities 
+       ap	 FLOAT, -- Accounts Payable/Creditors - Trade
+       txp	 FLOAT, -- Income Taxes Payable                      
+       lco	 FLOAT, -- Current Liabilities - Other                    
+       lct	 FLOAT, -- Current Liabilities - Total                
+       dltt	 FLOAT, -- Long-Term Debt - Total
+       txditc	 FLOAT, -- Deferred Taxes and Investment Tax Credit
+       lo	 FLOAT, -- Liabilities - Other                            
+       lt	 FLOAT, -- Liabilities - Total                      
 
-       pstkq	 FLOAT, -- Preferred/Preference Stock (Capital) - Total
-       ceqq	 FLOAT, -- Common/Ordinary Equity - Total
-       cstkq	 FLOAT, -- Common/Ordinary Stock (Capital)
-       capsq	 FLOAT, -- Capital Surplus/Share Premium Reserve
-       req	 FLOAT, -- Retained Earnings
-       tstkq	 FLOAT, -- Treasury Stock - Total (All Capital)  
-       seqq	 FLOAT, -- Stockholders' Equity
-       lseq	 FLOAT, -- Liabilities and Stockholders Equity - Total  
+       pstk	 FLOAT, -- Preferred/Preference Stock (Capital) - Total
+       ceq	 FLOAT, -- Common/Ordinary Equity - Total
+       cstk	 FLOAT, -- Common/Ordinary Stock (Capital)
+       caps	 FLOAT, -- Capital Surplus/Share Premium Reserve
+       re	 FLOAT, -- Retained Earnings
+       tstk	 FLOAT, -- Treasury Stock - Total (All Capital)  
+       seq	 FLOAT, -- Stockholders' Equity
+       lse	 FLOAT, -- Liabilities and Stockholders Equity - Total  
 
-       cshoq	 FLOAT, -- Common Shares Outstanding
-       cshiq	 FLOAT, -- Common Shares Issued			
+       csho	 FLOAT, -- Common Shares Outstanding
+       cshi	 FLOAT, -- Common Shares Issued			
 
        -- CASHFLOW
 
-       oancfq	 FLOAT, -- Operating Cash Flow
-       capxq	 FLOAT, -- Capital Expenditures
-       dvq	 FLOAT, -- Dividends
-       fcflq	 FLOAT, -- Free Cash Flow
-   
+       oancf	 FLOAT, -- Operating Cash Flow
+       capx	 FLOAT, -- Capital Expenditures
+       dv	 FLOAT, -- Dividends
+       fcfl	 FLOAT,  -- Free Cash Flow
+
+       -- INDEXES
+
+       INDEX ex_funddata_01 (cid,fromdate,thrudate,type)     
+
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
