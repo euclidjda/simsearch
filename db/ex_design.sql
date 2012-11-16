@@ -1,3 +1,23 @@
+-- ex_prices
+--
+-- This table holds price data
+--
+
+CREATE TABLE ex_prices (
+
+       cid VARCHAR(6) NOT NULL PRIMARY KEY, -- company id
+       sid VARCHAR(3) NOT NULL, -- security id
+       
+       datadate DATE NOT NULL, -- weekly or month, tbd
+
+       ajex     FLOAT,
+       csho     FLOAT,
+       price    FLOAT,
+
+       INDEX ex_price_ix01 (cid,sid,datadate)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- ex_factdata
 --
@@ -8,6 +28,7 @@
 CREATE TABLE ex_factdata (
        
        cid VARCHAR(6) NOT NULL PRIMARY KEY,   -- company id
+       sid VARCHAR(3) NOT NULL, -- security id
 
        fromdate DATE NOT NULL, -- data available from this date
        thrudate DATE NOT NULL, -- new data available after this date
@@ -16,13 +37,12 @@ CREATE TABLE ex_factdata (
        --
        -- search index data
        --
-       indidx   INT NOT NULL,  -- industry indexing
-       lcapidx  INT NOT NULL,  -- lo market cap (size) indexing
-       hcapidx  INT NOT NULL,  -- hi market cap (size) indexing
-       lvalidx  INT NOT NULL,  -- ho value (e.g., P/E) indexing
-       hvalidx  INT NOT NULL,  -- hi value (e.g., P/E) indexing
-       ldividx  INT NOT NULL,  -- lo div yield indexing
-       hdividx  INT NOT NULL,  -- hi div yield indexing
+       indidx  INT NOT NULL,  -- industry indexing
+       dividx  INT NOT NULL,  -- pays dividend as of datadate
+       lcapidx INT NOT NULL,  -- lo market cap (size) in range fromdate -> thrudate
+       hcapidx INT NOT NULL,  -- hi market cap (size) in range fromdate -> thrudate
+       lvalidx INT NOT NULL,  -- ho value (e.g., P/E) in range fromdate -> thrudate
+       hvalidx INT NOT NULL,  -- hi value (e.g., P/E) in range fromdate -> thrudate
        
        --
        -- the fields below are used to calculate factor "on the fly"
@@ -41,8 +61,8 @@ CREATE TABLE ex_factdata (
        dlcq_mrq	     FLOAT, -- Short-Term Debt
        pstkq_mrq     FLOAT, -- Prefered
        
-       INDEX ex_factdata_ix01 (cid,fromdate,thrudate), -- point-in-time index
-       INDEX ex_factdata_ix02 (indidx,lcapidx,hcapidx,lvalidx,hvalidx,ldividx,hdividx) -- sim search idx
+       INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
+       INDEX ex_factdata_ix02 (indidx,lcapidx,hcapidx,lvalidx,hvalidx,ldividx,hdividx) -- sim search index
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -135,7 +155,6 @@ CREATE TABLE ex_funddata (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
 -- HERE IS AN EXAMPLE OF HOW THE ABOVE SCHEMA CAN BE QUERIED EFFICIENTLY
 --
 -- var target_ind = get_target_ind();
@@ -149,17 +168,17 @@ CREATE TABLE ex_funddata (
 --	 ... FACTOR3,
 --	 ...
 --	 ... FACTORN
--- FROM prices A,
+-- FROM ex_prices A,
 --    (SELECT cid,fromdate,thrudate,oiadpq,dlttq,cheq 
 --     FROM ex_factdata
 --     WHERE indidx = target_ind
---     AND ldividx <= target_div
---     AND hdividx >= target_div
---     AND lcapidx <= target_cap
---     AND hcapidx >= target_cap
+--     AND dividx   = target_div
+--     AND lcapidx <= 5*target_cap
+--     AND hcapidx >= 0.5*target_cap
 --     AND lvalidx <= target_val
 --     AND hvalidx >= target_val) B
 -- WHERE A.cid = B.cid
+-- AND A.sid = '01'
 -- AND A.datadate >= B.fromdate
 -- AND A.datadate <= B.thrudate
 --
