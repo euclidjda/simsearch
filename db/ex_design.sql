@@ -10,9 +10,9 @@ CREATE TABLE ex_prices (
        
        datadate DATE NOT NULL, -- weekly or month, tbd
 
-       ajex     FLOAT,
-       csho     FLOAT,
-       price    FLOAT,
+       ajex  FLOAT, -- these need to be adjusted on splits
+       csho  FLOAT,
+       price FLOAT,
 
        INDEX ex_price_ix01 (cid,sid,datadate)
 
@@ -45,7 +45,7 @@ CREATE TABLE ex_factdata (
        hvalidx INT NOT NULL,  -- hi value (e.g., P/E) in range fromdate -> thrudate
        
        --
-       -- the fields below are used to calculate factor "on the fly"
+       -- the fields below are used to calculate factors "on the fly"
        -- see example queries at end of this file
        --
        dvpsxm_ttm    FLOAT, -- Dividends/Share TTM
@@ -169,7 +169,7 @@ CREATE TABLE ex_funddata (
 --	 ...
 --	 ... FACTORN
 -- FROM ex_prices A,
---    (SELECT cid,fromdate,thrudate,oiadpq,dlttq,cheq 
+--    (SELECT cid,sid,fromdate,thrudate,oiadpq,dlttq,cheq 
 --     FROM ex_factdata
 --     WHERE indidx = target_ind
 --     AND dividx   = target_div
@@ -178,7 +178,7 @@ CREATE TABLE ex_funddata (
 --     AND lvalidx <= target_val
 --     AND hvalidx >= target_val) B
 -- WHERE A.cid = B.cid
--- AND A.sid = '01'
+-- AND A.sid = B.sid
 -- AND A.datadate >= B.fromdate
 -- AND A.datadate <= B.thrudate
 --
