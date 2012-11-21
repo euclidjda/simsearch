@@ -5,7 +5,7 @@
 
 CREATE TABLE ex_prices (
 
-       cid VARCHAR(6) NOT NULL PRIMARY KEY, -- company id
+       cid VARCHAR(6) NOT NULL, -- company id
        sid VARCHAR(3) NOT NULL, -- security id
        
        datadate DATE NOT NULL, -- weekly or month, tbd
@@ -18,6 +18,22 @@ CREATE TABLE ex_prices (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- ex_econ
+--
+-- This table holds economic data
+--
+
+CREATE TABLE ex_econ (
+
+       datadate DATE NOT NULL, -- weekly or month, tbd
+
+       cape      FLOAT,
+       tbill6mo  FLOAT,
+       note10yr  FLOAT,
+
+       INDEX ex_econ_ix01 (datadate)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ex_factdata
 --
@@ -27,7 +43,7 @@ CREATE TABLE ex_prices (
 
 CREATE TABLE ex_factdata (
        
-       cid VARCHAR(6) NOT NULL PRIMARY KEY,   -- company id
+       cid VARCHAR(6) NOT NULL, -- company id
        sid VARCHAR(3) NOT NULL, -- security id
 
        fromdate DATE NOT NULL, -- data available from this date
@@ -37,12 +53,13 @@ CREATE TABLE ex_factdata (
        --
        -- search index data
        --
-       indidx  INT NOT NULL,  -- industry indexing
-       dividx  INT NOT NULL,  -- pays dividend as of datadate
-       lcapidx INT NOT NULL,  -- lo market cap (size) in range fromdate -> thrudate
-       hcapidx INT NOT NULL,  -- hi market cap (size) in range fromdate -> thrudate
-       lvalidx INT NOT NULL,  -- ho value (e.g., P/E) in range fromdate -> thrudate
-       hvalidx INT NOT NULL,  -- hi value (e.g., P/E) in range fromdate -> thrudate
+       idxind  INT NOT NULL,  -- industry indexing
+       idxdiv  INT NOT NULL,  -- pays dividend as of datadate
+       idxnew  INT NOT NULL,  -- is new issue? (within 9 mo of IPO)
+       idxcapl INT NOT NULL,  -- lo market cap (size) in range fromdate -> thrudate
+       idxcaph INT NOT NULL,  -- hi market cap (size) in range fromdate -> thrudate
+       idxvall INT NOT NULL,  -- ho value (e.g., P/E) in range fromdate -> thrudate
+       idxvalh INT NOT NULL,  -- hi value (e.g., P/E) in range fromdate -> thrudate
        
        --
        -- the fields below are used to calculate factors "on the fly"
@@ -62,7 +79,7 @@ CREATE TABLE ex_factdata (
        pstkq_mrq     FLOAT, -- Prefered
        
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
-       INDEX ex_factdata_ix02 (indidx,lcapidx,hcapidx,lvalidx,hvalidx,ldividx,hdividx) -- sim search index
+       INDEX ex_factdata_ix02 (idxind,idxdiv,idxnew,idxcapl,idxcaph,idxvall,idxvalh)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -73,7 +90,7 @@ CREATE TABLE ex_factdata (
 
 CREATE TABLE ex_funddata (
 
-       cid  VARCHAR(6) NOT NULL PRIMARY KEY, -- company id (gvkey in compustat)
+       cid  VARCHAR(6) NOT NULL, -- company id (gvkey in compustat)
 
        fromdate DATE NOT NULL,
        thrudate DATE NOT NULL,
@@ -84,7 +101,7 @@ CREATE TABLE ex_funddata (
        -- INCOME STATEMENT
        sale	 FLOAT, -- Revenue
        cogs	 FLOAT, -- Cost of Revenue
-       gross	 FLOAT, -- Gross Profit = [saleq - cogsq]
+       gross	 FLOAT, -- Gross Profit = [sale - cogs]
        xsgna	 FLOAT, -- Selling/General/Admin. Expenses
        xrd	 FLOAT, -- Research & Development
        dp	 FLOAT, -- Depreciation/Amortization
@@ -99,10 +116,10 @@ CREATE TABLE ex_funddata (
        xido	 FLOAT, -- Extraordinary Items & Discontinued Operations
        ni	 FLOAT, -- Net Inocme
 
-       epspx     FLOAT, -- Earnings per Share - Basic  Excluding Extraordinary Items
-       epspi     FLOAT, -- Earnings per Share - Basic  Including Extraordinary Items
-       epsfx	 FLOAT, -- Earnings per Share - Diluted  Excluding Extraordinary Items
-       epsfi     FLOAT, -- Earnings per Share - Diluted  Including Extraordinary Items
+       epspx     FLOAT, -- Earnings per Share -Basic Excluding Extraordinary Items
+       epspi     FLOAT, -- Earnings per Share -Basic Including Extraordinary Items
+       epsfx	 FLOAT, -- Earnings per Share -Diluted Excluding Extraordinary Items
+       epsfi     FLOAT, -- Earnings per Share -Diluted Including Extraordinary Items
 
        cshpr     FLOAT, -- Common Shares Used to Calculate EPS Basic
        cshfd	 FLOAT, -- Common Shares Used to Calculate EPS Diluted
