@@ -11,41 +11,15 @@
 		<ul>
 			<li>
 				<%= form_tag("/search/ticker", :method => "post", :class => "search-bar-form") do %>
-	      			<%= text_field_tag(:search_entry, nil, :placeholder => "IBM, GOOG, MSFT, AAPL, etc.", :id => "search_entry") %>
+	      			<%= text_field_tag(:ticker_entry, nil, :placeholder => "IBM, GOOG, MSFT, AAPL, etc.", :id => "search-entry") %>
 	      			<!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
 	      			<%= button_tag(nil, :class => "btn btn-large btn-inverse", :id => "search-button")  do %>
 	      				<i class="icon-search icon-white"></i>
 	      			<% end %>
 	    		<% end %>
+
 			</li>
 		</ul>
 	</div>
+
 </div>
-
-<script> 
-$(function() {
-
-	$( "#search_entry" ).autocomplete({
-	    minLength: 2,
-	    source: '<%= search_autocomplete_investment_ticker_path(:json) %>',
-	    select: function( event, ui ) {
-	        console.log( ui.item ?
-	            "Selected: " + ui.item.value + " - " + ui.item.id + " - "+ ui.item.name :
-	            "Nothing selected, input was " + this.value );
-	    }
-    })
-
-	.data( "autocomplete" )._renderItem = function( ul, item ) {
-
-			console.log("rendering items");
-
-	 		var v = item.value + " - " + item.name;
-
-	        return $( "<li></li>" )
-	            .data( "item.autocomplete", item )
-				// For now which just want to show the person.given_name in the list.
-	            .append( "<a>" + v + "</a>" )
-	            .appendTo( ul );
-		};
-});
-</script>
