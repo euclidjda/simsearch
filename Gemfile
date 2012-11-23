@@ -6,7 +6,6 @@ gem 'rails', '3.2.8'
 gem "mysql2", "~> 0.3.11"
 
 gem 'less-rails-bootstrap'
-gem 'therubyracer'
 
 gem 'rails3-jquery-autocomplete'
 
