@@ -1,4 +1,15 @@
 Simsearch::Application.routes.draw do
+
+  root :to => 'frontdoor#root'
+  
+  get "home" => "frontdoor#home"
+  post "login" => "frontdoor#login"
+  get "logout" => "frontdoor#destroy_session"
+  get "standby" => "frontdoor#standby"
+  get "search" => "search#search" # to get to search page
+  get "search/autocomplete_investment_ticker" # to autocomplete
+  post "search/ticker" => "search#ticker" # to evaluate the submitted search content
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -55,13 +66,4 @@ Simsearch::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-
-  root :to => 'frontdoor#root'
-  
-  get "home" => "frontdoor#home"
-  post "login" => "frontdoor#login"
-  get "logout" => "frontdoor#destroy_session"
-  get "standby" => "frontdoor#standby"
-  get "search" => "search#search"
-  post "search/ticker" => "search#ticker"
 end
