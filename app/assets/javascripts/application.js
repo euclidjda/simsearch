@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
+//= require backbone
 //= require nautil
 //= require nr-config
 //= require_tree .
