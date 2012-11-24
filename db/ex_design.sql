@@ -88,9 +88,9 @@ CREATE TABLE ex_factdata (
 -- This table holds point in time fundemental data for all companies
 --
 
-CREATE TABLE ex_funddata (
+CREATE TABLE ex_fundmts (
 
-       cid  VARCHAR(6) NOT NULL, -- company id (gvkey in compustat)
+       cid VARCHAR(6) NOT NULL, -- company id (gvkey in compustat)
 
        fromdate DATE NOT NULL,
        thrudate DATE NOT NULL,
@@ -125,7 +125,6 @@ CREATE TABLE ex_funddata (
        cshfd	 FLOAT, -- Common Shares Used to Calculate EPS Diluted
 
        -- BALANCE SHEET
-
        che	 FLOAT, -- Cash & Short Term Investments
        rect	 FLOAT, -- Accounts Receivables
        invt	 FLOAT, -- Total Inventory
@@ -160,14 +159,12 @@ CREATE TABLE ex_funddata (
        cshi	 FLOAT, -- Common Shares Issued			
 
        -- CASHFLOW
-
        oancf	 FLOAT, -- Operating Cash Flow
        capx	 FLOAT, -- Capital Expenditures
        dv	 FLOAT, -- Dividends
-       fcfl	 FLOAT,  -- Free Cash Flow
+       fcfl	 FLOAT, -- Free Cash Flow
 
        -- INDEXES
-
        INDEX ex_funddata_01 (cid,fromdate,thrudate,type)     
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
