@@ -5,7 +5,7 @@ gem 'rails', '3.2.8'
 #gem 'sqlite3'
 gem "mysql2", "~> 0.3.11"
 
-gem 'less-rails-bootstrap'
+gem 'less-rails-bootstrap', '2.0.13'
 
 gem 'rails3-jquery-autocomplete'
 
