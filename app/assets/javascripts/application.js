@@ -16,6 +16,6 @@
 //= require backbone
 //= require nautil
 //= require nr-config
-//= autocompleter-rails
+//= autocomplete-rails
 //= rails
 //= require_tree .

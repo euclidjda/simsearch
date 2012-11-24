@@ -1,7 +1,9 @@
 ---
 application.js: application-f29d540147b0f77c87ea44c132be1471.js
+autocomplete-rails.js: autocomplete-rails-35ab8a0426deb57bd3ae4a422f2029c8.js
 jquery-1.8.2.min.js: jquery-1.8.2.min-fcfb9d96f1fd25bd554d91f850a9e172.js
 jquery-ui-1.9.1.custom.min.js: jquery-ui-1.9.1.custom.min-e7308780e8192ba3f85f117a8ba4591e.js
+rails.js: rails-b622ae8bf8201d0766cc779998edfb9f.js
 application.css: application-183d1974e1563878abda01a27b5d576d.css
 images/ui-bg_diagonals-thick_18_b81900_40x40.png: images/ui-bg_diagonals-thick_18_b81900_40x40-c0074c9cbf446e98bb0bb8359cb9a305.png
 images/ui-bg_diagonals-thick_20_666666_40x40.png: images/ui-bg_diagonals-thick_20_666666_40x40-f7a8f6efeb8ab26a26161942fd679b9e.png
