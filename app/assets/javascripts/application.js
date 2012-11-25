@@ -16,5 +16,4 @@
 //= require backbone
 //= require nautil
 //= require nr-config
-//= require bootstrap-dropdown
 //= require_tree .
