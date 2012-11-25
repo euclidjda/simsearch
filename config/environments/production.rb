@@ -46,11 +46,11 @@ Simsearch::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile += %w( jquery-ui-1.9.1.custom.min.css )
-  # config.assets.precompile += %w( jquery-1.8.2.min.js )
-  # config.assets.precompile += %w( jquery-ui-1.9.1.custom.min.js )
-  # config.assets.precompile += %w( autocomplete-rails.js )
-  # config.assets.precompile += %w( rails.js )
+  config.assets.precompile += %w( jquery-ui-1.9.1.custom.min.css )
+  config.assets.precompile += %w( jquery-1.8.2.min.js )
+  config.assets.precompile += %w( jquery-ui-1.9.1.custom.min.js )
+  config.assets.precompile += %w( autocomplete-rails.js )
+  config.assets.precompile += %w( rails.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
