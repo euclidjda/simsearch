@@ -51,6 +51,8 @@ Simsearch::Application.configure do
   config.assets.precompile += %w( jquery-ui-1.9.1.custom.min.js )
   config.assets.precompile += %w( autocomplete-rails.js )
   config.assets.precompile += %w( rails.js )
+  config.assets.precompile += %w( bootstrap-dropdown.js )
+
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
