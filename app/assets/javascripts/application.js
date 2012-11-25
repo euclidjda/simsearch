@@ -16,6 +16,5 @@
 //= require backbone
 //= require nautil
 //= require nr-config
-//= autocomplete-rails
-//= rails
+//= require bootstrap-dropdown
 //= require_tree .
