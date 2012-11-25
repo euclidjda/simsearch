@@ -10,10 +10,7 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
-//= require jquery_ujs
-//= require underscore
-//= require backbone
-//= require nautil
-//= require nr-config
+//= require twitter/bootstrap
+//= require jquery-1.8.2.min
+//= require jquery-ui-1.9.1.custom.min 
 //= require_tree .
