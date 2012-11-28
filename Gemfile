@@ -4,8 +4,6 @@ gem 'rails', '3.2.8'
 
 gem "mysql2", "~> 0.3.11"
 
-#gem 'jquery-rails'
-
 gem 'rails3-jquery-autocomplete'
 
 # won't be necessary once the data model settles in, keeping it here for now.
