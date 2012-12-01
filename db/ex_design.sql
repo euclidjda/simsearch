@@ -10,9 +10,14 @@ CREATE TABLE ex_prices (
        
        datadate DATE NOT NULL, -- weekly or month, tbd
 
-       ajex  FLOAT, -- these need to be adjusted on splits
-       csho  FLOAT,
-       price FLOAT,
+       csho    FLOAT, -- common shares outstanding
+       ajex    FLOAT, -- adjustment factor
+       price   FLOAT, -- closing price on datadate
+       chng1m  FLOAT, -- 1 month price change
+       chng3m  FLOAT, -- 3 month price change
+       chng6m  FLOAT, -- 6 month price change
+       chng9m  FLOAT, -- 9 month price change
+       chng12m FLOAT, -- 12 month price change
 
        INDEX ex_price_ix01 (cid,sid,datadate)
 
@@ -67,9 +72,11 @@ CREATE TABLE ex_factdata (
        --
        dvpsxm_ttm    FLOAT, -- Dividends/Share TTM
        epspiq_ttm    FLOAT, -- EPS TTM
+       epspxq_ttm    FLOAT, -- EPS TTM (excluding extra-ordinary items)
        epspiq_10yISr FLOAT, -- EPS 10 Year Growth Consistency
        niq_ttm       FLOAT, -- Net Income TTM
        oiadpq_ttm    FLOAT, -- EBIT TTM
+       cogsq_ttm     FLOAT, -- Cost of Goods Sold TTM
        saleq_ttm     FLOAT, -- Revenue TTM
        saleq_4yISgx  FLOAT, -- Revenue Growth 4 Years
        seqq_mrq      FLOAT, -- Shareholders' Equity
@@ -77,6 +84,7 @@ CREATE TABLE ex_factdata (
        dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
        pstkq_mrq     FLOAT, -- Prefered
+       miiq_ttm	     FLOAT, -- Minority Interest
        
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
        INDEX ex_factdata_ix02 (idxind,idxdiv,idxnew,idxcapl,idxcaph,idxvall,idxvalh)
