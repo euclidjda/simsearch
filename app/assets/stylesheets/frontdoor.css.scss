@@ -4,31 +4,35 @@
 
 @import "shared";
 
-.navbar-inner {
-  // white thin border line under the banner, for contrast.
-  border-bottom-color: #E0E0E0;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-
-  // use our own coloring for the site.
-  color: $neutralColor;
-  background-color: $darkColor;
-  background-image: -webkit-gradient(linear, left top, left bottom, from($darkColor), to($accentColor2));
-  background-image: -moz-linear-gradient(top, $darkColor, $accentColor2);
-
-  font-size: 14px;
-
-  height: 50px;
-}
-
 .navbar {
+
   .btn {
     margin-bottom: 0px;
+  }  
+  .brand {
+    margin-top: 6px;
   }
-}
 
-.navbar-form {
-  padding-top: 8px;
+  .navbar-inner {
+    // white thin border line under the banner, for contrast.
+    border-bottom-color: #E0E0E0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    // use our own coloring for the site.
+    color: $neutralColor;
+    background-color: $darkColor;
+    background-image: -webkit-gradient(linear, left top, left bottom, from($darkColor), to($accentColor2));
+    background-image: -moz-linear-gradient(top, $darkColor, $accentColor2);
+
+    font-size: 14px;
+
+    height: 50px;
+  }
+
+  .navbar-form {
+    padding-top: 8px;
+  }
 }
 
 .hero-unit {

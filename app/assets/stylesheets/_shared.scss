@@ -18,7 +18,7 @@ $contentTextColor: #333;
     border-radius: $size * 0.7 ;
 }
 
-/* typography */
+/* Typography customization for the entire site */
 
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
@@ -42,13 +42,15 @@ h2 {
 }
 
 h3 {
-	color: $titleTextColor;
+  color: $titleTextColor;
 }
 
 p {
   font-size: 1.1em;
   line-height: 1.7em;
 }
+
+/*Customize body normal style to have a narrow visible area with openings on two sides */
 
 .nr {
     padding-top: 64px;
@@ -58,9 +60,4 @@ p {
     margin: 0 auto 0 auto;
     font-size: 14px;
     width: 90%;
-}
-
-.top_level_navigation_bar {
-  margin-top: 10px;
-  width: 100%;
 }
