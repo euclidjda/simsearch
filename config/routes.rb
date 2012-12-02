@@ -7,7 +7,7 @@ Simsearch::Application.routes.draw do
   get "logout" => "frontdoor#destroy_session"
   get "standby" => "frontdoor#standby"
   get "search" => "search#search" # to get to search page
-  get "search/autocomplete_investment_ticker" # to autocomplete
+  get "search/autocomplete_security_ticker" # to autocomplete
   post "search/ticker" => "search#ticker" # to evaluate the submitted search content
 
   # The priority is based upon order of creation:

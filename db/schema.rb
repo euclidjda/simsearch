@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(:version => 20121123090622) do
 
   add_index "ex_funddata", ["cid", "fromdate", "thrudate", "type"], :name => "ex_funddata_01"
 
-  create_table "investments", :force => true do |t|
+  create_table "securities", :force => true do |t|
     t.string   "ticker"
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(:version => 20121123090622) do
 
   create_table "users", :force => true do |t|
     t.string   "uid"
+    t.integer  "role"
     t.string   "provider"
     t.string   "email"
     t.string   "name"
@@ -123,7 +124,6 @@ ActiveRecord::Schema.define(:version => 20121123090622) do
     t.string   "oauth_token"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.integer  "role"
   end
 
 end

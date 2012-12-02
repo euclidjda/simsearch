@@ -56,7 +56,7 @@ $(function() {
             source: function( request, response ) {
 		    	$.ajax({
 		    		type: 'GET',
-                    url: "/search/autocomplete_investment_ticker.json",
+                    url: "/search/autocomplete_security_ticker.json",
                     dataType: "json",
                     data: { term: extractLast(request.term) },
                     success: function( data ) {

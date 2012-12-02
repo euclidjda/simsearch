@@ -6,10 +6,10 @@ class SearchController < ApplicationController
     end
   end
 
-  def autocomplete_investment_ticker
+  def autocomplete_security_ticker
     term = params[:term]
     if term && !term.empty?
-      items = Investment.select("distinct id, ticker as shortname, name as longname").
+      items = Security.select("distinct id, ticker as shortname, name as longname").
           where("LOWER(CONCAT(ticker, name)) like ?", '%' + term.downcase + '%').
           limit(10).order(:shortname)
     else

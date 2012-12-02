@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class InvestmentTest < ActiveSupport::TestCase
+class SecurityTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,6 +1,6 @@
-class CreateInvestments < ActiveRecord::Migration
+class CreateSecurities < ActiveRecord::Migration
   def change
-    create_table :investments do |t|
+    create_table :securities do |t|
       t.string :ticker
       t.string :name
 
