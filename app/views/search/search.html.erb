@@ -37,6 +37,12 @@ $(function() {
                     $( this ).data( "autocomplete" ).menu.active ) {
                 event.preventDefault();
             }
+
+            // add logic to close the dropdown whenever a comma is typed, whether 
+            // the term before it is typed properly or not is irrelevant at this point.
+            if (event.keyCode === $.ui.keyCode.COMMA) {
+				$( this ).data( "autocomplete" ).close();
+            }
         })
 		.autocomplete({
 		    minLength: 2,

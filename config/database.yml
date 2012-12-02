@@ -1,7 +1,7 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: simsearch
+  database: simsearchdev
   pool: 5
   username: root
   password:
@@ -19,9 +19,11 @@ test:
   password:
   socket: /tmp/mysql.sock
 
-#FEFIX: Need to figure out what to do in production environment..
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+  adapter: mysql2
+  encoding: utf8
+  database: simsearch
   pool: 5
-  timeout: 5000
+  username: root
+  password:
+  socket: /tmp/mysql.sock
