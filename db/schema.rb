@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123090622) do
+ActiveRecord::Schema.define(:version => 20121202082420) do
 
   create_table "ex_factdata", :primary_key => "cid", :force => true do |t|
     t.date    "fromdate",      :null => false
@@ -105,6 +105,13 @@ ActiveRecord::Schema.define(:version => 20121123090622) do
   end
 
   add_index "ex_funddata", ["cid", "fromdate", "thrudate", "type"], :name => "ex_funddata_01"
+
+  create_table "filters", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "securities", :force => true do |t|
     t.string   "ticker"

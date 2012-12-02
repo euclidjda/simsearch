@@ -54,6 +54,9 @@ $(function() {
                 }
             },
             source: function( request, response ) {
+
+            	//	For both tickers and filters we have a single source, simplifies things.
+            	//  The search controller decides which query to run, this script block decides what to render.
 		    	$.ajax({
 		    		type: 'GET',
                     url: "/search/autocomplete_security_ticker.json",
@@ -72,8 +75,10 @@ $(function() {
 				var terms = split( this.value );
 	            // remove the current input
 	            terms.pop();
+
 	            // add the selected item
 	            terms.push( ui.item.value );
+	            
 	            // add placeholder to get the comma-and-space at the end
 	            terms.push( "" );
 	            this.value = terms.join( ", " );
