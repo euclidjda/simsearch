@@ -11,6 +11,7 @@ class SearchController < ApplicationController
     if term && !term.empty?
 
       if term[0] == ':'
+        term = term[1..term.length]
         items = Filter.select("distinct id, name as shortname, description as longname").
                     where("LOWER(CONCAT(name, description)) like ?", '%' + term.downcase + '%').
                     limit(10).order(:shortname)
