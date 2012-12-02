@@ -60,7 +60,7 @@ $(function() {
 		    },
 		    select: function( event, ui ) {
 		        console.log( ui.item ?
-		            "Selected: " + ui.item.value + " - " + ui.item.id + " - "+ ui.item.name :
+		            "Selected: " + ui.item.id + " - " + ui.item.value + " - "+ ui.item.longname :
 		            "Nothing selected, input was " + this.value );
 				
 				var terms = split( this.value );
@@ -85,7 +85,7 @@ $(function() {
 
 			// console.log("rendering items");
 
-			var v = item.value + " - " + item.name;
+			var v = item.value + " - " + item.longname;
 
 		    return $( "<li></li>" )
 		        .data( "item.autocomplete", item )
