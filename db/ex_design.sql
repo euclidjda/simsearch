@@ -10,14 +10,14 @@ CREATE TABLE ex_prices (
        
        datadate DATE NOT NULL, -- weekly or month, tbd
 
-       csho    FLOAT, -- common shares outstanding
-       ajex    FLOAT, -- adjustment factor
-       price   FLOAT, -- closing price on datadate
-       chng1m  FLOAT, -- 1 month price change
-       chng3m  FLOAT, -- 3 month price change
-       chng6m  FLOAT, -- 6 month price change
-       chng9m  FLOAT, -- 9 month price change
-       chng12m FLOAT, -- 12 month price change
+       csho   FLOAT, -- common shares outstanding
+       ajex   FLOAT, -- adjustment factor
+       price  FLOAT, -- closing price on datadate
+       pch1m  FLOAT, -- 1 month price change
+       pch3m  FLOAT, -- 3 month price change
+       pch6m  FLOAT, -- 6 month price change
+       pch9m  FLOAT, -- 9 month price change
+       pch12m FLOAT, -- 12 month price change
 
        INDEX ex_price_ix01 (cid,sid,datadate)
 
@@ -33,6 +33,7 @@ CREATE TABLE ex_econ (
        datadate DATE NOT NULL, -- weekly or month, tbd
 
        cape      FLOAT,
+       tbill1mo  FLOAT,
        tbill6mo  FLOAT,
        note10yr  FLOAT,
 
@@ -83,9 +84,10 @@ CREATE TABLE ex_factdata (
        atq_mrq       FLOAT, -- Total Assets
        dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
-       pstkq_mrq     FLOAT, -- Prefered
-       miiq_ttm	     FLOAT, -- Minority Interest
-       
+       pstkq_mrq     FLOAT, -- Prefered Stock
+       mibnq_mrq     FLOAT, -- Non-controlling interests non-redeamable - balance sheet
+       mibq_mrq	     FLOAT, -- Non-controlling interests redeamable - balance sheet
+ 
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
        INDEX ex_factdata_ix02 (idxind,idxdiv,idxnew,idxcapl,idxcaph,idxvall,idxvalh)
 
@@ -177,28 +179,28 @@ CREATE TABLE ex_fundmts (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- HERE IS AN EXAMPLE OF HOW THE ABOVE SCHEMA CAN BE QUERIED EFFICIENTLY
+-- -- HERE IS AN EXAMPLE OF HOW THE ABOVE SCHEMA CAN BE QUERIED EFFICIENTLY
 --
--- var target_ind = get_target_ind();
--- var target_div = get_target_div();
--- var target_cap = get_target_cap();
--- var target_val = get_target_val();
+-- -- var target_ind = get_target_ind();
+-- -- var target_div = get_target_div();
+-- -- var target_new = get_target_new();
+-- -- var target_cap = get_target_cap();
+-- -- var target_val = get_target_val();
 -- 
--- SELECT A.datadate DT,
---       B.oiadpq_ttm/(A.price*A.csho + B.dlttq_mrq - B.cheq_mrq) FACTOR1,
---       ... FACTOR2,
---	 ... FACTOR3,
---	 ...
---	 ... FACTORN
+-- -- THE FOLLOWING SELECTS EVERYTHING NEEDED TO CALC ENTERPRISE VALUE
+--
+-- SELECT A.datadate DT, 
+--       A.price,A.csho,B.oiadpq,B.dlttq_mrq,B.dlcq,B.cheq_mrq,B.pstkq_mrq,mibq_mrq,mibnq_mrq
 -- FROM ex_prices A,
---    (SELECT cid,sid,fromdate,thrudate,oiadpq,dlttq,cheq 
+--    (SELECT *
 --     FROM ex_factdata
---     WHERE indidx = target_ind
---     AND dividx   = target_div
---     AND lcapidx <= 5*target_cap
---     AND hcapidx >= 0.5*target_cap
---     AND lvalidx <= target_val
---     AND hvalidx >= target_val) B
+--     WHERE idxind = target_ind
+--     AND idxdiv   = target_div
+--     AND idxnew   = target_new
+--     AND idxcapl <= 5*target_cap
+--     AND idxcaph >= 0.5*target_cap
+--     AND idxvall <= target_val
+--     AND idxvalh >= target_val) B
 -- WHERE A.cid = B.cid
 -- AND A.sid = B.sid
 -- AND A.datadate >= B.fromdate
