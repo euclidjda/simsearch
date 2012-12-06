@@ -81,6 +81,7 @@ CREATE TABLE ex_factdata (
        saleq_ttm     FLOAT, -- Revenue TTM
        saleq_4yISgx  FLOAT, -- Revenue Growth 4 Years
        seqq_mrq      FLOAT, -- Shareholders' Equity
+       cheq_mrq	     FLOAT, -- Cash & Cash Equiv
        atq_mrq       FLOAT, -- Total Assets
        dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
