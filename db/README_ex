@@ -1,0 +1,9 @@
+This following explains how to import the external tables that have been built offline
+
+shell$ mysql -u user --password=pass simsearch < securities.sql
+shell$ mysql -u user --password=pass simsearch < ex_prices.sql
+shell$ mysql -u user --password=pass simsearch < ex_factdata.sql
+
+Or, if the account is not password protected, do something like this: 
+
+shell$ mysql -u user simsearch < file.sql
