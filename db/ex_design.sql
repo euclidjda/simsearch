@@ -215,6 +215,7 @@ SET @target_div = 0;
 SET @target_new = 0;
 SET @target_cap = 1000;
 SET @target_val = 14;
+SET @target_pch6m = 0.20;
 
 SELECT A.datadate DT,B.idxind,B.idxdiv,B.idxcapl,B.idxvall,
       A.price,A.csho,B.oiadpq_ttm,B.dlttq_mrq,B.dlcq_mrq,
@@ -231,4 +232,7 @@ FROM ex_prices A,
     AND idxvalh >= @target_val) B
 WHERE A.cid = B.cid
 AND A.sid = B.sid
+AND A.pch6m BETWEEN 0.5*@target_pch6m AND 5*@target_pch6m
+AND A.price IS NOT NULL
+AND A.csho IS NOT NULL
 AND A.datadate BETWEEN B.fromdate AND B.thrudate
