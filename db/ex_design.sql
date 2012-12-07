@@ -232,7 +232,6 @@ FROM ex_prices A,
     AND idxvalh >= @target_val) B
 WHERE A.cid = B.cid
 AND A.sid = B.sid
-AND A.pch6m BETWEEN 0.5*@target_pch6m AND 5*@target_pch6m
 AND A.price IS NOT NULL
 AND A.csho IS NOT NULL
 AND A.datadate BETWEEN B.fromdate AND B.thrudate
