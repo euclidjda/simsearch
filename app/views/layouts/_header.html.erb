@@ -1,5 +1,48 @@
+<header>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">simsearch</a>
 
-<header class="navbar navbar-fixed-top">
+        <ul class="nav pull-right">
+          <% if current_user %>
+            <li class="dropdown banner-link">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              Hello, <b><%= current_user_display_name %></b>
+              <div style="text-align:right">
+              Your account<b class="caret"></b></div></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Profile</a></li>
+                <li class="divider"></li>
+                <li><%= link_to "Sign Out", '#', :id => 'banner-logout-btn' %></li>
+              </ul>
+            </li>  
+          <% else %>
+            <%= form_tag("/login", :method => "post", :class => "navbar-form") do %>
+              <%= text_field_tag(:mail_address_entry, nil, :placeholder => "Email") %>
+              <%= submit_tag("Sign in", :class => "btn") %>
+            <% end %>
+          <% end %>
+        </ul>
+
+        <div class="nav-collapse collapse">
+          <ul class="nav pull-right navbar-text">
+            <li><a href="#register">Register</a></li>
+            <li><a href="#register">Upgrade</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- <header class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="#">simsearch</a>
@@ -27,4 +70,4 @@
       </nav>
     </div>
   </div>
-</header>
+</header> -->
