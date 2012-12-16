@@ -1,4 +1,6 @@
 
+@import "shared";
+
 .navbar {
   .brand {
     color: white;
@@ -7,4 +9,15 @@
   .btn {
     margin-bottom: 0px;
   }
+}
+
+header {
+	background-color: $accentColor1;
+	height: 80px;
+	margin: -24px 0 10px 0;
+}
+
+.search-area {
+	padding-top: 14px;
+	width: 70%;
 }

@@ -8,7 +8,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">simsearch</a>
+        <a class="brand" href="#">Euclid Prime</a>
 
         <ul class="nav pull-right">
           <% if current_user %>
@@ -40,6 +40,25 @@
       </div>
     </div>
   </div>
+
+  <div class="search-area">
+
+    <div class="full-search-bar">
+      <ul>
+        <li>
+          <%= form_tag("/search/ticker", :method => "post", :class => "search-bar-form") do %>
+                <%= text_field_tag(:search_entry, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "search_entry") %>
+                <!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
+                <%= button_tag(nil, :class => "btn btn-large btn-inverse", :id => "search-button")  do %>
+                  <i class="icon-search icon-white"></i>
+                <% end %>
+            <% end %>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
 </header>
 
 <!-- <header class="navbar navbar-fixed-top">
