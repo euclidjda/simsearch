@@ -1,4 +1,32 @@
 -- ex_prices
+
+CREATE TABLE securities (
+
+     cid VARCHAR(6) NOT NULL, -- company id
+     sid VARCHAR(3) NOT NULL, -- security id
+     
+     cusip varchar(9),
+     dldtei date,
+     dlrsni varchar(8),
+     dsci varchar(28),
+     epf varchar(1),
+     exchg smallint,
+     excntry varchar(3),
+     ibtic varchar(6),
+     isin varchar(12),
+     secstat varchar(1),
+     sedol varchar(7),
+     tic varchar(20),
+     tpci varchar(8),
+     name varchar(64),
+     ticker varchar(20), 
+
+     INDEX securities_ix01 (cid,sid),
+     INDEX securities_ix02 (ticker),
+     INDEX securities_ix03 (tic)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- This table holds price data
 --
@@ -10,14 +38,14 @@ CREATE TABLE ex_prices (
        
        datadate DATE NOT NULL, -- weekly or month, tbd
 
-       csho    FLOAT, -- common shares outstanding
-       ajex    FLOAT, -- adjustment factor
-       price   FLOAT, -- closing price on datadate
-       chng1m  FLOAT, -- 1 month price change
-       chng3m  FLOAT, -- 3 month price change
-       chng6m  FLOAT, -- 6 month price change
-       chng9m  FLOAT, -- 9 month price change
-       chng12m FLOAT, -- 12 month price change
+       csho   FLOAT, -- common shares outstanding
+       ajex   FLOAT, -- adjustment factor
+       price  FLOAT, -- closing price on datadate
+       pch1m  FLOAT, -- 1 month price change
+       pch3m  FLOAT, -- 3 month price change
+       pch6m  FLOAT, -- 6 month price change
+       pch9m  FLOAT, -- 9 month price change
+       pch12m FLOAT, -- 12 month price change
 
        INDEX ex_price_ix01 (cid,sid,datadate)
 
@@ -33,6 +61,7 @@ CREATE TABLE ex_econ (
        datadate DATE NOT NULL, -- weekly or month, tbd
 
        cape      FLOAT,
+       tbill1mo  FLOAT,
        tbill6mo  FLOAT,
        note10yr  FLOAT,
 
@@ -80,12 +109,14 @@ CREATE TABLE ex_factdata (
        saleq_ttm     FLOAT, -- Revenue TTM
        saleq_4yISgx  FLOAT, -- Revenue Growth 4 Years
        seqq_mrq      FLOAT, -- Shareholders' Equity
+       cheq_mrq	     FLOAT, -- Cash & Cash Equiv
        atq_mrq       FLOAT, -- Total Assets
        dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
-       pstkq_mrq     FLOAT, -- Prefered
-       miiq_ttm	     FLOAT, -- Minority Interest
-       
+       pstkq_mrq     FLOAT, -- Prefered Stock
+       mibnq_mrq     FLOAT, -- Non-controlling interests non-redeamable - balance
+       mibq_mrq	     FLOAT, -- Non-controlling interests redeamable - balance sheet
+ 
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
        INDEX ex_factdata_ix02 (idxind,idxdiv,idxnew,idxcapl,idxcaph,idxvall,idxvalh)
 
@@ -173,34 +204,34 @@ CREATE TABLE ex_fundmts (
        fcfl	 FLOAT, -- Free Cash Flow
 
        -- INDEXES
-       INDEX ex_funddata_01 (cid,fromdate,thrudate,type)     
+       INDEX ex_fundmts_01 (cid,fromdate,thrudate,type)     
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- HERE IS AN EXAMPLE OF HOW THE ABOVE SCHEMA CAN BE QUERIED EFFICIENTLY
---
--- var target_ind = get_target_ind();
--- var target_div = get_target_div();
--- var target_cap = get_target_cap();
--- var target_val = get_target_val();
--- 
--- SELECT A.datadate DT,
---       B.oiadpq_ttm/(A.price*A.csho + B.dlttq_mrq - B.cheq_mrq) FACTOR1,
---       ... FACTOR2,
---	 ... FACTOR3,
---	 ...
---	 ... FACTORN
--- FROM ex_prices A,
---    (SELECT cid,sid,fromdate,thrudate,oiadpq,dlttq,cheq 
---     FROM ex_factdata
---     WHERE indidx = target_ind
---     AND dividx   = target_div
---     AND lcapidx <= 5*target_cap
---     AND hcapidx >= 0.5*target_cap
---     AND lvalidx <= target_val
---     AND hvalidx >= target_val) B
--- WHERE A.cid = B.cid
--- AND A.sid = B.sid
--- AND A.datadate >= B.fromdate
--- AND A.datadate <= B.thrudate
---
+
+SET @target_ind = '4520'; 
+SET @target_div = 0;
+SET @target_new = 0;
+SET @target_cap = 1000;
+SET @target_val = 14;
+SET @target_pch6m = 0.20;
+
+SELECT A.datadate DT,B.idxind,B.idxdiv,B.idxcapl,B.idxvall,
+      A.price,A.csho,B.oiadpq_ttm,B.dlttq_mrq,B.dlcq_mrq,
+      B.cheq_mrq,B.pstkq_mrq,B.mibq_mrq,B.mibnq_mrq
+FROM ex_prices A,
+   (SELECT *
+    FROM ex_factdata
+    WHERE idxind = @target_ind
+    AND idxdiv   = @target_div
+    AND idxnew   = @target_new
+    AND idxcapl >= 0.5*@target_cap
+    AND idxcaph <= 5*@target_cap
+    AND idxvall <= @target_val
+    AND idxvalh >= @target_val) B
+WHERE A.cid = B.cid
+AND A.sid = B.sid
+AND A.price IS NOT NULL
+AND A.csho IS NOT NULL
+AND A.datadate BETWEEN B.fromdate AND B.thrudate
