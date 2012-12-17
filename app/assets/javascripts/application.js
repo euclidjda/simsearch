@@ -12,5 +12,5 @@
 //
 //= require jquery-1.8.2.min
 //= require jquery-ui-1.9.1.custom.min 
-//= require twitter/bootstrap
+//= require bootstrap
 //= require_tree .

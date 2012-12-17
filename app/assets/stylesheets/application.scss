@@ -9,12 +9,11 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require twitter/bootstrap
  *= require jquery-ui-1.9.1.custom.min
  *= require_tree .
  */
 
- @import "shared";
+@import "shared";
 
 .content {
     @include content-box(8px);

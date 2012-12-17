@@ -10,54 +10,39 @@
         </a>
         <a class="brand" href="#">Euclid Prime</a>
 
-        <ul class="nav pull-right">
-          <% if current_user %>
-            <li class="dropdown banner-link">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              Hello, <b><%= current_user_display_name %></b>
-              <div style="text-align:right">
-              Your account<b class="caret"></b></div></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Profile</a></li>
-                <li class="divider"></li>
-                <li><%= link_to "Sign Out", '#', :id => 'banner-logout-btn' %></li>
-              </ul>
-            </li>  
-          <% else %>
-            <%= form_tag("/login", :method => "post", :class => "navbar-form") do %>
-              <%= text_field_tag(:mail_address_entry, nil, :placeholder => "Email") %>
-              <%= submit_tag("Sign in", :class => "btn") %>
-            <% end %>
-          <% end %>
-        </ul>
-
         <div class="nav-collapse collapse">
           <ul class="nav pull-right navbar-text">
-            <li><a href="#register">Register</a></li>
-            <li><a href="#register">Upgrade</a></li>
+            <% if current_user %>
+              <li><a href="#upgradeModal">Upgrade</a></li>
+              <li><%= link_to "Sign Out", '#', :id => 'banner-logout-btn' %></li>
+            <% else %>
+              <li><a href="#registerModal" data-toggle="modal">Register</a></li>
+              <li><a href="#registerModal" data-toggle="modal">Sign In</a></li>                                        
+            <% end %>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
   </div>
 
-  <div class="search-area">
-
-    <div class="full-search-bar">
-      <ul>
-        <li>
-          <%= form_tag("/search/ticker", :method => "post", :class => "search-bar-form") do %>
-                <%= text_field_tag(:search_entry, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "search_entry") %>
-                <!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
-                <%= button_tag(nil, :class => "btn btn-large btn-inverse", :id => "search-button")  do %>
-                  <i class="icon-search icon-white"></i>
-                <% end %>
-            <% end %>
-        </li>
-      </ul>
-    </div>
-
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal hide fade registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
   </div>
+  <div class="modal-body">
+    <p>One fine body…</p>
+    <%= form_tag("/login", :method => "post", :class => "navbar-form") do %>
+      <%= text_field_tag(:mail_address_entry, nil, :placeholder => "Email") %>
+      <%= submit_tag("Sign in", :class => "btn") %>
+    <% end %>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+  </div>
+  </div> 
 
 </header>
 

@@ -1,6 +1,28 @@
+
+<div class="search-area">
+
+  <div class="full-search-bar">
+    <ul>
+      <li>
+        <%= form_tag("/search/ticker", :method => "post", :class => "search-bar-form") do %>
+          <div class="search-field-and-button">
+            <%= text_field_tag(:search_entry, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "search_entry") %>
+            <!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
+            <%= button_tag(nil, :class => "btn btn-large btn-inverse", :id => "search-button")  do %>
+              <i class="icon-search icon-white"></i>
+            <% end %>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+  </div><!--/.full-search-bar -->
+</div><!--/.search-area -->
+
+<hr>
+
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span2">
+    <div class="span2" id="history-sidebar-nav">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="nav-header">History</li>
@@ -38,7 +60,5 @@
       </div><!--/row-->
     </div><!--/span-->
   </div><!--/row-->
-
-  <hr>
 
 </div><!--/.fluid-container-->

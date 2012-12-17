@@ -19,9 +19,8 @@
 }
 
 .full-search-bar {
-	margin: 0 auto 38px;
+	left: 20%;
 	position: relative;
-	left: 23%;
 
 	ul {
 		list-style: none;
@@ -32,6 +31,11 @@
 	.search-bar-form {
 		height: 45px;
 
+		.search-field-and-button {
+			position: absolute;	
+			width: 60%;
+		}
+
 		#search-button {
 			-webkit-border-radius: 0 6px 6px 0;
 			-moz-border-radius: 0 6px 6px 0;
@@ -41,7 +45,7 @@
 			width: 46px;
 			position: absolute;
 			top:0;
-			right:0;
+			right:-8px;
 		}	
 
 		#search_entry {
