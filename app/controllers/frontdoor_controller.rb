@@ -15,24 +15,17 @@ class FrontdoorController < ApplicationController
       create_session user
     end
 
-    redirect_to "/", :notice => "Signed in"
+    redirect_to root_path, :notice => "Signed in"
 
   end
 
   def home
-    # If the user has already established a session, no need to ask for auth again.
-    # If no session, then the default content will ask for login information.
+    # Home page rendering. There is not much as function here since most of the activity
+    # is UI and that is handled in the view.
 
     if current_user
-      if current_user.has_role(Roles::Alpha)
-        redirect_to "/search"
-      else
-        redirect_to "/standby"
-      end
-    end
-  end
 
-  def standby
+    end
   end
 
   def destroy_session

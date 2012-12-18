@@ -38,3 +38,47 @@ footer {
   	}
   }
 }
+
+.full-search-bar {
+  left: 20%;
+  position: relative;
+
+  ul {
+    list-style: none;
+    margin-top: 0;
+    margin-right: 0px;
+  }
+
+  .search-bar-form {
+    height: 45px;
+
+    .search-field-and-button {
+      position: absolute; 
+      width: 60%;
+    }
+
+    #search-button {
+      -webkit-border-radius: 0 6px 6px 0;
+      -moz-border-radius: 0 6px 6px 0;
+      border-radius: 0 6px 6px 0;
+      border-left: 0;
+      height: 45px;
+      width: 46px;
+      position: absolute;
+      top:0;
+      right:-8px;
+    } 
+
+    #search_entry {
+      -webkit-border-radius: 6px 0 0 6px;
+      -moz-border-radius: 6px 0 0 6px;
+      border-radius: 6px 0 0 6px;
+      border-right: 0;
+      font-size: 20px;
+      line-height: 24px;
+      height: 35px;
+      left: 0px;
+      width: 95%;
+    }
+  }
+}
