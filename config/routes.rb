@@ -3,12 +3,12 @@ Simsearch::Application.routes.draw do
   root :to => 'frontdoor#root'
   
   get "home" => "frontdoor#home"
-  
+
   post "login" => "frontdoor#login"
   get "logout" => "frontdoor#destroy_session"
 
-  get "search/autocomplete_security_ticker"                 # to autocomplete
-  post "search/ticker" => "search#comparables_for_ticker"   # to evaluate the submitted search content
+  get "autocomplete_security_ticker" => "search#autocomplete_security_ticker" # to autocomplete
+  get "get_comparables" => "frontdoor#get_comparables"  # to evaluate the submitted search content
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
