@@ -9,6 +9,8 @@ gem 'rails3-jquery-autocomplete'
 # won't be necessary once the data model settles in, keeping it here for now.
 gem 'nifty-generators' 
 
+
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

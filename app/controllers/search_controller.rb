@@ -1,7 +1,7 @@
 class SearchController < ApplicationController
 
   #
-  # Method that returns a list of tickers that are matching the term.
+  # Method that returns, as a json, a list of tickers that are matching the term.
   #
   def autocomplete_security_ticker
     term = params[:term]
@@ -9,13 +9,15 @@ class SearchController < ApplicationController
 
       if term[0] == ':'
         term = term[1..term.length]
-        items = Filter.select("distinct cid, , sid, name as shortname, description as longname").
-                    where("LOWER(CONCAT(name, description)) like ?", '%' + term.downcase + '%').
-                    limit(10).order(:shortname)
+        items = Filter.
+          select("distinct cid, sid, name as shortname, description as longname").
+          where("LOWER(CONCAT(name, description)) like ?", '%' + term.downcase + '%').
+          limit(10).order(:shortname)
       else
-        items = Security.select("distinct cid, sid, ticker as shortname, name as longname").
-            where("LOWER(CONCAT(ticker, name)) like ?", '%' + term.downcase + '%').
-            limit(10).order(:shortname)
+        items = Security.
+          select("distinct cid, sid, ticker as shortname, name as longname").
+          where("LOWER(CONCAT(ticker, name)) like ?", '%' + term.downcase + '%').
+          limit(10).order(:shortname)
       end
 
     else
@@ -30,6 +32,47 @@ class SearchController < ApplicationController
   # Method that returns a list of comparable investmentments for a particular ticker
   #
   def comparables_for_ticker
+
+    cid = params[:cid]
+    sid = params[:sid]
+    datadate = params[:datadate]
+
+    if !cid.blank? && !sid.blank? && !datadate.blank? 
+
+      target = Factors::get( :cid => cid, :sid => sid, :datadate => datadate )
+
+      matches = Array::new()
+
+      if target != nil
+
+        matches << target
+
+        result = target.to_s
+
+        filters = nil
+
+        target.each_match( :filters => filters ) { |match|
+          
+          matches << match
+
+        result += ", " + match.to_s
+
+        }
+
+      end
+
+    end
+
+    if result.blank?
+
+      result = 'Error: method needs valid cid, sid, datadata'
+
+    end
+
+    puts result
+
+    render :text => result
+
   end
 
   #
