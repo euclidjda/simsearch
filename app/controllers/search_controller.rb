@@ -35,17 +35,21 @@ class SearchController < ApplicationController
 
     cid = params[:cid]
     sid = params[:sid]
-    datadate = params[:datadate]
-    
-    if !cid.blank? && !sid.blank? && !datadate.blank? 
+
+    # TODO: support for querying on specific datadate instead of most recent
+    # TODO: support for filters
+
+    target    = nil
+    distances = Array::new()
+    result    = ""
+
+    if !cid.blank? && !sid.blank?
 
       target = Factors::get( :cid => cid, :sid => sid )
 
-      matches = Array::new()
+      if !target.nil?
 
-      if target != nil
-
-        matches.push( { :match => target, :dist => 0.0 } )
+        distances.push( { :match => target, :dist => 0.0 } )
 
         result = target.to_s
 
@@ -57,7 +61,7 @@ class SearchController < ApplicationController
 
           next if (dist < 0)
 
-          matches.push( { :match => match, :dist => dist } )
+          distances.push( { :match => match, :dist => dist } )
 
           result += "<br> " + match.to_s
 
@@ -66,14 +70,37 @@ class SearchController < ApplicationController
       end
 
     end
+    
+    if (distances.length > 1)
 
-    if result.blank?
+      distances.sort! { |a,b| a[:dist] <=> b[:dist] }
 
-      result = 'Error: method needs valid cid, sid, datadata'
+      result_obj  = Array::new()
+      cid_touched = Hash::new()
+
+      distances.each { |item|
+
+        cid    = item[:match].cid
+        puts "cid=#{cid}"
+        next if cid_touched.has_key?(cid)
+
+        fields = item[:match].fields
+        fields['distance'] = item[:dist]
+
+        result_obj.push(fields)
+
+        cid_touched[cid] = 1
+
+      }
+
+
+      render :json => result_obj.to_json
+
+    elsif target.nil?
+
+      render :text => 'Error: method needs valid cid, sid'
 
     end
-
-    render :text => result
 
   end
 
@@ -81,6 +108,7 @@ class SearchController < ApplicationController
   # Method that returns details data for a particular ticker for detailed view
   #
   def details_for_ticker
+
   end
 
 end
