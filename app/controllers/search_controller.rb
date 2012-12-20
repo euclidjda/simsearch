@@ -36,16 +36,16 @@ class SearchController < ApplicationController
     cid = params[:cid]
     sid = params[:sid]
     datadate = params[:datadate]
-
+    
     if !cid.blank? && !sid.blank? && !datadate.blank? 
 
-      target = Factors::get( :cid => cid, :sid => sid, :datadate => datadate )
+      target = Factors::get( :cid => cid, :sid => sid )
 
       matches = Array::new()
 
       if target != nil
 
-        matches << target
+        matches.push( { :match => target, :dist => 0.0 } )
 
         result = target.to_s
 
@@ -53,9 +53,13 @@ class SearchController < ApplicationController
 
         target.each_match( :filters => filters ) { |match|
           
-          matches << match
+          dist = target.distance( match )
 
-        result += ", " + match.to_s
+          next if (dist < 0)
+
+          matches.push( { :match => match, :dist => dist } )
+
+          result += "<br> " + match.to_s
 
         }
 
@@ -68,8 +72,6 @@ class SearchController < ApplicationController
       result = 'Error: method needs valid cid, sid, datadata'
 
     end
-
-    puts result
 
     render :text => result
 
