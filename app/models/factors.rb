@@ -7,9 +7,9 @@ class Factors < Tableless
     # TODO: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
     @fields   = args[:fields]
-    @cid      = @fields['cid']
-    @sid      = @fields['sid']
-    @datadate = @fields['datadate']
+    @cid      = get_field('cid')
+    @sid      = get_field('sid')
+    @datadate = get_fields('datadate')
     @factors  = Hash::new()
 
   end
@@ -50,13 +50,13 @@ class Factors < Tableless
     if @cid && @sid
 
       # TODO: all of the following needs validation
-      target_ind = @fields['idxind']
-      target_div = @fields['idxdiv']
-      target_new = @fields['idxnew']
+      target_ind = get_field('idxind')
+      target_div = get_field('idxdiv')
+      target_new = get_field('idxnew')
 
-      price = Float(@fields['price'])
-      csho  = Float(@fields['csho'])
-      eps   = Float(@fields['epspxq_ttm'])
+      price = Float(get_field('price'))
+      csho  = Float(get_field('csho'))
+      eps   = Float(get_field('epspxq_ttm'))
 
       target_cap = csho * price if (price && price > 0 && csho && csho > 0)
       target_val = price / eps  if (price && price > 0 && eps && eps > 0)
@@ -120,48 +120,48 @@ class Factors < Tableless
 
       when :ey # Earnings Yield
 
-      oiadp  = get_field('oiadpq_ttm')
-      mrkcap = get_field('price')*get_field('csho')
-      debt   = get_field('dlttq_mrq').to_f + get_field('dlcq_mrq').to_f
-      cash   = get_field('cheq_mrq').to_f
-      pstk   = get_field('pstkq_mrq').to_f
-      mii    = get_field('midnq_mrq').to_f + get_field('mibq_mrq').to_f
+        oiadp  = get_field('oiadpq_ttm')
+        mrkcap = get_field('price')*get_field('csho')
+        debt   = get_field('dlttq_mrq').to_f + get_field('dlcq_mrq').to_f
+        cash   = get_field('cheq_mrq').to_f
+        pstk   = get_field('pstkq_mrq').to_f
+        mii    = get_field('midnq_mrq').to_f + get_field('mibq_mrq').to_f
 
-      denom  = mrkcap+debt+cash+pstk+mii
+        denom  = mrkcap+debt+cash+pstk+mii
 
-      factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
+        factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
 
       when :roc # Return On Capital
 
-      oiadp   = get_field('oiadpq_ttm')
-      capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
+        oiadp   = get_field('oiadpq_ttm')
+        capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
 
-      factor_value = oiadp / capital if (!oiadp.nil? && capital != 0)
+        factor_value = oiadp / capital if (!oiadp.nil? && capital != 0)
 
       when :grwth # Revenue Growth
 
-      factor_value = get_field('saleq_4yISgx')
+        factor_value = get_field('saleq_4yISgx')
 
       when :epscon # Consistency of EPS growth
 
-      factor_value = get_field('epspiq_10yISr')
+        factor_value = get_field('epspiq_10yISr')
 
       when :ae # Assets to Equity (Leverage)
 
-      assets = get_field('atq_mrq').to_f
-      equity = get_field('seqq_mrq')
+        assets = get_field('atq_mrq').to_f
+        equity = get_field('seqq_mrq')
 
-      factor_value = assets / equity if (!equity.nil? && equity != 0)
+        factor_value = assets / equity if (!equity.nil? && equity != 0)
 
       when :momentum # Momentum
 
-      factor_value = get_field('pch6m')
+        factor_value = get_field('pch6m')
 
-      else
-      
-      puts "Error: unknown factor #{factor_key}!"
+        else
+        
+        puts "Error: unknown factor #{factor_key}!"
 
-      end
+    end
 
   end
   
