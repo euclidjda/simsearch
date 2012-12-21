@@ -9,7 +9,7 @@ $(function() {
     });
 
    function split( val ) {
-        return val.split( /,\s*/ );
+        return val.split( " " );
     }
     function extractLast( term ) {
         return split( term ).pop();
@@ -36,7 +36,7 @@ $(function() {
 
             // add logic to close the dropdown whenever a comma is typed, whether 
             // the term before it is typed properly or not is irrelevant at this point.
-            if (event.keyCode === $.ui.keyCode.COMMA) {
+            if (event.keyCode === $.ui.keyCode.SPACE) {
                 $( this ).data( "autocomplete" ).close();
             }
         })
@@ -77,7 +77,7 @@ $(function() {
                 
                 // add placeholder to get the comma-and-space at the end
                 terms.push( "" );
-                this.value = terms.join( ", " );
+                this.value = terms.join( " " );
                 return false;
             },
             change: function( event, ui ) {
