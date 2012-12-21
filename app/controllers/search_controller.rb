@@ -1,5 +1,4 @@
 class SearchController < ApplicationController
-
   #
   # Method that returns, as a json, a list of tickers that are matching the term.
   #
@@ -99,6 +98,14 @@ class SearchController < ApplicationController
     elsif target.nil?
 
       render :text => 'Error: method needs valid cid, sid'
+
+    elsif (distances.length == 1)
+
+      render :text => 'Error: no matches found. Try another cid, sid pair'
+
+    else
+
+      render :text => 'Error: failed request'
 
     end
 
