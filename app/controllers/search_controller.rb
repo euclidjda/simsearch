@@ -9,7 +9,7 @@ class SearchController < ApplicationController
       if term[0] == ':'
         term = term[1..term.length]
         items = Filter.
-          select("distinct cid, sid, name as shortname, description as longname").
+          select("distinct id as cid, id as sid, name as shortname, description as longname").
           where("LOWER(CONCAT(name, description)) like ?", '%' + term.downcase + '%').
           limit(10).order(:shortname)
       else
@@ -44,14 +44,17 @@ class SearchController < ApplicationController
 
     if !cid.blank? && !sid.blank?
 
+      # get factors for the stock defined by sid, cid pair
       target = Factors::get( :cid => cid, :sid => sid )
 
       if !target.nil?
 
+        # The target has no distance from itself. Push as the topmost element.
         distances.push( { :match => target, :dist => 0.0 } )
 
         result = target.to_s
 
+        # filters are TBD arguments.
         filters = nil
 
         target.each_match( :filters => filters ) { |match|
