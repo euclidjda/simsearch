@@ -45,7 +45,11 @@ $(function() {
              search: function() {
                 // custom minLength
                 var term = extractLast( this.value );
+                console.log("Term is: ->" + term + "<-, length=" + term.length);
                 if ( term.length < 2 ) {
+                    // If the term has less then 2 characters close the menu. 
+                    // This can happen if we we are editing characters in a secondary term.
+                    $( this ).data( "autocomplete" ).close();
                     return false;
                 }
             },
@@ -81,7 +85,7 @@ $(function() {
                 return false;
             },
             change: function( event, ui ) {
-                console.log("change happened");
+                console.log("Selection changed");
             },
             focus: function() {
                 // prevent value inserted on focus
