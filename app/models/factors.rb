@@ -4,12 +4,12 @@ class Factors < Tableless
 
   def initialize( args )
 
-    # TODO: we want to assert this structure it args
+    # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
     @fields   = args[:fields]
     @cid      = get_field('cid')
     @sid      = get_field('sid')
-    @datadate = get_fields('datadate')
+    @datadate = get_field('datadate')
     @factors  = Hash::new()
 
   end
@@ -23,9 +23,9 @@ class Factors < Tableless
 
     if !cid.blank? && !sid.blank?
 
-      # TODO: There must be a better way to do a multiline
+      # TODO: JDA: There must be a better way to do a multiline
       # quoted string an assign to sqlstr
-      # TODO: THERE ARE MUTLIPLE DATADATE COLUMNS IN THIS QUERY
+      # TODO: JDA: THERE ARE MUTLIPLE DATADATE COLUMNS IN THIS QUERY
       sqlstr = Factors::get_target_sql(cid,sid)
       
       result = ActiveRecord::Base.connection.select_one(sqlstr) 
