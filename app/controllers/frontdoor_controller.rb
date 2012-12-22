@@ -40,10 +40,14 @@ class FrontdoorController < ApplicationController
   end
 
   def get_comparables 
+
     search_entry = params[:search_entry]
 
-    @ticker_results = "test result set content here"
-
+    if search_entry.blank?
+      @ticker_results = "no parameter is provided for search"
+    else
+      @ticker_results = "test result set content here"
+    end
     render :action => :home
   end
 

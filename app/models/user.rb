@@ -23,7 +23,10 @@ class User < ActiveRecord::Base
 
   # Make all of our attributes bulk accessible to our code now since we don't
   # have a controller for user, this is safe.
-  attr_accessible :uid, :provider, :email, :name, :first_name, :last_name, :oauth_token, :role
+  attr_accessible :uid, :provider, 
+                  :email, :name, :first_name, :last_name, 
+                  :oauth_token, 
+                  :role
 
   # return the display name of the user.
   def display_name 

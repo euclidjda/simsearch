@@ -19,12 +19,17 @@ $(function() {
     // In case we want to handle the content from the search field before we submit to the form.
     //
     $( "#search-bar-form" ).submit(function() {
-       // if($('#fieldtocheck').val().length < 1) {
-       //    return false;
-       // }
 
-       // alert("test");
+       var submitContent = $('#search_entry').val();
 
+       // if there is no content, do not submit the form, save time.
+       if (submitContent.length == 0) {
+        return false;
+       }
+
+       // Trim spaces off the edges.
+       submitContent = $.trim(submitContent);
+       $('#search_entry').val(submitContent);
     });
 
     $( "#search_entry" )

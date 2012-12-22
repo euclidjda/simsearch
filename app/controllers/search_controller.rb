@@ -28,16 +28,15 @@ class SearchController < ApplicationController
     
   end
 
-  #
   # Method that returns a list of comparable investmentments for a particular ticker
   #
-  def comparables_for_ticker
+  def get_comparables_for_cidsid
 
     cid = params[:cid]
     sid = params[:sid]
 
-    # TODO: support for querying on specific datadate instead of most recent
-    # TODO: support for filters
+    # TODO: JDA: support for querying on specific datadate instead of most recent
+    # TODO: JDA: support for filters
 
     target    = nil
     distances = Array::new()
@@ -84,7 +83,7 @@ class SearchController < ApplicationController
       distances.each { |item|
 
         cid    = item[:match].cid
-        puts "cid=#{cid}"
+        # puts "cid=#{cid}" -- too much noise, enable only when needed -- 
         next if cid_touched.has_key?(cid)
 
         fields = item[:match].fields
