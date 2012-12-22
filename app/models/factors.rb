@@ -166,37 +166,41 @@ class Factors < Tableless
   end
   
   def self.get_target_sql(cid,sid)
-    "SELECT * "\
-    "FROM ex_prices A, ex_factdata B, securities C "\
-    "WHERE A.cid = '#{cid}' AND A.sid = '#{sid}' "\
-    "AND B.cid = '#{cid}' AND B.sid = '#{sid}' "\
-    "AND C.cid = '#{cid}' AND C.sid = '#{sid}' "\
-    "AND A.datadate BETWEEN B.fromdate AND B.thrudate "\
-    "ORDER BY A.datadate DESC LIMIT 1"
+
+<<GET_TARGET_SQL
+  SELECT * 
+  FROM ex_prices A, ex_factdata B, securities C 
+  WHERE A.cid = '#{cid}' AND A.sid = '#{sid}' 
+  AND B.cid = '#{cid}' AND B.sid = '#{sid}' 
+  AND C.cid = '#{cid}' AND C.sid = '#{sid}' 
+  AND A.datadate BETWEEN B.fromdate AND B.thrudate 
+  ORDER BY A.datadate DESC LIMIT 1
+GET_TARGET_SQL
   end
 
-  def self.
-      get_match_sql(cid,target_ind,target_div,target_new,target_cap,target_val)
-    "SELECT * "\
-    "FROM ex_prices A, "\
-    "(SELECT * "\
-    "FROM ex_factdata "\
-    "WHERE idxind = #{target_ind} "\
-    "AND idxdiv   = #{target_div} "\
-    "AND idxnew   = #{target_new} "\
-    "AND idxcaph >= LEAST(0.5*#{target_cap},10000) "\
-    "AND idxcapl <= 5.0*#{target_cap} "\
-    "AND idxvall <= #{target_val} "\
-    "AND idxvalh >= #{target_val}) B, "\
-    "securities C "\
-    "WHERE A.cid = B.cid "\
-    "AND A.sid = B.sid "\
-    "AND A.cid = C.cid "\
-    "AND A.sid = C.sid "\
-    "AND A.price IS NOT NULL "\
-    "AND A.csho IS NOT NULL "\
-    "AND A.cid != #{cid} "\
-    "AND A.datadate BETWEEN B.fromdate AND B.thrudate"
+  def self.get_match_sql(cid,target_ind,target_div,target_new,target_cap,target_val)
+<<GET_TARGET_SQL
+    SELECT * 
+    FROM ex_prices A, 
+    (SELECT * 
+    FROM ex_factdata 
+    WHERE idxind = #{target_ind} 
+    AND idxdiv   = #{target_div} 
+    AND idxnew   = #{target_new} 
+    AND idxcaph >= LEAST(0.5*#{target_cap},10000) 
+    AND idxcapl <= 5.0*#{target_cap} 
+    AND idxvall <= #{target_val} 
+    AND idxvalh >= #{target_val}) B, 
+    securities C 
+    WHERE A.cid = B.cid 
+    AND A.sid = B.sid 
+    AND A.cid = C.cid 
+    AND A.sid = C.sid 
+    AND A.price IS NOT NULL 
+    AND A.csho IS NOT NULL 
+    AND A.cid != #{cid} 
+    AND A.datadate BETWEEN B.fromdate AND B.thrudate
+GET_TARGET_SQL
   end
 
 end
