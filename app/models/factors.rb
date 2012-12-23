@@ -7,9 +7,9 @@ class Factors < Tableless
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
     @fields   = args[:fields]
-    @cid      = get_field(:cid)
-    @sid      = get_field(:sid)
-    @datadate = get_field(:datadate)
+    @cid      = get_field('cid')
+    @sid      = get_field('sid')
+    @datadate = get_field('datadate')
     @factors  = Hash::new()
 
   end
