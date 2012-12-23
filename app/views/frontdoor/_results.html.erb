@@ -1,0 +1,26 @@
+
+<% results = ActiveSupport::JSON.decode(result_set) %>
+
+<!-- Max 12, min 1 company (we would not be here if there wasn't at least one ) -->
+<% result_count = [12, results.length].min %>
+<% first_row = true %>
+
+<% (0..result_count-1).each do |i| %>
+	<% new_row = (i%3 == 0) %>
+
+	<% if new_row %> 
+		<% if !first_row %>
+			</div> <!-- row-fluid -->
+		<% else %>
+			<% first_row = false %>
+		<% end %>
+		<div class="row-fluid"> 
+	<% end %>
+
+		<div class="span3 comparable">
+			<%= new_row %>
+			<br>
+			<%= results[i]['ticker'] %>
+		</div> <!-- span3 -->
+<% end %>
+</div> <!-- end of last row -->
