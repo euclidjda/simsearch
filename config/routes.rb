@@ -10,7 +10,7 @@ Simsearch::Application.routes.draw do
   get "autocomplete_security_ticker" => "search#autocomplete_security_ticker" # to autocomplete
   get "get_comparables" => "frontdoor#get_comparables"  # to evaluate the submitted search content
 
-  get "comparables_for_ticker" => "search#comparables_for_ticker"
+  get "get_comparables_for_cidsid" => "search#get_comparables_for_cidsid"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

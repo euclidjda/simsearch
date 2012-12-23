@@ -28,6 +28,7 @@ class SearchController < ApplicationController
   end
 
   #
+<<<<<<< HEAD
   # Method that returns a list of comparable investmentments for a particular ticker
   #
   def comparables_for_ticker
@@ -115,6 +116,8 @@ class SearchController < ApplicationController
   end
 
   #
+=======
+>>>>>>> 97f9e8fda20e01ce8b3922ed57033a1c117e4d48
   # Method that returns details data for a particular ticker for detailed view
   #
   def details_for_ticker

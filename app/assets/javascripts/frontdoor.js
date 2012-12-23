@@ -19,12 +19,17 @@ $(function() {
     // In case we want to handle the content from the search field before we submit to the form.
     //
     $( "#search-bar-form" ).submit(function() {
-       // if($('#fieldtocheck').val().length < 1) {
-       //    return false;
-       // }
 
-       // alert("test");
+       var submitContent = $('#search_entry').val();
 
+       // if there is no content, do not submit the form, save time.
+       if (submitContent.length == 0) {
+        return false;
+       }
+
+       // Trim spaces off the edges.
+       submitContent = $.trim(submitContent);
+       $('#search_entry').val(submitContent);
     });
 
     $( "#search_entry" )
@@ -45,7 +50,11 @@ $(function() {
              search: function() {
                 // custom minLength
                 var term = extractLast( this.value );
+                console.log("Term is: ->" + term + "<-, length=" + term.length);
                 if ( term.length < 2 ) {
+                    // If the term has less then 2 characters close the menu. 
+                    // This can happen if we we are editing characters in a secondary term.
+                    $( this ).data( "autocomplete" ).close();
                     return false;
                 }
             },
@@ -81,7 +90,7 @@ $(function() {
                 return false;
             },
             change: function( event, ui ) {
-                console.log("change happened");
+                console.log("Selection changed");
             },
             focus: function() {
                 // prevent value inserted on focus

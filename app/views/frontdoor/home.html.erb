@@ -36,7 +36,7 @@
     </div><!--/span-->
 
     <% if result_set %>
-      Result set: <%= result_set %>
+      <%= render "frontdoor/results" %>
     <% else %>
       <%= render "frontdoor/welcome" %>
     <% end %>
