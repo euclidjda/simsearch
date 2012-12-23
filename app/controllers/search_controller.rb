@@ -83,7 +83,7 @@ class SearchController < ApplicationController
       distances.each { |item|
 
         cid    = item[:match].cid
-        # puts "cid=#{cid}" -- too much noise, enable only when needed -- 
+        puts "cid=#{cid}" 
         next if cid_touched.has_key?(cid)
 
         fields = item[:match].fields
@@ -94,7 +94,6 @@ class SearchController < ApplicationController
         cid_touched[cid] = 1
 
       }
-
 
       render :json => result_obj.to_json
 

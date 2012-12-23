@@ -43,11 +43,24 @@ class FrontdoorController < ApplicationController
 
     search_entry = params[:search_entry]
 
-    if search_entry.blank?
-      @ticker_results = "no parameter is provided for search"
-    else
-      @ticker_results = "test result set content here"
+    # Default to nil, which pushes the "invalid query" response.
+    @ticker_results = nil
+
+    if !search_entry.blank?
+
+      # We currently on support one ticker and no filters.
+      ticker_value = search_entry.split(" ").first
+
+      # The ticker can only match one result and that will be the first.
+      sec = Security::find_by_ticker(ticker_value)
+
+      if !sec.nil?
+        @ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
+
+        # @ticker_results = sec.get_data
+      end
     end
+
     render :action => :home
   end
 
