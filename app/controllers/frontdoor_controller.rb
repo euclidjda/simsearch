@@ -55,9 +55,9 @@ class FrontdoorController < ApplicationController
       sec = Security::find_by_ticker(ticker_value)
 
       if !sec.nil?
-        @ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
+        #@ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
 
-        # @ticker_results = sec.get_data
+        @ticker_results = sec.get_comparables
       end
     end
 
