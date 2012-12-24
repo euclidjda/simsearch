@@ -1,13 +1,15 @@
 class Security < ActiveRecord::Base
-  attr_accessible :name, :ticker, :cid, :sid
-
   def to_s
     "cid:#{cid}, sid:#{sid}, ticker:#{ticker}, name:#{name}"
   end
 
-  def self.find_by_ticker(ticker)
-    Security.where(:ticker => ticker).first
+  def self.find_by_ticker(t)
+    Security.where(:ticker => t).first
   end 
+
+  def self.find_by_cidsid(c, s)
+    Security.where(:cid => c, :sid => s).first
+  end
 
   def get_comparables
 
@@ -16,9 +18,17 @@ class Security < ActiveRecord::Base
 
     target    = nil
     distances = Array::new()
+    result_obj = Object::new()
 
     # get factors for the stock defined by sid, cid pair
     target = Factors::get( :cid => cid, :sid => sid )
+
+    #
+    # TODO: FE: remove later. Just placing here to show that we can access
+    #           all table columns as members directly from this model.
+    puts "****  #{cid} #{sid} #{secstat} **** "
+    #
+    #
 
     if !target.nil?
       # The target has no distance from itself. Push as the topmost element.
@@ -32,33 +42,36 @@ class Security < ActiveRecord::Base
         next if (dist < 0)
         distances.push( { :match => match, :dist => dist } )
       }
+
+      # We are guaranteed to have more than one distance in the array here. Sort it.
+      distances.sort! { |a,b| a[:dist] <=> b[:dist] }
+
+      result_array  = Array::new()
+      cid_touched = Hash::new()
+
+      distances.each { |item|
+
+        cid    = item[:match].cid
+        # Noisy but informing logging option.
+        # puts "cid=#{cid}" 
+        
+        next if cid_touched.has_key?(cid)
+
+        fields = item[:match].fields
+        fields['distance'] = item[:dist]
+
+        result_array.push(fields)
+
+        cid_touched[cid] = 1
+      }
+
+      return result_array.to_json
+
     else
-      return "[{'error': 'No factors found for security cid:#{cid}, sid:#{sid}'}]"
+      # No factors were found for the target cid/sid pair. 
+      return nil
+
     end # if !target.nil?
-
-    # We are guaranteed to have more than one distance in the array here. Sort it.
-    distances.sort! { |a,b| a[:dist] <=> b[:dist] }
-
-    result_obj  = Array::new()
-    cid_touched = Hash::new()
-
-    distances.each { |item|
-
-      cid    = item[:match].cid
-      # Noisy but informing logging option.
-      # puts "cid=#{cid}" 
-      
-      next if cid_touched.has_key?(cid)
-
-      fields = item[:match].fields
-      fields['distance'] = item[:dist]
-
-      result_obj.push(fields)
-
-      cid_touched[cid] = 1
-    }
-
-    return result_obj.to_json
 
   end # get_comparables
 

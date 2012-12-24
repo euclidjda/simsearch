@@ -2,7 +2,8 @@
 <% results = ActiveSupport::JSON.decode(result_set) %>
 
 <!-- Max 12, min 1 company (we would not be here if there wasn't at least one ) -->
-<% result_count = [12, results.length].min %>
+<% 	result_count = [12, results.length].min %>
+
 <% first_row = true %>
 
 <% (0..result_count-1).each do |i| %>

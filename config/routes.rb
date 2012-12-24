@@ -8,9 +8,7 @@ Simsearch::Application.routes.draw do
   get "logout" => "frontdoor#destroy_session"
 
   get "autocomplete_security_ticker" => "search#autocomplete_security_ticker" # to autocomplete
-  get "get_comparables" => "frontdoor#get_comparables"  # to evaluate the submitted search content
-
-  get "get_comparables_for_cidsid" => "search#get_comparables_for_cidsid"
+  get "search_for_ticker" => "frontdoor#search_for_ticker"  # to evaluate the submitted search content
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

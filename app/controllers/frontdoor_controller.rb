@@ -39,7 +39,7 @@ class FrontdoorController < ApplicationController
       session[:user_id] = user.id
   end
 
-  def get_comparables 
+  def search_for_ticker
 
     search_entry = params[:search_entry]
 
@@ -62,6 +62,7 @@ class FrontdoorController < ApplicationController
     end
 
     render :action => :home
+    
   end
 
 private 
