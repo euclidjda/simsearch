@@ -20,10 +20,22 @@
 	<% end %>
 
 		<div class="span4 comparable">
-			<!-- <%= new_row %> -->
-			<h2><%= results[i]['ticker'] %></h2>
-			This is some test content here... Let's see what it will show<br>
-			This is the second line of the test content for the block.
+			<div class="panel-header">
+				
+				<div class="percent-circle">
+					<span class="percent-text">
+					<%= (100 - (results[i]['distance'] * 10000)).to_s.split('.')[0] %>
+					</span>
+				</div>
+
+				<div class="panel-ticker">
+					<%= results[i]['ticker'] %>
+				</div>
+
+			</div>
+			<div class="panel-date">Date here</div>
+			<p>This is some test content here... Let's see what it will show</p>
+			<p>This is the second line of the test content for the block.</p>
 		</div> <!-- span3 -->
 <% end %>
 </div> <!-- end of last row -->

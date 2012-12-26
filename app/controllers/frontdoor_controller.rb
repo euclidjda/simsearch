@@ -62,6 +62,10 @@ class FrontdoorController < ApplicationController
     end
 
     render :action => :home
+
+    # Comment the above line and uncomment the line below to see JSON output 
+    # with no rendering. Helps with debugging.
+    # render :json => @ticker_results
     
   end
 
