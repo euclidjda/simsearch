@@ -1,5 +1,4 @@
 class SearchController < ApplicationController
-
   #
   # Method that returns, as a json, a list of tickers that are matching the term.
   #
