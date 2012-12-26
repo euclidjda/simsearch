@@ -33,7 +33,8 @@
 				</div>
 
 			</div>
-			<div class="panel-date">Date here</div>
+			<% d = Date.parse(results[i]['datadate'])%>
+			<div class="panel-date"><%= Date::MONTHNAMES[d.month][0..2] + ', ' + d.year.to_s %></div>
 			<p>This is some test content here... Let's see what it will show</p>
 			<p>This is the second line of the test content for the block.</p>
 		</div> <!-- span3 -->
