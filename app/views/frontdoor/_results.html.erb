@@ -1,8 +1,9 @@
 
 <% results = ActiveSupport::JSON.decode(result_set) %>
 
-<!-- Max 12, min 1 company (we would not be here if there wasn't at least one ) -->
 <% 	result_count = [12, results.length].min %>
+
+    <div class="span9">
 
 <% first_row = true %>
 
@@ -18,10 +19,13 @@
 		<div class="row-fluid"> 
 	<% end %>
 
-		<div class="span3 comparable">
-			<%= new_row %>
-			<br>
-			<%= results[i]['ticker'] %>
+		<div class="span4 comparable">
+			<!-- <%= new_row %> -->
+			<h2><%= results[i]['ticker'] %></h2>
+			This is some test content here... Let's see what it will show<br>
+			This is the second line of the test content for the block.
 		</div> <!-- span3 -->
 <% end %>
 </div> <!-- end of last row -->
+
+</div> <!--end of span9 -->
