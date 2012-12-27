@@ -24,7 +24,7 @@
 				
 				<div class="percent-circle">
 					<span class="percent-text">
-					<%= (100 - (results[i]['distance'] * 10000)).to_s.split('.')[0] %>
+					<%= (100*(1-(results[i]['distance']))).to_s.split('.')[0] %>
 					</span>
 				</div>
 

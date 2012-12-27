@@ -96,7 +96,7 @@ class Factors < Tableless
         dist += ( f1 - f2 ) * ( f1 - f2 )
       else
         dist = -1
-        last
+        break
       end
         
     }
