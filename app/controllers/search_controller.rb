@@ -27,6 +27,27 @@ class SearchController < ApplicationController
     
   end
 
+  def get_prices
+
+    cid = params[:cid]
+    sid = params[:sid]
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+
+    if !cid.blank? && !sid.blank? && !start_date.blank? && !end_date.blank?
+
+      prices = ExPrice::find_by_range(cid,sid,start_date,end_date)
+
+      render :text => prices.to_json
+
+    else
+
+      render :text => 'failed'
+
+    end
+
+  end
+
   #
   # Method that returns details data for a particular ticker for detailed view
   #
