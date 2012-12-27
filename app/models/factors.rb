@@ -25,7 +25,6 @@ class Factors < Tableless
 
       # TODO: JDA: There must be a better way to do a multiline
       # quoted string an assign to sqlstr
-      # TODO: JDA: THERE ARE MUTLIPLE DATADATE COLUMNS IN THIS QUERY
       sqlstr = Factors::get_target_sql(cid,sid)
       
       result = ActiveRecord::Base.connection.select_one(sqlstr) 
@@ -59,7 +58,7 @@ class Factors < Tableless
       eps   = Float(get_field('epspxq_ttm'))
 
       target_cap = csho * price if (price && price > 0 && csho && csho > 0)
-      target_val = price / eps  if (price && price > 0 && eps && eps > 0)
+      target_val = price / eps  if (price && price > 0 && eps )
 
       # puts "***** target_cap = #{target_cap} , target_val = #{target_val}"
 
@@ -167,7 +166,7 @@ class Factors < Tableless
   
   def self.get_target_sql(cid,sid)
 <<GET_TARGET_SQL
-  SELECT * 
+  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
   FROM ex_prices A, ex_factdata B, securities C 
   WHERE A.cid = '#{cid}' AND A.sid = '#{sid}' 
   AND B.cid = '#{cid}' AND B.sid = '#{sid}' 
@@ -178,8 +177,15 @@ GET_TARGET_SQL
   end
 
   def self.get_match_sql(cid,target_ind,target_div,target_new,target_cap,target_val)
+
+    target_val_sql = ""
+
+    if !target_val.nil?
+      target_val_sql = " AND #{target_val} BETWEEN idxvall AND idxvalh "
+    end
+
 <<GET_TARGET_SQL
-    SELECT * 
+    SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
     FROM ex_prices A, 
     (SELECT * 
     FROM ex_factdata 
@@ -188,8 +194,7 @@ GET_TARGET_SQL
     AND idxnew   = #{target_new} 
     AND idxcaph >= LEAST(0.5*#{target_cap},10000) 
     AND idxcapl <= 5.0*#{target_cap} 
-    AND idxvall <= #{target_val} 
-    AND idxvalh >= #{target_val}) B, 
+    #{target_val_sql} ) B, 
     securities C 
     WHERE A.cid = B.cid 
     AND A.sid = B.sid 
