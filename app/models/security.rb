@@ -11,13 +11,19 @@ class Security < ActiveRecord::Base
     Security.where(:cid => c, :sid => s).first
   end
 
-  def get_comparables
+  def get_comparables(args)
 
-    # TODO: JDA: support for querying on specific datadate instead of most recent
     # TODO: JDA: support for filters
+    # TODO: JDA: support a result size limit
 
-    target    = nil
-    distances = Array::new()
+    start_date  = args[:start_date]
+    end_date    = args[:end_date]
+
+    start_date = '1900-12-31' if start_date.blank?
+    end_date   = '9999-12-31' if end_date.blank?
+
+    target     = nil
+    distances  = Array::new()
     result_obj = Object::new()
 
     # get factors for the stock defined by sid, cid pair
@@ -37,7 +43,9 @@ class Security < ActiveRecord::Base
       # filters are TBD arguments.
       filters = nil
 
-      target.each_match( :filters => filters ) { |match|
+      target.each_match( :start_date => start_date , 
+                         :end_date => end_date , 
+                         :filters => filters ) { |match|
         dist = target.distance( match )
         next if (dist < 0)
         distances.push( { :match => match, :dist => dist } )
@@ -51,7 +59,7 @@ class Security < ActiveRecord::Base
 
       distances.each { |item|
 
-        cid    = item[:match].cid
+        cid = item[:match].cid
         # Noisy but informing logging option.
         # puts "cid=#{cid}" 
         
@@ -63,6 +71,7 @@ class Security < ActiveRecord::Base
         result_array.push(fields)
 
         cid_touched[cid] = 1
+
       }
 
       return result_array.to_json

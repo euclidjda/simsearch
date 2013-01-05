@@ -48,6 +48,9 @@ class Factors < Tableless
     # self is target so you can extract to get cid,sid, etc
     if @cid && @sid
 
+      start_date = args[:start_date]
+      end_date   = args[:end_date]
+
       # TODO: all of the following needs validation
       target_ind = get_field('idxind')
       target_div = get_field('idxdiv')
@@ -62,8 +65,9 @@ class Factors < Tableless
 
       # puts "***** target_cap = #{target_cap} , target_val = #{target_val}"
 
-      sqlstr = Factors::get_match_sql(cid,target_ind,target_div, \
-                                      target_new,target_cap,target_val)
+      sqlstr = Factors::get_match_sql(@cid,target_ind,target_div, \
+                                      target_new,target_cap,target_val, \
+                                      start_date,end_date)
       
       results = ActiveRecord::Base.connection.select_all(sqlstr) 
 
@@ -176,16 +180,21 @@ class Factors < Tableless
 GET_TARGET_SQL
   end
 
-  def self.get_match_sql(cid,target_ind,target_div,target_new,target_cap,target_val)
+  def self.get_match_sql(cid,target_ind,target_div,
+                         target_new,target_cap,target_val, 
+                         begin_date,end_date)
 
     target_val_sql = ""
 
     if !target_val.nil?
       target_val_sql = " AND #{target_val} BETWEEN idxvall AND idxvalh "
     end
+    
+    puts "begin_date = #{begin_date}"
+    puts "end_date = #{end_date}"
 
 <<GET_TARGET_SQL
-    SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
+    SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
     FROM ex_prices A, 
     (SELECT * 
     FROM ex_factdata 
@@ -204,7 +213,7 @@ GET_TARGET_SQL
     AND A.csho IS NOT NULL 
     AND A.cid != #{cid} 
     AND A.datadate BETWEEN B.fromdate AND B.thrudate
+    AND A.datadate BETWEEN '#{begin_date}' AND '#{end_date}'
 GET_TARGET_SQL
   end
-
 end
