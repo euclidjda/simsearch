@@ -88,6 +88,7 @@ footer {
   margin-bottom: 14px;
   border-radius: 6px;
   padding: 4px;
+  min-width: 240px;
 }
 
 .percent-circle {
@@ -113,6 +114,14 @@ footer {
   position: relative;
   cursor: pointer;
 }
+
+.panel-header {
+  font-weight: bold;
+  font-size: 24px;
+  height:28px;
+  padding: 4px 8px 4px 8px;
+}
+
 .panel-ticker {
   font-weight: bold;
   font-size: 26px;
@@ -125,4 +134,17 @@ footer {
   font-size: 22px;
   margin-top: 14px;
   display: block;
+}
+
+.dyna-roller {
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  
+/*  
+  // Keeping these out of the picture until we have left/right sliding buttons.
+  -webkit-transition: all 500ms ease-in-out;
+  -webkit-transform: translateX(0px);
+*/
+
 }

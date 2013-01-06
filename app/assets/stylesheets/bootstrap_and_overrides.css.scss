@@ -1,10 +1,25 @@
 @import "bootstrap";
 @import "bootstrap-responsive";
 
+/*
+This file contains overrides for bootstrapper styles and any media query
+based styling that applies to all style classes we use.
+*/
+
+@media (min-width:979px) {
+	.dyna-roller {
+		height: 160px;
+	}
+}
+
 @media  (max-width:979px) { 
 	.navbar-fixed-top { 
 		position: absolute;
 	} 
+
+	.dyna-roller {
+		height: 160px;
+	}
 }
 
 @media (max-width:767px) {
@@ -15,6 +30,10 @@
 
 	#history-sidebar-nav {
 		display: none;
+	}
+
+	.dyna-roller {
+		height: 160px;
 	}
 }
 
