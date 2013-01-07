@@ -62,9 +62,9 @@ class FrontdoorController < ApplicationController
       if !_sec.nil?
         #@ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
 
-        @ticker_results = sec.get_comparables(:start_date => _start_date ,
-                                              :end_date   => _end_date   ,
-                                              :limit      => _limit      )
+        @ticker_results = _sec.get_comparables(:start_date => _start_date ,
+                                               :end_date   => _end_date   ,
+                                               :limit      => _limit      )
       end
     end
 
