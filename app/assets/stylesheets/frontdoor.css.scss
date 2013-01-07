@@ -83,12 +83,21 @@ footer {
   }
 }
 
-.comparable {
+.result-stats {
   background-color: $neutralColor;
-  margin-bottom: 14px;
-  border-radius: 6px;
+  border-radius: 2px;
   padding: 4px;
-  min-width: 240px;
+  margin-bottom: 8px;
+  min-width: 280px;
+}
+
+.comparable {
+  background-color: $panelColor;
+  margin-bottom: 12px;
+  border-radius: 2px;
+  padding: 4px;
+  min-width: 220px;
+  box-shadow: 4px 4px 2px #999;
 }
 
 .percent-circle {
