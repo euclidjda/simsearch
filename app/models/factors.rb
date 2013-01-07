@@ -184,26 +184,20 @@ GET_TARGET_SQL
                          target_new,target_cap,target_val, 
                          begin_date,end_date)
 
-    target_val_sql = ""
-
-    if !target_val.nil?
-      target_val_sql = " AND #{target_val} BETWEEN idxvall AND idxvalh "
-    end
+    target_clause_sql = 
+      target_val.nil? ? "" : " AND #{target_val} BETWEEN idxvall AND idxvalh "
     
-    puts "begin_date = #{begin_date}"
-    puts "end_date = #{end_date}"
-
 <<GET_TARGET_SQL
     SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
     FROM ex_prices A, 
     (SELECT * 
     FROM ex_factdata 
-    WHERE idxind = #{target_ind} 
+    WHERE idxind = '#{target_ind}'
     AND idxdiv   = #{target_div} 
     AND idxnew   = #{target_new} 
     AND idxcaph >= LEAST(0.5*#{target_cap},10000) 
     AND idxcapl <= 5.0*#{target_cap} 
-    #{target_val_sql} ) B, 
+    #{target_clause_sql} ) B, 
     securities C 
     WHERE A.cid = B.cid 
     AND A.sid = B.sid 
@@ -211,7 +205,7 @@ GET_TARGET_SQL
     AND A.sid = C.sid 
     AND A.price IS NOT NULL 
     AND A.csho IS NOT NULL 
-    AND A.cid != #{cid} 
+    AND A.cid != '#{cid}' 
     AND A.datadate BETWEEN B.fromdate AND B.thrudate
     AND A.datadate BETWEEN '#{begin_date}' AND '#{end_date}'
 GET_TARGET_SQL

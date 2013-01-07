@@ -16,11 +16,10 @@ class Security < ActiveRecord::Base
     # TODO: JDA: support for filters
     # TODO: JDA: support a result size limit
 
-    start_date  = args[:start_date]
-    end_date    = args[:end_date]
-
-    start_date = '1900-12-31' if start_date.blank?
-    end_date   = '9999-12-31' if end_date.blank?
+    # any or all of these can be nil
+    start_date  = args[:start_date].nil? ? '1990-12-31' : args[:start_date]
+    end_date    = args[:end_date].nil? ? '9999-12-31' : args[:end_date]
+    limit       = args[:limit] 
 
     target     = nil
     distances  = Array::new()
@@ -44,8 +43,8 @@ class Security < ActiveRecord::Base
       filters = nil
 
       target.each_match( :start_date => start_date , 
-                         :end_date => end_date , 
-                         :filters => filters ) { |match|
+                         :end_date   => end_date   , 
+                         :filters    => filters ) { |match|
         dist = target.distance( match )
         next if (dist < 0)
         distances.push( { :match => match, :dist => dist } )
@@ -63,6 +62,7 @@ class Security < ActiveRecord::Base
         # Noisy but informing logging option.
         # puts "cid=#{cid}" 
         
+        break if (!limit.nil? && (result_array.length >= limit))
         next if cid_touched.has_key?(cid)
 
         fields = item[:match].fields
@@ -74,6 +74,8 @@ class Security < ActiveRecord::Base
 
       }
 
+      # make result size no greater than limit
+      
       return result_array.to_json
 
     else
