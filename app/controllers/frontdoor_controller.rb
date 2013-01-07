@@ -12,10 +12,10 @@ class FrontdoorController < ApplicationController
     mail_id = params[:mail_address_entry];
 
     # find the user, if not create one.
-    user = User.create_with_email(mail_id)
+    _user = User.create_with_email(mail_id)
 
-    if user
-      create_session user
+    if _user
+      create_session _user
     end
 
     redirect_to root_path, :notice => "Signed in"
@@ -35,35 +35,36 @@ class FrontdoorController < ApplicationController
     redirect_to root_path, :notice => 'Signed out'
   end
 
-  def create_session(user)
-      session[:user_id] = user.id
+  def create_session(user_arg)
+      session[:user_id] = user_arg.id
   end
 
   def search_for_ticker
-
-    search_entry = params[:search_entry]
+    # Get the parameter from the parameter array, this is coming from the browser.
+    _search_entry = params[:search_entry]
 
     # Default to nil, which pushes the "invalid query" response.
     @ticker_results = nil
 
-    if !search_entry.blank?
-
+    if !_search_entry.blank?
       # We currently on support one ticker and no filters.
-      ticker_value = search_entry.split(" ").first
+      _ticker_value = _search_entry.split(" ").first
 
       # The ticker can only match one result and that will be the first.
-      sec = Security::find_by_ticker(ticker_value)
+      _sec = Security::find_by_ticker(_ticker_value)
 
       # Set the epoch start and end dates
-      start_date = '1900-12-31'
-      end_date   = '9999-12-31'
-      limit      = 10
 
-      if !sec.nil?
+      _start_date = '1900-12-31'
+      _end_date   = '9999-12-31'
+      _limit      = 10
+
+      if !_sec.nil?
         #@ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
-        @ticker_results = sec.get_comparables(:start_date => start_date ,
-                                              :end_date   => end_date   ,
-                                              :limit      => limit      )
+
+        @ticker_results = sec.get_comparables(:start_date => _start_date ,
+                                              :end_date   => _end_date   ,
+                                              :limit      => _limit      )
       end
     end
 
