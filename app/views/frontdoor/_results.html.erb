@@ -1,5 +1,6 @@
 
 <% _results = ActiveSupport::JSON.decode(result_set) %>
+<% _target = _results.shift(1) %>
 <% _result_count = [12, _results.length].min %>
 
 <div class="span10">
@@ -38,21 +39,34 @@
 		<div class="span2 comparable">
 			<div class="panel-header">
 				
-				<div class="percent-circle">
+<!-- 			<div class="percent-circle">
 					<span class="percent-text">
 					<%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
 					</span>
 				</div>
+ -->
 
 				<div class="panel-ticker">
 					<%= _result_entry['ticker'] %>
+					<br>
+					<span class="panel-date">
+						<% _d = Date.parse(_result_entry['pricedate'])%>
+						<%= Date::MONTHNAMES[_d.month][0..2] + ', ' + _d.year.to_s %>
+					</span>
+				</div>
+				<div class="panel-sparkline">
+					sparkline space
 				</div>
 
-			</div>
-			<% _d = Date.parse(_result_entry['pricedate'])%>
-			<div class="panel-date"><%= Date::MONTHNAMES[_d.month][0..2] + ', ' + _d.year.to_s %></div>
-			<p>Parameter : Value</p>
-			<p>Another Parameter : Value</p>
+			</div> <!-- panel-header -->
+			<span class="panel-body">
+				<%= _result_entry['name'] %><br>
+				Price: $<%= _result_entry['price'] %><br>
+				Market Cap (mil):  $<%= _result_entry['price'] * _result_entry['csho'] %><br>
+				<% _one_year_gain = sprintf("%.2f", _result_entry['pch12m'] * 100 ) %>
+				One Year Return: <%= _one_year_gain %>%<br>
+				Similarity Score: <%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
+			</span> <!-- panel-body -->
 		</div> <!-- span4 -->
 <% end %>
 </div> <!--end of span8 -->
