@@ -38,7 +38,7 @@ class SearchController < ApplicationController
 
       _prices = ExPrice::find_by_range(_cid,_sid,_start_date,_end_date)
 
-      render :text => _prices.to_json
+      render :json => _prices.to_json
 
     else
 

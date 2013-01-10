@@ -54,12 +54,17 @@ class FrontdoorController < ApplicationController
       _sec = Security::find_by_ticker(_ticker_value)
 
       # Set the epoch start and end dates
+
       _start_date = '1900-12-31'
       _end_date   = '9999-12-31'
+      _limit      = 10
 
       if !_sec.nil?
         #@ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
-        @ticker_results = _sec.get_comparables(:start_date=>_start_date,:end_date=>_end_date)
+
+        @ticker_results = _sec.get_comparables(:start_date => _start_date ,
+                                               :end_date   => _end_date   ,
+                                               :limit      => _limit      )
       end
     end
 
