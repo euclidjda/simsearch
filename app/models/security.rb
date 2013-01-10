@@ -76,7 +76,7 @@ class Security < ActiveRecord::Base
 
       # make result size no greater than limit
       
-      return result_array.to_json
+      return result_array
 
     else
       # No factors were found for the target cid/sid pair. 

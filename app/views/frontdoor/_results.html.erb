@@ -1,5 +1,5 @@
 
-<% _results = ActiveSupport::JSON.decode(result_set) %>
+<% _results = result_set %>
 <% _target = _results.shift(1) %>
 <% _result_count = [12, _results.length].min %>
 
@@ -46,20 +46,26 @@
 					</span>
 				</div>
  -->
-
 				<div class="panel-ticker">
 					<%= _result_entry['ticker'] %>
 					<br>
 					<span class="panel-date">
-						<% _d = Date.parse(_result_entry['pricedate'])%>
-						<%= Date::MONTHNAMES[_d.month][0..2] + ', ' + _d.year.to_s %>
+
+					  <% _d = _result_entry['pricedate'] %>
+
+					  <% if _d %>
+						<%= Date::MONTHNAMES[_d.month][0..2]+', ' + _d.year.to_s %>
+					  <% end %>
+
 					</span>
 				</div>
 				<div class="panel-sparkline">
 					sparkline space
 				</div>
 
+
 			</div> <!-- panel-header -->
+
 			<span class="panel-body">
 				<%= _result_entry['name'] %><br>
 				Price: $<%= _result_entry['price'] %><br>
@@ -69,6 +75,9 @@
 				One Year Return: <%= _one_year_gain %>%<br>
 				Similarity Score: <%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
 			</span> <!-- panel-body -->
+
+ 
+
 		</div> <!-- span4 -->
 <% end %>
 </div> <!--end of span8 -->
