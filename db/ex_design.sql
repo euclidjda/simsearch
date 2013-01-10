@@ -5,21 +5,21 @@ CREATE TABLE securities (
      cid VARCHAR(6) NOT NULL, -- company id
      sid VARCHAR(3) NOT NULL, -- security id
      
-     cusip varchar(9),
-     dldtei date,
-     dlrsni varchar(8),
-     dsci varchar(28),
-     epf varchar(1),
-     exchg smallint,
-     excntry varchar(3),
-     ibtic varchar(6),
-     isin varchar(12),
-     secstat varchar(1),
-     sedol varchar(7),
-     tic varchar(20),
-     tpci varchar(8),
-     name varchar(64),
-     ticker varchar(20), 
+     cusip	varchar(9),
+     dldtei	date,
+     dlrsni	varchar(8),
+     dsci	varchar(28),
+     epf	varchar(1),
+     exchg	smallint,
+     excntry	varchar(3),
+     ibtic	varchar(6),
+     isin	varchar(12),
+     secstat	varchar(1),
+     sedol	varchar(7),
+     tic	varchar(20),
+     tpci	varchar(8),
+     name	varchar(64),
+     ticker	varchar(20), 
 
      INDEX securities_ix01 (cid,sid),
      INDEX securities_ix02 (ticker),
@@ -41,6 +41,7 @@ CREATE TABLE ex_prices (
        csho   FLOAT, -- common shares outstanding
        ajex   FLOAT, -- adjustment factor
        price  FLOAT, -- closing price on datadate
+       volume FLOAT, -- volume (not currently populated)
        pch1m  FLOAT, -- 1 month price change
        pch3m  FLOAT, -- 3 month price change
        pch6m  FLOAT, -- 6 month price change
@@ -116,6 +117,8 @@ CREATE TABLE ex_factdata (
        pstkq_mrq     FLOAT, -- Prefered Stock
        mibnq_mrq     FLOAT, -- Non-controlling interests non-redeamable - balance
        mibq_mrq	     FLOAT, -- Non-controlling interests redeamable - balance sheet
+       fcfq_mrq	     FLOAT, -- Free Cash Flow TTM
+       fcfq_4yISm    FLOAT, -- Free Cash Flow 4 year median
  
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
        INDEX ex_factdata_ix02 (idxind,idxdiv,idxnew,idxcapl,idxcaph,idxvall,idxvalh)
@@ -145,15 +148,15 @@ CREATE TABLE ex_fundmts (
        xrd	 FLOAT, -- Research & Development
        dp	 FLOAT, -- Depreciation/Amortization
        xint	 FLOAT, -- Interest Expense
-       xopit     FLOAT, -- Total Operating Expense (xsgnq + xrdq + dpq + xintx) 
-       opi	 FLOAT, -- Operating Income (oiadpq - xintq)
-       nooth	 FLOAT, -- Non-Operating Income (Expenses) (nopiq+spiq)
+       xopit     FLOAT, -- Total Operating Expense (xsgna + xrd + dp + xint) 
+       opi	 FLOAT, -- Operating Income (oiadp - xint)
+       nooth	 FLOAT, -- Non-Operating Income (Expenses) (nopi + spi)
        pi	 FLOAT, -- Income Before Tax
        txt	 FLOAT, -- Income Taxes
        mii	 FLOAT, -- Minority Interest
        dvp	 FLOAT, -- Dividends Preferred
        xido	 FLOAT, -- Extraordinary Items & Discontinued Operations
-       ni	 FLOAT, -- Net Inocme
+       ni	 FLOAT, -- Net Income
 
        epspx     FLOAT, -- Earnings per Share -Basic Excluding Extraordinary Items
        epspi     FLOAT, -- Earnings per Share -Basic Including Extraordinary Items
@@ -201,37 +204,49 @@ CREATE TABLE ex_fundmts (
        oancf	 FLOAT, -- Operating Cash Flow
        capx	 FLOAT, -- Capital Expenditures
        dv	 FLOAT, -- Dividends
-       fcfl	 FLOAT, -- Free Cash Flow
+       fcf	 FLOAT, -- Free Cash Flow
 
        -- INDEXES
        INDEX ex_fundmts_01 (cid,fromdate,thrudate,type)     
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- HERE IS AN EXAMPLE OF HOW THE ABOVE SCHEMA CAN BE QUERIED EFFICIENTLY
+-- MODEL QUERY FOR FETCHING A TARGET
 
-SET @target_ind = '4520'; 
-SET @target_div = 0;
-SET @target_new = 0;
-SET @target_cap = 1000;
-SET @target_val = 14;
-SET @target_pch6m = 0.20;
+-- SET @cid = '001690'; -- APPLE COMPUTER
+-- SET @sid = '01';
+-- SET @datadate = '2012-11-23'; -- MOST RECENT PRICING DATE
 
-SELECT A.datadate DT,B.idxind,B.idxdiv,B.idxcapl,B.idxvall,
-      A.price,A.csho,B.oiadpq_ttm,B.dlttq_mrq,B.dlcq_mrq,
-      B.cheq_mrq,B.pstkq_mrq,B.mibq_mrq,B.mibnq_mrq
-FROM ex_prices A,
-   (SELECT *
-    FROM ex_factdata
-    WHERE idxind = @target_ind
-    AND idxdiv   = @target_div
-    AND idxnew   = @target_new
-    AND idxcapl >= 0.5*@target_cap
-    AND idxcaph <= 5*@target_cap
-    AND idxvall <= @target_val
-    AND idxvalh >= @target_val) B
-WHERE A.cid = B.cid
-AND A.sid = B.sid
-AND A.price IS NOT NULL
-AND A.csho IS NOT NULL
-AND A.datadate BETWEEN B.fromdate AND B.thrudate
+-- SELECT A.*,B.*
+-- FROM ex_prices A, ex_factdata B
+-- WHERE A.cid = @cid AND A.sid = @sid
+-- AND B.cid = @cid AND B.sid = @sid
+-- AND A.datadate = @datadate
+-- AND A.datadate BETWEEN B.fromdate AND B.thrudate;
+-- 
+-- SET @target_ind = '4520'; 
+-- SET @target_div = 0;
+-- SET @target_new = 0;
+-- SET @target_cap = 1000;
+-- SET @target_val = 14;
+-- 
+-- SELECT *
+-- FROM ex_prices A,
+--    (SELECT *
+--     FROM ex_factdata
+--     WHERE idxind = @target_ind
+--     AND idxdiv   = @target_div
+--     AND idxnew   = @target_new
+--     AND idxcapl >= 0.5*@target_cap
+--     AND idxcaph <= 5*@target_cap
+--     AND idxvall <= @target_val
+--     AND idxvalh >= @target_val) B,
+--     securities C
+-- WHERE A.cid = B.cid
+-- AND A.sid = B.sid
+-- AND A.cid = C.cid
+-- AND A.sid = C.sid
+-- AND A.price IS NOT NULL
+-- AND A.csho IS NOT NULL
+-- AND A.datadate BETWEEN B.fromdate AND B.thrudate
+
