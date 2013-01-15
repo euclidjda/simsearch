@@ -23,7 +23,6 @@ class Security < ActiveRecord::Base
 
     target     = nil
     distances  = Array::new()
-    result_obj = Object::new()
 
     # get factors for the stock defined by sid, cid pair
     target = Factors::get( :cid => cid, :sid => sid )
@@ -36,8 +35,8 @@ class Security < ActiveRecord::Base
     #
 
     if !target.nil?
-      # The target has no distance from itself. Push as the topmost element.
-      distances.push( { :match => target, :dist => 0.0 } )
+      
+      # distances.push( { :match => target, :dist => 0.0 } )
 
       # filters are TBD arguments.
       filters = nil

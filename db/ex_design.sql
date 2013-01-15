@@ -144,7 +144,7 @@ CREATE TABLE ex_fundmts (
        sale	 FLOAT, -- Revenue
        cogs	 FLOAT, -- Cost of Revenue
        gross	 FLOAT, -- Gross Profit = [sale - cogs]
-       xsgna	 FLOAT, -- Selling/General/Admin. Expenses
+       xsga	 FLOAT, -- Selling/General/Admin. Expenses
        xrd	 FLOAT, -- Research & Development
        dp	 FLOAT, -- Depreciation/Amortization
        xint	 FLOAT, -- Interest Expense

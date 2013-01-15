@@ -1,7 +1,10 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :result_set
+  helper_method :target, :comparables
+
+  @target = nil
+  @comparables = nil
 
   def root
     # always redirect to home, redundant actually since routes.rb also does this.
@@ -44,7 +47,8 @@ class FrontdoorController < ApplicationController
     _search_entry = params[:search_entry]
 
     # Default to nil, which pushes the "invalid query" response.
-    @ticker_results = nil
+    @target = nil
+    @comparables = nil
 
     if !_search_entry.blank?
       # We currently on support one ticker and no filters.
@@ -53,32 +57,48 @@ class FrontdoorController < ApplicationController
       # The ticker can only match one result and that will be the first.
       _sec = Security::find_by_ticker(_ticker_value)
 
-      # Set the epoch start and end dates
-
-      _start_date = '1900-12-31'
-      _end_date   = '9999-12-31'
-      _limit      = 10
-
       if !_sec.nil?
-        #@ticker_results = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
+        
+        # Get the target's factor fields
+        @target = Factors::get(:cid => _sec.cid, :sid => _sec.sid).fields()
 
-        @ticker_results = _sec.get_comparables(:start_date => _start_date ,
-                                               :end_date   => _end_date   ,
-                                               :limit      => _limit      )
+        #@comparables = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
+
+        # Get a result set for each epoch
+        @comparables = Hash::new()
+
+        # _epochs = FrontdoorHelper::epochs()
+
+        FrontdoorHelper.epochs.each { |_epoch|
+
+          _start_date = FrontdoorHelper::startDate(_epoch)
+          _end_date   = FrontdoorHelper::endDate(_epoch)
+
+          @comparables[_epoch] = _sec.get_comparables(:start_date => _start_date ,
+                                                      :end_date   => _end_date   ,
+                                                      :limit      => 4           )
+        }
+
       end
+
     end
 
     render :action => :home
 
     # Comment the above line and uncomment the line below to see JSON output 
     # with no rendering. Helps with debugging.
-    # render :json => @ticker_results.to_json()
+    # render :json => @comparables.to_json()
     
   end
 
-private 
-  def result_set
-    @ticker_results
+private
+
+  def target
+    @target
+  end
+
+  def comparables
+    @comparables
   end
 
 end

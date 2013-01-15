@@ -1,7 +1,7 @@
 
-<% _results = result_set %>
-<% _target = _results.shift(1) %>
-<% _result_count = [12, _results.length].min %>
+<% _target = target() %>
+<% _results = FrontdoorHelper::collapseEpochs(comparables()) %>
+<% _result_count = _results.length %>
 
 <div class="span10">
 
@@ -39,13 +39,6 @@
 		<div class="span2 comparable">
 			<div class="panel-header">
 				
-<!-- 			
-				<div class="percent-circle">
-					<span class="percent-text">
-					<%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
-					</span>
-				</div>
- -->
 				<div class="panel-ticker">
 					<%= _result_entry['ticker'] %>
 					<br>
@@ -71,9 +64,10 @@
 				Price: $<%= _result_entry['price'] %><br>
 				<% _market_cap = sprintf("%.2f", _result_entry['price'] * _result_entry['csho']) %>
 				Market Cap (mil):  $<%= _market_cap %><br>
-				<% _one_year_gain = sprintf("%.2f", _result_entry['pch12m'] * 100 ) %>
+				<% _one_year_gain = _result_entry['pch12m'] %>
 				One Year Return: <%= _one_year_gain %>%<br>
-				Similarity Score: <%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
+				Similarity Score: 
+				<%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
 			</span> <!-- panel-body -->
 
  
