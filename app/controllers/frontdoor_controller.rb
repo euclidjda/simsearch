@@ -62,12 +62,8 @@ class FrontdoorController < ApplicationController
         # Get the target's factor fields
         @target = Factors::get(:cid => _sec.cid, :sid => _sec.sid).fields()
 
-        #@comparables = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
-
         # Get a result set for each epoch
         @comparables = Hash::new()
-
-        # _epochs = FrontdoorHelper::epochs()
 
         FrontdoorHelper.epochs.each { |_epoch|
 

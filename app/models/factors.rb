@@ -46,6 +46,8 @@ class Factors < Tableless
   def each_match( args )
 
     # self is target so you can extract to get cid,sid, etc
+    # FE : we should be able to assert for these, if we have a security object
+    #      then we must have these values...
     if @cid && @sid
 
       start_date = args[:start_date]
