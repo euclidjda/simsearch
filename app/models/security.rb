@@ -25,7 +25,7 @@ class Security < ActiveRecord::Base
     distances  = Array::new()
 
     # get factors for the stock defined by sid, cid pair
-    target = Factors::get( :cid => cid, :sid => sid )
+    target = Factors::get( cid, sid )
 
     #
     # TODO: FE: remove later. Just placing here to show that we can access
@@ -36,23 +36,20 @@ class Security < ActiveRecord::Base
 
     if !target.nil?
       
-      # distances.push( { :match => target, :dist => 0.0 } )
-
       # filters are TBD arguments.
-      filters = nil
 
-      target.each_match( :start_date => start_date , 
-                         :end_date   => end_date   , 
-                         :filters    => filters ) { |match|
+      target.each_match( start_date, end_date ) { |match|
+
         dist = target.distance( match )
         next if (dist < 0)
         distances.push( { :match => match, :dist => dist } )
+
       }
 
       # We are guaranteed to have more than one distance in the array here. Sort it.
       distances.sort! { |a,b| a[:dist] <=> b[:dist] }
 
-      result_array  = Array::new()
+      result_array = Array::new()
       cid_touched = Hash::new()
 
       distances.each { |item|

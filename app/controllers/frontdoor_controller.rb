@@ -26,8 +26,8 @@ class FrontdoorController < ApplicationController
   end
 
   def home
-    # Home page rendering. There is not much as function here since most of the activity
-    # is UI and that is handled in the view.
+    # Home page rendering. There is not much as function here since most of the
+    # activity is UI and that is handled in the view.
 
     if current_user
     end
@@ -43,6 +43,7 @@ class FrontdoorController < ApplicationController
   end
 
   def search_for_ticker
+
     # Get the parameter from the parameter array, this is coming from the browser.
     _search_entry = params[:search_entry]
 
@@ -60,14 +61,10 @@ class FrontdoorController < ApplicationController
       if !_sec.nil?
         
         # Get the target's factor fields
-        @target = Factors::get(:cid => _sec.cid, :sid => _sec.sid).fields()
-
-        #@comparables = "cid-sid for #{ticker_value} is #{sec.cid}-#{sec.sid}"
+        @target = Factors::get(_sec.cid,_sec.sid).fields()
 
         # Get a result set for each epoch
         @comparables = Hash::new()
-
-        # _epochs = FrontdoorHelper::epochs()
 
         FrontdoorHelper.epochs.each { |_epoch|
 

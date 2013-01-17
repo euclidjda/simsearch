@@ -2,11 +2,11 @@ class Factors < Tableless
 
   attr_reader :cid, :sid, :datadate, :fields, :factors
 
-  def initialize( args )
+  def initialize( _fields )
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
-    @fields   = args[:fields]
+    @fields   = _fields
     @cid      = get_field('cid')
     @sid      = get_field('sid')
     @datadate = get_field('datadate')
@@ -14,42 +14,34 @@ class Factors < Tableless
 
   end
 
-  def self.get( args )
-
-    cid = args[:cid]
-    sid = args[:sid]
+  def self.get( _cid, _sid )
 
     obj = nil
 
-    if !cid.blank? && !sid.blank?
+    if !_cid.blank? && !_sid.blank?
 
-      # TODO: JDA: There must be a better way to do a multiline
-      # quoted string an assign to sqlstr
-      sqlstr = Factors::get_target_sql(cid,sid)
+      sqlstr = Factors::get_target_sql(_cid,_sid)
       
       result = ActiveRecord::Base.connection.select_one(sqlstr) 
 
-      obj = new( :fields => result ) if !result.nil?
+      obj = new( result ) if !result.nil?
     
     end
 
-    obj
+    return obj
 
   end
 
-  def get_field( name )
+  def get_field( _name )
 
-    @fields[name]
+    @fields[_name]
 
   end
 
-  def each_match( args )
+  def each_match( _start_date, _end_date )
 
     # self is target so you can extract to get cid,sid, etc
-    if @cid && @sid
-
-      start_date = args[:start_date]
-      end_date   = args[:end_date]
+    if @cid && @sid && !_start_date.blank? && !_end_date.blank?
 
       # TODO: all of the following needs validation
       target_ind = get_field('idxind')
@@ -65,15 +57,16 @@ class Factors < Tableless
 
       # puts "***** target_cap = #{target_cap} , target_val = #{target_val}"
 
-      sqlstr = Factors::get_match_sql(@cid,target_ind,target_div, \
-                                      target_new,target_cap,target_val, \
-                                      start_date,end_date)
+      sqlstr = Factors::get_match_sql(@cid,
+                                      target_ind,target_div,target_new,
+                                      target_cap,target_val,
+                                      _start_date,_end_date)
       
       results = ActiveRecord::Base.connection.select_all(sqlstr) 
 
       results.each { |record|
 
-        yield Factors::new( :fields => record )
+        yield Factors::new( record )
 
       }
     
@@ -108,7 +101,7 @@ class Factors < Tableless
 
   end
 
- def to_s
+  def to_s
     "cid => #{@cid} sid => #{@sid} datadate => #{@datadate}"
   end
 
@@ -186,7 +179,7 @@ GET_TARGET_SQL
 
     target_clause_sql = 
       target_val.nil? ? "" : " AND #{target_val} BETWEEN idxvall AND idxvalh "
-    
+
 <<GET_TARGET_SQL
     SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
     FROM ex_prices A, 
