@@ -27,13 +27,9 @@ class Security < ActiveRecord::Base
     # get factors for the stock defined by sid, cid pair
     target = Factors::get( cid, sid )
 
+    # FE : we can probably do away with this check and have an assert-like behavior.
+    #      if we have a security object instance but cannot find factors for it, we have a db problem.
     #
-    # TODO: FE: remove later. Just placing here to show that we can access
-    #           all table columns as members directly from this model.
-    puts "****  #{cid} #{sid} #{secstat} **** "
-    #
-    #
-
     if !target.nil?
       
       # filters are TBD arguments.
@@ -45,6 +41,9 @@ class Security < ActiveRecord::Base
         distances.push( { :match => match, :dist => dist } )
 
       }
+
+      # debug info line here to make sure we are rendering the right number on screen.
+      puts "********** #{distances.length}   ***********"
 
       # We are guaranteed to have more than one distance in the array here. Sort it.
       distances.sort! { |a,b| a[:dist] <=> b[:dist] }

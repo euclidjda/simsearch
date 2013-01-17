@@ -40,8 +40,7 @@ class Factors < Tableless
 
   def each_match( _start_date, _end_date )
 
-    # self is target so you can extract to get cid,sid, etc
-    if @cid && @sid && !_start_date.blank? && !_end_date.blank?
+    if !_start_date.blank? && !_end_date.blank?
 
       # TODO: all of the following needs validation
       target_ind = get_field('idxind')
