@@ -1,5 +1,41 @@
 $(function() {
 
+    // This is the code that draws the sparklines
+    $(document).ready(function() {
+
+	$('.panel-performance').each(function( index ) {
+
+	    var postData = new Object();
+
+	    postData['cid'] = $(this).attr('cid');
+	    postData['sid'] = $(this).attr('sid');
+
+	    var start_date = $(this).attr('date');
+	    var end_date 
+		= String(parseInt(start_date.substring(0,4))+1)
+		+ start_date.substring(4);
+
+	    postData['start_date'] = start_date;
+	    postData['end_date'] = end_date;
+
+	    $.getJSON('get_performance',postData,function(data) {
+		
+		var cid  = data.cid;
+		var sid  = data.sid;
+		var date = data.start_date;
+
+		var stk_rtn =sprintf("%.2f%%",data.stk_rtn);
+		var mrk_rtn =sprintf("%.2f%%",data.mrk_rtn);
+
+		$("[perfid='"+cid+sid+date+"']").append( stk_rtn + ',' + mrk_rtn  );
+
+	    });
+
+	});
+
+    });
+
+
     $("#banner-logout-btn").click(function(){
         logout_action_handler();
     });

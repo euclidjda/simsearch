@@ -28,7 +28,7 @@ class Security < ActiveRecord::Base
     target = Factors::get( cid, sid )
 
     # FE : we can probably do away with this check and have an assert-like behavior.
-    #      if we have a security object instance but cannot find factors for it, we have a db problem.
+    # if we have a security object instance but cannot find factors for it, we have a db problem.
     #
     if !target.nil?
       
@@ -57,10 +57,11 @@ class Security < ActiveRecord::Base
         # Noisy but informing logging option.
         # puts "cid=#{cid}" 
         
+        # only return limit number matches
         break if (!limit.nil? && (result_array.length >= limit))
         next if cid_touched.has_key?(cid)
 
-        fields = item[:match].fields
+        fields = item[:match].fields()
         fields['distance'] = item[:dist]
 
         result_array.push(fields)
