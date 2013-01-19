@@ -33,9 +33,7 @@ class Factors < Tableless
   end
 
   def get_field( _name )
-
     @fields[_name]
-
   end
 
   def each_match( _start_date, _end_date )
@@ -64,18 +62,16 @@ class Factors < Tableless
       results = ActiveRecord::Base.connection.select_all(sqlstr) 
 
       results.each { |record|
-
         yield Factors::new( record )
-
       }
     
     end
 
   end
 
-  def distance(obj) 
+  def distance(_obj) 
 
-    factor_keys = [:ey,:roc]
+    factor_keys = [:ey, :roc]
     # factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
     
     dist = 0.0
@@ -83,7 +79,7 @@ class Factors < Tableless
     factor_keys.each { |key|
 
       f1 = get_factor(key)
-      f2 = obj.get_factor(key)
+      f2 = _obj.get_factor(key)
       
       next if f1.nil?
 
@@ -105,13 +101,13 @@ class Factors < Tableless
   end
 
 
-  def get_factor(factor_key)
+  def get_factor(_factor_key)
 
-    return @factors[factor_key] if (@factors.has_key?(factor_key))
+    return @factors[_factor_key] if (@factors.has_key?(_factor_key))
 
     factor_value = nil
 
-    case factor_key
+    case _factor_key
 
       when :ey # Earnings Yield
 
@@ -154,41 +150,40 @@ class Factors < Tableless
 
         else
         
-        puts "Error: unknown factor #{factor_key}!"
+        puts "Error: unknown factor #{_factor_key}!"
 
     end
 
   end
   
-  def self.get_target_sql(cid,sid)
+  def self.get_target_sql(_cid,_sid)
 <<GET_TARGET_SQL
   SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
   FROM ex_prices A, ex_factdata B, securities C 
-  WHERE A.cid = '#{cid}' AND A.sid = '#{sid}' 
-  AND B.cid = '#{cid}' AND B.sid = '#{sid}' 
-  AND C.cid = '#{cid}' AND C.sid = '#{sid}' 
+  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}' 
+  AND B.cid = '#{_cid}' AND B.sid = '#{_sid}' 
+  AND C.cid = '#{_cid}' AND C.sid = '#{_sid}' 
   AND A.datadate BETWEEN B.fromdate AND B.thrudate 
   ORDER BY A.datadate DESC LIMIT 1
 GET_TARGET_SQL
   end
 
-  def self.get_match_sql(cid,target_ind,target_div,
-                         target_new,target_cap,target_val, 
-                         begin_date,end_date)
+  def self.get_match_sql(_cid, _target_ind, _target_div,
+                         _target_new, _target_cap, _target_val, 
+                         _begin_date, _end_date)
 
-    target_clause_sql = 
-      target_val.nil? ? "" : " AND #{target_val} BETWEEN idxvall AND idxvalh "
+    target_clause_sql = _target_val.nil? ? "" : " AND #{_target_val} BETWEEN idxvall AND idxvalh "
 
 <<GET_TARGET_SQL
     SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
     FROM ex_prices A, 
     (SELECT * 
     FROM ex_factdata 
-    WHERE idxind = '#{target_ind}'
-    AND idxdiv   = #{target_div} 
-    AND idxnew   = #{target_new} 
-    AND idxcaph >= LEAST(0.5*#{target_cap},10000) 
-    AND idxcapl <= 5.0*#{target_cap} 
+    WHERE idxind = '#{_target_ind}'
+    AND idxdiv   = #{_target_div} 
+    AND idxnew   = #{_target_new} 
+    AND idxcaph >= LEAST(0.5*#{_target_cap},10000) 
+    AND idxcapl <= 5.0*#{_target_cap} 
     #{target_clause_sql} ) B, 
     securities C 
     WHERE A.cid = B.cid 
@@ -197,9 +192,9 @@ GET_TARGET_SQL
     AND A.sid = C.sid 
     AND A.price IS NOT NULL 
     AND A.csho IS NOT NULL 
-    AND A.cid != '#{cid}' 
+    AND A.cid != '#{_cid}' 
     AND A.datadate BETWEEN B.fromdate AND B.thrudate
-    AND A.datadate BETWEEN '#{begin_date}' AND '#{end_date}'
+    AND A.datadate BETWEEN '#{_begin_date}' AND '#{_end_date}'
 GET_TARGET_SQL
   end
 end

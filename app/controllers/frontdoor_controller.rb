@@ -12,13 +12,13 @@ class FrontdoorController < ApplicationController
   end
 
   def login
-    mail_id = params[:mail_address_entry];
+    _mail_id = params[:mail_address_entry];
 
     # find the user, if not create one.
-    _user = User.create_with_email(mail_id)
+    _user = User.create_with_email(_mail_id)
 
     if _user
-      create_session _user
+      create_session(_user)
     end
 
     redirect_to root_path, :notice => "Signed in"
@@ -38,14 +38,14 @@ class FrontdoorController < ApplicationController
     redirect_to root_path, :notice => 'Signed out'
   end
 
-  def create_session(user_arg)
-      session[:user_id] = user_arg.id
+  def create_session(_user_arg)
+      session[:user_id] = _user_arg.id
   end
 
-  def search_for_ticker
+  def search
 
     # Get the parameter from the parameter array, this is coming from the browser.
-    _search_entry = params[:search_entry]
+    _search_entry = params[:ticker]
 
     # Default to nil, which pushes the "invalid query" response.
     @target = nil
@@ -88,8 +88,35 @@ class FrontdoorController < ApplicationController
     
   end
 
-private
+  #
+  # Method that returns, as a json, a list of tickers that are matching the term.
+  #
+  def autocomplete_security_ticker
+    _term = params[:term]
+    if _term && !_term.empty?
 
+      if _term[0] == ':'
+        term = term[1.._term.length]
+        items = Filter.
+          select("distinct id as cid, id as sid, name as shortname, description as longname").
+          where("LOWER(CONCAT(name, description)) like ?", '%' + _term.downcase + '%').
+          limit(10).order(:shortname)
+      else
+        items = Security.
+          select("distinct cid, sid, ticker as shortname, name as longname").
+          where("LOWER(CONCAT(ticker, name)) like ?", '%' + _term.downcase + '%').
+          limit(10).order(:shortname)
+      end
+
+    else
+      items = {}
+    end
+
+    render :json => json_for_autocomplete(items, :shortname, [:sid, :cid, :longname])
+  end
+
+
+private
   def target
     @target
   end
@@ -97,5 +124,4 @@ private
   def comparables
     @comparables
   end
-
 end

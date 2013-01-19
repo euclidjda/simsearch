@@ -1,74 +1,94 @@
-$(function() {
 
-    // This is the code that draws the sparklines
-    $(document).ready(function() {
+/*
+    Event Handlers for button.click, document.ready, etc.
+*/
+$(document).ready(function() {
 
-	$('.panel-performance').each(function( index ) {
+    $('.panel-performance').each(function( index ) {
 
-	    var postData = new Object();
+        var postData = new Object();
 
-	    postData['cid'] = $(this).attr('cid');
-	    postData['sid'] = $(this).attr('sid');
+        postData['cid'] = $(this).attr('cid');
+        postData['sid'] = $(this).attr('sid');
 
-	    var start_date = $(this).attr('date');
-	    var end_date 
-		= String(parseInt(start_date.substring(0,4))+1)
-		+ start_date.substring(4);
+        var start_date = $(this).attr('date');
+        var end_date 
+        = String(parseInt(start_date.substring(0,4))+1)
+        + start_date.substring(4);
 
-	    postData['start_date'] = start_date;
-	    postData['end_date'] = end_date;
+        postData['start_date'] = start_date;
+        postData['end_date'] = end_date;
 
-	    $.getJSON('get_performance',postData,function(data) {
-		
-		var cid  = data.cid;
-		var sid  = data.sid;
-		var date = data.start_date;
+        $.getJSON('get_performance',postData,function(data) {
+            var cid  = data.cid;
+            var sid  = data.sid;
+            var date = data.start_date;
 
-		var stk_rtn =sprintf("%.2f%%",data.stk_rtn);
-		var mrk_rtn =sprintf("%.2f%%",data.mrk_rtn);
+            var stk_rtn =sprintf("%.2f%%",data.stk_rtn);
+            var mrk_rtn =sprintf("%.2f%%",data.mrk_rtn);
 
-		$("[perfid='"+cid+sid+date+"']").append( stk_rtn + ',' + mrk_rtn  );
-
-	    });
-
-	});
-
+            $("[perfid='"+cid+sid+date+"']").append( stk_rtn + ',' + mrk_rtn  );
+        });
     });
+});
 
+function logout_action_handler() {
+    NAU.log("Logout");
 
+    $.ajax({
+        url: '/logout',
+        type: 'GET',
+        success: function() {
+            NAU.log("Session destroyed. Navigating back to the homepage.");
+            NAU.navigate("/");
+        }
+    });
+}
+
+/*
+***
+*/
+$(function() {
+    
+    // Bind click event handler for login/logout
     $("#banner-logout-btn").click(function(){
         logout_action_handler();
     });
+
+    // Activate/Deactivate on click for nav-bar items
     $(".nav-tabs li ").click(function() {
         $(".active").removeClass("active");
         $(this).addClass("active");
     });
 
-   function split( val ) {
+    function split( val ) {
         return val.split( " " );
     }
+
     function extractLast( term ) {
         return split( term ).pop();
     }
 
     //
-    // In case we want to handle the content from the search field before we submit to the form.
+    // Search form submit handler.
+    // Alters the content from the search field before we submit to the form.
     //
     $( "#search-bar-form" ).submit(function() {
 
-       var submitContent = $('#search_entry').val();
+        var submitContent = $('#ticker').val();
 
-       // if there is no content, do not submit the form, save time.
-       if (submitContent.length == 0) {
-        return false;
-       }
+        // if there is no content, do not submit the form, save time.
+        if (submitContent.length == 0) {
+            return false;
+        }
 
-       // Trim spaces off the edges.
-       submitContent = $.trim(submitContent);
-       $('#search_entry').val(submitContent);
+        // Trim spaces off the edges.
+        submitContent = $.trim(submitContent);
+        $('#ticker').val(submitContent);
     });
 
-    $( "#search_entry" )
+    // Search field autocomplete handler/renderer
+    $( "#ticker" )
         .bind( "keydown", function( event ) {
             if ( event.keyCode === $.ui.keyCode.TAB &&
                     $( this ).data( "autocomplete" ).menu.active ) {
@@ -135,8 +155,6 @@ $(function() {
         })
         .data( "autocomplete" )._renderItem = function( ul, item ) {
 
-            // console.log("rendering items");
-
             var v = item.value + " - " + item.longname;
 
             return $( "<li></li>" )
@@ -145,16 +163,3 @@ $(function() {
                 .appendTo( ul );
         };
 });
-
-function logout_action_handler() {
-    NAU.log("Logout");
-
-    $.ajax({
-        url: '/logout',
-        type: 'GET',
-        success: function() {
-            NAU.log("Session destroyed. Navigating back to the homepage.");
-            NAU.navigate("/");
-        }
-    });
-}

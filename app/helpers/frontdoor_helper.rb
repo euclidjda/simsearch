@@ -16,18 +16,18 @@ module FrontdoorHelper
     [:oughts,:nineties,:eighties,:seventies]
   end
 
-  def self.startDate(epoch)
-    @@startDates[epoch]
+  def self.startDate(_epoch)
+    @@startDates[_epoch]
   end
 
-  def self.endDate(epoch)
-    @@endDates[epoch]
+  def self.endDate(_epoch)
+    @@endDates[_epoch]
   end
 
   # TODO: JDA: This is here temporarily until we display
   # by epoch in the view
-  def self.collapseEpochs(c) # c = comparables
-    c[:oughts]+c[:nineties]+c[:eighties]+c[:seventies]
+  def self.collapseEpochs(_c) # c = comparables
+    _c[:oughts] + _c[:nineties] + _c[:eighties] + _c[:seventies]
   end
 
 end

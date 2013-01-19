@@ -3,13 +3,15 @@ class Tableless < ActiveRecord::Base
     @columns ||= [];
   end
 
-  def self.column(name, sql_type = nil, default = nil, null = true)
-    columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default,
-      sql_type.to_s, null)
+  def self.column(_name, _sql_type = nil, _default = nil, _null = true)
+    columns << ActiveRecord::ConnectionAdapters::Column.new(_name.to_s, 
+                                                            _default, 
+                                                            _sql_type.to_s, 
+                                                            _null)
   end
 
   # Override the save method to prevent exceptions.
-  def save(validate = true)
-    validate ? valid? : true
+  def save(_validate = true)
+    _validate ? valid? : true
   end
 end

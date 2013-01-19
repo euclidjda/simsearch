@@ -4,9 +4,9 @@
   <div class="full-search-bar">
     <ul>
       <li>
-        <form action="<%= search_for_ticker_path %>" method="get" class="search-bar-form" id="search-bar-form">
+        <form action="<%= search_path %>" method="get" class="search-bar-form" id="search-bar-form">
           <div class="search-field-and-button">
-            <%= text_field_tag(:search_entry, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "search_entry") %>
+            <%= text_field_tag(:ticker, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "ticker") %>
             <!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
             <button class ="btn btn-large btn-inverse" id = "search-button">
               <i class="icon-search icon-white"></i>

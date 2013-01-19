@@ -7,9 +7,9 @@ Simsearch::Application.routes.draw do
   post "login" => "frontdoor#login"
   get "logout" => "frontdoor#destroy_session"
 
-  get "autocomplete_security_ticker" => "search#autocomplete_security_ticker" # to autocomplete
+  get "autocomplete_security_ticker" => "frontdoor#autocomplete_security_ticker" # to autocomplete
 
-  get "search_for_ticker" => "frontdoor#search_for_ticker"  # to evaluate the submitted search content
+  get "search" => "frontdoor#search"  # to evaluate the submitted search content
 
   get "get_prices" => "api#get_prices"
   get "get_performance" => "api#get_performance"

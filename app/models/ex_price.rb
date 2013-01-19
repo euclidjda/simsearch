@@ -3,7 +3,7 @@ class ExPrice < ActiveRecord::Base
     "cid:#{cid}, sid:#{sid}, datadate:#{datadate}, price:#{price}"
   end
 
-  def self.find_by_range(cid,sid,start_date,end_date)
+  def self.find_by_range(_cid, _sid, _start_date, _end_date)
 
     mrkid = '006066'
 
@@ -12,8 +12,8 @@ class ExPrice < ActiveRecord::Base
                 :joins      => "LEFT OUTER JOIN ex_prices AS p2
                                 ON p2.cid = '#{mrkid}' AND p2.sid = '01' 
                                 AND p2.datadate = ex_prices.datadate",
-                :conditions => "ex_prices.cid='#{cid}' AND ex_prices.sid='#{sid}' 
-                                AND ex_prices.datadate BETWEEN '#{start_date}' AND '#{end_date}'"
+                :conditions => "ex_prices.cid='#{_cid}' AND ex_prices.sid='#{_sid}' 
+                                AND ex_prices.datadate BETWEEN '#{_start_date}' AND '#{_end_date}'"
                 )
   end 
 

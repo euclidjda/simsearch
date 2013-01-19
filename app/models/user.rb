@@ -33,10 +33,10 @@ class User < ActiveRecord::Base
   	email
   end
 
-  def self.create_with_email(email)
+  def self.create_with_email(_email)
 
     # try to find the user first
-    user = find_by_email(email)
+    user = find_by_email(_email)
 
     # If we could not find the user, we create one with the email, but we have no details.
     # This user is basically requesting access to the service. We will get his details through
@@ -44,10 +44,10 @@ class User < ActiveRecord::Base
     # those providers' profile of the user.
     if ! user
 
-      logger.info "Creating user with email: " + email
+      logger.info "Creating user with email: " + _email
 
       user = create! do |user|
-        user.email = email
+        user.email = _email
         user.provider = "manual"  # Indicating this was a manual user information entry.
       end
     end
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
     user
   end
 
-  def has_role(role)
+  def has_role(_role)
     if self['role'] == Roles::Default
         return false
     end
@@ -67,17 +67,17 @@ class User < ActiveRecord::Base
     end
 
     # Return value based on parameter.
-    return self['role'] == role
+    return self['role'] == _role
   end
 
 private
 
-  def find_by_email(email)
+  def find_by_email(_email)
   
-    logger.info "Looking up user with email: " + email
+    logger.info "Looking up user with email: " + _email
 
   	begin
-  	  return self.find_by(:mail => email)
+  	  return self.find_by(:mail => _email)
     rescue
  	    return nil
     end
