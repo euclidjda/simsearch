@@ -26,7 +26,7 @@ module FrontdoorHelper
 
   # TODO: JDA: This is here temporarily until we display
   # by epoch in the view
-  def self.collapseEpochs(_c) # c = comparables
+  def self.collapseEpochs(_c) # c = comparables()
     _c[:oughts] + _c[:nineties] + _c[:eighties] + _c[:seventies]
   end
 

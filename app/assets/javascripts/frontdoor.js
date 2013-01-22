@@ -3,7 +3,6 @@
     Event Handlers for button.click, document.ready, etc.
 */
 $(document).ready(function() {
-
     $('.panel-performance').each(function( index ) {
 
         var postData = new Object();
@@ -68,6 +67,49 @@ $(function() {
     function extractLast( term ) {
         return split( term ).pop();
     }
+
+    function validateModalField(theField) {
+        var theValue = theField.val();
+        var errCount = 0;
+
+        if (theValue.length == 0) {
+            errCount++;
+            $(theField).css("border-color", "red");
+        }
+        else {
+            $(theField).css("border-color", "#CCC");
+        }
+
+        return errCount;
+    }
+
+    function validateModalDialog(dialogName) {
+        var email, username, password;
+        var errCount = 0;
+
+        errCount += validateModalField($('#' + dialogName + '_email_entry'));
+        errCount += validateModalField($('#' + dialogName +'_username_entry'));
+        errCount += validateModalField($('#' + dialogName +'_password_entry'));
+
+        // if there is no content, do not submit the form, save time.
+        if (errCount > 0) {
+            $('#' + dialogName +'-modal-message').text("  Please complete highlighted fields.");
+            $('#' + dialogName +'-modal-message').css("color", "red");
+            return false;
+        }        
+    }
+
+    //
+    // Register/login modal submit handler.
+    // Allows validating content before making a database call and refreshing screen.
+    //
+    $( "#register-modal-form" ).submit(function() {
+        return validateModalDialog("register");
+    });
+
+    $( "#login-modal-form" ).submit(function() {
+        return validateModalDialog("login");
+    });
 
     //
     // Search form submit handler.

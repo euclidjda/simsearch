@@ -5,6 +5,7 @@ Simsearch::Application.routes.draw do
   get "home" => "frontdoor#home"
 
   post "login" => "frontdoor#login"
+  post "register" => "frontdoor#register"
   get "logout" => "frontdoor#destroy_session"
 
   get "autocomplete_security_ticker" => "frontdoor#autocomplete_security_ticker" # to autocomplete

@@ -1,33 +1,61 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target, :comparables
+  helper_method :target, :comparables, :form_refresh?, :validation_error
 
   @target = nil
   @comparables = nil
+  @validation_error = nil
 
   def root
     # always redirect to home, redundant actually since routes.rb also does this.
     redirect_to :action => :home
   end
 
+  def register
+    _email = params[:register_email_entry]
+    _username = params[:register_username_entry]
+    _password = params[:register_password_entry]
+
+    if !_email.blank? && !_username.blank? && !_password.blank?
+
+      # create the user
+      user = User.create_with_form_data(
+          :email => _email, 
+          :username => _username, 
+          :password => _password
+          )
+
+      if user.errors.size > 0
+        @form_refresh = :register
+        @validation_error = user.errors.full_messages[0]
+        render :action => :home, :notice => "Register failed."
+      else
+        create_session(user)
+        redirect_to root_path, :notice => "Register succeeded. Signed in."
+      end
+
+    end 
+  end
+
   def login
-    _mail_id = params[:mail_address_entry];
+    _email = params[:email_entry];
+    _username = params[:username_entry];
 
     # find the user, if not create one.
-    _user = User.create_with_email(_mail_id)
+    _user = User.find_with_email_and_username(_email, _username)
 
     if _user
       create_session(_user)
+    else
+      render root_path, :notice => "User not found"
     end
 
     redirect_to root_path, :notice => "Signed in"
-
   end
 
   def home
-    # Home page rendering. There is not much as function here since most of the
-    # activity is UI and that is handled in the view.
+    @form_refresh = nil;
 
     if current_user
     end
@@ -124,4 +152,13 @@ private
   def comparables
     @comparables
   end
+
+  def form_refresh?
+    @form_refresh
+  end
+
+  def validation_error
+    @validation_error
+  end
+
 end

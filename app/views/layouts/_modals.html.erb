@@ -1,0 +1,61 @@
+
+<script>
+$(document).ready(function() {
+
+  var form_refresh = "<%= form_refresh?() %>";
+  var message = "<%= validation_error %>";
+
+  switch (form_refresh) {
+    case "register":
+      // show register UI again
+      $('#registerModal').modal('show');
+      break;
+
+    case "login":
+      // show login UI again.
+      $('#loginModal').modal('show');
+      break;
+  }
+
+  if (message) {
+    $("#register-modal-message").text(message);
+    $("#register-modal-message").css("color", "red");
+  }
+
+  $(".btn-cancel").click(function() {
+    var pos = window.location.href.indexOf("register");
+    if (pos > 0) {
+      window.location.href = window.location.href.substring(0, pos);
+    }
+  });
+
+});
+
+</script>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal hide fade registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+  <div class="modal-header">
+    <h3 id="registerModalLabel">Register</h3>
+  </div>
+
+  <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-modal-form") do %>
+
+  <div class="modal-body">
+      <p id="register-modal-message">  Join with your email address. </p>
+      <%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %><br>
+      <%= text_field_tag(:register_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
+      <%= text_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+      <p>  Already have an account ? <a href="">Sign in</a></p>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-large btn-cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
+  </div>
+
+  <% end %>
+
+</div> 
