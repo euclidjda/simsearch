@@ -58,71 +58,6 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
   add_index "ex_factdata", ["cid", "sid", "fromdate", "thrudate"], :name => "ex_factdata_ix01"
   add_index "ex_factdata", ["idxind", "idxdiv", "idxnew", "idxcapl", "idxcaph", "idxvall", "idxvalh"], :name => "ex_factdata_ix02"
 
-  create_table "ex_funddata", :primary_key => "cid", :force => true do |t|
-    t.date   "fromdate",              :null => false
-    t.date   "thrudate",              :null => false
-    t.date   "datadate",              :null => false
-    t.string "type",     :limit => 3, :null => false
-    t.float  "sale"
-    t.float  "cogs"
-    t.float  "gross"
-    t.float  "xsgna"
-    t.float  "xrd"
-    t.float  "dp"
-    t.float  "xint"
-    t.float  "xopit"
-    t.float  "opi"
-    t.float  "nooth"
-    t.float  "pi"
-    t.float  "txt"
-    t.float  "mii"
-    t.float  "dvp"
-    t.float  "xido"
-    t.float  "ni"
-    t.float  "epspx"
-    t.float  "epspi"
-    t.float  "epsfx"
-    t.float  "epsfi"
-    t.float  "cshpr"
-    t.float  "cshfd"
-    t.float  "che"
-    t.float  "rect"
-    t.float  "invt"
-    t.float  "aco"
-    t.float  "act"
-    t.float  "ppent"
-    t.float  "gdwl"
-    t.float  "intano"
-    t.float  "ivlt"
-    t.float  "alto"
-    t.float  "at"
-    t.float  "dlc"
-    t.float  "ap"
-    t.float  "txp"
-    t.float  "lco"
-    t.float  "lct"
-    t.float  "dltt"
-    t.float  "txditc"
-    t.float  "lo"
-    t.float  "lt"
-    t.float  "pstk"
-    t.float  "ceq"
-    t.float  "cstk"
-    t.float  "caps"
-    t.float  "re"
-    t.float  "tstk"
-    t.float  "seq"
-    t.float  "lse"
-    t.float  "csho"
-    t.float  "cshi"
-    t.float  "oancf"
-    t.float  "capx"
-    t.float  "dv"
-    t.float  "fcfl"
-  end
-
-  add_index "ex_funddata", ["cid", "fromdate", "thrudate", "type"], :name => "ex_funddata_01"
-
   create_table "ex_fundmts", :id => false, :force => true do |t|
     t.string "cid",      :limit => 6, :null => false
     t.date   "fromdate",              :null => false
@@ -241,12 +176,12 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
     t.string   "provider",      :null => false
     t.string   "email",         :null => false
     t.string   "username",      :null => false
+    t.string   "password_hash", :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "oauth_token"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.string   "password_hash", :null => false
   end
 
 end
