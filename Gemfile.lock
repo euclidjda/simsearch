@@ -109,7 +109,6 @@ DEPENDENCIES
   bcrypt-ruby
   bootstrap-sass
   coffee-rails (~> 3.2.1)
-  mail
   mysql2 (~> 0.3.11)
   nifty-generators
   rack (= 1.4.1)
