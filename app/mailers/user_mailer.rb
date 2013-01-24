@@ -5,7 +5,6 @@ class UserMailer < ActionMailer::Base
     @user = user
     @url  = "http://Fundamentals.Euclidean.com"
     mail( :to => @user.email, 
-          :from => "ferhane@gmail.com",
           :subject => "Welcome to Euclidean Fundamentals")
   end
 
