@@ -32,6 +32,7 @@ class FrontdoorController < ApplicationController
         render :action => :home, :notice => "Register failed."
       else
         create_session(user)
+        UserMailer.welcome_email(user).deliver
         redirect_to root_path, :notice => "Register succeeded. Signed in."
       end
 
@@ -47,6 +48,7 @@ class FrontdoorController < ApplicationController
 
     if user
       create_session(user)
+      UserMailer.welcome_email(user).deliver
     else
       render root_path, :notice => "User not found"
     end

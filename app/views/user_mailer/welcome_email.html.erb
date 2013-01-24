@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Welcome to Fundamentals, <%= @user.username %></h1>
+    <p>
+      You have successfully registered.
+      Your username is: <%= @user.username %><br/>
+      Your mail address is: <%= @user.email %><br/>
+    </p>
+    <p>
+      To login to the site, just follow this link: <%= @url %> and use your email address.
+    </p>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>

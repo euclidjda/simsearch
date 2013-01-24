@@ -63,36 +63,6 @@ class User < ActiveRecord::Base
   def display_name 
   	username
   end
-  
-  # create a user with given email and username
-  # We assert that we are positive when calling this method that we do NOT have 
-  # a user with the same username and mail address...
-  def self.create_with_email_and_username(_email, _username)
-
-    # try to find the user first
-    begin 
-      user = self.find_by_email_and_username(_email, _username)
-    rescue
-      user = nil
-    end
-
-    # If we could not find the user, we create one with the email, but we have no details.
-    # This user is basically requesting access to the service. We will get his details through
-    # a separate form later. When we do Google / LinkedIn, etc. auth, we will get name details from
-    # those providers' profile of the user.
-    if ! user
-
-      logger.info "Creating user with email: " + _email
-
-      user = create! do |user|
-        user.email = _email
-        user.provider = "self"  # Indicating that the authentication for this user is done by us.
-      end
-    end
-
-    # return the user 
-    user
-  end
 
   def has_role(_role)
     if self['role'] == Roles::Default

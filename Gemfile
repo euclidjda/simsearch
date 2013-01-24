@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
+#adding this to remove the rack warning for security. supposedly next rack update will fix it.
+gem 'rack', '1.4.1'
+gem 'mail'
 
 gem "mysql2", "~> 0.3.11"
 
