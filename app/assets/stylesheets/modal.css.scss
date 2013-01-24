@@ -24,11 +24,12 @@
 		margin-right: 20px;
 		margin-left: 5px;
 
-		input[type="text"] {
+		input[type="text"], input[type="email"], input[type="password"] {
 			width: 100%;
 			margin-bottom: 20px;
 			font-size: 18px;
 			height: 24px;
+			letter-spacing: 2px;
 		}
 	}
 

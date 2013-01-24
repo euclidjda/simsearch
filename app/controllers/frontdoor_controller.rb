@@ -39,14 +39,14 @@ class FrontdoorController < ApplicationController
   end
 
   def login
-    _email = params[:email_entry];
-    _username = params[:username_entry];
+    _email = params[:login_email_entry];
+    _password = params[:login_password_entry]
 
     # find the user, if not create one.
-    _user = User.find_with_email_and_username(_email, _username)
+    user = User.find_by_email(_email)
 
-    if _user
-      create_session(_user)
+    if user
+      create_session(user)
     else
       render root_path, :notice => "User not found"
     end

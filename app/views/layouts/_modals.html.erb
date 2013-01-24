@@ -22,7 +22,7 @@ $(document).ready(function() {
     $("#register-modal-message").css("color", "red");
   }
 
-  $(".btn-cancel").click(function() {
+  $('.modal').on('hidden', function () {
     var pos = window.location.href.indexOf("register");
     if (pos > 0) {
       window.location.href = window.location.href.substring(0, pos);
@@ -46,8 +46,8 @@ $(document).ready(function() {
   <div class="modal-body">
       <p id="register-modal-message">  Join with your email address. </p>
       <%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %><br>
-      <%= text_field_tag(:register_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
-      <%= text_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+      <%= email_field_tag(:register_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
+      <%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
       <p>  Already have an account ? <a href="">Sign in</a></p>
   </div>
 
@@ -55,7 +55,29 @@ $(document).ready(function() {
     <button class="btn btn-large btn-cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
     <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
   </div>
-
   <% end %>
+</div> 
 
+<!-- Login Modal -->
+<div id="loginModal" class="modal hide fade loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+  <div class="modal-header">
+    <h3 id="loginModalLabel">Sign In</h3>
+  </div>
+
+  <%= form_tag("/login", :method => "post", :class => "navbar-form", :id => "login-modal-form") do %>
+
+  <div class="modal-body">
+      <p id="login-modal-message">  Sign in with your email address. </p>
+      <%= email_field_tag(:login_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
+      <%= password_field_tag(:login_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+      <p>  Don't have an account yet ? <a href="">Register</a></p>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-large btn-cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <%= submit_tag("Sign in", :class => "btn btn-large btn-primary") %>
+  </div>
+  <% end %>
 </div> 
