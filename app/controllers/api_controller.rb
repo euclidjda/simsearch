@@ -9,9 +9,9 @@ class ApiController < ApplicationController
 
     if !_cid.blank? && !_sid.blank? && !_start_date.blank? && !_end_date.blank?
 
-      _prices = ExPrice::find_by_range(_cid,_sid,_start_date,_end_date)
+      prices = ExPrice::find_by_range(_cid,_sid,_start_date,_end_date)
 
-      render :json => _prices.to_json
+      render :json => prices.to_json
 
     else
 
@@ -30,29 +30,29 @@ class ApiController < ApplicationController
 
     if !_cid.blank? && !_sid.blank? && !_start_date.blank? && !_end_date.blank?
 
-      _prices = ExPrice::find_by_range(_cid,_sid,_start_date,_end_date)
+      prices = ExPrice::find_by_range(_cid,_sid,_start_date,_end_date)
 
-      _first = _prices.first
-      _last  = _prices.last
+      first = prices.first
+      last  = prices.last
 
-      _stk_price0 = _first.price / _first.ajex #adjust for splits
-      _stk_price1 = _last.price / _last.ajex # adjust for splits
-      _mrk_price0 = _first.mrk_price
-      _mrk_price1 = _last.mrk_price
+      stk_price0 = first.price / first.ajex #adjust for splits
+      stk_price1 = last.price / last.ajex # adjust for splits
+      mrk_price0 = first.mrk_price
+      mrk_price1 = last.mrk_price
 
-      _stk_rtn = 100 * (_stk_price1/_stk_price0 - 1)
-      _mrk_rtn = 100 * (_mrk_price1/_mrk_price0 - 1)
+      stk_rtn = 100 * (stk_price1/stk_price0 - 1)
+      mrk_rtn = 100 * (mrk_price1/mrk_price0 - 1)
 
-      _result = { 
+      result = {
         :cid        => _cid,
         :sid        => _sid,
         :start_date => _start_date,
         :end_date   => _end_date,
-        :stk_rtn    => _stk_rtn, 
-        :mrk_rtn    => _mrk_rtn 
+        :stk_rtn    => stk_rtn, 
+        :mrk_rtn    => mrk_rtn 
       }
 
-      render :json => _result.to_json
+      render :json => result.to_json
 
     else
 

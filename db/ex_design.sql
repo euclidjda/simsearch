@@ -1,6 +1,6 @@
--- ex_prices
+-- ex_securities
 
-CREATE TABLE securities (
+CREATE TABLE ex_securities (
 
      cid VARCHAR(6) NOT NULL, -- company id
      sid VARCHAR(3) NOT NULL, -- security id
@@ -21,9 +21,9 @@ CREATE TABLE securities (
      name	varchar(64),
      ticker	varchar(20), 
 
-     INDEX securities_ix01 (cid,sid),
-     INDEX securities_ix02 (ticker),
-     INDEX securities_ix03 (tic)
+     INDEX ex_securities_ix01 (cid,sid),
+     INDEX ex_securities_ix02 (ticker),
+     INDEX ex_securities_ix03 (tic)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -133,6 +133,7 @@ CREATE TABLE ex_factdata (
 CREATE TABLE ex_fundmts (
 
        cid VARCHAR(6) NOT NULL, -- company id (gvkey in compustat)
+       sid VARCHAR(3) NOT NULL, -- security id
 
        fromdate DATE NOT NULL,
        thrudate DATE NOT NULL,
@@ -207,7 +208,7 @@ CREATE TABLE ex_fundmts (
        fcf	 FLOAT, -- Free Cash Flow
 
        -- INDEXES
-       INDEX ex_fundmts_01 (cid,fromdate,thrudate,type)     
+       INDEX ex_fundmts_01 (cid,sid,fromdate,thrudate,type)     
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -83,27 +83,27 @@ class FrontdoorController < ApplicationController
 
     if !_search_entry.blank?
       # We currently on support one ticker and no filters.
-      _ticker_value = _search_entry.split(" ").first
+      ticker_value = _search_entry.split(" ").first
 
       # The ticker can only match one result and that will be the first.
-      _sec = Security::find_by_ticker(_ticker_value)
+      sec = ExSecurity::find_by_ticker(ticker_value)
 
-      if !_sec.nil?
+      if !sec.nil?
         
         # Get the target's factor fields
-        @target = Factors::get(_sec.cid,_sec.sid).fields()
+        @target = Factors::get(sec.cid,sec.sid).fields()
 
         # Get a result set for each epoch
         @comparables = Hash::new()
 
-        FrontdoorHelper.epochs.each { |_epoch|
+        FrontdoorHelper.epochs.each { |epoch|
 
-          _start_date = FrontdoorHelper::startDate(_epoch)
-          _end_date   = FrontdoorHelper::endDate(_epoch)
+          start_date = FrontdoorHelper::startDate(epoch)
+          end_date   = FrontdoorHelper::endDate(epoch)
 
-          @comparables[_epoch] = _sec.get_comparables(:start_date => _start_date ,
-                                                      :end_date   => _end_date   ,
-                                                      :limit      => 4           )
+          @comparables[epoch] = sec.get_comparables(:start_date => start_date ,
+                                                    :end_date   => end_date   ,
+                                                    :limit      => 4           )
         }
 
       end
@@ -132,7 +132,7 @@ class FrontdoorController < ApplicationController
           where("LOWER(CONCAT(name, description)) like ?", '%' + _term.downcase + '%').
           limit(10).order(:shortname)
       else
-        items = Security.
+        items = ExSecurity.
           select("distinct cid, sid, ticker as shortname, name as longname").
           where("LOWER(CONCAT(ticker, name)) like ?", '%' + _term.downcase + '%').
           limit(10).order(:shortname)

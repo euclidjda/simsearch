@@ -1,14 +1,14 @@
-class Security < ActiveRecord::Base
+class ExSecurity < ActiveRecord::Base
   def to_s
     "cid:#{cid}, sid:#{sid}, ticker:#{ticker}, name:#{name}"
   end
 
   def self.find_by_ticker(_t)
-    Security.where(:ticker => _t).first
+    ExSecurity.where(:ticker => _t).first
   end 
 
   def self.find_by_cidsid(_c, _s)
-    Security.where(:cid => _c, :sid => _s).first
+    ExSecurity.where(:cid => _c, :sid => _s).first
   end
 
   def get_comparables(args)
@@ -74,4 +74,4 @@ class Security < ActiveRecord::Base
 
   end # get_comparables
 
-end # class Security
+end # class ExSecurity

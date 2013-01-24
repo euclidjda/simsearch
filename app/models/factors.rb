@@ -159,7 +159,7 @@ class Factors < Tableless
   def self.get_target_sql(_cid,_sid)
 <<GET_TARGET_SQL
   SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
-  FROM ex_prices A, ex_factdata B, securities C 
+  FROM ex_prices A, ex_factdata B, ex_securities C 
   WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}' 
   AND B.cid = '#{_cid}' AND B.sid = '#{_sid}' 
   AND C.cid = '#{_cid}' AND C.sid = '#{_sid}' 
@@ -185,7 +185,7 @@ GET_TARGET_SQL
     AND idxcaph >= LEAST(0.5*#{_target_cap},10000) 
     AND idxcapl <= 5.0*#{_target_cap} 
     #{target_clause_sql} ) B, 
-    securities C 
+    ex_securities C 
     WHERE A.cid = B.cid 
     AND A.sid = B.sid 
     AND A.cid = C.cid 
