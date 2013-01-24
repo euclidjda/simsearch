@@ -39,12 +39,12 @@ class ExSecurity < ActiveRecord::Base
       }
 
       # debug info line here to make sure we are rendering the right number on screen.
-      puts "********** #{distances.length}   ***********"
+      # puts "********** #{distances.length}   ***********"
 
       # We are guaranteed to have more than one distance in the array here. Sort it.
       distances.sort! { |a,b| a[:dist] <=> b[:dist] }
 
-      result_array = Array::new()
+      comps_array = Array::new()
       cid_touched = Hash::new()
 
       distances.each { |item|
@@ -52,19 +52,50 @@ class ExSecurity < ActiveRecord::Base
         cid = item[:match].cid
         
         # only return limit number matches
-        break if (!_limit.nil? && (result_array.length >= _limit))
+        break if (!_limit.nil? && (comps_array.length >= _limit))
         next if cid_touched.has_key?(cid)
 
         fields = item[:match].fields()
         fields['distance'] = item[:dist]
 
-        result_array.push(fields)
+        comps_array.push(fields)
 
         cid_touched[cid] = 1
       }
 
+      # Now we need to calcuate the 1 year return and market return for
+      # each comparable
+
+      comps_array.each { |comp|
+        
+        prices = ExPrice::find_by_range(comp['cid'],
+                                        comp['sid'],
+                                        comp['pricedate'].to_s,
+                                        (comp['pricedate']+365).to_s)
+
+        first = prices.first
+        last  = prices.last
+
+        stk_price0 = first.price / first.ajex #adjust for splits
+        stk_price1 = last.price / last.ajex # adjust for splits
+        mrk_price0 = first.mrk_price
+        mrk_price1 = last.mrk_price
+
+        comp['stk_rtn'] = 100 * (stk_price1/stk_price0 - 1)
+
+        # TODO: JDA: Need to fix this so that market price never
+        # returns nil. We need to make market prices daily in ex_update
+        if !mrk_price0.nil? && !mrk_price1.nil?
+          comp['mrk_rtn'] = 100 * (mrk_price1/mrk_price0 - 1)
+        else
+          comp['mrk_rtn'] = 0
+        end
+
+      }
+
+
       # make result size no greater than limit
-      return result_array
+      return comps_array
       
     else
       # No factors were found for the target cid/sid pair. 

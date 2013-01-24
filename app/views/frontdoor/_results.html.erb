@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<div class="span2 result-stats" id ="result-summary">
-			result summary
+                 Median Relative Performance: <%= sprintf("%.2f",median_perf()) %>
 		</div>
 	</div>
 <% _first_row = true %>
@@ -44,15 +44,9 @@
 					<br>
 				</div>
 
-                                <% _cid  = _result_entry['cid'] %>
-                                <% _sid  = _result_entry['sid'] %>
-                                <% _date = _result_entry['pricedate'].to_s %>
-
-				<div class="panel-performance"
-                                     perfid="<%= _cid+_sid+_date %>" 
-                                     cid="<%= _cid %>" 
-                                     sid="<%= _sid %>"
-                                     date="<%= _date %>">
+				<div class="panel-performance">
+                                <%= sprintf("%.2f",_result_entry['stk_rtn']) %>,
+                                <%= sprintf("%.2f",_result_entry['mrk_rtn']) %>
 				</div>
 
 			</div> <!-- panel-header -->

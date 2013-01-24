@@ -5,7 +5,7 @@ class ExPrice < ActiveRecord::Base
 
   def self.find_by_range(_cid, _sid, _start_date, _end_date)
 
-    mrkid = '006066'
+    mrkid = 'SP0500'
 
     # TODO: Make sure start and end are valid dates
     ExPrice.all(:select     => "ex_prices.*, p2.price AS mrk_price",

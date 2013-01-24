@@ -1,11 +1,12 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target, :comparables, :form_refresh?, :validation_error
+  helper_method :target, :comparables, :median_perf, :form_refresh?, :validation_error
 
   @target = nil
   @comparables = nil
   @validation_error = nil
+  @median_perf = nil
 
   def root
     # always redirect to home, redundant actually since routes.rb also does this.
@@ -95,6 +96,7 @@ class FrontdoorController < ApplicationController
 
         # Get a result set for each epoch
         @comparables = Hash::new()
+        perfs = Array::new()
 
         FrontdoorHelper.epochs.each { |epoch|
 
@@ -103,8 +105,17 @@ class FrontdoorController < ApplicationController
 
           @comparables[epoch] = sec.get_comparables(:start_date => start_date ,
                                                     :end_date   => end_date   ,
-                                                    :limit      => 4           )
+                                                    :limit      => 4          )
+
+          @comparables[epoch].each { |comp|
+
+            perfs.push(comp['stk_rtn'] - comp['mrk_rtn'])
+
+          }
+
         }
+
+        @median_perf = median( perfs )
 
       end
 
@@ -155,12 +166,24 @@ private
     @comparables
   end
 
+  def median_perf
+    @median_perf
+  end
+
   def form_refresh?
     @form_refresh
   end
 
   def validation_error
     @validation_error
+  end
+
+  def median(arr)
+
+    sorted = arr.sort
+    len = sorted.length
+    median = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
+
   end
 
 end
