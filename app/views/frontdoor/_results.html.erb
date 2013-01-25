@@ -7,11 +7,18 @@
 
 	<div class="row-fluid"> 
 		<div class="span2 result-stats" id="target-info">
+
+
+
 			<div class="panel-header">
-				<span> target </span>
+				<span> <%= _target['name'] %> (<%= _target['ticker'] %>) </span>
 			</div>
 			<div>
-				Some more information.
+				
+                                <% _d = _target['pricedate'] %>
+                                <%= Date::MONTHNAMES[_d.month][0..2] + ' ' + _d.day.to_s + ', ' + _d.year.to_s %><br>
+				Market Cap (MM): <%= sprintf("%.2f",_target['mrkcap']) %><br>
+				P/E: <%= sprintf("%.2f",_target['pe']) %><br>
 			</div>
 		</div>
 		<div class="span2 result-stats" id ="result-summary">
@@ -55,9 +62,7 @@
 				<%= _result_entry['name'] %><br>
                                 <% _d = _result_entry['pricedate'] %>
                                 <%= Date::MONTHNAMES[_d.month][0..2] + ' ' + _d.day.to_s + ', ' + _d.year.to_s %><br>
-				Price: $<%= _result_entry['price'] %><br>
-				<% _market_cap = sprintf("%.2f", _result_entry['price'] * _result_entry['csho']) %>
-				Market Cap (mil):  $<%= _market_cap %><br>
+				P/E: <%= sprintf("%.2f",_result_entry['pe']) %><br>
 				Similarity Score: 
 				<%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
 			</span> <!-- panel-body -->

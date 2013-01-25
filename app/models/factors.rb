@@ -12,6 +12,36 @@ class Factors < Tableless
     @datadate = get_field('datadate')
     @factors  = Hash::new()
 
+    csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
+    price  = @fields['price']      ? Float(@fields['price'])      : nil
+    eps    = @fields['epspxq_ttm'] ? Float(@fields['epspxq_ttm']) : nil
+    seqq   = @fields['seqq_mrq']   ? Float(@fields['seqq_mrq'])   : nil
+    dvpsxm = @fields['dvpsxm_ttm'] ? Float(@fields['dvpsxm_ttm']) : nil
+
+    if (price && csho)
+      @fields['mrkcap'] = (csho * price) 
+    else
+      @fields['mrkcap'] = nil
+    end
+
+    if (price && price > 0 && eps)
+      @fields['pe'] = (price / eps)
+    else
+      @fields['pe'] = nil
+    end
+    
+    if (csho && price && seqq && seqq > 0)
+      @fields['pb'] = ((csho * price) / seqq)
+    else
+      @fields['pb'] = nil
+    end
+
+    if (dvpsxm && price && price > 0)
+      @fields['yield'] = (dvpsxm / price)
+    else
+      @fields['yield'] = 0
+    end
+
   end
 
   def self.get( _cid, _sid )
@@ -41,18 +71,21 @@ class Factors < Tableless
     if !_start_date.blank? && !_end_date.blank?
 
       # TODO: all of the following needs validation
-      target_ind = get_field('idxind')
-      target_div = get_field('idxdiv')
-      target_new = get_field('idxnew')
+      target_ind = @fields['idxind']
+      target_div = @fields['idxdiv']
+      target_new = @fields['idxnew']
 
-      price = Float(get_field('price'))
-      csho  = Float(get_field('csho'))
-      eps   = Float(get_field('epspxq_ttm'))
+      price = @fields['price']  ? Float(@fields['price'])      : nil
+      csho  = @fields['csho']   ? Float(@fields['csho'])       : nil
+      eps   = @fields['epspxq'] ? Float(@fields['epspxq_ttm']) : nil
 
-      target_cap = csho * price if (price && price > 0 && csho && csho > 0)
-      target_val = price / eps  if (price && price > 0 && eps )
+      target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
+      target_val = @fields['pe']     ? Float(@fields['pe']).round()     : nil
 
-      # puts "***** target_cap = #{target_cap} , target_val = #{target_val}"
+      # target_cap = (csho * price).round() if (price && price > 0 && csho && csho > 0)
+      # target_val = (price / eps).round()  if (price && price > 0 && eps )
+
+      puts "***** target_cap = #{target_cap} , target_val = #{target_val}"
 
       sqlstr = Factors::get_match_sql(@cid,
                                       target_ind,target_div,target_new,
@@ -71,8 +104,8 @@ class Factors < Tableless
 
   def distance(_obj) 
 
-    factor_keys = [:ey, :roc]
-    # factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
+    # factor_keys = [:ey, :roc]
+    factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
     
     dist = 0.0
 
@@ -172,19 +205,30 @@ GET_TARGET_SQL
                          _target_new, _target_cap, _target_val, 
                          _begin_date, _end_date)
 
-    target_clause_sql = _target_val.nil? ? "" : " AND #{_target_val} BETWEEN idxvall AND idxvalh "
+    idxval_sql = ""
+
+    if !_target_val.nil? 
+      if _target_val > 0
+        idxval_sql =
+          " AND idxvalh >= #{_target_val-7} " +
+          " AND idxvall <= #{_target_val+7} "
+      else
+        idxval_sql = " AND idxvalh < 0 "
+      end
+    end
+#     WHERE idxind = #{_target_ind}
 
 <<GET_TARGET_SQL
     SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
     FROM ex_prices A, 
     (SELECT * 
     FROM ex_factdata 
-    WHERE idxind = '#{_target_ind}'
+    WHERE idxind = #{_target_ind}
     AND idxdiv   = #{_target_div} 
     AND idxnew   = #{_target_new} 
     AND idxcaph >= LEAST(0.5*#{_target_cap},10000) 
     AND idxcapl <= 5.0*#{_target_cap} 
-    #{target_clause_sql} ) B, 
+    #{idxval_sql} ) B, 
     ex_securities C 
     WHERE A.cid = B.cid 
     AND A.sid = B.sid 
