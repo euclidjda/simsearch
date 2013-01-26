@@ -210,13 +210,12 @@ GET_TARGET_SQL
     if !_target_val.nil? 
       if _target_val > 0
         idxval_sql =
-          " AND idxvalh >= #{_target_val-7} " +
+          " AND idxvalh >= LEAST(#{_target_val-7},30) " +
           " AND idxvall <= #{_target_val+7} "
       else
         idxval_sql = " AND idxvalh < 0 "
       end
     end
-#     WHERE idxind = #{_target_ind}
 
 <<GET_TARGET_SQL
     SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 

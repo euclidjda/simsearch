@@ -145,7 +145,7 @@ class FrontdoorController < ApplicationController
       else
         items = ExSecurity.
           select("distinct cid, sid, ticker as shortname, name as longname").
-          where("LOWER(CONCAT(ticker, name)) like ?", '%' + _term.downcase + '%').
+          where("dldtei IS NULL AND LOWER(CONCAT(ticker, name)) like ?", '%' + _term.downcase + '%').
           limit(10).order(:shortname)
       end
 
