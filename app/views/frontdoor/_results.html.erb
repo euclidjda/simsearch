@@ -1,72 +1,38 @@
-
-<% _target = target() %>
-<% _results = FrontdoorHelper::collapseEpochs(comparables()) %>
-<% _result_count = _results.length %>
-
 <div class="span10">
-
 	<div class="row-fluid"> 
 		<div class="span2 result-stats" id="target-info">
-
-
-
 			<div class="panel-header">
-				<span> <%= _target['name'] %> (<%= _target['ticker'] %>) </span>
+				<span> <%= target_factors['name'] %> (<%= target_factors['ticker'] %>) </span>
 			</div>
 			<div>
-				
-                                <% _d = _target['pricedate'] %>
-                                <%= Date::MONTHNAMES[_d.month][0..2] + ' ' + _d.day.to_s + ', ' + _d.year.to_s %><br>
-				Market Cap (MM): <%= sprintf("%.2f",_target['mrkcap']) %><br>
-				P/E: <%= sprintf("%.2f",_target['pe']) %><br>
+                <% price_date = target_factors['pricedate'] %>
+                <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
+				Market Cap (MM): <%= sprintf("%.2f",target_factors['mrkcap']) %><br>
+				P/E: <%= sprintf("%.2f",target_factors['pe']) %><br>
 			</div>
 		</div>
 		<div class="span2 result-stats" id ="result-summary">
                  Median Relative Performance: <%= sprintf("%.2f",median_perf()) %>
 		</div>
 	</div>
-<% _first_row = true %>
 
-<% (0.._result_count-1).each do |i| %>
-
-	<% _result_entry = _results[i] %>
-
-	<% _new_row = (i%4 == 0) %>
-
-	<% if _new_row %> 
-		<% if !_first_row %>
-			</div> <!-- row-fluid -->
-		<% else %>
-			<% _first_row = false %>
-		<% end %>
-		<hr>
-		<div class="row-fluid dyna-roller"> 
+<% first_row = true %>
+<% FrontdoorHelper::epochs.each do |ep| %>
+	
+	<% if !first_row %>
+		</div> <!-- row fluid -->
+		<% first_row = false %>
 	<% end %>
+	
+	<% row = {
+		:target => target_sec, 
+		:epoch => ep, 
+		:start_date => FrontdoorHelper::startDate(ep), 
+		:end_date => FrontdoorHelper::endDate(ep) 
+	} %>
 
-		<div class="span2 comparable">
-			<div class="panel-header">
-				
-				<div class="panel-ticker">
-					<%= _result_entry['ticker'] %>
-					<br>
-				</div>
+	<%= render :partial => "row", :object => row %>
 
-				<div class="panel-performance">
-                                <%= sprintf("%.2f",_result_entry['stk_rtn']) %>,
-                                <%= sprintf("%.2f",_result_entry['mrk_rtn']) %>
-				</div>
-
-			</div> <!-- panel-header -->
-
-			<span class="panel-body">
-				<%= _result_entry['name'] %><br>
-                                <% _d = _result_entry['pricedate'] %>
-                                <%= Date::MONTHNAMES[_d.month][0..2] + ' ' + _d.day.to_s + ', ' + _d.year.to_s %><br>
-				P/E: <%= sprintf("%.2f",_result_entry['pe']) %><br>
-				Similarity Score: 
-				<%= (100*(1-(_result_entry['distance']))).to_s.split('.')[0] %>
-			</span> <!-- panel-body -->
-
-		</div> <!-- span4 -->
 <% end %>
-</div> <!--end of span8 -->
+
+</div> <!-- end of span10-->

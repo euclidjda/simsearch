@@ -1,0 +1,40 @@
+
+
+<% comparables[row[:epoch]] = row[:target].get_comparables(
+										:start_date => row[:start_date],
+                                        :end_date   => row[:end_date],
+                                        :limit      => 4
+                                        ) %>
+
+<hr>
+<div class="row-fluid dyna-roller">
+	<% comparables[row[:epoch]].each do |comp| %>
+	<div class="span2 comparable">
+		<div class="panel-header">
+			
+			<div class="panel-ticker">
+				<%= comp['ticker'] %>
+				<br>
+			</div> <!-- panel-ticker -->
+
+			<div class="panel-performance">
+                            <%= sprintf("%.2f", comp['stk_rtn']) %>,
+                            <%= sprintf("%.2f", comp['mrk_rtn']) %>
+			</div> <!-- panel performance -->
+		</div> <!-- panel-header -->		
+		
+			<span class="panel-body">
+				<%= comp['name'] %><br>
+                                <% price_date = comp['pricedate'] %>
+                                <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
+				P/E: <%= sprintf("%.2f",comp['pe']) %><br>
+				Similarity Score: 
+				<%= (100*(1-(comp['distance']))).to_s.split('.')[0] %>
+			</span> <!-- panel-body -->
+
+	</div> <!-- comparable -->
+	<% end %>
+
+</div> <!-- dyna-roller -->
+
+

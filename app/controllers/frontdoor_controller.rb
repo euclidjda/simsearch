@@ -1,9 +1,10 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target, :comparables, :median_perf, :form_refresh?, :validation_error
+  helper_method :target_sec, :target_factors, :comparables, :median_perf, :form_refresh?, :validation_error
 
-  @target = nil
+  @target_sec = nil
+  @target_factors = nil
   @comparables = nil
   @validation_error = nil
   @median_perf = nil
@@ -49,7 +50,6 @@ class FrontdoorController < ApplicationController
 
     if user
       create_session(user)
-      UserMailer.welcome_email(user).deliver
     else
       render root_path, :notice => "User not found"
     end
@@ -79,7 +79,8 @@ class FrontdoorController < ApplicationController
     _search_entry = params[:ticker]
 
     # Default to nil, which pushes the "invalid query" response.
-    @target = nil
+    @target_sec = nil
+    @target_factors = nil
     @comparables = nil
 
     if !_search_entry.blank?
@@ -87,12 +88,12 @@ class FrontdoorController < ApplicationController
       ticker_value = _search_entry.split(" ").first
 
       # The ticker can only match one result and that will be the first.
-      sec = ExSecurity::find_by_ticker(ticker_value)
+      @target_sec = ExSecurity::find_by_ticker(ticker_value)
 
-      if !sec.nil?
+      if !@target_sec.nil?
         
         # Get the target's factor fields
-        @target = Factors::get(sec.cid,sec.sid).fields()
+        @target_factors = Factors::get(@target_sec.cid,@target_sec.sid).fields()
 
         # Get a result set for each epoch
         @comparables = Hash::new()
@@ -103,10 +104,9 @@ class FrontdoorController < ApplicationController
           start_date = FrontdoorHelper::startDate(epoch)
           end_date   = FrontdoorHelper::endDate(epoch)
 
-          @comparables[epoch] = sec.get_comparables(:start_date => start_date ,
+          @comparables[epoch] = @target_sec.get_comparables(:start_date => start_date ,
                                                     :end_date   => end_date   ,
                                                     :limit      => 4          )
-
           @comparables[epoch].each { |comp|
 
             perfs.push(comp['stk_rtn'] - comp['mrk_rtn'])
@@ -158,8 +158,12 @@ class FrontdoorController < ApplicationController
 
 
 private
-  def target
-    @target
+  def target_sec
+    @target_sec
+  end
+
+  def target_factors
+    @target_factors
   end
 
   def comparables
@@ -170,6 +174,12 @@ private
     @median_perf
   end
 
+  def median(arr)
+    sorted = arr.sort
+    len = sorted.length
+    median = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
+  end
+
   def form_refresh?
     @form_refresh
   end
@@ -178,12 +188,5 @@ private
     @validation_error
   end
 
-  def median(arr)
-
-    sorted = arr.sort
-    len = sorted.length
-    median = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
-
-  end
 
 end
