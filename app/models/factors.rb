@@ -1,8 +1,10 @@
 class Factors < Tableless
 
-  attr_reader :cid, :sid, :datadate, :fields, :factors
+  attr_reader :cid, :sid, :datadate, :fields, :factors, :factor_keys
 
   def initialize( _fields )
+
+    @factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
@@ -62,6 +64,94 @@ class Factors < Tableless
 
   end
 
+  def self.each
+
+    dates = ActiveRecord::Base
+      .connection
+      .select_all("SELECT pricedate FROM ex_combined "+
+                  "GROUP BY pricedate "+
+                  "ORDER BY pricedate DESC;")
+
+    dates.each { |daterec|
+
+      pricedate = daterec['pricedate'].to_s
+
+      result = ActiveRecord::Base
+        .connection
+        .select_all("SELECT * FROM ex_combined "+
+                    "WHERE pricedate = '#{pricedate}';") 
+
+      result.each { |record|
+
+        yield Factors::new( record )
+
+      }
+
+    }
+
+  end
+
+  def self.distance(_obj0,_obj1)
+
+    vec0 = _obj0.class == Factors ? _obj0.factor_array : _obj0
+    vec1 = _obj1.class == Factors ? _obj1.factor_array : _obj1
+
+    dist = 0
+    
+    vec0.each_with_index do |val0,index|
+
+      val1 = vec1[index]
+      
+      next if val0.nil?
+
+      if !val1.nil?
+        dist += ( val0 - val1 ) * ( val0 - val1 )
+      else
+        dist = -1
+        break
+      end
+        
+    end
+
+    return dist
+
+  end
+  
+  def distance(_obj) 
+    
+    Factors::distance(self,_obj)
+    
+  end
+
+  def self.nearest_neighbor( _obj )
+
+    vec0 = _obj.class == Factors ? _obj.factor_array : _obj
+
+    min_dist = nil
+    nearest  = nil
+
+    Factors.each do | factors |
+
+      veci = factors.factor_array
+      dist = Factors::distance(vec0,veci)
+      
+      if (nearest.nil? || (dist <= min_dist))
+        min_dist = dist
+        nearest  = factors
+      end
+
+    end
+
+    return nearest
+
+  end
+
+  def nearest_neighbor
+
+    Factors::nearest_neighbor(self)
+
+  end
+
   def get_field( _name )
     @fields[_name]
   end
@@ -85,7 +175,7 @@ class Factors < Tableless
       # target_cap = (csho * price).round() if (price && price > 0 && csho && csho > 0)
       # target_val = (price / eps).round()  if (price && price > 0 && eps )
 
-      puts "***** target_cap = #{target_cap} , target_val = #{target_val}"
+      puts "***** start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
 
       sqlstr = Factors::get_match_sql(@cid,
                                       target_ind,target_div,target_new,
@@ -102,37 +192,15 @@ class Factors < Tableless
 
   end
 
-  def distance(_obj) 
-
-    # factor_keys = [:ey, :roc]
-    factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
-    
-    dist = 0.0
-
-    factor_keys.each { |key|
-
-      f1 = get_factor(key)
-      f2 = _obj.get_factor(key)
-      
-      next if f1.nil?
-
-      if !f2.nil?
-        dist += ( f1 - f2 ) * ( f1 - f2 )
-      else
-        dist = -1
-        break
-      end
-        
-    }
-
-    dist
-
-  end
-
   def to_s
     "cid => #{@cid} sid => #{@sid} datadate => #{@datadate}"
   end
 
+  def factor_array
+
+    @factor_keys.map { |key| get_factor(key) }
+
+  end
 
   def get_factor(_factor_key)
 
@@ -142,50 +210,60 @@ class Factors < Tableless
 
     case _factor_key
 
-      when :ey # Earnings Yield
+    when :ey # Earnings Yield
 
-        oiadp  = get_field('oiadpq_ttm')
-        mrkcap = get_field('price')*get_field('csho')
-        debt   = get_field('dlttq_mrq').to_f + get_field('dlcq_mrq').to_f
-        cash   = get_field('cheq_mrq').to_f
-        pstk   = get_field('pstkq_mrq').to_f
-        mii    = get_field('midnq_mrq').to_f + get_field('mibq_mrq').to_f
+      oiadp  = get_field('oiadpq_ttm')
+      mrkcap = get_field('price')*get_field('csho')
+      debt   = get_field('dlttq_mrq').to_f + get_field('dlcq_mrq').to_f
+      cash   = get_field('cheq_mrq').to_f
+      pstk   = get_field('pstkq_mrq').to_f
+      mii    = get_field('midnq_mrq').to_f + get_field('mibq_mrq').to_f
 
-        denom  = mrkcap+debt+cash+pstk+mii
+      denom  = mrkcap+debt+cash+pstk+mii
 
-        factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
+      factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
 
-      when :roc # Return On Capital
+    when :roc # Return On Capital
 
-        oiadp   = get_field('oiadpq_ttm')
-        capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
+      oiadp   = get_field('oiadpq_ttm')
+      capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
 
-        factor_value = oiadp / capital if (!oiadp.nil? && capital != 0)
+      factor_value = oiadp / capital if (!oiadp.nil? && capital != 0)
 
-      when :grwth # Revenue Growth
+    when :grwth # Revenue Growth
 
-        factor_value = get_field('saleq_4yISgx')
+      factor_value = get_field('saleq_4yISgx')
 
-      when :epscon # Consistency of EPS growth
+    when :epscon # Consistency of EPS growth
 
-        factor_value = get_field('epspiq_10yISr')
+      factor_value = get_field('epspiq_10yISr')
 
-      when :ae # Assets to Equity (Leverage)
+    when :ae # Assets to Equity (Leverage)
 
-        assets = get_field('atq_mrq').to_f
-        equity = get_field('seqq_mrq')
+      assets = get_field('atq_mrq').to_f
+      equity = get_field('seqq_mrq').to_f
 
-        factor_value = assets / equity if (!equity.nil? && equity != 0)
+      factor_value = equity / assets if (!equity.nil? && assets > 0)
 
-      when :momentum # Momentum
+    when :momentum # Momentum
 
-        factor_value = get_field('pch6m')
+      factor_value = get_field('pch6m')
 
-        else
-        
-        puts "Error: unknown factor #{_factor_key}!"
+    else
+      
+      puts "Error: unknown factor #{_factor_key}!"
+      return nil
 
     end
+
+    if !factor_value.nil?
+      factor_value = 1.0 if factor_value > 1.0
+      factor_value = -1.0 if factor_value < -1.0
+    end
+
+    @factors[_factor_key] = factor_value
+
+    return factor_value
 
   end
   
@@ -205,29 +283,12 @@ GET_TARGET_SQL
                          _target_new, _target_cap, _target_val, 
                          _begin_date, _end_date)
 
-    idxval_sql = ""
+    idxcaph_min = [10000,_target_cap*0.5].min.round()
+    idxcapl_max = (5.0*_target_cap).round()
 
-    if !_target_val.nil? 
-      if _target_val > 0
-        idxval_sql =
-          " AND idxvalh >= LEAST(#{_target_val-7},30) " +
-          " AND idxvall <= #{_target_val+7} "
-      else
-        idxval_sql = " AND idxvalh < 0 "
-      end
-    end
-
-<<GET_TARGET_SQL
+<<GET_MATCH_SQL
     SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
-    FROM ex_prices A, 
-    (SELECT * 
-    FROM ex_factdata 
-    WHERE idxind = #{_target_ind}
-    AND idxdiv   = #{_target_div} 
-    AND idxnew   = #{_target_new} 
-    AND idxcaph >= LEAST(0.5*#{_target_cap},10000) 
-    AND idxcapl <= 5.0*#{_target_cap} 
-    #{idxval_sql} ) B, 
+    FROM ex_prices A,  ex_factdata B,
     ex_securities C 
     WHERE A.cid = B.cid 
     AND A.sid = B.sid 
@@ -236,8 +297,36 @@ GET_TARGET_SQL
     AND A.price IS NOT NULL 
     AND A.csho IS NOT NULL 
     AND A.cid != '#{_cid}' 
+    AND B.idxind = #{_target_ind}
+    AND B.idxdiv = #{_target_div} 
+    AND B.idxnew = #{_target_new} 
+    AND B.idxcaph >= #{idxcaph_min}
+    AND B.idxcapl <= #{idxcapl_max}
     AND A.datadate BETWEEN B.fromdate AND B.thrudate
     AND A.datadate BETWEEN '#{_begin_date}' AND '#{_end_date}'
-GET_TARGET_SQL
+GET_MATCH_SQL
   end
+
+  def self.get_match_sql_NEW(_cid, _target_ind, _target_div,
+                         _target_new, _target_cap, _target_val, 
+                         _begin_date, _end_date)
+
+    idxcaph_min = [10000,_target_cap*0.5].min.round()
+    idxcapl_max = (5.0*_target_cap).round()
+
+<<GET_MATCH_SQL
+    SELECT A.*, B.*
+    FROM ex_combined A, ex_securities B
+    WHERE A.cid != '#{_cid}' 
+    AND A.cid = B.cid
+    AND A.sid = B.sid
+    AND A.idxind = #{_target_ind}
+    AND A.idxdiv = #{_target_div} 
+    AND A.idxnew = #{_target_new} 
+    AND A.idxcaph >= #{idxcaph_min}
+    AND A.idxcapl <= #{idxcapl_max}
+    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
+GET_MATCH_SQL
+  end
+
 end

@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
 
   create_table "ex_fundmts", :id => false, :force => true do |t|
     t.string "cid",      :limit => 6, :null => false
-    t.string "sid",      :limit => 3
+    t.string "sid",      :limit => 3, :null => false
     t.date   "fromdate",              :null => false
     t.date   "thrudate",              :null => false
     t.date   "datadate",              :null => false
@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
     t.float  "fcf"
   end
 
-  add_index "ex_fundmts", ["cid", "fromdate", "thrudate", "type"], :name => "ex_fundmts_01"
+  add_index "ex_fundmts", ["cid", "sid", "fromdate", "thrudate", "type"], :name => "ex_fundmts_01"
 
   create_table "ex_prices", :id => false, :force => true do |t|
     t.string "cid",      :limit => 6, :null => false
@@ -164,9 +164,9 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
     t.string  "ticker",  :limit => 20
   end
 
-  add_index "ex_securities", ["cid", "sid"], :name => "securities_ix01"
-  add_index "ex_securities", ["tic"], :name => "securities_ix03"
-  add_index "ex_securities", ["ticker"], :name => "securities_ix02"
+  add_index "ex_securities", ["cid", "sid"], :name => "ex_securities_ix01"
+  add_index "ex_securities", ["tic"], :name => "ex_securities_ix03"
+  add_index "ex_securities", ["ticker"], :name => "ex_securities_ix02"
 
   create_table "filters", :force => true do |t|
     t.string   "name"

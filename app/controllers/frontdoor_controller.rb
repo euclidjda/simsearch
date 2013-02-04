@@ -105,8 +105,8 @@ class FrontdoorController < ApplicationController
           end_date   = FrontdoorHelper::endDate(epoch)
 
           @comparables[epoch] = @target_sec.get_comparables(:start_date => start_date ,
-                                                    :end_date   => end_date   ,
-                                                    :limit      => 4          )
+                                                            :end_date   => end_date   ,
+                                                            :limit      => 4          )
           @comparables[epoch].each { |comp|
 
             perfs.push(comp['stk_rtn'] - comp['mrk_rtn'])
