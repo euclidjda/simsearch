@@ -6,6 +6,8 @@ gem 'rack', '1.4.1'
 
 gem "mysql2", "~> 0.3.11"
 
+gem "unicorn"
+
 gem 'rails3-jquery-autocomplete'
 
 # won't be necessary once the data model settles in, keeping it here for now.

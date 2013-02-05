@@ -1,7 +1,7 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_sec, :target_factors, :comparables, :median_perf, :form_refresh?, :validation_error
+  helper_method :target_sec, :target_factors, :median_perf, :form_refresh?, :validation_error
 
   @target_sec = nil
   @target_factors = nil
@@ -81,7 +81,7 @@ class FrontdoorController < ApplicationController
     # Default to nil, which pushes the "invalid query" response.
     @target_sec = nil
     @target_factors = nil
-    @comparables = nil
+    @comparables = Array::new()
 
     if !_search_entry.blank?
       # We currently on support one ticker and no filters.
@@ -95,33 +95,11 @@ class FrontdoorController < ApplicationController
         # Get the target's factor fields
         @target_factors = Factors::get(@target_sec.cid,@target_sec.sid).fields()
 
-        # Get a result set for each epoch
-        @comparables = Hash::new()
-        perfs = Array::new()
-
-        FrontdoorHelper.epochs.each { |epoch|
-
-          start_date = FrontdoorHelper::startDate(epoch)
-          end_date   = FrontdoorHelper::endDate(epoch)
-
-          @comparables[epoch] = @target_sec.get_comparables(:start_date => start_date ,
-                                                            :end_date   => end_date   ,
-                                                            :limit      => 4          )
-          @comparables[epoch].each { |comp|
-
-            perfs.push(comp['stk_rtn'] - comp['mrk_rtn'])
-
-          }
-
-        }
-
-        @median_perf = median( perfs )
-
       end
 
     end
 
-    render :action => :home
+    render :action => :home, :stream => true
 
     # Comment the above line and uncomment the line below to see JSON output 
     # with no rendering. Helps with debugging.
@@ -158,16 +136,13 @@ class FrontdoorController < ApplicationController
 
 
 private
+
   def target_sec
     @target_sec
   end
 
   def target_factors
     @target_factors
-  end
-
-  def comparables
-    @comparables
   end
 
   def median_perf

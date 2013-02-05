@@ -1,14 +1,13 @@
 
-
-<% comparables[row[:epoch]] = row[:target].get_comparables(
-										:start_date => row[:start_date],
+<% comps = row[:target].get_comparables(
+                                        :start_date => row[:start_date],
                                         :end_date   => row[:end_date],
                                         :limit      => 4
                                         ) %>
 
 <hr>
 <div class="row-fluid dyna-roller">
-	<% comparables[row[:epoch]].each do |comp| %>
+	<% comps.each do |comp| %>
 	<div class="span2 comparable">
 		<div class="panel-header">
 			

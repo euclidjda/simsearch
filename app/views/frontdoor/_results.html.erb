@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<div class="span2 result-stats" id ="result-summary">
-                 Median Relative Performance: <%= sprintf("%.2f",median_perf()) %>
+                  Median Relative Performance: <div id="median-perf"></div>
 		</div>
 	</div>
 
@@ -26,7 +26,6 @@
 	
 	<% row = {
 		:target => target_sec, 
-		:epoch => ep, 
 		:start_date => FrontdoorHelper::startDate(ep), 
 		:end_date => FrontdoorHelper::endDate(ep) 
 	} %>
