@@ -5,7 +5,6 @@ class FrontdoorController < ApplicationController
 
   @target_sec = nil
   @target_factors = nil
-  @comparables = nil
   @validation_error = nil
   @median_perf = nil
 
@@ -81,7 +80,6 @@ class FrontdoorController < ApplicationController
     # Default to nil, which pushes the "invalid query" response.
     @target_sec = nil
     @target_factors = nil
-    @comparables = Array::new()
 
     if !_search_entry.blank?
       # We currently on support one ticker and no filters.
@@ -99,7 +97,9 @@ class FrontdoorController < ApplicationController
 
     end
 
-    render :action => :home, :stream => true
+    render :action => :home
+    # streaming ...
+    # render :action => :home, :stream => true
 
     # Comment the above line and uncomment the line below to see JSON output 
     # with no rendering. Helps with debugging.

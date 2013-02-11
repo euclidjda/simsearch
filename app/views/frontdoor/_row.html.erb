@@ -15,8 +15,9 @@
 				<%= comp['ticker'] %>
 				<br>
 			</div> <!-- panel-ticker -->
-
-			<div class="panel-performance">
+			
+			<% relperf = comp['stk_rtn'] - comp['mrk_rtn'] %>
+			<div class="panel-performance" relperf="<%= relperf %>">
                             <%= sprintf("%.2f", comp['stk_rtn']) %>,
                             <%= sprintf("%.2f", comp['mrk_rtn']) %>
 			</div> <!-- panel performance -->
@@ -26,8 +27,8 @@
 				<%= comp['name'] %><br>
                                 <% price_date = comp['pricedate'] %>
                                 <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
-				P/E: <%= sprintf("%.2f",comp['pe']) %><br>
-				Similarity Score: 
+				<br>
+				Similarity Score:
 				<%= (100*(1-(comp['distance']))).to_s.split('.')[0] %>
 			</span> <!-- panel-body -->
 

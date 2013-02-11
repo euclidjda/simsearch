@@ -12,12 +12,13 @@
 </head>
 
 <body class="nr">
-	<%= render "layouts/header" %>
+
+        <%= render "layouts/header" %>
 	<% if current_page?(home_path) %>
-		<%= yield %>
+                  <%= yield %>
 	<% else %>
 		<div class="content">
-			<%= yield %>
+		  <%= yield %>
 		</div>
 	<% end %>
 	<%= render "layouts/footer" %>   

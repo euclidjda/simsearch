@@ -32,13 +32,13 @@ namespace :cluster do
 
       center = Factors.nearest_neighbor( cvector )
 
-      # create center record with center_id
+      # 1. create center record with center_id
 
       Factors.each do | point |
 
         dist = center.distance( point )
 
-        # insert dist row for this center_id, point pair
+        # 2. insert dist row for this center_id, point pair
 
       end
 

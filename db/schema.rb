@@ -11,7 +11,73 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121202082420) do
+ActiveRecord::Schema.define(:version => 20130211175005) do
+
+  create_table "ex_centers", :id => false, :force => true do |t|
+    t.integer "ex_centers_id",              :null => false
+    t.string  "cid",           :limit => 6, :null => false
+    t.string  "sid",           :limit => 3, :null => false
+    t.date    "pricedate",                  :null => false
+  end
+
+  add_index "ex_centers", ["cid", "sid", "pricedate"], :name => "ex_centers_ix02"
+  add_index "ex_centers", ["ex_centers_id"], :name => "ex_centers_ix01"
+
+  create_table "ex_combined", :id => false, :force => true do |t|
+    t.string  "cid",           :limit => 6, :null => false
+    t.string  "sid",           :limit => 3, :null => false
+    t.integer "idxind",                     :null => false
+    t.integer "idxnew",                     :null => false
+    t.integer "idxcapl",                    :null => false
+    t.integer "idxcaph",                    :null => false
+    t.date    "pricedate",                  :null => false
+    t.date    "fpedate",                    :null => false
+    t.date    "fromdate",                   :null => false
+    t.date    "thrudate",                   :null => false
+    t.float   "csho"
+    t.float   "ajex"
+    t.float   "price"
+    t.float   "volume"
+    t.float   "pch1m"
+    t.float   "pch3m"
+    t.float   "pch6m"
+    t.float   "pch9m"
+    t.float   "pch12m"
+    t.float   "dvpsxm_ttm"
+    t.float   "epspiq_ttm"
+    t.float   "epspxq_ttm"
+    t.float   "epspiq_10yISr"
+    t.float   "niq_ttm"
+    t.float   "oiadpq_ttm"
+    t.float   "cogsq_ttm"
+    t.float   "saleq_ttm"
+    t.float   "saleq_4yISgx"
+    t.float   "seqq_mrq"
+    t.float   "cheq_mrq"
+    t.float   "atq_mrq"
+    t.float   "dlttq_mrq"
+    t.float   "dlcq_mrq"
+    t.float   "pstkq_mrq"
+    t.float   "mibnq_mrq"
+    t.float   "mibq_mrq"
+    t.float   "fcfq_mrq"
+    t.float   "fcfq_4yISm"
+  end
+
+  add_index "ex_combined", ["cid", "sid", "fromdate", "thrudate"], :name => "ex_combined_ix01"
+  add_index "ex_combined", ["idxind", "idxnew", "idxcapl", "idxcaph", "pricedate"], :name => "ex_combined_ix02"
+
+  create_table "ex_dists", :id => false, :force => true do |t|
+    t.integer "ex_centers_id",              :null => false
+    t.string  "cid",           :limit => 6, :null => false
+    t.string  "sid",           :limit => 3, :null => false
+    t.date    "pricedate",                  :null => false
+    t.float   "dist"
+  end
+
+  add_index "ex_dists", ["cid", "sid", "pricedate"], :name => "ex_dist_ix02"
+  add_index "ex_dists", ["dist"], :name => "ex_dist_ix03"
+  add_index "ex_dists", ["ex_centers_id"], :name => "ex_dist_ix01"
 
   create_table "ex_econ", :id => false, :force => true do |t|
     t.date  "datadate", :null => false
@@ -30,12 +96,9 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
     t.date    "thrudate",                   :null => false
     t.date    "datadate",                   :null => false
     t.integer "idxind",                     :null => false
-    t.integer "idxdiv",                     :null => false
     t.integer "idxnew",                     :null => false
     t.integer "idxcapl",                    :null => false
     t.integer "idxcaph",                    :null => false
-    t.integer "idxvall",                    :null => false
-    t.integer "idxvalh",                    :null => false
     t.float   "dvpsxm_ttm"
     t.float   "epspiq_ttm"
     t.float   "epspxq_ttm"
@@ -58,7 +121,7 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
   end
 
   add_index "ex_factdata", ["cid", "sid", "fromdate", "thrudate"], :name => "ex_factdata_ix01"
-  add_index "ex_factdata", ["idxind", "idxdiv", "idxnew", "idxcapl", "idxcaph", "idxvall", "idxvalh"], :name => "ex_factdata_ix02"
+  add_index "ex_factdata", ["idxind", "idxnew", "idxcapl", "idxcaph"], :name => "ex_factdata_ix02"
 
   create_table "ex_fundmts", :id => false, :force => true do |t|
     t.string "cid",      :limit => 6, :null => false
@@ -171,6 +234,15 @@ ActiveRecord::Schema.define(:version => 20121202082420) do
   create_table "filters", :force => true do |t|
     t.string   "name"
     t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "searches", :force => true do |t|
+    t.string   "cid"
+    t.string   "sid"
+    t.string   "pricedate"
+    t.string   "search_type"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

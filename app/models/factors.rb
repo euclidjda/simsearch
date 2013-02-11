@@ -147,9 +147,7 @@ class Factors < Tableless
   end
 
   def nearest_neighbor
-
     Factors::nearest_neighbor(self)
-
   end
 
   def get_field( _name )
@@ -162,7 +160,6 @@ class Factors < Tableless
 
       # TODO: all of the following needs validation
       target_ind = @fields['idxind']
-      target_div = @fields['idxdiv']
       target_new = @fields['idxnew']
 
       price = @fields['price']  ? Float(@fields['price'])      : nil
@@ -178,11 +175,13 @@ class Factors < Tableless
       puts "***** start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
 
       sqlstr = Factors::get_match_sql(@cid,
-                                      target_ind,target_div,target_new,
+                                      target_ind,target_new,
                                       target_cap,target_val,
                                       _start_date,_end_date)
       
       results = ActiveRecord::Base.connection.select_all(sqlstr) 
+
+      puts "***** sql query done, running scan ... "
 
       results.each { |record|
         yield Factors::new( record )
@@ -193,7 +192,9 @@ class Factors < Tableless
   end
 
   def to_s
+
     "cid => #{@cid} sid => #{@sid} datadate => #{@datadate}"
+
   end
 
   def factor_array
@@ -279,9 +280,9 @@ class Factors < Tableless
 GET_TARGET_SQL
   end
 
-  def self.get_match_sql(_cid, _target_ind, _target_div,
-                         _target_new, _target_cap, _target_val, 
-                         _begin_date, _end_date)
+  def self.get_match_sql_OLD(_cid, _target_ind,
+                             _target_new, _target_cap, _target_val, 
+                             _begin_date, _end_date)
 
     idxcaph_min = [10000,_target_cap*0.5].min.round()
     idxcapl_max = (5.0*_target_cap).round()
@@ -298,7 +299,6 @@ GET_TARGET_SQL
     AND A.csho IS NOT NULL 
     AND A.cid != '#{_cid}' 
     AND B.idxind = #{_target_ind}
-    AND B.idxdiv = #{_target_div} 
     AND B.idxnew = #{_target_new} 
     AND B.idxcaph >= #{idxcaph_min}
     AND B.idxcapl <= #{idxcapl_max}
@@ -307,7 +307,7 @@ GET_TARGET_SQL
 GET_MATCH_SQL
   end
 
-  def self.get_match_sql_NEW(_cid, _target_ind, _target_div,
+  def self.get_match_sql(_cid, _target_ind,
                          _target_new, _target_cap, _target_val, 
                          _begin_date, _end_date)
 
@@ -321,8 +321,7 @@ GET_MATCH_SQL
     AND A.cid = B.cid
     AND A.sid = B.sid
     AND A.idxind = #{_target_ind}
-    AND A.idxdiv = #{_target_div} 
-    AND A.idxnew = #{_target_new} 
+    AND A.idxnew = #{_target_new}
     AND A.idxcaph >= #{idxcaph_min}
     AND A.idxcapl <= #{idxcapl_max}
     AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'

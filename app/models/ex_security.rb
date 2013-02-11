@@ -4,7 +4,7 @@ class ExSecurity < ActiveRecord::Base
   end
 
   def self.find_by_ticker(_t)
-    ExSecurity.where(:ticker => _t).first
+    ExSecurity.where(" ticker = '#{_t}' AND dldtei IS NULL").first
   end 
 
   def self.find_by_cidsid(_c, _s)
