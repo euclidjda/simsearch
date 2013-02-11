@@ -172,7 +172,7 @@ class Factors < Tableless
       # target_cap = (csho * price).round() if (price && price > 0 && csho && csho > 0)
       # target_val = (price / eps).round()  if (price && price > 0 && eps )
 
-      puts "***** start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
+      logger.debug "***** start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
 
       sqlstr = Factors::get_match_sql(@cid,
                                       target_ind,target_new,
@@ -252,7 +252,7 @@ class Factors < Tableless
 
     else
       
-      puts "Error: unknown factor #{_factor_key}!"
+      logger.debug "Error: unknown factor #{_factor_key}!"
       return nil
 
     end
