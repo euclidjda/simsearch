@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cid: MyString
+  sid: MyString
+  pricedate: MyString
+  search_type: MyString
+
+two:
+  cid: MyString
+  sid: MyString
+  pricedate: MyString
+  search_type: MyString
