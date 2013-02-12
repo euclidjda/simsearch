@@ -36,9 +36,7 @@ class Search < ActiveRecord::Base
                           _thrudate,
                           search.id,
                           _limit,
-                          method(:search_callback)
-
-      search.execute(_target,_limit)
+                          method(:search_callback))
 
     end
 
@@ -46,12 +44,14 @@ class Search < ActiveRecord::Base
 
   end
 
-  def search_callback(_result_hash)
+  def self.search_callback(_result_hash)
 
-    logger.debug "***** #{cid} #{sid} #{pricedate} #{fromdate} #{thrudate} "
+    # logger.debug "***** #{cid} #{sid} #{pricedate} #{fromdate} #{thrudate} "
 
     _target = _result_hash[:target]
     _rows   = _result_hash[:result_rows]
+    _search_id = _result_hash[:search_id]
+    _limit = _result_hash[:limit]
 
     candidates = Array::new()
 
@@ -65,7 +65,7 @@ class Search < ActiveRecord::Base
 
     }
 
-    comps = consolidate_results( candidates, _limit )
+    comps = Search::consolidate_results( candidates, _limit )
     
     comps.each { |c|
 
@@ -74,19 +74,19 @@ class Search < ActiveRecord::Base
       cdate = c['pricedate']
       cdist = c['distance']
 
-      logger.debug "****** #{self.id} #{ccid} #{csid} #{cdate} #{cdist}"
+      logger.debug "****** #{_search_id} #{ccid} #{csid} #{cdate} #{cdist}"
 
-      SearchDetail::create( :search_id => self.id ,
-                            :cid       => ccid     ,
-                            :sid       => csid     ,
-                            :pricedate => cdate    ,
-                            :dist      => cdist    )
+      SearchDetail::create( :search_id => _search_id ,
+                            :cid       => ccid       ,
+                            :sid       => csid       ,
+                            :pricedate => cdate      ,
+                            :dist      => cdist      )
       
     }
 
   end
 
-  def consolidate_results( _candidates, _limit )
+  def self.consolidate_results( _candidates, _limit )
 
     # debug info line here to make sure we are rendering the right number on screen.
     # puts "********** #{distances.length}   ***********"

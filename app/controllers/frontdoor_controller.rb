@@ -184,6 +184,23 @@ private
   def validation_error
     @validation_error
   end
-
-
 end
+
+module QueryEM
+  def self.start
+
+    # faciliates debugging
+    Thread.abort_on_exception = true
+    # just spawn a thread and start it up
+    Thread.new { 
+      EM.run 
+    }
+  end
+ 
+  def self.die_gracefully_on_signal
+    Signal.trap("INT")  { EM.stop }
+    Signal.trap("TERM") { EM.stop }
+  end
+end
+ 
+QueryEM.start
