@@ -33,7 +33,8 @@ Simsearch::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.logger = false
+  config.assets.debug = false
 
   # Show logs on screen when running in unicorn too..
   config.logger = Logger.new(STDOUT)
