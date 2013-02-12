@@ -13,6 +13,7 @@ class Factors < Tableless
     @sid      = get_field('sid')
     @datadate = get_field('datadate')
     @factors  = Hash::new()
+    @defer1   = nil;
 
     csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
     price  = @fields['price']      ? Float(@fields['price'])      : nil
@@ -187,6 +188,60 @@ class Factors < Tableless
     end
 
   end
+
+  # include this so we can use the event machine.
+  require 'mysql2/em'
+
+  def get_matches( _start_date, _end_date, _search_id, _limit, _the_callback)
+
+      # TODO: all of the following needs validation
+      target_ind = @fields['idxind']
+      target_new = @fields['idxnew']
+
+      price = @fields['price']  ? Float(@fields['price'])      : nil
+      csho  = @fields['csho']   ? Float(@fields['csho'])       : nil
+      eps   = @fields['epspxq'] ? Float(@fields['epspxq_ttm']) : nil
+
+      target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
+      target_val = @fields['pe']     ? Float(@fields['pe']).round()     : nil
+
+      # target_cap = (csho * price).round() if (price && price > 0 && csho && csho > 0)
+      # target_val = (price / eps).round()  if (price && price > 0 && eps )
+
+      logger.debug "***** SQL QUERY: start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
+
+      sqlstr = Factors::get_match_sql(@cid,
+                                      target_ind,target_new,
+                                      target_cap,target_val,
+                                      _start_date,_end_date)
+
+      # TODO: FE: This is ugly. Need to specify this config outside of code.
+      client1 = Mysql2::EM::Client.new(:host => 'localhost', :username => 'root', :database => 'simsearchdev') 
+      
+      logger.debug sqlstr
+
+      defer1 = client1.query sqlstr
+
+      defer1.callback do |result|
+        logger.debug "**** Calling callback for search_id: #{_search_id}"
+
+        match_results = Hash::new
+        match_results[:search_id] = _search_id
+        match_results[:limit] = _limit
+        match_results[:result_rows] = result
+        match_results[:target] = self
+
+        _the_callback.call match_results
+      end
+
+      defer1.errback do |err|
+        logger.error "Problem inserting into database: #{err.inspect} for search_id: #{_search_id}"
+      end
+
+      logger.debug " ****  Sent the query for search_id: #{_search_id}"
+
+      # results = ActiveRecord::Base.connection.select_all(sqlstr) 
+  end 
 
   def to_s
 
