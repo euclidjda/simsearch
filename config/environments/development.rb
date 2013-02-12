@@ -41,4 +41,7 @@ Simsearch::Application.configure do
   config.logger.level = Logger.const_get(
     ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
   )
+
+
+  
 end
