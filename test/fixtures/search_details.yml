@@ -1,17 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
+  search_id: 1
   cid: MyString
   sid: MyString
   pricedate: 2013-02-11
-  fromdate: 2013-02-11
-  thrudate: 2013-02-11
-  search_type: MyString
+  dist: 1.5
 
 two:
+  search_id: 1
   cid: MyString
   sid: MyString
   pricedate: 2013-02-11
-  fromdate: 2013-02-11
-  thrudate: 2013-02-11
-  search_type: MyString
+  dist: 1.5

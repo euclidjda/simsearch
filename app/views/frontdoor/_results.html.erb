@@ -2,13 +2,13 @@
 	<div class="row-fluid"> 
 		<div class="span2 result-stats" id="target-info">
 			<div class="panel-header">
-				<span> <%= target_factors['name'] %> (<%= target_factors['ticker'] %>) </span>
+				<span> <%= target_fields['name'] %> (<%= target_fields['ticker'] %>) </span>
 			</div>
 			<div>
-                <% price_date = target_factors['pricedate'] %>
+                <% price_date = target_fields['pricedate'] %>
                 <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
-				Market Cap (MM): <%= sprintf("%.2f",target_factors['mrkcap']) %><br>
-				P/E: <%= sprintf("%.2f",target_factors['pe']) %><br>
+				Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
+				P/E: <%= sprintf("%.2f",target_fields['pe']) %><br>
 			</div>
 		</div>
 		<div class="span2 result-stats" id ="result-summary">
@@ -23,12 +23,8 @@
 		</div> <!-- row fluid -->
 		<% first_row = false %>
 	<% end %>
-	
-	<% row = {
-		:target => target_sec, 
-		:start_date => FrontdoorHelper::startDate(ep), 
-		:end_date => FrontdoorHelper::endDate(ep) 
-	} %>
+
+	<% row = { :search_id => search_ids[ep] } %>
 
 	<%= render :partial => "row", :object => row %>
 
