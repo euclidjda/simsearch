@@ -1,5 +1,5 @@
 class Search < ActiveRecord::Base
-  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :search_type
+  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :search_type, :completed
 
   def self.exec(_args)
 
@@ -29,7 +29,8 @@ class Search < ActiveRecord::Base
                               :pricedate   => pricedate ,
                               :fromdate    => _fromdate ,
                               :thrudate    => _thrudate ,
-                              :search_type => _type     )
+                              :search_type => _type     ,
+                              :completed   => 0         )
 
       
       _target.get_matches(_fromdate,
@@ -48,16 +49,16 @@ class Search < ActiveRecord::Base
 
     # logger.debug "***** #{cid} #{sid} #{pricedate} #{fromdate} #{thrudate} "
 
-    _target = _result_hash[:target]
-    _rows   = _result_hash[:result_rows]
+    _target    = _result_hash[:target]
+    _rows      = _result_hash[:result_rows]
     _search_id = _result_hash[:search_id]
-    _limit = _result_hash[:limit]
+    _limit     = _result_hash[:limit]
 
     candidates = Array::new()
 
     _rows.each { |row|
       
-      match = Factors::new(row)
+      match = SecuritySnapshot::new(row)
 
       dist = _target.distance( match )
       next if (dist < 0)
@@ -73,6 +74,8 @@ class Search < ActiveRecord::Base
       csid  = c['sid']
       cdate = c['pricedate']
       cdist = c['distance']
+      cstk  = c['stk_rtn']
+      cmrk  = c['mrk_rtn']
 
       logger.debug "****** #{_search_id} #{ccid} #{csid} #{cdate} #{cdist}"
 
@@ -80,9 +83,22 @@ class Search < ActiveRecord::Base
                             :cid       => ccid       ,
                             :sid       => csid       ,
                             :pricedate => cdate      ,
-                            :dist      => cdist      )
+                            :dist      => cdist      ,
+                            :stk_rtn   => cstk       ,
+                            :mrk_rtn   => cmrk       )
+
       
     }
+
+    search = Search.where( :id => _search_id ).first
+
+    if !search.nil?
+      search.completed = 1
+      search.save()
+    else
+      logger.debug "******* Couldn't find searches id=#{_search_id}"
+    end
+
 
   end
 
@@ -110,6 +126,7 @@ class Search < ActiveRecord::Base
       comps_array.push(fields)
       
       cid_touched[cid] = 1
+
     }
     
     # Now we need to calcuate the 1 year return and market return for

@@ -1,4 +1,91 @@
 
+
+$(document).ready(function() {
+
+    var pos_chart_icon = "assets/green-outperformance-small.png";
+    var neg_chart_icon = "assets/red-outperformance-small.png";
+
+    $('.epoch').each(function( index ) {
+	
+	var postData = new Object();
+	
+	var search_id = $(this).attr('search_id');
+
+	start_spinner(search_id);
+
+	postData['search_id'] = search_id;
+	
+	//alert('search_id = '+ search_id);
+
+	$.getJSON('get_search_result',postData,function(data) {
+
+	    $('[search_id='+search_id+']').empty();
+
+	    if (data.length == 1 && (typeof(data[0])=="string")) {
+
+		$('[search_id='+search_id+']').append(data[0]);
+
+	    } else {
+
+		for (var i=0; i < data.length; i++) {
+		    
+		    if (i > 2) break;
+		    
+		    panel = $('#comparable-panel-template').clone();
+		    
+		    panel.find('#panel-name').html(data[i].name);
+		    
+		    var pricedate = data[i].pricedate;
+		    
+		    panel.find('#panel-ticker')
+			.html(data[i].ticker + ' ' + pricedate);
+		    
+		    // calc outperformance
+		    var perf = data[i].stk_rtn - data[i].mrk_rtn;
+		    
+		    if (perf >= 0) {
+			panel.find("#perf-image").attr("src",pos_chart_icon);
+			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
+		    } else {
+			panel.find("#perf-image").attr("src",neg_chart_icon);
+			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
+		    }
+		    
+		    var sim_score = sprintf("%.2f",100* (1 - data[i].distance));
+		    
+		    panel.find('#panel-similarity')
+			.html('Similarity Score: '+ sim_score);
+		    
+		    panel.show();
+		    
+		    $('[search_id='+search_id+']').append(panel);
+		    
+		}
+	    }
+	})
+
+    })
+
+});
+
+function start_spinner(search_id) {
+
+    // Create the Spinner with options
+    var spinner = new Spinner({
+	lines: 12, // The number of lines to draw
+	length: 7, // The length of each line
+	width: 4, // The line thickness
+	radius: 10, // The radius of the inner circle
+	color: '#000', // #rbg or #rrggbb
+	speed: 1, // Rounds per second
+	trail: 100, // Afterglow percentage
+	shadow: false // Whether to render a shadow
+    });
+
+    spinner.spin(document.getElementById('epoch'+search_id));
+
+}
+
 /*
     Event Handlers for button.click, document.ready, etc.
 */

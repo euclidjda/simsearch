@@ -11,9 +11,10 @@ Simsearch::Application.routes.draw do
   get "autocomplete_security_ticker" => "frontdoor#autocomplete_security_ticker" # to autocomplete
 
   get "search" => "frontdoor#search"  # to evaluate the submitted search content
+  get "get_search_result" => "frontdoor#get_search_result"
 
-  get "get_prices" => "api#get_prices"
-  get "get_performance" => "api#get_performance"
+  # get "get_prices" => "api#get_prices"
+  # get "get_performance" => "api#get_performance"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -6,6 +6,8 @@ class CreateSearchDetails < ActiveRecord::Migration
       t.string :sid
       t.date :pricedate
       t.float :dist
+      t.float :stk_rtn
+      t.float :mrk_rtn
     end
   end
 end

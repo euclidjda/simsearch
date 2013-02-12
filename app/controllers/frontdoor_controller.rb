@@ -90,7 +90,7 @@ class FrontdoorController < ApplicationController
 
       if !@target_sec.nil?
         
-        target = Factors::get_target(@target_sec.cid,@target_sec.sid)
+        target = SecuritySnapshot::get_target(@target_sec.cid,@target_sec.sid)
 
         # Get the target's factor fields
         @target_fields = target.fields()
@@ -156,6 +156,69 @@ class FrontdoorController < ApplicationController
     render :json => json_for_autocomplete(items, :shortname, [:sid, :cid, :longname])
   end
 
+  #
+  # Method that returns a search result via a search id as a json
+  #
+  def get_search_result
+    _search_id = params[:search_id]
+
+    result = Array::new(0)
+
+    if !_search_id.blank?
+
+      search = nil
+
+      (1 .. 10).each do |i|
+
+        search = Search.where( :id => _search_id, :completed => 1 ).first
+        break if !search.nil? 
+        sleep(2)
+
+      end
+
+      if !search.nil?
+
+        details = SearchDetail.where( :search_id => _search_id )
+
+        details.each do |d|
+
+          comp_record = Hash::new()
+          
+          comp_record[:distance] = d.dist
+          comp_record[:stk_rtn]  = d.stk_rtn
+          comp_record[:mrk_rtn]  = d.mrk_rtn
+          
+          snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
+          
+          snapshot.fields.keys.each do |key|
+            comp_record[key] = snapshot.fields[key]
+          end
+          
+          snapshot.factor_keys.each do |key|
+            comp_record[key] = snapshot.get_factor(key)
+          end
+            
+          result.push(comp_record)
+          
+        end
+
+      else
+
+        result[0] = "Search Timed Out"
+
+      end
+
+    end
+
+    if result.empty?
+
+      result[0] = "No comaprables for this epoch"
+
+    end
+
+    render :json => result.to_json
+
+  end
 
 private
 

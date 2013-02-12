@@ -1,3 +1,3 @@
 class SearchDetail < ActiveRecord::Base
-  attr_accessible :cid, :dist, :pricedate, :search_id, :sid
+  attr_accessible :cid, :dist, :pricedate, :search_id, :sid, :stk_rtn, :mrk_rtn
 end

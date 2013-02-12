@@ -244,6 +244,8 @@ ActiveRecord::Schema.define(:version => 20130212000829) do
     t.string  "sid"
     t.date    "pricedate"
     t.float   "dist"
+    t.float   "stk_rtn"
+    t.float   "mrk_rtn"
   end
 
   create_table "searches", :force => true do |t|
@@ -253,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20130212000829) do
     t.date     "fromdate"
     t.date     "thrudate"
     t.string   "search_type"
+    t.integer  "completed"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

@@ -7,6 +7,7 @@ class CreateSearches < ActiveRecord::Migration
       t.date :fromdate
       t.date :thrudate
       t.string :search_type
+      t.integer :completed
 
       t.timestamps
     end

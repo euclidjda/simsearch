@@ -1,6 +1,6 @@
-class Factors < Tableless
+class SecuritySnapshot < Tableless
 
-  attr_reader :cid, :sid, :datadate, :fields, :factors, :factor_keys
+  attr_reader :cid, :sid, :pricedate, :fields, :factors, :factor_keys
 
   def initialize( _fields )
 
@@ -8,12 +8,12 @@ class Factors < Tableless
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
-    @fields   = _fields
-    @cid      = get_field('cid')
-    @sid      = get_field('sid')
-    @datadate = get_field('datadate')
-    @factors  = Hash::new()
-    @defer1   = nil;
+    @fields    = _fields
+    @cid       = get_field('cid')
+    @sid       = get_field('sid')
+    @pricedate = get_field('pricedate')
+    @factors   = Hash::new()
+    @defer1    = nil;
 
     csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
     price  = @fields['price']      ? Float(@fields['price'])      : nil
@@ -47,13 +47,31 @@ class Factors < Tableless
 
   end
 
+  def self.get_snapshot( _cid, _sid, _pricedate )
+
+    obj = nil
+
+    if !_cid.blank? && !_sid.blank?
+
+      sqlstr = SecuritySnapshot::get_snapshot_sql(_cid,_sid,_pricedate)
+      
+      result = ActiveRecord::Base.connection.select_one(sqlstr) 
+
+      obj = new( result ) if !result.nil?
+    
+    end
+
+    return obj
+
+  end
+
   def self.get_target( _cid, _sid )
 
     obj = nil
 
     if !_cid.blank? && !_sid.blank?
 
-      sqlstr = Factors::get_target_sql(_cid,_sid)
+      sqlstr = SecuritySnapshot::get_target_sql(_cid,_sid)
       
       result = ActiveRecord::Base.connection.select_one(sqlstr) 
 
@@ -84,7 +102,7 @@ class Factors < Tableless
 
       result.each { |record|
 
-        yield Factors::new( record )
+        yield SecuritySnapshot::new( record )
 
       }
 
@@ -94,8 +112,8 @@ class Factors < Tableless
 
   def self.distance(_obj0,_obj1)
 
-    vec0 = _obj0.class == Factors ? _obj0.factor_array : _obj0
-    vec1 = _obj1.class == Factors ? _obj1.factor_array : _obj1
+    vec0 = _obj0.class == SecuritySnapshot ? _obj0.factor_array : _obj0
+    vec1 = _obj1.class == SecuritySnapshot ? _obj1.factor_array : _obj1
 
     dist = 0
     
@@ -120,21 +138,21 @@ class Factors < Tableless
   
   def distance(_obj) 
     
-    Factors::distance(self,_obj)
+    SecuritySnapshot::distance(self,_obj)
     
   end
 
   def self.nearest_neighbor( _obj )
 
-    vec0 = _obj.class == Factors ? _obj.factor_array : _obj
+    vec0 = _obj.class == SecuritySnapshot ? _obj.factor_array : _obj
 
     min_dist = nil
     nearest  = nil
 
-    Factors.each do | factors |
+    SecuritySnapshot.each do | factors |
 
       veci = factors.factor_array
-      dist = Factors::distance(vec0,veci)
+      dist = SecuritySnapshot::distance(vec0,veci)
       
       if (nearest.nil? || (dist <= min_dist))
         min_dist = dist
@@ -148,45 +166,11 @@ class Factors < Tableless
   end
 
   def nearest_neighbor
-    Factors::nearest_neighbor(self)
+    SecuritySnapshot::nearest_neighbor(self)
   end
 
   def get_field( _name )
     @fields[_name]
-  end
-
-  def each_match( _start_date, _end_date )
-  
-    if !_start_date.blank? && !_end_date.blank?
-
-      # TODO: all of the following needs validation
-      target_ind = @fields['idxind']
-      target_new = @fields['idxnew']
-
-      price = @fields['price']  ? Float(@fields['price'])      : nil
-      csho  = @fields['csho']   ? Float(@fields['csho'])       : nil
-      eps   = @fields['epspxq'] ? Float(@fields['epspxq_ttm']) : nil
-
-      target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
-      target_val = @fields['pe']     ? Float(@fields['pe']).round()     : nil
-
-      logger.debug "***** start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
-
-      sqlstr = Factors::get_match_sql(@cid,
-                                      target_ind,target_new,
-                                      target_cap,target_val,
-                                      _start_date,_end_date)
-      
-      results = ActiveRecord::Base.connection.select_all(sqlstr) 
-
-      logger.debug "***** sql query done, running scan ... "
-
-      results.each { |record|
-        yield Factors::new( record )
-      }
-    
-    end
-
   end
 
   # include this so we can use the event machine.
@@ -203,20 +187,18 @@ class Factors < Tableless
       eps   = @fields['epspxq'] ? Float(@fields['epspxq_ttm']) : nil
 
       target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
-      target_val = @fields['pe']     ? Float(@fields['pe']).round()     : nil
 
-      # target_cap = (csho * price).round() if (price && price > 0 && csho && csho > 0)
-      # target_val = (price / eps).round()  if (price && price > 0 && eps )
+      logger.debug "***** SQL QUERY: start_date = #{_start_date}" +
+      " end_date = #{_end_date} target_cap = #{target_cap} "
 
-      logger.debug "***** SQL QUERY: start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
-
-      sqlstr = Factors::get_match_sql(@cid,
-                                      target_ind,target_new,
-                                      target_cap,target_val,
-                                      _start_date,_end_date)
+      sqlstr = SecuritySnapshot::get_match_sql(@cid,
+                                               target_ind,target_new,target_cap,
+                                               _start_date,_end_date)
 
       # TODO: FE: This is ugly. Need to specify this config outside of code.
-      client1 = Mysql2::EM::Client.new(:host => 'localhost', :username => 'root', :database => 'simsearchdev') 
+      client1 = Mysql2::EM::Client.new(:host => 'localhost', 
+                                       :username => 'root' , 
+                                       :database => 'simsearchdev') 
       
       logger.debug sqlstr
 
@@ -235,7 +217,8 @@ class Factors < Tableless
       end
 
       defer1.errback do |err|
-        logger.error "Problem inserting into database: #{err.inspect} for search_id: #{_search_id}"
+        logger.error "Problem inserting into database: "+
+        "#{err.inspect} for search_id: #{_search_id}"
       end
 
       logger.debug " ****  Sent the query for search_id: #{_search_id}"
@@ -245,7 +228,7 @@ class Factors < Tableless
 
   def to_s
 
-    "cid => #{@cid} sid => #{@sid} datadate => #{@datadate}"
+    "cid => #{cid} sid => #{sid} pricedate => #{pricedate}"
 
   end
 
@@ -257,7 +240,7 @@ class Factors < Tableless
 
   def get_factor(_factor_key)
 
-    return @factors[_factor_key] if (@factors.has_key?(_factor_key))
+    # return @factors[_factor_key] if (@factors.has_key?(_factor_key))
 
     factor_value = nil
 
@@ -319,6 +302,18 @@ class Factors < Tableless
     return factor_value
 
   end
+
+  def self.get_snapshot_sql(_cid,_sid,_pricedate)
+<<GET_TARGET_SQL
+  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
+  FROM ex_prices A, ex_factdata B, ex_securities C 
+  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}' 
+  AND B.cid = '#{_cid}' AND B.sid = '#{_sid}' 
+  AND C.cid = '#{_cid}' AND C.sid = '#{_sid}' 
+  AND A.datadate = '#{_pricedate}'
+  AND '#{_pricedate}' BETWEEN B.fromdate AND B.thrudate
+GET_TARGET_SQL
+  end
   
   def self.get_target_sql(_cid,_sid)
 <<GET_TARGET_SQL
@@ -332,10 +327,30 @@ class Factors < Tableless
 GET_TARGET_SQL
   end
 
-  def self.get_match_sql_OLD(_cid, _target_ind,
-                             _target_new, _target_cap, _target_val, 
-                             _begin_date, _end_date)
+  def self.get_match_sql(_cid, _target_ind, _target_new, _target_cap,
+                         _begin_date, _end_date)
 
+    idxcaph_min = [10000,_target_cap*0.5].min.round()
+    idxcapl_max = (5.0*_target_cap).round()
+
+<<GET_MATCH_SQL
+    SELECT A.*, B.*
+    FROM ex_combined A, ex_securities B
+    WHERE A.cid != '#{_cid}' 
+    AND A.cid = B.cid
+    AND A.sid = B.sid
+    AND A.idxind = #{_target_ind}
+    AND A.idxnew = #{_target_new}
+    AND A.idxcaph >= #{idxcaph_min}
+    AND A.idxcapl <= #{idxcapl_max}
+    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
+GET_MATCH_SQL
+  end
+
+
+  def self.get_match_sql_SLOWLY(_cid, _target_ind, _target_new, _target_cap,
+                                _begin_date, _end_date)
+    
     idxcaph_min = [10000,_target_cap*0.5].min.round()
     idxcapl_max = (5.0*_target_cap).round()
 
@@ -358,26 +373,4 @@ GET_TARGET_SQL
     AND A.datadate BETWEEN '#{_begin_date}' AND '#{_end_date}'
 GET_MATCH_SQL
   end
-
-  def self.get_match_sql(_cid, _target_ind,
-                         _target_new, _target_cap, _target_val, 
-                         _begin_date, _end_date)
-
-    idxcaph_min = [10000,_target_cap*0.5].min.round()
-    idxcapl_max = (5.0*_target_cap).round()
-
-<<GET_MATCH_SQL
-    SELECT A.*, B.*
-    FROM ex_combined A, ex_securities B
-    WHERE A.cid != '#{_cid}' 
-    AND A.cid = B.cid
-    AND A.sid = B.sid
-    AND A.idxind = #{_target_ind}
-    AND A.idxnew = #{_target_new}
-    AND A.idxcaph >= #{idxcaph_min}
-    AND A.idxcapl <= #{idxcapl_max}
-    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
-GET_MATCH_SQL
-  end
-
 end
