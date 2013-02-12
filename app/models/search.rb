@@ -31,6 +31,13 @@ class Search < ActiveRecord::Base
                               :thrudate    => _thrudate ,
                               :search_type => _type     )
 
+      
+      _target.get_matches(_fromdate,
+                          _thrudate,
+                          search.id,
+                          _limit,
+                          method(:search_callback)
+
       search.execute(_target,_limit)
 
     end
@@ -39,22 +46,19 @@ class Search < ActiveRecord::Base
 
   end
 
-  def execute(_target,_limit)
+  def search_callback(_result_hash)
 
     logger.debug "***** #{cid} #{sid} #{pricedate} #{fromdate} #{thrudate} "
 
-    rows = Array::new()
-
-    _target.each_match(fromdate,thrudate) { |c|
-
-      rows.push(c)
-
-    }
+    _target = _result_hash[:target]
+    _rows   = _result_hash[:result_rows]
 
     candidates = Array::new()
 
-    rows.each { |match|
+    _rows.each { |row|
       
+      match = Factors::new(row)
+
       dist = _target.distance( match )
       next if (dist < 0)
       candidates.push( { :match => match, :dist => dist } )
