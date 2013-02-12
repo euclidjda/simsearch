@@ -3,7 +3,9 @@ class CreateSearches < ActiveRecord::Migration
     create_table :searches do |t|
       t.string :cid
       t.string :sid
-      t.string :pricedate
+      t.date :pricedate
+      t.date :fromdate
+      t.date :thrudate
       t.string :search_type
 
       t.timestamps

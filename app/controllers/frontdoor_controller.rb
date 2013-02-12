@@ -1,12 +1,12 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_sec, :target_factors, :median_perf, :form_refresh?, :validation_error
+  helper_method :target_sec, :target_fields, :search_ids, :form_refresh?, :validation_error
 
   @target_sec = nil
-  @target_factors = nil
+  @target_fields = nil
+  @search_ids = nil
   @validation_error = nil
-  @median_perf = nil
 
   def root
     # always redirect to home, redundant actually since routes.rb also does this.
@@ -79,7 +79,7 @@ class FrontdoorController < ApplicationController
 
     # Default to nil, which pushes the "invalid query" response.
     @target_sec = nil
-    @target_factors = nil
+    @target_fields = nil
 
     if !_search_entry.blank?
       # We currently on support one ticker and no filters.
@@ -90,12 +90,32 @@ class FrontdoorController < ApplicationController
 
       if !@target_sec.nil?
         
-        # Get the target's factor fields
-        @target_factors = Factors::get(@target_sec.cid,@target_sec.sid).fields()
+        target = Factors::get_target(@target_sec.cid,@target_sec.sid)
 
+        # Get the target's factor fields
+        @target_fields = target.fields()
+
+        @search_ids = Hash::new()
+
+        FrontdoorHelper::epochs.each do |ep|
+          
+          fromdate = FrontdoorHelper::startDate(ep)
+          thrudate = FrontdoorHelper::endDate(ep)
+          
+          search = Search::exec( :target      => target   ,
+                                 :fromdate    => fromdate ,
+                                 :thrudate    => thrudate ,
+                                 :search_type => 'TypeA'  ,
+                                 :limit       => 10       )
+          
+          @search_ids[ep] = search.id
+          
+        end
+        
       end
 
     end
+    
 
     render :action => :home
     # streaming ...
@@ -118,12 +138,14 @@ class FrontdoorController < ApplicationController
         term = term[1.._term.length]
         items = Filter.
           select("distinct id as cid, id as sid, name as shortname, description as longname").
-          where("LOWER(CONCAT(name, description)) like ?", '%' + _term.downcase + '%').
+          where("LOWER(CONCAT(name, description)) like ?", '%' + 
+                _term.downcase + '%').
           limit(10).order(:shortname)
       else
         items = ExSecurity.
           select("distinct cid, sid, ticker as shortname, name as longname").
-          where("dldtei IS NULL AND LOWER(CONCAT(ticker, name)) like ?", '%' + _term.downcase + '%').
+          where("dldtei IS NULL AND LOWER(CONCAT(ticker, name)) like ?", '%' +
+                _term.downcase + '%').
           limit(10).order(:shortname)
       end
 
@@ -141,12 +163,12 @@ private
     @target_sec
   end
 
-  def target_factors
-    @target_factors
+  def target_fields
+    @target_fields
   end
 
-  def median_perf
-    @median_perf
+  def search_ids
+    @search_ids
   end
 
   def median(arr)

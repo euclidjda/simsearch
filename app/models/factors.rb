@@ -46,7 +46,7 @@ class Factors < Tableless
 
   end
 
-  def self.get( _cid, _sid )
+  def self.get_target( _cid, _sid )
 
     obj = nil
 
@@ -155,7 +155,7 @@ class Factors < Tableless
   end
 
   def each_match( _start_date, _end_date )
-
+  
     if !_start_date.blank? && !_end_date.blank?
 
       # TODO: all of the following needs validation
@@ -169,9 +169,6 @@ class Factors < Tableless
       target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
       target_val = @fields['pe']     ? Float(@fields['pe']).round()     : nil
 
-      # target_cap = (csho * price).round() if (price && price > 0 && csho && csho > 0)
-      # target_val = (price / eps).round()  if (price && price > 0 && eps )
-
       logger.debug "***** start_date = #{_start_date} end_date = #{_end_date} target_cap = #{target_cap} "
 
       sqlstr = Factors::get_match_sql(@cid,
@@ -181,7 +178,7 @@ class Factors < Tableless
       
       results = ActiveRecord::Base.connection.select_all(sqlstr) 
 
-      puts "***** sql query done, running scan ... "
+      logger.debug "***** sql query done, running scan ... "
 
       results.each { |record|
         yield Factors::new( record )
