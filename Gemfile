@@ -7,7 +7,7 @@ gem 'rack', '1.4.1'
 gem "mysql2", "~> 0.3.11"
 gem "eventmachine"
 
-gem "unicorn"
+gem "unicorn", "4.5.0"
 
 gem 'rails3-jquery-autocomplete'
 
