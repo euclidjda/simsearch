@@ -11,7 +11,7 @@ class Search < ActiveRecord::Base
 
     cid = _target.cid
     sid = _target.sid
-    pricedate = _target.datadate
+    pricedate = _target.fields['pricedate']
 
     search = Search.where( :cid         => cid       ,
                            :sid         => sid       ,
@@ -32,11 +32,11 @@ class Search < ActiveRecord::Base
                               :search_type => _type     )
 
       
-      # _target.get_matches(_fromdate,
-      #                    _thrudate,
-      #                    search.id,
-      #                    _limit,
-      #                    method(:search_callback))
+      _target.get_matches(_fromdate,
+                          _thrudate,
+                          search.id,
+                          _limit,
+                          method(:search_callback))
 
     end
 
