@@ -172,7 +172,7 @@ class FrontdoorController < ApplicationController
       
       details = SearchDetail.where( :search_id => _search_id )
 
-      details.each do |d|
+      details.each { |d|
 
         comp_record = Hash::new()
         
@@ -192,14 +192,12 @@ class FrontdoorController < ApplicationController
         
         result.push(comp_record)
         
-      end
+      }
 
     end
 
     if result.empty?
-
       result[0] = "No comaprables for this epoch"
-
     end
 
     render :json => result.to_json
@@ -219,20 +217,20 @@ class FrontdoorController < ApplicationController
     weight_sum = 0
     values_sum = 0
 
-    search_details.each do |detail|
+    search_details.each { |detail|
 
       next unless detail.dist > 0
 
       weight = Math.exp( -detail.dist )
 
-      values_sum += weight * (detail.stk_rtn-detail.mrk_rtn) 
+      values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn ) 
       weight_sum += weight
 
-    end
+    }
 
     result = Hash::new()
 
-    result[:summary] = values_sum / weight_sum
+    result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
 
     render :json => result.to_json
 
@@ -244,9 +242,12 @@ class FrontdoorController < ApplicationController
 
       count = 100
 
-      Search.uncached do
-        count = Search.where("id IN ("+_search_id_list+") AND completed = 0").count()
-      end
+      # This needs to be uncached or it the result won't change
+      # per loop itteration (ActiveRecord will cache it)
+      Search.uncached {
+        count = Search.where("id IN (" +
+                             _search_id_list+") AND completed = 0").count()
+      }
 
       logger.debug "******* COUNT IS #{count}"
      
@@ -270,12 +271,6 @@ private
 
   def search_ids
     @search_ids
-  end
-
-  def median(arr)
-    sorted = arr.sort
-    len = sorted.length
-    median = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
   end
 
   def form_refresh?

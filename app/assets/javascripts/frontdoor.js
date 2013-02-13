@@ -2,89 +2,97 @@
 
 $(document).ready(function() {
 
+    var search_id_list = $('#all-search-ids').attr('search_ids');
+
+    // Only handle the output if we are on the results page. This script
+    // loads for all pages, so we need to make sure.
+    if (search_id_list) {
+
+        // What we should do here is block until we know the search result is done.
+        
+        render_results(search_id_list);
+    }
+
+});
+
+function render_results(search_id_list) {
+
     var pos_small_icon = "assets/green-outperformance-small.png";
     var neg_small_icon = "assets/red-outperformance-small.png";
     var pos_big_icon = "assets/green-outperformance-big.png";
     var neg_big_icon = "assets/red-outperformance-big.png";
-    
-    var search_id_list = $('#all-search-ids').attr('search_ids');
-
-    // What we should do here is block until we know the search result is done.
 
     $.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
 
-	var perf = data.summary
+        var perf = data.summary
 
-	if (perf >= 0) {
-	    $("#summary-image").attr("src",pos_big_icon);
-	    $("#summary-num").html(sprintf("%.2f%%",perf));
-	} else {
-	    $("#summary-image").attr("src",neg_big_icon);
-	    $("#summary-num").html(sprintf("%.2f%%",perf));
-	}
+        if (perf >= 0) {
+            $("#summary-image").attr("src",pos_big_icon);
+            $("#summary-num").html(sprintf("%.2f%%",perf));
+        } else {
+            $("#summary-image").attr("src",neg_big_icon);
+            $("#summary-num").html(sprintf("%.2f%%",perf));
+        }
 	
     });
 
     $('.epoch').each(function( index ) {
-	
+
 	var postData = new Object();
-	
 	var search_id = $(this).attr('search_id');
 
 	start_spinner(search_id);
 
 	postData['search_id'] = search_id;
 	
-	$.getJSON('get_search_results',postData,function(data) {
+	$.getJSON('get_search_results', postData, function(data) {
 
-	    $('[search_id='+search_id+']').empty();
+            $('[search_id='+search_id+']').empty();
 
-	    if (data.length == 1 && (typeof(data[0])=="string")) {
+            if (data.length == 1 && (typeof(data[0])=="string")) {
 
 		$('[search_id='+search_id+']').append(data[0]);
 
-	    } else {
-
+            } else {
 		for (var i=0; i < data.length; i++) {
-		    
-		    if (i > 2) break;
-		    
-		    panel = $('#comparable-panel-template').clone();
-		    
-		    panel.find('#panel-name').html(data[i].name);
-		    
-		    var pricedate = data[i].pricedate;
-		    
-		    panel.find('#panel-ticker')
+                    
+                    if (i > 2) break;
+                    
+                    panel = $('#comparable-panel-template').clone();
+                    
+                    panel.find('#panel-name')
+			.html(data[i].name);
+                    
+                    var pricedate = data[i].pricedate;
+                    
+                    panel.find('#panel-ticker')
 			.html(data[i].ticker + ' ' + pricedate);
-		    
-		    // calc outperformance
-		    var perf = data[i].stk_rtn - data[i].mrk_rtn;
-		    
-		    if (perf >= 0) {
+                    
+                    // calc outperformance
+                    var perf = data[i].stk_rtn - data[i].mrk_rtn;
+                    
+                    if (perf >= 0) {
 			panel.find("#perf-image").attr("src",pos_small_icon);
 			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
-		    } else {
+                    } else {
 			panel.find("#perf-image").attr("src",neg_small_icon);
 			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
-		    }
-		    
-		    var sim_score = sprintf("%.2f",(100 * Math.exp(-(data[i].distance))));
-		    
-		    panel.find('#panel-similarity')
+                    }
+                    
+		    var sim_score = sprintf("%.2f",
+					    (100 * Math.exp(-(data[i].distance))));
+                    
+                    panel.find('#panel-similarity')
 			.html('Similarity Score: '+ sim_score);
-		    
-		    panel.show();
-		    
-		    $('[search_id='+search_id+']').append(panel);
-		    
+                    
+                    panel.show();
+                    
+                    $('[search_id='+search_id+']').append(panel);
 		}
-	    }
+            } 
 	})
-
     })
-
-});
+}
 
 function start_spinner(search_id) {
 
@@ -105,7 +113,7 @@ function start_spinner(search_id) {
 }
 
 /*
-    Event Handlers for button.click, document.ready, etc.
+  Event Handlers for button.click, document.ready, etc.
 */
 
 function logout_action_handler() {
