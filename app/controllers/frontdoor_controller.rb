@@ -197,9 +197,7 @@ class FrontdoorController < ApplicationController
     end
 
     if result.empty?
-
       result[0] = "No comaprables for this epoch"
-
     end
 
     render :json => result.to_json
