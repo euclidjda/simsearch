@@ -116,7 +116,8 @@ class SecuritySnapshot < Tableless
     vec1 = _obj1.class == SecuritySnapshot ? _obj1.factor_array : _obj1
 
     dist = 0
-    
+    dims = 0
+
     vec0.each_with_index do |val0,index|
 
       val1 = vec1[index]
@@ -125,6 +126,7 @@ class SecuritySnapshot < Tableless
 
       if !val1.nil?
         dist += ( val0 - val1 ) * ( val0 - val1 )
+        dims += 1
       else
         dist = -1
         break
@@ -132,7 +134,7 @@ class SecuritySnapshot < Tableless
         
     end
 
-    return dist
+    return dims > 0 ? dist/dims : -1
 
   end
   

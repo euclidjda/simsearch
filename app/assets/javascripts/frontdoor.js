@@ -69,7 +69,7 @@ $(document).ready(function() {
 			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
 		    }
 		    
-		    var sim_score = sprintf("%.2f",100* (1 - data[i].distance));
+		    var sim_score = sprintf("%.2f",(100 * Math.exp(-(data[i].distance))));
 		    
 		    panel.find('#panel-similarity')
 			.html('Similarity Score: '+ sim_score);

@@ -223,8 +223,10 @@ class FrontdoorController < ApplicationController
 
       next unless detail.dist > 0
 
-      values_sum += (detail.stk_rtn-detail.mrk_rtn) / detail.dist
-      weight_sum += 1/detail.dist
+      weight = Math.exp( -detail.dist )
+
+      values_sum += weight * (detail.stk_rtn-detail.mrk_rtn) 
+      weight_sum += weight
 
     end
 
