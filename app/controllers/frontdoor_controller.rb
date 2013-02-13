@@ -105,7 +105,7 @@ class FrontdoorController < ApplicationController
           search = Search::exec( :target      => target   ,
                                  :fromdate    => fromdate ,
                                  :thrudate    => thrudate ,
-                                 :search_type => 'TypeA'  ,
+                                 :search_type => 'foo'    ,
                                  :limit       => 10       )
           
           @search_ids[ep] = search.id
@@ -157,7 +157,7 @@ class FrontdoorController < ApplicationController
   end
 
   #
-  # Method that returns a search result via a search id as a json
+  # API method that returns a search result via a search id as a json
   #
   def get_search_results
     _search_id = params[:search_id]
@@ -204,6 +204,11 @@ class FrontdoorController < ApplicationController
 
   end
 
+  #
+  # API like method that returns a search result summary via a list of
+  # search ids. The result is a json object
+  #
+
   def get_search_summary
 
     _search_id_list = params[:search_id_list]
@@ -235,6 +240,15 @@ class FrontdoorController < ApplicationController
     render :json => result.to_json
 
   end
+
+  # 
+  # This method will block if any of the searches in _search_id_list (comma sep
+  # string as it is getting them from client side) are actively running. 
+  #
+  # TODO: JDA & FE are discussing if this is the best approach. It may be 
+  # desirable to do this client side via a polling api. The current approach
+  # may enable denial of service attacks.
+  #
 
   def block_until_searches_are_complete( _search_id_list )
 

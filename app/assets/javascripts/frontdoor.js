@@ -19,8 +19,8 @@ function render_results(search_id_list) {
 
     var pos_small_icon = "assets/green-outperformance-small.png";
     var neg_small_icon = "assets/red-outperformance-small.png";
-    var pos_big_icon = "assets/green-outperformance-big.png";
-    var neg_big_icon = "assets/red-outperformance-big.png";
+    var pos_big_icon   = "assets/green-outperformance-big.png";
+    var neg_big_icon   = "assets/red-outperformance-big.png";
 
     $.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
 
@@ -54,19 +54,26 @@ function render_results(search_id_list) {
 		$('[search_id='+search_id+']').append(data[0]);
 
             } else {
+
 		for (var i=0; i < data.length; i++) {
                     
                     if (i > 2) break;
                     
                     panel = $('#comparable-panel-template').clone();
                     
-                    panel.find('#panel-name')
-			.html(data[i].name);
+		    // TODO: JDA Not sure the best way to truncate the string here
+		    // we really just want it to not flow over the panel
+                    panel.find('#panel-name').html(data[i].name.substring(0,23));
                     
-                    var pricedate = data[i].pricedate;
-                    
-                    panel.find('#panel-ticker')
-			.html(data[i].ticker + ' ' + pricedate);
+		    var ticker = data[i].ticker;
+		    var exchg  = exchange_code_to_name(data[i].exchg,ticker);
+
+                    panel.find('#panel-ticker').html(exchg+': '+ticker);
+
+		    var datestr =
+			dateFormat(new Date(data[i].pricedate),"mmm d, yyyy");
+
+                    panel.find('#panel-date').html(datestr);
                     
                     // calc outperformance
                     var perf = data[i].stk_rtn - data[i].mrk_rtn;
@@ -110,6 +117,24 @@ function start_spinner(search_id) {
 
     spinner.spin(document.getElementById('epoch'+search_id));
 
+}
+
+var EXCHANGE_NAMES = { '14' : 'NASDAQ'   ,
+		       '13' : 'OTC'      , 
+		       '12' : 'NYSE MKT' ,
+		       '11' : 'NYSE'     }
+
+function exchange_code_to_name(code,ticker) {
+
+    if (code in EXCHANGE_NAMES)
+	return EXCHANGE_NAMES[code];
+    else if (code <= 4)
+	return 'INACT'
+    else if (ticker.length <= 3)
+	return 'NYSE'
+    else
+	return 'N/A'
+    
 }
 
 /*
