@@ -11,7 +11,8 @@ Simsearch::Application.routes.draw do
   get "autocomplete_security_ticker" => "frontdoor#autocomplete_security_ticker" # to autocomplete
 
   get "search" => "frontdoor#search"  # to evaluate the submitted search content
-  get "get_search_result" => "frontdoor#get_search_result"
+  get "get_search_results" => "frontdoor#get_search_results"
+  get "get_search_summary" => "frontdoor#get_search_summary"
 
   # get "get_prices" => "api#get_prices"
   # get "get_performance" => "api#get_performance"

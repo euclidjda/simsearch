@@ -31,7 +31,6 @@ class Search < ActiveRecord::Base
                               :thrudate    => _thrudate ,
                               :search_type => _type     ,
                               :completed   => 0         )
-
       
       _target.get_matches(_fromdate,
                           _thrudate,

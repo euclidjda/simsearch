@@ -12,7 +12,11 @@
 			</div>
 		</div>
 		<div class="span2 result-stats" id ="result-summary">
-                  Median Relative Performance: <div id="median-perf"></div>
+                  Average 1 Year Relative Performance: 
+		  <div id="median-perf">
+		      <span><img id="summary-image" src=""></img></span>
+		      <span id="summary-num"></span>
+		  </div>
 		</div>
 	</div>
 
@@ -24,6 +28,8 @@
 </div>
 <div id="panel-similarity"></div>
 </div>
+
+<div id="all-search-ids" search_ids="<%= search_ids.values * ',' %>"></div>
 
 <% first_row = true %>
 <% FrontdoorHelper::epochs.each do |ep| %>

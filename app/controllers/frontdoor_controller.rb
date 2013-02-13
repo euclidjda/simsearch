@@ -159,7 +159,7 @@ class FrontdoorController < ApplicationController
   #
   # Method that returns a search result via a search id as a json
   #
-  def get_search_result
+  def get_search_results
     _search_id = params[:search_id]
 
     result = Array::new(0)
@@ -167,45 +167,31 @@ class FrontdoorController < ApplicationController
     if !_search_id.blank?
 
       search = nil
+      
+      block_until_searches_are_complete( _search_id )
+      
+      details = SearchDetail.where( :search_id => _search_id )
 
-      (1 .. 10).each do |i|
+      details.each do |d|
 
-        search = Search.where( :id => _search_id, :completed => 1 ).first
-        break if !search.nil? 
-        sleep(2)
-
-      end
-
-      if !search.nil?
-
-        details = SearchDetail.where( :search_id => _search_id )
-
-        details.each do |d|
-
-          comp_record = Hash::new()
-          
-          comp_record[:distance] = d.dist
-          comp_record[:stk_rtn]  = d.stk_rtn
-          comp_record[:mrk_rtn]  = d.mrk_rtn
-          
-          snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
-          
-          snapshot.fields.keys.each do |key|
-            comp_record[key] = snapshot.fields[key]
-          end
-          
-          snapshot.factor_keys.each do |key|
-            comp_record[key] = snapshot.get_factor(key)
-          end
-            
-          result.push(comp_record)
-          
+        comp_record = Hash::new()
+        
+        comp_record[:distance] = d.dist
+        comp_record[:stk_rtn]  = d.stk_rtn
+        comp_record[:mrk_rtn]  = d.mrk_rtn
+        
+        snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
+        
+        snapshot.fields.keys.each do |key|
+          comp_record[key] = snapshot.fields[key]
         end
-
-      else
-
-        result[0] = "Search Timed Out"
-
+        
+        snapshot.factor_keys.each do |key|
+          comp_record[key] = snapshot.get_factor(key)
+        end
+        
+        result.push(comp_record)
+        
       end
 
     end
@@ -217,6 +203,56 @@ class FrontdoorController < ApplicationController
     end
 
     render :json => result.to_json
+
+  end
+
+  def get_search_summary
+
+    _search_id_list = params[:search_id_list]
+    
+    block_until_searches_are_complete( _search_id_list )
+
+    # TODO: JDA: Validate search_id_list before SQL
+    search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
+
+    perfs = Array::new()
+    weight_sum = 0
+    values_sum = 0
+
+    search_details.each do |detail|
+
+      next unless detail.dist > 0
+
+      values_sum += (detail.stk_rtn-detail.mrk_rtn) / detail.dist
+      weight_sum += 1/detail.dist
+
+    end
+
+    result = Hash::new()
+
+    result[:summary] = values_sum / weight_sum
+
+    render :json => result.to_json
+
+  end
+
+  def block_until_searches_are_complete( _search_id_list )
+
+    (0..40).each do |step| 
+
+      count = 100
+
+      Search.uncached do
+        count = Search.where("id IN ("+_search_id_list+") AND completed = 0").count()
+      end
+
+      logger.debug "******* COUNT IS #{count}"
+     
+      break if count == 0
+ 
+      sleep(2)
+
+    end
 
   end
 

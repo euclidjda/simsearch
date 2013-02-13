@@ -2,8 +2,28 @@
 
 $(document).ready(function() {
 
-    var pos_chart_icon = "assets/green-outperformance-small.png";
-    var neg_chart_icon = "assets/red-outperformance-small.png";
+    var pos_small_icon = "assets/green-outperformance-small.png";
+    var neg_small_icon = "assets/red-outperformance-small.png";
+    var pos_big_icon = "assets/green-outperformance-big.png";
+    var neg_big_icon = "assets/red-outperformance-big.png";
+    
+    var search_id_list = $('#all-search-ids').attr('search_ids');
+
+    // What we should do here is block until we know the search result is done.
+
+    $.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
+
+	var perf = data.summary
+
+	if (perf >= 0) {
+	    $("#summary-image").attr("src",pos_big_icon);
+	    $("#summary-num").html(sprintf("%.2f%%",perf));
+	} else {
+	    $("#summary-image").attr("src",neg_big_icon);
+	    $("#summary-num").html(sprintf("%.2f%%",perf));
+	}
+	
+    });
 
     $('.epoch').each(function( index ) {
 	
@@ -15,9 +35,7 @@ $(document).ready(function() {
 
 	postData['search_id'] = search_id;
 	
-	//alert('search_id = '+ search_id);
-
-	$.getJSON('get_search_result',postData,function(data) {
+	$.getJSON('get_search_results',postData,function(data) {
 
 	    $('[search_id='+search_id+']').empty();
 
@@ -44,10 +62,10 @@ $(document).ready(function() {
 		    var perf = data[i].stk_rtn - data[i].mrk_rtn;
 		    
 		    if (perf >= 0) {
-			panel.find("#perf-image").attr("src",pos_chart_icon);
+			panel.find("#perf-image").attr("src",pos_small_icon);
 			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
 		    } else {
-			panel.find("#perf-image").attr("src",neg_chart_icon);
+			panel.find("#perf-image").attr("src",neg_small_icon);
 			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
 		    }
 		    
