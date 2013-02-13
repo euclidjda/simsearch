@@ -55,10 +55,11 @@ function render_results(search_id_list) {
 
             } else {
 
-		for (var i=0; i < data.length; i++) {
+		var max_panels = Math.min(3,data.length); // only show three panels
+
+		for (var i=0; i < max_panels; i++) {
                     
-                    if (i > 2) break;
-                    
+		    // clone the invisible template and drop data into clone
                     panel = $('#comparable-panel-template').clone();
                     
 		    // TODO: JDA Not sure the best way to truncate the string here
@@ -92,8 +93,11 @@ function render_results(search_id_list) {
                     panel.find('#panel-similarity')
 			.html('Similarity Score: '+ sim_score);
                     
+		    // show makes the panel visible (the template from which it 
+		    // was cloned was invisible)
                     panel.show();
-                    
+
+                    // This packs  the panel into the DOM so it can be seenn
                     $('[search_id='+search_id+']').append(panel);
 		}
             } 
