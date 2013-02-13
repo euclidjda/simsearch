@@ -50,10 +50,16 @@ function render_results(search_id_list) {
             $('[search_id='+search_id+']').empty();
 
             if (data.length == 1 && (typeof(data[0])=="string")) {
+		
+		// If the json API isn't able to get a search result, it only
+		// returns 1 record that is a string with a message. In that event,
+		// we display the message here ...
 
 		$('[search_id='+search_id+']').append(data[0]);
 
             } else {
+
+		// ... otherwise we process the results here:
 
 		var max_panels = Math.min(3,data.length); // only show three panels
 
