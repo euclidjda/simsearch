@@ -77,6 +77,7 @@ function render_results(search_id_list) {
                     panel.find('#panel-ticker').html(exchg+': '+ticker);
 
                     var dd = new Date(data[i].pricedate);
+
                     var datearr = dd.toDateString().split(" ");
                     var datestr = datearr[1] + " " + datearr[2] + ", " + datearr[3]; 
 
