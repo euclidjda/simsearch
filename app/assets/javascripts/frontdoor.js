@@ -37,48 +37,48 @@ function render_results(search_id_list) {
     });
 
     $('.epoch').each(function( index ) {
+        var postData = new Object();
+        var search_id = $(this).attr('search_id');
 
-	var postData = new Object();
-	var search_id = $(this).attr('search_id');
+        start_spinner(search_id);
 
-	start_spinner(search_id);
+        postData['search_id'] = search_id;
 
-	postData['search_id'] = search_id;
-	
-	$.getJSON('get_search_results', postData, function(data) {
+        $.getJSON('get_search_results', postData, function(data) {
 
             $('[search_id='+search_id+']').empty();
 
             if (data.length == 1 && (typeof(data[0])=="string")) {
 		
-		// If the json API isn't able to get a search result, it only
-		// returns 1 record that is a string with a message. In that event,
-		// we display the message here ...
+        		// If the json API isn't able to get a search result, it only
+        		// returns 1 record that is a string with a message. In that event,
+        		// we display the message here ...
 
-		$('[search_id='+search_id+']').append(data[0]);
+                $('[search_id='+search_id+']').append(data[0]);
 
             } else {
 
-		// ... otherwise we process the results here:
+                // ... otherwise we process the results here:
 
-		var max_panels = Math.min(3,data.length); // only show three panels
+                var max_panels = Math.min(3,data.length); // only show three panels
 
-		for (var i=0; i < max_panels; i++) {
+                for (var i=0; i < max_panels; i++) {
                     
-		    // clone the invisible template and drop data into clone
+                    // clone the invisible template and drop data into clone
                     panel = $('#comparable-panel-template').clone();
                     
-		    // TODO: JDA Not sure the best way to truncate the string here
-		    // we really just want it to not flow over the panel
+                    // TODO: JDA Not sure the best way to truncate the string here
+                    // we really just want it to not flow over the panel
                     panel.find('#panel-name').html(data[i].name.substring(0,23));
                     
-		    var ticker = data[i].ticker;
-		    var exchg  = exchange_code_to_name(data[i].exchg,ticker);
+                    var ticker = data[i].ticker;
+                    var exchg  = exchange_code_to_name(data[i].exchg,ticker);
 
                     panel.find('#panel-ticker').html(exchg+': '+ticker);
 
-		    var datestr =
-			dateFormat(new Date(data[i].pricedate),"mmm d, yyyy");
+                    var dd = new Date(data[i].pricedate);
+                    var datearr = dd.toDateString().split(" ");
+                    var datestr = datearr[1] + " " + datearr[2] + ", " + datearr[3]; 
 
                     panel.find('#panel-date').html(datestr);
                     
@@ -86,28 +86,26 @@ function render_results(search_id_list) {
                     var perf = data[i].stk_rtn - data[i].mrk_rtn;
                     
                     if (perf >= 0) {
-			panel.find("#perf-image").attr("src",pos_small_icon);
-			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
+                        panel.find("#perf-image").attr("src",pos_small_icon);
+                        panel.find("#perf-num").html(sprintf("%.2f%%",perf));
                     } else {
-			panel.find("#perf-image").attr("src",neg_small_icon);
-			panel.find("#perf-num").html(sprintf("%.2f%%",perf));
+                        panel.find("#perf-image").attr("src",neg_small_icon);
+                        panel.find("#perf-num").html(sprintf("%.2f%%",perf));
                     }
                     
-		    var sim_score = sprintf("%.2f",
-					    (100 * Math.exp(-(data[i].distance))));
+                    var sim_score = sprintf("%.2f", (100 * Math.exp(-(data[i].distance))));
                     
-                    panel.find('#panel-similarity')
-			.html('Similarity Score: '+ sim_score);
+                    panel.find('#panel-similarity').html('Similarity Score: '+ sim_score);
                     
-		    // show makes the panel visible (the template from which it 
-		    // was cloned was invisible)
+                    // show makes the panel visible (the template from which it 
+                    // was cloned was invisible)
                     panel.show();
 
                     // This packs  the panel into the DOM so it can be seenn
                     $('[search_id='+search_id+']').append(panel);
-		}
+                }
             } 
-	})
+	   })
     })
 }
 
