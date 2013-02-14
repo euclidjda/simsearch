@@ -21,7 +21,7 @@
 	</div>
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
-<div id="panel-name"></div>
+<div id="panel-name" title="Click to Compare to <%= target_fields['name'] %>"></div>
 <div>
   <span id="panel-ticker"></span> -
   <span id="panel-date"></span>
@@ -47,5 +47,58 @@
 	<%= render :partial => "row", :object => row %>
 
 <% end %>
+
+<div id="comparable-modal" class="modal hide fade comparable-modal" tabindex="-1"
+     role="dialog" aria-labelledby="myComparableModalLabel" aria-hidden="true">
+
+  <div class="modal-header"></div>
+
+  <div class="modal-body">
+
+    <table class="comparable-table" border=4><tr>
+
+	<td class="comparable-table-left-pane">
+
+	  <div id="comparable-carousel-left" class="carousel">
+	    <!-- Carousel items -->
+	    <div class="carousel-inner-left">
+	      <div class="item comparable-detail">
+		
+		HERE IS WHERE THE COMPARABLE DETAILS GOES
+
+
+	      </div>
+	    </div>
+	  </div>
+
+	</td>
+	<td class="comparable-table-right-pane">
+
+	  <div id="comparable-carousel" class="carousel slide">
+  <!-- Carousel items -->
+	    <div class="carousel-inner">
+	      <div class="active item comparable-detail">Item 1</div>
+	      <div class="item">Item 2</div>
+	      <div class="item">Item 3</div>
+	    </div>
+	    
+	    <!-- Carousel nav -->
+	    <a class="carousel-control left" href="#myCarousel" 
+	       data-slide="prev"
+	       onClick="$('#comparable-carousel').carousel('prev')">&lsaquo;</a>
+	    <a class="carousel-control right" href="#myCarousel" 
+	       data-slide="next" 
+	       onClick="$('#comparable-carousel').carousel('next')">&rsaquo;</a>
+	    
+	  </div>
+	</td>
+
+    </tr></table>
+
+  </div> <!-- end of modal-body -->
+
+  <div class="modal-footer">Some Footer Text</div>
+    
+</div> <!-- end of comparable-model -->
 
 </div> <!-- end of span10-->

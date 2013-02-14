@@ -67,6 +67,9 @@ function render_results(search_id_list) {
                     // clone the invisible template and drop data into clone
                     panel = $('#comparable-panel-template').clone();
                     
+		    panel.click(function() {
+			$('#comparable-modal').modal('show');
+		    })
                     // TODO: JDA Not sure the best way to truncate the string here
                     // we really just want it to not flow over the panel
                     panel.find('#panel-name').html(data[i].name.substring(0,23));
@@ -106,8 +109,11 @@ function render_results(search_id_list) {
                     $('[search_id='+search_id+']').append(panel);
                 }
             } 
-	   })
-    })
+	});
+    });
+
+    $('#comparable-carousel').carousel();
+
 }
 
 function start_spinner(search_id) {
