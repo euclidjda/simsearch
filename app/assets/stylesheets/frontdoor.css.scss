@@ -4,6 +4,12 @@
 
 @import "shared";
 
+.navbar {
+  .brand {
+    color: white;
+  }
+}
+
 .hero-unit {
   background-color: white;
 }
@@ -37,6 +43,10 @@ footer {
   	  margin-left: 20px;
   	}
   }
+}
+
+.search-area {
+  margin-top: 16px;
 }
 
 .full-search-bar {
