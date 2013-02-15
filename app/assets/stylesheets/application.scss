@@ -17,6 +17,7 @@
 
 .content {
     @include content-box(8px);
+    padding-top: 0px;
     background: white;
     width: auto;
     margin-right: auto;
@@ -38,3 +39,4 @@
 .content-inner {
 	padding: 25px 20px 25px;
 }
+
