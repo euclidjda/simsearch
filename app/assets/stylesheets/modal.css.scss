@@ -48,7 +48,7 @@
 
     background-image: url('bgr.png');
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 1005px 100%;
 
     top:  0% !important;
     left: 0%;
@@ -83,18 +83,19 @@
     }
 
     .comparable-table {
-	width: 100%;
+	width: 920px;
 	height: 90%;
+	background-color: white;
     }
 
     .comparable-table-left-pane {
-	width: 50%;
+	width: 460px;
 	
 
     }
 
     .comparable-table-right-pane {
-	width: 50%;
+	width: 460px;
 	
     }
 
