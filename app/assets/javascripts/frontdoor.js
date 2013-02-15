@@ -112,7 +112,7 @@ function render_results(search_id_list) {
 	});
     });
 
-    $('#comparable-carousel').carousel();
+    $('#comparable-carousel').carousel('pause');
 
 }
 

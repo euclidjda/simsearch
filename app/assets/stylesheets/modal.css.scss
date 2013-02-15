@@ -48,15 +48,74 @@
 
     background-image: url('bgr.png');
     background-repeat: no-repeat;
-    background-size: 1005px 100%;
+    background-size: 1000px;
+    overflow: hidden;
 
     top:  0% !important;
     left: 0%;
 
-    margin: 45px 0px 0px 0px; /* top bottom right left */
+    margin: 40px 0px 0px 0px; /* top bottom right left */
 
-    width: 100%;
-    height: 100%;
+    width: 1000px;
+
+   .modal-header {
+	/* There is no modal header */
+    }
+ 
+    .modal-body {
+
+	margin: 0px 0px 0px 0px; /* top bottom right left */
+	max-height: 1000px !important;
+
+    }
+
+    .modal-footer {
+	/* There is no modal header */
+    }
+
+    .carousel-control {
+	border: 2px solid #EA4A0B;
+	width: 40px;
+	height: 40px;
+	background-color: orange; /* need to change to site orange */
+   }
+
+    .comparable-table {
+	width: 900px;
+	border: 0px solid black;
+	margin: 20px 0px 0px 12px;
+    }
+
+    .comparable-table-left-pane {
+	width: 450px;
+	/*
+	border-right-style: dashed;
+	border-right-width: 1px;
+	border-right-color: grey;
+	*/
+    }
+
+    .comparable-table-right-pane {
+	width: 450px;
+
+    }
+
+    .comparable-detail {
+	/***** without background image
+	border: 10px solid #666666;
+	border-radius:7px;
+	margin: 10px 10px 10px 10px;
+	***/
+
+	width: 450px;
+	height: 800px;
+	margin: 0px 0px 0px 20px;
+
+	background-image: url('box-bgr.png');
+	background-repeat: no-repeat;
+	background-size: 430px;
+
+    }
 
    .close {
 	right: 10px;
@@ -64,47 +123,5 @@
 	margin-top: 8px;
     }
 
-    .modal-header {
-	/* background-color: green; */
-	height: 20px;
-    }
-
  
-    .modal-body {
-
-	margin: 0px 0px 0px 0px; /* top bottom right left */
-	/* background-color: red; */
-	max-height: 1000px !important;
-	height: 90%;
-    }
-
-    .modal-footer {
-	background-color: orange;
-    }
-
-    .comparable-table {
-	width: 920px;
-	height: 90%;
-	background-color: white;
-    }
-
-    .comparable-table-left-pane {
-	width: 460px;
-	
-
-    }
-
-    .comparable-table-right-pane {
-	width: 460px;
-	
-    }
-
-    .comparable-detail {
-	width: 460px;
-	border: 10px solid #666666;
-	border-radius:7px;
-	-moz-border-radius:15px; /* Old Firefox */
-    }
-
 }
-
