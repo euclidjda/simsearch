@@ -234,6 +234,22 @@ class SecuritySnapshot < Tableless
 
   end
 
+  def to_hash
+
+    result = Hash::new()
+
+    @fields.keys.each do |key|
+      result[key] = get_field(key)
+    end
+    
+    @factor_keys.each do |key|
+      result[key] = get_factor(key)
+    end
+
+    return result;
+
+  end
+
   def factor_array
 
     @factor_keys.map { |key| get_factor(key) }

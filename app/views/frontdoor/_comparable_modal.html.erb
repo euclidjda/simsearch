@@ -14,10 +14,78 @@
 	      <div id="carousel-item-left" 
 		   class="active item comparable-detail-left">
 
+		<div class="company-name"><%= target_fields['name'] %></div>
+		<div class="ticker"><%= target_fields['ticker'] %></div>
+		<div class="year">TODAY</div>
+		<div class="date">
+		  <% price_date = target_fields['pricedate'] %>
+		  <%= Date::MONTHNAMES[price_date.month][0..2] + 
+		      ' ' + price_date.day.to_s + ', ' + 
+		      price_date.year.to_s %>
+		</div>
+
+		<div class="factors-header">Factors</div>
+
+		<div class="factors-body">
+		  <div class="factors factor-ey">
+		    <%= sprintf("EYd: %.2f%%",100*target_fields[:ey]); %>
+		  </div>
+		  <div class="factors factor-roc">
+		    <%= sprintf("ROC: %.2f%%",100*target_fields[:roc]); %>
+		  </div>
+		  <div class="factors factor-grwth">
+		    <%= sprintf("GRW: %.2f%%",100*target_fields[:grwth]); %>
+		  </div>
+		  <div class="factors factor-epscon">
+		    <%= sprintf("CON: %.2f",target_fields[:epscon]); %>
+		  </div>
+		  <div class="factors factor-ae">
+		    <%= sprintf("LEV: %.2f%%",100*target_fields[:ae]); %>
+		  </div>
+		  <div class="factors factor-momentum">
+		    <%= sprintf("MOM: %.2f%%",100*target_fields[:momentum]); %>
+		  </div>
+		</div>
+
+		<div class="key-stats-header">Key Statistics</div>
+
+		<div class="key-stats-body">
+
+		  <div class="key-stats mrkcap-lab">Market Capitalization:</div>
+		  <div class="key-stats mrkcap-txt">
+		    <%= sprintf("%.2fM",target_fields['mrkcap']); %>
+		  </div>
+		  
+		  <div class="key-stats price-lab">Price/Share:</div>
+		  <div class="key-stats price-txt">
+		    <%= sprintf("$%.2f",target_fields['price']); %>
+		  </div>
+		  
+		  <div class="key-stats dividend-lab">Dividend:</div>
+		  <div class="key-stats dividend-txt">
+		    <%= sprintf("%.2f (%.1f%%)",
+			target_fields['dvpsxm_ttm'],
+			target_fields['yield']*100); %>
+		  </div>
+		  
+		  <div class="key-stats eps-lab">Earnings/Share:</div>
+		  <div class="key-stats eps-txt">
+		    <%= sprintf("$%.2f",target_fields['epspxq_ttm']); %>
+		  </div>
+		  
+		  <div class="key-stats pe-lab">Price-to-Earnings:</div>
+		  <div class="key-stats pe-txt">
+		    <%= sprintf("%.2f",target_fields['pe']); %>
+		  </div>
+		  
+		  <div class="key-stats pb-lab">Price-to-Book:</div>
+		  <div class="key-stats pb-txt">
+		    <%= sprintf("%.2f",target_fields['pb']); %>
+		  </div>
+
+		</div>
 		
-
 	      </div>
-
 
 	    </div>
 	  </div>
@@ -30,6 +98,9 @@
 
 	    <!-- Carousel items -->
 	    <div id="carousel-inner-right" class="carousel-inner">
+
+
+
 
 	    </div>
 	    
@@ -57,35 +128,39 @@
 
     <div class="factors-header">Factors</div>
 
-
+    <div class="factors-body">
+      <div class="factors factor-ey"></div>
+      <div class="factors factor-roc"></div>
+      <div class="factors factor-grwth"></div>
+      <div class="factors factor-epscon"></div>
+      <div class="factors factor-ae"></div>
+      <div class="factors factor-momentum"></div>
+    </div>
 
     <div class="key-stats-header">Key Statistics</div>
 
-    <div class="key-stats mrkcap-lab">Market Capitalization:</div>
-    <div class="key-stats mrkcap-txt"></div>
+    <div class="key-stats-body">
 
-    <div class="key-stats price-lab">Price/Share:</div>
-    <div class="key-stats price-txt"></div>
-    
-    <div class="key-stats dividend-lab">Dividend:</div>
-    <div class="key-stats dividend-txt"></div>
-    
-    <div class="key-stats eps-lab">Earnings/Share:</div>
-    <div class="key-stats eps-txt"></div>
+      <div class="key-stats mrkcap-lab">Market Capitalization:</div>
+      <div class="key-stats mrkcap-txt"></div>
+      
+      <div class="key-stats price-lab">Price/Share:</div>
+      <div class="key-stats price-txt"></div>
+      
+      <div class="key-stats dividend-lab">Dividend:</div>
+      <div class="key-stats dividend-txt"></div>
+      
+      <div class="key-stats eps-lab">Earnings/Share:</div>
+      <div class="key-stats eps-txt"></div>
+      
+      <div class="key-stats pe-lab">Price-to-Earnings:</div>
+      <div class="key-stats pe-txt"></div>
+      
+      <div class="key-stats pb-lab">Price-to-Book:</div>
+      <div class="key-stats pb-txt"></div>
 
-    <div class="key-stats pe-lab">Price-to-Earnings:</div>
-    <div class="key-stats pe-txt"></div>
+    </div>
 
-    <div class="key-stats pb-lab">Price-to-Book:</div>
-    <div class="key-stats pb-txt"></div>
-    
-    <div class="ey"></div>
-    <div class="roc"></div>
-    <div class="grwth"></div>
-    <div class="epscon"></div>
-    <div class="ae"></div>
-    <div class="momentum"></div>
-    
-  </div>
+  </div> <!-- end of carousel-item-right-template -->
 
 </div> <!-- end of comparable-model -->
