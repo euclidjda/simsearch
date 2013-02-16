@@ -11,6 +11,9 @@ $(document).ready(function() {
         // What we should do here is block until we know the search result is done.
         
         render_results(search_id_list);
+
+	$('#comparable-carousel-right').carousel('pause');	
+
     }
 
 });
@@ -51,8 +54,8 @@ function render_results(search_id_list) {
             if (data.length == 1 && (typeof(data[0])=="string")) {
 		
         		// If the json API isn't able to get a search result, it only
-        		// returns 1 record that is a string with a message. In that event,
-        		// we display the message here ...
+        		// returns 1 record that is a string with a message. In that 
+        		// event, we display the message here ...
 
                 $('[search_id='+search_id+']').append(data[0]);
 
@@ -64,8 +67,13 @@ function render_results(search_id_list) {
 
                 for (var i=0; i < max_panels; i++) {
                     
+		    var year = data[i].pricedate.substring(0,4);
+		    var epoch = get_epoch(year);
+
                     // clone the invisible template and drop data into clone
                     panel = $('#comparable-panel-template').clone();
+		    panel.attr('id','panel'+i);
+
                     panel.click(function() {
                         $('#comparable-modal').modal('show');
                     })
@@ -97,9 +105,11 @@ function render_results(search_id_list) {
                         panel.find("#perf-num").html(sprintf("%.2f%%",perf));
                     }
                     
-                    var sim_score = sprintf("%.2f", (100 * Math.exp(-(data[i].distance))));
+                    var sim_score = sprintf("%.2f", 
+					    (100 * Math.exp(-(data[i].distance))));
                     
-                    panel.find('#panel-similarity').html('Similarity Score: '+ sim_score);
+                    panel.find('#panel-similarity')
+			.html('Similarity Score: '+ sim_score);
                     
                     // show makes the panel visible (the template from which it 
                     // was cloned was invisible)
@@ -107,13 +117,48 @@ function render_results(search_id_list) {
 
                     // This packs  the panel into the DOM so it can be seenn
                     $('[search_id='+search_id+']').append(panel);
+
+		    // Add to detailed compare
+		    var detail_item = $('#carousel-item-right-template').clone();
+		    detail_item.attr('id','carousel-item-right-'+i);
+		    detail_item.removeAttr('style');
+
+		    detail_item.find('.company-name').html(data[i].name);
+
+		    detail_item.find('.ticker').html('<b>'+exchg+'</b>: '+ticker);
+
+		    detail_item.find('.year').html(datearr[3]);
+
+		    detail_item.find('.date').html(datestr);
+
+		    detail_item.find('.mrkcap-txt').html(
+			EGUI.fmtAsNumber(data[i].mrkcap,{fmtstr:"%.0f"})+'M');
+
+		    detail_item.find('.price-txt').html(
+			EGUI.fmtAsMoney(data[i].price,{fmtstr:"%.2f"}));
+		    
+		    detail_item.find('.dividend-txt')
+			.html(sprintf("%s (%s)",
+				      EGUI.fmtAsMoney(data[i].dvpsxm_ttm,
+						      {fmtstr:"%.1f"}),
+				      EGUI.fmtAsNumber(data[i].yield*100,
+						       {fmtstr:"%.1f%%"})));		    
+		    detail_item.find('.eps-txt').html(
+			EGUI.fmtAsMoney(data[i].epspxq_ttm,{fmtstr:"%.2f"}));
+
+		    detail_item.find('.pe-txt').html(sprintf("%.2f",data[i].pe));
+		    detail_item.find('.pb-txt').html(sprintf("%.2f",data[i].pb));
+		    
+		    if (!i && !epoch) 
+			detail_item.addClass('active');
+
+		    $('#carousel-inner-right').append(detail_item);
+
                 }
-            } 
-	   });
+            }
+	});
     });
-
-    $('#comparable-carousel').carousel('pause');
-
+    
 }
 
 function start_spinner(search_id) {
@@ -150,6 +195,21 @@ function exchange_code_to_name(code,ticker) {
     else
 	return 'N/A'
     
+}
+
+function get_epoch(year) {
+
+    year = parseInt(year);
+
+    if (year < 1980)
+	return 3;
+    else if (year < 1990)
+	return 2;
+    else if (year < 2000)
+	return 1;
+    else
+	return 0;
+
 }
 
 /*

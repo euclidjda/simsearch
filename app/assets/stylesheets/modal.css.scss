@@ -96,24 +96,190 @@
     }
 
     .comparable-table-right-pane {
+
 	width: 450px;
 
     }
 
-    .comparable-detail {
-	/***** without background image
-	border: 10px solid #666666;
-	border-radius:7px;
-	margin: 10px 10px 10px 10px;
-	***/
+    .comparable-detail-left {
 
 	width: 450px;
 	height: 800px;
 	margin: 0px 0px 0px 20px;
 
-	background-image: url('box-bgr.png');
+	background-image: url('box-bgr.png');	
 	background-repeat: no-repeat;
 	background-size: 430px;
+    }
+    .comparable-detail-right {
+
+	width: 450px;
+	height: 800px;
+	margin: 0px 0px 0px 20px;
+
+	background-image: url('box-bgr-mirrored.png');	
+	background-repeat: no-repeat;
+	background-size: 430px;
+
+	overflow: hidden;
+	white-space:nowrap;
+	font-family:"Helvetica", Helvetica, serif;
+	font-weight: normal;
+
+	color: rgb(255,255,255);
+
+	.company-name {
+	    position: absolute;
+	    top: 12pt;
+	    left: 8pt;
+	    width: 300px;
+	    font-weight: bold;
+	    font-size: 16pt;
+	    overflow: hidden;
+	}
+
+	.ticker {
+	    position: absolute;
+	    top: 28pt;
+	    left: 8pt;
+	    width: 100px;
+	    font-size: 9pt;
+	}
+
+	.year {
+	    position: absolute;
+	    top: 13pt;
+	    left: 260pt;
+	    width: 100px;
+	    font-weight: bold;
+	    font-size: 14pt;
+	    color: rgb(35,35,35);
+	}
+
+	.date {
+	    position: absolute;
+	    top: 32pt;
+	    left: 255pt;
+	    width: 90px;
+	    font-size: 7pt;
+	}
+
+
+	.factors-header {
+
+	    position: absolute;
+	    top: 46pt;
+	    left: 15pt;
+	    width: 100px;
+	    font-size: 12pt;
+	    color: rgb(23,23,23);
+	}
+
+	.key-stats-header {
+
+	    position: absolute;
+	    top: 46pt;
+	    left: 125pt;
+	    width: 100px;
+	    font-size: 12pt;
+
+	}
+
+	.key-stats {
+	    height: 12pt;
+	    font-size: 10pt;
+	}
+
+	.mrkcap-lab {
+	    position: absolute;
+	    top: 70pt;
+	    left: 125pt;
+	    width: 120pt;
+	}
+
+	.price-lab {
+	    position: absolute;
+	    top: 84pt;
+	    left: 125pt;
+	    width: 120pt;
+	}
+
+	.dividend-lab {
+	    position: absolute;
+	    top: 98pt;
+	    left: 125pt;
+	    width: 120pt;
+	}
+
+	.eps-lab {
+	    position: absolute;
+	    top: 112pt;
+	    left: 125pt;
+	    width: 120pt;
+	}
+
+	.pe-lab {
+	    position: absolute;
+	    top: 126pt;
+	    left: 125pt;
+	    width: 120pt;
+	}
+
+	.pb-lab {
+	    position: absolute;
+	    top: 140pt;
+	    left: 125pt;
+	    width: 120pt;
+	}
+
+	.mrkcap-txt {
+	    position: absolute;
+	    top: 70pt;
+	    left: 240pt;
+	    width: 60pt;
+	    text-align: right;
+	}
+
+
+	.price-txt {
+	    position: absolute;
+	    top: 84pt;
+	    left: 240pt;
+	    width: 60pt;
+	    text-align: right;
+	}
+
+	.dividend-txt {
+	    position: absolute;
+	    top: 98pt;
+	    left: 240pt;
+	    width: 60pt;
+	    text-align: right;
+	}
+
+	.eps-txt {
+	    position: absolute;
+	    top: 112pt;
+	    left: 240pt;
+	    width: 60pt;
+	    text-align: right;
+	}
+
+	.pe-txt {
+	    position: absolute;
+	    top: 126pt;
+	    left: 240pt;
+	    width: 60pt;
+	    text-align: right;
+	}
+
+	.pb-txt {
+	    position: absolute;
+	    top: 140pt;
+	    left: 240pt;
+	    width: 60pt;
+	    text-align: right;
+	}
 
     }
 
@@ -125,3 +291,4 @@
 
  
 }
+
