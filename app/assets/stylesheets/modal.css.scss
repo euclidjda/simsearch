@@ -61,11 +61,37 @@
    .modal-header {
 	/* There is no modal header */
     }
- 
+
     .modal-body {
 
 	margin: 0px 0px 0px 0px; /* top bottom right left */
 	max-height: 1000px !important;
+
+	.similarity-score {
+
+	    position: absolute;
+	    z-index: 100;
+
+	    top: 160px;
+	    left: 490px;
+
+	    width: 50px;
+	    height: 50px;
+
+	    font-size: 22px;
+	    text-align: center;
+
+	    background-color: white;
+	    background-image: none;
+	    border: 5px solid green;
+	    -webkit-border-radius: 120px;
+	    -moz-border-radius: 120px;
+	    border-radius: 120px;
+	    -moz-box-sizing: border-box;
+	    box-sizing: border-box;
+	    color: #444;
+
+	}
 
     }
 
@@ -73,17 +99,23 @@
 	/* There is no modal header */
     }
 
+   .close {
+	right: 10px;
+	margin-right: 14px;
+	margin-top: 8px;
+    }
+ 
     .carousel-control {
 	border: 2px solid #EA4A0B;
 	width: 40px;
 	height: 40px;
 	background-color: orange; /* need to change to site orange */
    }
-
+    
     .comparable-table {
 	width: 900px;
 	border: 0px solid black;
-	margin: 20px 0px 0px 12px;
+	margin: 40px 0px 0px 12px;
     }
 
     .comparable-table-left-pane {
@@ -101,7 +133,7 @@
 
     }
 
-    .comparable-detail-left {
+   .comparable-detail-left {
 
 	width: 450px;
 	height: 800px;
@@ -110,7 +142,98 @@
 	background-image: url('box-bgr.png');	
 	background-repeat: no-repeat;
 	background-size: 430px;
+
+	overflow: hidden;
+	white-space:nowrap;
+	font-family:"Helvetica", Helvetica, serif;
+	font-weight: normal;
+
+	color: rgb(255,255,255);
+
+	.factors-header {
+
+	    position: absolute;
+	    top: 46pt;
+	    left: 215pt;
+	    width: 100px;
+	    font-size: 12pt;
+	    color: rgb(23,23,23);
+	}
+
+	.factors-body {
+
+	    font-family:"Courier";
+	    position: absolute;
+	    top: 70pt;
+	    left: 220pt;
+	    width: 100pt;
+	    height: 82pt;
+	    color: rgb(23,23,23);
+
+	}
+
+	.key-stats-header {
+	    
+	    position: absolute;
+	    top: 46pt;
+	    left: 20pt;
+	    width: 100px;
+	    font-size: 12pt;
+	}
+
+	.key-stats-body {
+
+	    position: absolute;
+	    top: 70pt;
+	    left: 20pt;
+	    width: 180pt;
+	    height: 82pt;
+	}
+
+	.company-name {
+	    position: absolute;
+	    top: 12pt;
+	    left: 88pt;
+
+	    text-align: right;
+
+	    width: 300px;
+	    font-weight: bold;
+	    font-size: 16pt;
+	    overflow: hidden;
+	}
+
+	.ticker {
+	    position: absolute;
+	    top: 28pt;
+	    left: 238pt;
+
+	    text-align: right;
+	    
+	    width: 100px;
+	    font-size: 9pt;
+	}
+
+	.year {
+	    position: absolute;
+	    top: 13pt;
+	    left: 20pt;
+	    width: 100px;
+	    font-weight: bold;
+	    font-size: 14pt;
+	    color: rgb(35,35,35);
+	}
+
+	.date {
+	    position: absolute;
+	    top: 32pt;
+	    left: 25pt;
+	    width: 90px;
+	    font-size: 7pt;
+	}
+
     }
+
     .comparable-detail-right {
 
 	width: 450px;
@@ -128,10 +251,52 @@
 
 	color: rgb(255,255,255);
 
+	.factors-header {
+
+	    position: absolute;
+	    top: 46pt;
+	    left: 15pt;
+	    width: 100px;
+	    font-size: 12pt;
+	    color: rgb(23,23,23);
+	}
+
+	.factors-body {
+
+	    font-family:"Courier";
+	    position: absolute;
+	    top: 70pt;
+	    left: 20pt;
+	    width: 100pt;
+	    height: 82pt;
+	    color: rgb(23,23,23);
+
+	}
+
+	.key-stats-header {
+	    
+	    position: absolute;
+	    top: 46pt;
+	    left: 125pt;
+	    width: 100px;
+	    font-size: 12pt;
+	}
+
+	.key-stats-body {
+
+	    position: absolute;
+	    top: 70pt;
+	    left: 125pt;
+	    width: 180pt;
+	    height: 82pt;
+	}
+
 	.company-name {
 	    position: absolute;
+
 	    top: 12pt;
 	    left: 8pt;
+
 	    width: 300px;
 	    font-weight: bold;
 	    font-size: 16pt;
@@ -164,131 +329,154 @@
 	    font-size: 7pt;
 	}
 
-
-	.factors-header {
-
-	    position: absolute;
-	    top: 46pt;
-	    left: 15pt;
-	    width: 100px;
-	    font-size: 12pt;
-	    color: rgb(23,23,23);
-	}
-
-	.key-stats-header {
-
-	    position: absolute;
-	    top: 46pt;
-	    left: 125pt;
-	    width: 100px;
-	    font-size: 12pt;
-
-	}
-
-	.key-stats {
-	    height: 12pt;
-	    font-size: 10pt;
-	}
-
-	.mrkcap-lab {
-	    position: absolute;
-	    top: 70pt;
-	    left: 125pt;
-	    width: 120pt;
-	}
-
-	.price-lab {
-	    position: absolute;
-	    top: 84pt;
-	    left: 125pt;
-	    width: 120pt;
-	}
-
-	.dividend-lab {
-	    position: absolute;
-	    top: 98pt;
-	    left: 125pt;
-	    width: 120pt;
-	}
-
-	.eps-lab {
-	    position: absolute;
-	    top: 112pt;
-	    left: 125pt;
-	    width: 120pt;
-	}
-
-	.pe-lab {
-	    position: absolute;
-	    top: 126pt;
-	    left: 125pt;
-	    width: 120pt;
-	}
-
-	.pb-lab {
-	    position: absolute;
-	    top: 140pt;
-	    left: 125pt;
-	    width: 120pt;
-	}
-
-	.mrkcap-txt {
-	    position: absolute;
-	    top: 70pt;
-	    left: 240pt;
-	    width: 60pt;
-	    text-align: right;
-	}
-
-
-	.price-txt {
-	    position: absolute;
-	    top: 84pt;
-	    left: 240pt;
-	    width: 60pt;
-	    text-align: right;
-	}
-
-	.dividend-txt {
-	    position: absolute;
-	    top: 98pt;
-	    left: 240pt;
-	    width: 60pt;
-	    text-align: right;
-	}
-
-	.eps-txt {
-	    position: absolute;
-	    top: 112pt;
-	    left: 240pt;
-	    width: 60pt;
-	    text-align: right;
-	}
-
-	.pe-txt {
-	    position: absolute;
-	    top: 126pt;
-	    left: 240pt;
-	    width: 60pt;
-	    text-align: right;
-	}
-
-	.pb-txt {
-	    position: absolute;
-	    top: 140pt;
-	    left: 240pt;
-	    width: 60pt;
-	    text-align: right;
-	}
-
     }
 
-   .close {
-	right: 10px;
-	margin-right: 14px;
-	margin-top: 8px;
+    .factors {
+	height: 12pt;
+	font-size: 10pt;
+
+    }
+    
+    .factor-ey {
+	position: absolute;
+	top: 0pt;
+	left: 0pt;
+	width: 120pt;
     }
 
- 
+    .factor-roc {
+	position: absolute;
+	top: 14pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .factor-grwth {
+	position: absolute;
+	top: 28pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .factor-epscon {
+	position: absolute;
+	top: 42pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .factor-ae {
+	position: absolute;
+	top: 56pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .factor-momentum {
+	position: absolute;
+	top: 70pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .key-stats {
+	height: 12pt;
+	font-size: 10pt;
+    }
+
+    .mrkcap-lab {
+	position: absolute;
+	/*
+	  top: 70pt;
+	  left: 125pt;
+	  */
+	top: 0pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .price-lab {
+	position: absolute;
+	top: 14pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .dividend-lab {
+	position: absolute;
+	top: 28pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .eps-lab {
+	position: absolute;
+	top: 42pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .pe-lab {
+	position: absolute;
+	top: 56pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .pb-lab {
+	position: absolute;
+	top: 70pt;
+	left: 0pt;
+	width: 120pt;
+    }
+
+    .mrkcap-txt {
+	position: absolute;
+	top: 0pt;
+	left: 115pt;
+	width: 60pt;
+	text-align: right;
+    }
+
+    .price-txt {
+	position: absolute;
+	top: 14pt;
+	left: 115pt;
+	width: 60pt;
+	text-align: right;
+    }
+
+    .dividend-txt {
+	position: absolute;
+	top: 28pt;
+	left: 115pt;
+	width: 60pt;
+	text-align: right;
+    }
+
+    .eps-txt {
+	position: absolute;
+	top: 42pt;
+	left: 115pt;
+	width: 60pt;
+	text-align: right;
+    }
+
+    .pe-txt {
+	position: absolute;
+	top: 56pt;
+	left: 115pt;
+	width: 60pt;
+	text-align: right;
+    }
+
+    .pb-txt {
+	position: absolute;
+	top: 70pt;
+	left: 115pt;
+	width: 60pt;
+	text-align: right;
+    }
+
 }
 

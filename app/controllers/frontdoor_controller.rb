@@ -93,7 +93,7 @@ class FrontdoorController < ApplicationController
         target = SecuritySnapshot::get_target(@target_sec.cid,@target_sec.sid)
 
         # Get the target's factor fields
-        @target_fields = target.fields()
+        @target_fields = target.to_hash()
 
         @search_ids = Hash::new()
 
@@ -174,22 +174,14 @@ class FrontdoorController < ApplicationController
 
       details.each { |d|
 
-        comp_record = Hash::new()
+        snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
+
+        comp_record = snapshot.to_hash()
         
         comp_record[:distance] = d.dist
         comp_record[:stk_rtn]  = d.stk_rtn
         comp_record[:mrk_rtn]  = d.mrk_rtn
-        
-        snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
-        
-        snapshot.fields.keys.each do |key|
-          comp_record[key] = snapshot.fields[key]
-        end
-        
-        snapshot.factor_keys.each do |key|
-          comp_record[key] = snapshot.get_factor(key)
-        end
-        
+                
         result.push(comp_record)
         
       }

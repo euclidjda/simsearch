@@ -140,7 +140,7 @@ function render_results(search_id_list) {
 		    detail_item.find('.dividend-txt')
 			.html(sprintf("%s (%s)",
 				      EGUI.fmtAsMoney(data[i].dvpsxm_ttm,
-						      {fmtstr:"%.1f"}),
+						      {fmtstr:"%.2f"}),
 				      EGUI.fmtAsNumber(data[i].yield*100,
 						       {fmtstr:"%.1f%%"})));		    
 		    detail_item.find('.eps-txt').html(
@@ -148,7 +148,31 @@ function render_results(search_id_list) {
 
 		    detail_item.find('.pe-txt').html(sprintf("%.2f",data[i].pe));
 		    detail_item.find('.pb-txt').html(sprintf("%.2f",data[i].pb));
-		    
+
+		    detail_item.find('.factor-ey')
+			.html('EYd: '+ sprintf("%.2f%%",data[i].ey*100));
+
+		    detail_item.find('.factor-roc')
+			.html('ROC: '+
+			      EGUI.fmtAsNumber(data[i].roc*100,{fmtstr:"%.2f%%"}));
+
+
+		    detail_item.find('.factor-grwth')
+			.html('GRW: '+
+			      EGUI.fmtAsNumber(data[i].grwth*100,{fmtstr:"%.2f%%"}));
+
+		    detail_item.find('.factor-epscon')
+			.html('CON: '+
+			      EGUI.fmtAsNumber(data[i].epscon,{fmtstr:"%.2f"}));
+
+
+		    detail_item.find('.factor-ae')
+			.html('LIQ: ' +
+			      EGUI.fmtAsNumber(data[i].ae*100,{fmtstr:"%.2f%%"}));
+
+		    detail_item.find('.factor-momentum')
+			.html('MOM: '+
+			      EGUI.fmtAsNumber(data[i].momentum*100,{fmtstr:"%.2f%%"}));
 		    if (!i && !epoch) 
 			detail_item.addClass('active');
 
