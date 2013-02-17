@@ -34,6 +34,8 @@
 
 <div id="all-search-ids" search_ids="<%= search_ids.values * ',' %>"></div>
 
+<div id="basic-chart"></div>
+
 <% first_row = true %>
 <% FrontdoorHelper::epochs.each do |ep| %>
 	
@@ -49,7 +51,5 @@
 <% end %>
 
 <%= render :partial => "comparable_modal", :object => target_fields %>
-
-
 
 </div> <!-- end of span10-->

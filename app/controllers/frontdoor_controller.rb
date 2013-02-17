@@ -181,7 +181,7 @@ class FrontdoorController < ApplicationController
         comp_record[:distance] = d.dist
         comp_record[:stk_rtn]  = d.stk_rtn
         comp_record[:mrk_rtn]  = d.mrk_rtn
-                
+        
         result.push(comp_record)
         
       }
