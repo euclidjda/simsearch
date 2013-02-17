@@ -13,15 +13,15 @@
 
 <body class="nr">
 
-        <%= render "layouts/header" %>
-	<% if current_page?(home_path) %>
-                  <%= yield %>
-	<% else %>
-		<div class="content">
-		  <%= yield %>
-		</div>
-	<% end %>
-	<%= render "layouts/footer" %>   
+  <%= render "layouts/header" %>
+	
+  <!-- 
+    a way to detect if we are on a particular page
+    if current_page?(home_path) 
+  -->
+  <%= yield %>
+	
+  <%= render "layouts/footer" %>   
 
 </body>
 

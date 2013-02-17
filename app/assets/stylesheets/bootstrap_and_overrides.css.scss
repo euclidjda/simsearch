@@ -4,6 +4,8 @@
 /*
 This file contains overrides for bootstrapper styles and any media query
 based styling that applies to all style classes we use.
+
+Any media size specific and resize related rules should be here.
 */
 
 @media (min-width:979px) {

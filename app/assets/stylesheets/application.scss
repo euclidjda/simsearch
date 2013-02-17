@@ -15,14 +15,8 @@
 
 @import "shared";
 
-.content {
-    @include content-box(8px);
-    padding-top: 0px;
-    background: white;
-    width: auto;
-    margin-right: auto;
-    margin-left: auto;
-}
+/* Outline main parts of the document layout */
+
 
 .header {
 	width: auto;

@@ -1,24 +1,28 @@
 
-<%= image_tag("logoV3b.jpg", :class => "logo-image") %>
-
-<span class="search-area">
-  <span class="full-search-bar">
+<div class="search-area">
+  <div class="full-search-bar">
     <ul>
-      <li>
-        <form action="<%= search_path %>" method="get" class="search-bar-form" id="search-bar-form">
-          <div class="search-field-and-button">
-            <%= text_field_tag(:ticker, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "ticker") %>
-            <!-- Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. -->
-            <button class ="btn btn-large btn-inverse" id = "search-button">
-              <i class="icon-search icon-white"></i>
-            </button>
-          </div>
-        </form>
+      <li> 
+        <span> <%= image_tag("logoV3b.jpg", :class => "logo-image") %> </span> 
+      </li>
+      <li> 
+        <span>
+          <form action="<%= search_path %>" method="get" class="search-bar-form" id="search-bar-form">
+            <span class = "search-field-and-button">
+              <%= text_field_tag(:ticker, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "ticker") %>            
+              <% #Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. %>
+              <button class ="btn btn-large btn-inverse" id = "search-button">
+                <i class="icon-search icon-white"></i>
+              </button>              
+            </span>
+          </form>
+        </span> 
       </li>
     </ul>
   </div><!--/.full-search-bar -->
-</span><!--/.search-area -->
+</div><!--/.search-area -->
 
+<hr>
 <div class="container-fluid main-content">
   <div class="row-fluid">
 
