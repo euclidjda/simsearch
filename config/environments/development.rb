@@ -42,6 +42,4 @@ Simsearch::Application.configure do
     ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
   )
 
-
-  
 end
