@@ -47,9 +47,6 @@ footer {
   }
 }
 
-.search-area {
-}
-
 .full-search-bar {
   ul {
     list-style: none;
@@ -102,6 +99,13 @@ footer {
   }
 }
 
+.left-bar {
+  background-image: url("line-grey.png");
+  left: 10px;
+  width: 70px;
+  min-width: 70px;
+  height: 190px;
+}
 
 .result-stats {
   background-color: $neutralColor;
@@ -118,30 +122,6 @@ footer {
   padding: 4px;
   min-width: 220px;
   box-shadow: 4px 4px 2px #999;
-
-.percent-circle {
-    background-color: white;
-    background-image: none;
-    border: 5px solid green;
-    -webkit-border-radius: 120px;
-    -moz-border-radius: 120px;
-    border-radius: 120px;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    color: #444;
-    float: left;
-    font-weight: bold;
-    font-size: 22px;
-    height: 50px;
-    line-height: 40px;
-    text-align: center;
-    width: 50px;
-    text-decoration: none;
-    //margin: -60px 0 0 5px;
-    z-index: 99;
-    position: relative;
-    cursor: pointer;
-  }
 
   .panel-header {
     font-weight: bold;
