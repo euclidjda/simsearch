@@ -63,19 +63,22 @@ function render_results(search_id_list) {
         }
 
     });
-    /***
-    $('#simple-chart').removeAttr('display');
-    $.jqplot('simple-chart',
-	     [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
-
-    **/
 
     $('#comparable-carousel-right').carousel('pause');
 
     $('#comparable-carousel-right').bind('slid', function() {
-	draw_charts();
+
+	$('#comparable-carousel-right').carousel('pause');
+	draw_charts('right');
     });
-	
+
+    $('#comparable-modal').bind('shown', function() {
+
+	$('#comparable-carousel-right').carousel('pause');
+	draw_charts('left');
+	draw_charts('right');
+
+    });
 
 }
 
@@ -132,10 +135,6 @@ function populate_panels(data,search_id,i) {
 	var idx = 3 * row + col;
 
 	$('#comparable-carousel-right').carousel(idx);
-	$('#comparable-carousel-right').carousel('pause');
-
-	draw_charts();
-	
     });
 
     // This packs  the panel into the DOM so it can be seenn
@@ -215,9 +214,11 @@ function populate_panels(data,search_id,i) {
 
 }
 
-function draw_charts() {
+function draw_charts(side) {
 
-    var active_item = $('#carousel-inner-right .item.active');
+    if (side == null) side = 'right';
+
+    var active_item = $('#carousel-inner-'+side+' .item.active');
     var growth_chart_id = active_item.find('.chart-growth').attr('id');
     var price_chart_id = active_item.find('.chart-price').attr('id');
 
@@ -225,12 +226,121 @@ function draw_charts() {
     var sid = active_item.attr('sid');
     var pricedate = active_item.attr('pricedate');
 
-    // check to see if chart exissts, then draw if it doesn't
-    $.jqplot(growth_chart_id,[[[1, 2],[3,4],[4,5],[5,6]]]);
+    if (!active_item.hasClass('charts-drawn')) {
 
-    $.jqplot(price_chart_id,
-	     [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
+	draw_growth_chart( cid, sid, pricedate, growth_chart_id );
 
+	draw_price_chart( cid, sid, pricedate, price_chart_id );
+
+	active_item.addClass('charts-drawn');
+    }
+
+}
+
+function draw_growth_chart( cid, sid, pricedate, growth_chart_id ) {
+
+    var series_data = [
+        {label:'Revenue',color:'#56617F'},
+        {label:'Net-Income',color:'#7C8FB7'},
+        {label:'Net-Loss',color:'red'}
+    ];
+
+    // This we will get by snycronous ajax request with cid,sid,datadate
+    var revenue = [100,80,120,115,130]; 
+    var gain    = [10,0,11,12,14];
+    var loss    = [0,14,0,0,0];
+
+    var x_axis_labels = ['2001','2002','2003','2004','2005'];
+
+    $.jqplot(growth_chart_id,[revenue,gain,loss],
+	     {
+		 fontFamily: 'Helvetica',
+		 
+		 title: {
+		     text: 'Historical Growth',  
+		     fontFamily: 'Helvetica',
+		     textAlign: 'left',
+		 },
+		 stackSeries: true,
+		 seriesDefaults:{
+		     renderer:$.jqplot.BarRenderer,
+		     shadow: false,
+		     rendererOptions: {
+			 barMargin: 30,
+		     }
+		 },
+		 series: series_data,
+		 grid: {
+		     background: '#F2F2F2',
+		     shadow: false,
+		 },
+		 legend: {
+		     show: true,
+		     location: 'nw',     
+		     xoffset: 0,       
+		     yoffset: 0
+		 },
+		 axes: {
+		     xaxis: {
+			 renderer: $.jqplot.CategoryAxisRenderer,
+			 ticks: x_axis_labels
+		     },
+		     yaxis: {
+			 pad: 1.05,
+			 tickOptions: {formatString: '$%dM'}
+		     }
+		 }
+	     });
+}
+
+function draw_price_chart( cid, sid, pricedate, price_chart_id ) {
+
+    var series_data = [
+        {label:'Price',color:'#7C8FB7'},
+        {label:'S&P 500',color:'#56617F'},
+    ];
+
+    // This we will get by snycronous ajax request with cid,sid,datadate
+    var stk_series = [['2008-01-15',1],['2008-04-15',2],['2008-07-15',1],
+		      ['2008-10-15',1],['2009-01-15',2],['2009-03-15',1]];
+
+    var mrk_series = [['2008-01-15',2],['2008-04-15',1],['2008-07-15',2],
+		      ['2008-10-15',2],['2009-01-15',1],['2009-03-15',2]];
+
+
+    $.jqplot(price_chart_id,[stk_series,mrk_series],
+	     {
+		 fontFamily: 'Helvetica',
+		 title: {
+		     text: 'Price / Performance',  
+		     fontFamily: 'Helvetica',
+		     textAlign: 'left',
+		 },
+		 seriesDefaults:{
+		     shadow: false,
+		 },
+		 series: series_data,
+		 grid: {
+		     background: '#F2F2F2',
+		     shadow: false,
+		 },
+		 legend: {
+		     show: true,
+		     location: 'nw',     
+		     xoffset: 0,       
+		     yoffset: 0
+		 },
+		 axes:{
+		     xaxis:{
+			 renderer:$.jqplot.DateAxisRenderer,
+			 tickOptions:{formatString:'%b %y'},
+		     },
+		     yaxis: {
+			 pad: 1.05,
+			 tickOptions: {formatString: '$%.2f'}
+		     }
+		 }
+	     });
 }
 
 function start_spinner(search_id) {
