@@ -1,24 +1,33 @@
 <div class="span10">
-  <div class="row-fluid"> 
-    <div class="span2 result-stats" id="target-info">
+  <div class="row-fluid summary-row">
+    <span class="span1 left-bar">
+      <span class="today-tag">
+        TODAY
+      </span>
+      <span class="today-date">
+        <% t = Time.now %>
+        <%= sprintf("%02d", t.month) + "." + sprintf("%02d", t.day) + "." + sprintf("%02d", t.year - 2000) %>  
+      </span>
+    </span> 
+    <span class="span2 result-stats" id="target-info">
       <div class="panel-header">
-	<span> <%= target_fields['name'] %> (<%= target_fields['ticker'] %>) </span>
+        <span> <%= target_fields['name'] %> (<%= target_fields['ticker'] %>) </span>
       </div>
       <div>
         <% price_date = target_fields['pricedate'] %>
         <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
-	Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
-	P/E: <%= sprintf("%.2f",target_fields['pe']) %><br>
+      	Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
+        P/E: <%= sprintf("%.2f",target_fields['pe']) %><br>
       </div>
-    </div>
-    <div class="span2 result-stats" id ="result-summary">
+    </span>
+    <span class="span2 result-stats" id ="result-summary">
       Average 1 Year Relative Performance: 
       <div id="median-perf">
-	<span><img id="summary-image" src=""></img></span>
-	<span id="summary-num"></span>
+        <span><img id="summary-image" src=""></img></span>
+        <span id="summary-num"></span>
       </div>
-    </div>
-  </div>
+    </span>
+  </div> <!-- summary-row -->
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
 <div id="panel-name" title="Click to Compare to <%= target_fields['name'] %>"></div>
@@ -44,12 +53,10 @@
 		<% first_row = false %>
 	<% end %>
 
-	<% row = { :search_id => search_ids[ep] } %>
+  	<% row = { :search_id => search_ids[ep] } %>
 
-	<%= render :partial => "row", :object => row %>
+  	<%= render :partial => "row", :object => row %>
+  <% end %>
 
-<% end %>
-
-<%= render :partial => "comparable_modal", :object => target_fields %>
-
+  <%= render :partial => "comparable_modal", :object => target_fields %>
 </div> <!-- end of span10-->

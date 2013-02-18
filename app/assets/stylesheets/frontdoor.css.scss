@@ -47,9 +47,6 @@ footer {
   }
 }
 
-.search-area {
-}
-
 .full-search-bar {
   ul {
     list-style: none;
@@ -101,94 +98,3 @@ footer {
     }
   }
 }
-
-
-.result-stats {
-  background-color: $neutralColor;
-  border-radius: 2px;
-  padding: 4px;
-  margin-bottom: 8px;
-  min-width: 280px;
-}
-
-.comparable {
-  background-color: $panelColor;
-  margin-bottom: 12px;
-  border-radius: 2px;
-  padding: 4px;
-  min-width: 220px;
-  box-shadow: 4px 4px 2px #999;
-
-.percent-circle {
-    background-color: white;
-    background-image: none;
-    border: 5px solid green;
-    -webkit-border-radius: 120px;
-    -moz-border-radius: 120px;
-    border-radius: 120px;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    color: #444;
-    float: left;
-    font-weight: bold;
-    font-size: 22px;
-    height: 50px;
-    line-height: 40px;
-    text-align: center;
-    width: 50px;
-    text-decoration: none;
-    //margin: -60px 0 0 5px;
-    z-index: 99;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .panel-header {
-    font-weight: bold;
-    height:28px;
-    padding: 2px 0px 0px 2px;
-  }
-
-  .panel-ticker {
-    font-weight: bold;
-    font-size: 18px;
-    height: 20px;
-    float: left;
-  }
-
-  .panel-date {
-    font-weight: normal;
-    font-style: italic;
-    font-size: 14px;
-  }
-
-  .panel-performance {
-    float: right;
-    background: $accentColor2;
-    text-align: center;
-    // width and height are driven from reactive content in bootstrap_and_overrides.css.scss
-  }
-
-  .panel-body {
-    /*background-color: green;*/
-    overflow: hidden;
-    margin: 16px 0px 0px 2px;
-    width: 100%;
-    display: block;
-  }
-
-}
-
-.dyna-roller {
-  white-space: nowrap;
-  display: block;
-  overflow: hidden;
-  
-/*  
-  // Keeping these out of the picture until we have left/right sliding buttons.
-  -webkit-transition: all 500ms ease-in-out;
-  -webkit-transform: translateX(0px);
-*/
-
-}
-
