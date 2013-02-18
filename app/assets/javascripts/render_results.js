@@ -134,7 +134,7 @@ function populate_panels(data,search_id,i) {
 	$('#comparable-carousel-right').carousel(idx);
 	$('#comparable-carousel-right').carousel('pause');
 
-	//draw_charts();
+	draw_charts();
 	
     });
 
@@ -202,6 +202,10 @@ function populate_panels(data,search_id,i) {
 	      EGUI.fmtAsNumber(data[i].momentum*100,
 			       {fmtstr:"%.2f%%"}));
 
+    var growth_chart_id = 'chart-growth-'+detail_item_id;
+    detail_item.find('.chart-growth').attr('id',growth_chart_id);
+
+
     var price_chart_id = 'chart-price-'+detail_item_id;
     detail_item.find('.chart-price').attr('id',price_chart_id);
 
@@ -214,6 +218,7 @@ function populate_panels(data,search_id,i) {
 function draw_charts() {
 
     var active_item = $('#carousel-inner-right .item.active');
+    var growth_chart_id = active_item.find('.chart-growth').attr('id');
     var price_chart_id = active_item.find('.chart-price').attr('id');
 
     var cid = active_item.attr('cid');
@@ -221,6 +226,8 @@ function draw_charts() {
     var pricedate = active_item.attr('pricedate');
 
     // check to see if chart exissts, then draw if it doesn't
+    $.jqplot(growth_chart_id,[[[1, 2],[3,4],[4,5],[5,6]]]);
+
     $.jqplot(price_chart_id,
 	     [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
 

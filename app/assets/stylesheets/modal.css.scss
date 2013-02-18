@@ -78,17 +78,31 @@
 
     }
 
+    .chart-growth {
+
+	position: absolute;
+	top: 208px;
+	left: 14px;
+	width: 400px;
+	height: 195px;
+	/*
+	border: 2px solid #EA4A0B;
+	*/
+	background-color: #F2F2F2;
+    }
+
     .chart-price {
 
 	position: absolute;
-	top: 456px;
-	left: 50px;
-	width: 328px;
-	height: 98px;
-
+	top: 405px;
+	left: 14px;
+	width: 400px;
+	height: 195px;
+	/*
 	border: 2px solid #EA4A0B;
-	/* background-color: green; */
-	
+	*/
+	background-color: #F2F2F2;
+
     }
 
    .close {
