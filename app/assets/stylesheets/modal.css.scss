@@ -67,36 +67,28 @@
 	margin: 0px 0px 0px 0px; /* top bottom right left */
 	max-height: 1000px !important;
 
-	.similarity-score {
-
-	    position: absolute;
-	    z-index: 100;
-
-	    top: 160px;
-	    left: 490px;
-
-	    width: 50px;
-	    height: 50px;
-
-	    font-size: 22px;
-	    text-align: center;
-
-	    background-color: white;
-	    background-image: none;
-	    border: 5px solid green;
-	    -webkit-border-radius: 120px;
-	    -moz-border-radius: 120px;
-	    border-radius: 120px;
-	    -moz-box-sizing: border-box;
-	    box-sizing: border-box;
-	    color: #444;
-
-	}
-
     }
 
     .modal-footer {
 	/* There is no modal header */
+    }
+
+    .chart-grwth {
+
+
+    }
+
+    .chart-price {
+
+	position: absolute;
+	top: 456px;
+	left: 50px;
+	width: 328px;
+	height: 98px;
+
+	border: 2px solid #EA4A0B;
+	/* background-color: green; */
+	
     }
 
    .close {
@@ -384,7 +376,7 @@
 	font-size: 10pt;
     }
 
-    .mrkcap-lab {
+    .mrkcap-label {
 	position: absolute;
 	/*
 	  top: 70pt;
@@ -395,42 +387,42 @@
 	width: 120pt;
     }
 
-    .price-lab {
+    .price-label {
 	position: absolute;
 	top: 14pt;
 	left: 0pt;
 	width: 120pt;
     }
 
-    .dividend-lab {
+    .dividend-label {
 	position: absolute;
 	top: 28pt;
 	left: 0pt;
 	width: 120pt;
     }
 
-    .eps-lab {
+    .eps-label {
 	position: absolute;
 	top: 42pt;
 	left: 0pt;
 	width: 120pt;
     }
 
-    .pe-lab {
+    .pe-label {
 	position: absolute;
 	top: 56pt;
 	left: 0pt;
 	width: 120pt;
     }
 
-    .pb-lab {
+    .pb-label {
 	position: absolute;
 	top: 70pt;
 	left: 0pt;
 	width: 120pt;
     }
 
-    .mrkcap-txt {
+    .mrkcap-value {
 	position: absolute;
 	top: 0pt;
 	left: 115pt;
@@ -438,7 +430,7 @@
 	text-align: right;
     }
 
-    .price-txt {
+    .price-value {
 	position: absolute;
 	top: 14pt;
 	left: 115pt;
@@ -446,7 +438,7 @@
 	text-align: right;
     }
 
-    .dividend-txt {
+    .dividend-value {
 	position: absolute;
 	top: 28pt;
 	left: 115pt;
@@ -454,7 +446,7 @@
 	text-align: right;
     }
 
-    .eps-txt {
+    .eps-value {
 	position: absolute;
 	top: 42pt;
 	left: 115pt;
@@ -462,7 +454,7 @@
 	text-align: right;
     }
 
-    .pe-txt {
+    .pe-value {
 	position: absolute;
 	top: 56pt;
 	left: 115pt;
@@ -470,7 +462,7 @@
 	text-align: right;
     }
 
-    .pb-txt {
+    .pb-value {
 	position: absolute;
 	top: 70pt;
 	left: 115pt;

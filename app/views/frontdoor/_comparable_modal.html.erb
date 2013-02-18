@@ -9,6 +9,7 @@
 
 	  <div id="comparable-carousel-left" class="carousel">
 	    <!-- Carousel items -->
+
 	    <div id="carousel-inner-left" class="carousel-inner">
 
 	      <div id="carousel-item-left" 
@@ -40,7 +41,7 @@
 		    <%= sprintf("CON: %.2f",target_fields[:epscon]); %>
 		  </div>
 		  <div class="factors factor-ae">
-		    <%= sprintf("LEV: %.2f%%",100*target_fields[:ae]); %>
+		    <%= sprintf("LIQ: %.2f%%",100*target_fields[:ae]); %>
 		  </div>
 		  <div class="factors factor-momentum">
 		    <%= sprintf("MOM: %.2f%%",100*target_fields[:momentum]); %>
@@ -51,35 +52,35 @@
 
 		<div class="key-stats-body">
 
-		  <div class="key-stats mrkcap-lab">Market Capitalization:</div>
-		  <div class="key-stats mrkcap-txt">
+		  <div class="key-stats mrkcap-label">Market Capitalization:</div>
+		  <div class="key-stats mrkcap-value">
 		    <%= sprintf("%.2fM",target_fields['mrkcap']); %>
 		  </div>
 		  
-		  <div class="key-stats price-lab">Price/Share:</div>
-		  <div class="key-stats price-txt">
+		  <div class="key-stats price-label">Price/Share:</div>
+		  <div class="key-stats price-value">
 		    <%= sprintf("$%.2f",target_fields['price']); %>
 		  </div>
 		  
-		  <div class="key-stats dividend-lab">Dividend:</div>
-		  <div class="key-stats dividend-txt">
+		  <div class="key-stats dividend-label">Dividend:</div>
+		  <div class="key-stats dividend-value">
 		    <%= sprintf("%.2f (%.1f%%)",
 			target_fields['dvpsxm_ttm'],
 			target_fields['yield']*100); %>
 		  </div>
 		  
-		  <div class="key-stats eps-lab">Earnings/Share:</div>
-		  <div class="key-stats eps-txt">
+		  <div class="key-stats eps-label">Earnings/Share:</div>
+		  <div class="key-stats eps-value">
 		    <%= sprintf("$%.2f",target_fields['epspxq_ttm']); %>
 		  </div>
 		  
-		  <div class="key-stats pe-lab">Price-to-Earnings:</div>
-		  <div class="key-stats pe-txt">
+		  <div class="key-stats pe-label">Price-to-Earnings:</div>
+		  <div class="key-stats pe-value">
 		    <%= sprintf("%.2f",target_fields['pe']); %>
 		  </div>
 		  
-		  <div class="key-stats pb-lab">Price-to-Book:</div>
-		  <div class="key-stats pb-txt">
+		  <div class="key-stats pb-label">Price-to-Book:</div>
+		  <div class="key-stats pb-value">
 		    <%= sprintf("%.2f",target_fields['pb']); %>
 		  </div>
 
@@ -88,9 +89,9 @@
 	      </div>
 
 	    </div>
-	  </div>
+	  </div> <!-- end of carousel-inner-left -->
 
-	</td>
+	</td> 
 
 	<td class="comparable-table-right-pane">
 
@@ -98,10 +99,6 @@
 
 	    <!-- Carousel items -->
 	    <div id="carousel-inner-right" class="carousel-inner">
-
-
-
-
 	    </div>
 	    
 	    <!-- Carousel nav -->
@@ -141,25 +138,28 @@
 
     <div class="key-stats-body">
 
-      <div class="key-stats mrkcap-lab">Market Capitalization:</div>
-      <div class="key-stats mrkcap-txt"></div>
+      <div class="key-stats mrkcap-label">Market Capitalization:</div>
+      <div class="key-stats mrkcap-value"></div>
       
-      <div class="key-stats price-lab">Price/Share:</div>
-      <div class="key-stats price-txt"></div>
+      <div class="key-stats price-label">Price/Share:</div>
+      <div class="key-stats price-value"></div>
       
-      <div class="key-stats dividend-lab">Dividend:</div>
-      <div class="key-stats dividend-txt"></div>
+      <div class="key-stats dividend-label">Dividend:</div>
+      <div class="key-stats dividend-value"></div>
       
-      <div class="key-stats eps-lab">Earnings/Share:</div>
-      <div class="key-stats eps-txt"></div>
+      <div class="key-stats eps-label">Earnings/Share:</div>
+      <div class="key-stats eps-value"></div>
       
-      <div class="key-stats pe-lab">Price-to-Earnings:</div>
-      <div class="key-stats pe-txt"></div>
+      <div class="key-stats pe-label">Price-to-Earnings:</div>
+      <div class="key-stats pe-value"></div>
       
-      <div class="key-stats pb-lab">Price-to-Book:</div>
-      <div class="key-stats pb-txt"></div>
+      <div class="key-stats pb-label">Price-to-Book:</div>
+      <div class="key-stats pb-value"></div>
 
     </div>
+
+    <div class="chart-grwth"></div>
+    <div class="chart-price"></div>
 
   </div> <!-- end of carousel-item-right-template -->
 

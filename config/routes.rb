@@ -14,7 +14,7 @@ Simsearch::Application.routes.draw do
   get "get_search_results" => "frontdoor#get_search_results"
   get "get_search_summary" => "frontdoor#get_search_summary"
 
-  # get "get_prices" => "api#get_prices"
+  get "get_prices" => "api#get_prices"
   # get "get_performance" => "api#get_performance"
 
   # The priority is based upon order of creation:

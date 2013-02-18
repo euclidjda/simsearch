@@ -1,6 +1,8 @@
 @import "bootstrap";
 @import "bootstrap-responsive";
 
+@import "results";
+
 /*
 This file contains overrides for bootstrapper styles and any media query
 based styling that applies to all style classes we use.
@@ -10,7 +12,11 @@ Any media size specific and resize related rules should be here.
 
 @media (min-width:979px) {
 	.dyna-roller {
-		height: 160px;
+		height: $resultRowHeight;
+	}
+
+	.summary-row {
+		height: $summaryRowHeight;
 	}
 }
 

@@ -1,4 +1,3 @@
-
 var pos_small_icon = "assets/green-outperformance-small.png";
 var neg_small_icon = "assets/red-outperformance-small.png";
 var pos_big_icon   = "assets/green-outperformance-big.png";
@@ -20,51 +19,71 @@ function render_results(search_id_list) {
 	
     });
 
-    $('.epoch').each(function( index ) {
-        var postData = new Object();
+    $('.row').each(function( index ) {
+
         var search_id = $(this).attr('search_id');
 
         start_spinner(search_id);
 
-        postData['search_id'] = search_id;
+        var post_data = new Object();
+        post_data['search_id'] = search_id;
 
-        $.getJSON('get_search_results', postData, function(data) {
+	var json_data = null;
 
-            $('[search_id='+search_id+']').empty();
-
-            if (data.length == 1 && (typeof(data[0])=="string")) {
-		
-        	// If the json API isn't able to get a search result, it only
-        	// returns 1 record that is a string with a message. In that 
-        	// event, we display the message here ...
-
-                $('[search_id='+search_id+']').append(data[0]);
-
-            } else {
-
-                // ... otherwise we process the results here:
-
-                var max_panels = Math.min(3,data.length); // only show three panels
-
-                for (var i=0; i < max_panels; i++) {
-
-		    populate_panels(data,search_id,i);
-
-                }
-            }
-
+	$.ajax({
+	    url:      'get_search_results',
+	    dataType: 'json',
+	    async:    false,
+	    data:     post_data,
+	    success:  function(data) {
+		json_data = data;
+	    }
 	});
 
-    });
+        $('[search_id='+search_id+']').empty();
 
-    $('#comparable-carousel-right').carousel('pause');	
+        if (json_data.length == 1 && (typeof(json_data[0])=="string")) {
+		
+            // If the json API isn't able to get a search result, it only
+            // returns 1 record that is a string with a message. In that 
+            // event, we display the message here ...
+	    
+            $('[search_id='+search_id+']').append(json_data[0]);
+
+        } else {
+
+            // ... otherwise we process the results here:
+            var max_panels = Math.min(3,json_data.length); // only show three panels
+	    
+            for (var i=0; i < max_panels; i++) {
+
+		populate_panels(json_data,search_id,i);
+		
+            }
+        }
+
+    });
+    /***
+    $('#simple-chart').removeAttr('display');
+    $.jqplot('simple-chart',
+	     [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
+
+    **/
+
+    $('#comparable-carousel-right').carousel('pause');
+
+    $('#comparable-carousel-right').bind('slid', function() {
+	draw_charts();
+    });
+	
 
 }
 
 function populate_panels(data,search_id,i) {
     
     var year = data[i].pricedate.substring(0,4);
-    var epoch = get_epoch(year);
+    var row = get_row_from_year(year);
+    var col = i;
 
     // clone the invisible template and drop data into clone
     panel = $('#comparable-panel-template').clone();
@@ -107,11 +126,16 @@ function populate_panels(data,search_id,i) {
     // was cloned was invisible)
     panel.show();
 
-    // TODO: For some reason this is not working properly
-    var item_idx = 3*epoch + i;
     panel.click(function() {
-	$('#comparable-carousel-right').carousel(item_idx);
+
         $('#comparable-modal').modal('show');
+	var idx = 3 * row + col;
+
+	$('#comparable-carousel-right').carousel(idx);
+	$('#comparable-carousel-right').carousel('pause');
+
+	//draw_charts();
+	
     });
 
     // This packs  the panel into the DOM so it can be seenn
@@ -119,7 +143,11 @@ function populate_panels(data,search_id,i) {
 
     // Add to detailed compare
     var detail_item = $('#carousel-item-right-template').clone();
-    detail_item.attr('id','carousel-item-right-' + epoch + '-' + i);
+
+    var detail_item_id = 'carousel-item-right-' + row + '-' + i;
+
+    detail_item.attr('id',detail_item_id);
+
     detail_item.removeAttr('style');
 
     detail_item.find('.company-name').html(data[i].name);
@@ -130,23 +158,23 @@ function populate_panels(data,search_id,i) {
 
     detail_item.find('.date').html(datestr);
 
-    detail_item.find('.mrkcap-txt').html(
+    detail_item.find('.mrkcap-value').html(
 	EGUI.fmtAsNumber(data[i].mrkcap,{fmtstr:"%.0f"})+'M');
 
-    detail_item.find('.price-txt').html(
+    detail_item.find('.price-value').html(
 	EGUI.fmtAsMoney(data[i].price,{fmtstr:"%.2f"}));
     
-    detail_item.find('.dividend-txt')
+    detail_item.find('.dividend-value')
 	.html(sprintf("%s (%s)",
 		      EGUI.fmtAsMoney(data[i].dvpsxm_ttm,
 				      {fmtstr:"%.2f"}),
 		      EGUI.fmtAsNumber(data[i].yield*100,
 				       {fmtstr:"%.1f%%"})));		    
-    detail_item.find('.eps-txt').html(
+    detail_item.find('.eps-value').html(
 	EGUI.fmtAsMoney(data[i].epspxq_ttm,{fmtstr:"%.2f"}));
 
-    detail_item.find('.pe-txt').html(sprintf("%.2f",data[i].pe));
-    detail_item.find('.pb-txt').html(sprintf("%.2f",data[i].pb));
+    detail_item.find('.pe-value').html(sprintf("%.2f",data[i].pe));
+    detail_item.find('.pb-value').html(sprintf("%.2f",data[i].pb));
 
     detail_item.find('.factor-ey')
 	.html('EYd: '+ sprintf("%.2f%%",data[i].ey*100));
@@ -174,10 +202,27 @@ function populate_panels(data,search_id,i) {
 	      EGUI.fmtAsNumber(data[i].momentum*100,
 			       {fmtstr:"%.2f%%"}));
 
-    if (!i && !epoch) detail_item.addClass('active');
+    var price_chart_id = 'chart-price-'+detail_item_id;
+    detail_item.find('.chart-price').attr('id',price_chart_id);
+
+    if (!i && !row) detail_item.addClass('active');
 
     $('#carousel-inner-right').append(detail_item);
 
+}
+
+function draw_charts() {
+
+    var active_item = $('#carousel-inner-right .item.active');
+    var price_chart_id = active_item.find('.chart-price').attr('id');
+
+    var cid = active_item.attr('cid');
+    var sid = active_item.attr('sid');
+    var pricedate = active_item.attr('pricedate');
+
+    // check to see if chart exissts, then draw if it doesn't
+    $.jqplot(price_chart_id,
+	     [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
 
 }
 
@@ -195,7 +240,7 @@ function start_spinner(search_id) {
 	shadow: false // Whether to render a shadow
     });
 
-    spinner.spin(document.getElementById('epoch'+search_id));
+    spinner.spin(document.getElementById('row-'+search_id));
 
 }
 
@@ -217,7 +262,7 @@ function exchange_code_to_name(code,ticker) {
     
 }
 
-function get_epoch(year) {
+function get_row_from_year(year) {
 
     year = parseInt(year);
 
