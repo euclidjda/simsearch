@@ -28,39 +28,40 @@ function render_results(search_id_list) {
         var post_data = new Object();
         post_data['search_id'] = search_id;
 
-	var json_data = null;
+	//var json_data = null;
 
 	$.ajax({
 	    url:      'get_search_results',
 	    dataType: 'json',
-	    async:    false,
+	    async:    true,
 	    data:     post_data,
-	    success:  function(data) {
-		json_data = data;
+	    success:  function(json_data) {
+
+		$('[search_id='+search_id+']').empty();
+
+		if (json_data.length == 1 && (typeof(json_data[0])=="string")) {
+		    
+		    // If the json API isn't able to get a search result, it only
+		    // returns 1 record that is a string with a message. In that 
+		    // event, we display the message here ...
+		    
+		    $('[search_id='+search_id+']').append(json_data[0]);
+
+		} else {
+		    // ... otherwise we process the results here:
+
+		    // only show three panels
+		    var max_panels = Math.min(3,json_data.length); 
+
+		    for (var i=0; i < max_panels; i++) {
+
+			populate_panels(json_data,search_id,i);
+			
+		    }
+		}
+
 	    }
 	});
-
-        $('[search_id='+search_id+']').empty();
-
-        if (json_data.length == 1 && (typeof(json_data[0])=="string")) {
-		
-            // If the json API isn't able to get a search result, it only
-            // returns 1 record that is a string with a message. In that 
-            // event, we display the message here ...
-	    
-            $('[search_id='+search_id+']').append(json_data[0]);
-
-        } else {
-
-            // ... otherwise we process the results here:
-            var max_panels = Math.min(3,json_data.length); // only show three panels
-	    
-            for (var i=0; i < max_panels; i++) {
-
-		populate_panels(json_data,search_id,i);
-		
-            }
-        }
 
     });
 
@@ -146,6 +147,9 @@ function populate_panels(data,search_id,i) {
     var detail_item_id = 'carousel-item-right-' + row + '-' + i;
 
     detail_item.attr('id',detail_item_id);
+    detail_item.attr('cid',data[i].cid);
+    detail_item.attr('sid',data[i].sid);
+    detail_item.attr('pricedate',data[i].pricedate);
 
     detail_item.removeAttr('style');
 
@@ -226,32 +230,63 @@ function draw_charts(side) {
     var sid = active_item.attr('sid');
     var pricedate = active_item.attr('pricedate');
 
+    // alert("cid="+cid+" sid="+sid+" pricedate="+pricedate);
+
     if (!active_item.hasClass('charts-drawn')) {
 
-	draw_growth_chart( cid, sid, pricedate, growth_chart_id );
+	draw_growth_chart( cid, sid, pricedate, growth_chart_id, side );
 
-	draw_price_chart( cid, sid, pricedate, price_chart_id );
+	draw_price_chart( cid, sid, pricedate, price_chart_id, side );
 
 	active_item.addClass('charts-drawn');
     }
 
 }
 
-function draw_growth_chart( cid, sid, pricedate, growth_chart_id ) {
+function draw_growth_chart( cid, sid, pricedate, growth_chart_id, side ) {
+
+    var post_data = {'cid':cid,'sid':sid,'pricedate':pricedate};
+    var json_data = null;
+
+    $.ajax({
+	url:      'get_growth_time_series',
+	dataType: 'json',
+	async:    false,
+	data:     post_data,
+	success:  function(data) {
+	    json_data = data;
+	}
+    });
+
+   // This we will get by snycronous ajax request with cid,sid,datadate
+    var revenue = Array(); //[80,120,115,130]; 
+    var gain    = Array(); //[0,11,12,14];
+    var loss    = Array(); //[14,0,0,0];
+
+    var x_axis_labels = Array(); //['2002','2003','2004','2005'];
+
+
+    for (var i=0; i < json_data.length; i++) {
+
+	var idx = json_data.length-i-1;
+
+	revenue[idx] = json_data[i].sale;
+
+	var profit = json_data[i].opi;
+
+	gain[idx] = (profit >= 0) ? profit : 0;
+	loss[idx] = (profit <  0) ? -profit : 0;
+
+	x_axis_labels[idx] = json_data[i].datadate.substring(0,4);
+
+    }
 
     var series_data = [
         {label:'Revenue',color:'#56617F'},
-        {label:'Net-Income',color:'#7C8FB7'},
-        {label:'Net-Loss',color:'red'}
+        {label:'Operating-Income',color:'#7C8FB7'},
+        {label:'Operating-Loss',color:'red'}
     ];
-
-    // This we will get by snycronous ajax request with cid,sid,datadate
-    var revenue = [100,80,120,115,130]; 
-    var gain    = [10,0,11,12,14];
-    var loss    = [0,14,0,0,0];
-
-    var x_axis_labels = ['2001','2002','2003','2004','2005'];
-
+ 
     $.jqplot(growth_chart_id,[revenue,gain,loss],
 	     {
 		 fontFamily: 'Helvetica',
@@ -287,26 +322,69 @@ function draw_growth_chart( cid, sid, pricedate, growth_chart_id ) {
 		     },
 		     yaxis: {
 			 pad: 1.05,
-			 tickOptions: {formatString: '$%dM'}
+			 tickOptions: {formatString: '$%dM'},
+			 min: 0,
 		     }
 		 }
 	     });
 }
 
-function draw_price_chart( cid, sid, pricedate, price_chart_id ) {
+function draw_price_chart( cid, sid, pricedate, price_chart_id, side ) {
+
+    var post_data = {'cid':cid,'sid':sid,'pricedate':pricedate};
+    var json_data = null;
+
+    $.ajax({
+	url:      'get_price_time_series',
+	dataType: 'json',
+	async:    false,
+	data:     post_data,
+	success:  function(data) {
+	    json_data = data;
+	}
+    });
 
     var series_data = [
-        {label:'Price',color:'#7C8FB7'},
-        {label:'S&P 500',color:'#56617F'},
+        {label:'Price   ',color:'#56617F'},
+        {label:'S&P 500 ',color:'orange'},
     ];
 
-    // This we will get by snycronous ajax request with cid,sid,datadate
-    var stk_series = [['2008-01-15',1],['2008-04-15',2],['2008-07-15',1],
-		      ['2008-10-15',1],['2009-01-15',2],['2009-03-15',1]];
+    var stk_series = new Array();
+    var mrk_series = new Array();
 
-    var mrk_series = [['2008-01-15',2],['2008-04-15',1],['2008-07-15',2],
-		      ['2008-10-15',2],['2009-01-15',1],['2009-03-15',2]];
+    var stk_factor = 1;
+    var mrk_factor = 1;
 
+    // find price date and set values
+    for (var i=0; i < json_data.length; i++) {
+
+	if (json_data[i].mrk_price == null || json_data[i].mrk_price == 0) {
+	    if (i>0)
+		json_data[i].mrk_price = json_data[i-1].mrk_price;
+	}
+
+	if (json_data[i].datadate == pricedate) {
+	    
+	    stk_factor = json_data[i].ajex;
+	    mrk_factor = json_data[i].price/json_data[i].mrk_price;
+	}
+    }
+
+    for(var i=0; i < json_data.length; i++) {
+
+	stk_series[i] = new Array(2);
+	mrk_series[i] = new Array(2);
+
+	stk_series[i][0] = json_data[i].datadate;
+	stk_series[i][1] = (json_data[i].price / json_data[i].ajex) * stk_factor;
+	mrk_series[i][0] = json_data[i].datadate;
+	mrk_series[i][1] = json_data[i].mrk_price * mrk_factor;
+
+    }
+
+    date = new Date(pricedate);
+    date.setYear(1900+date.getYear()+1);   
+    var max_date = date.toISOString().substring(0,10);
 
     $.jqplot(price_chart_id,[stk_series,mrk_series],
 	     {
@@ -318,6 +396,8 @@ function draw_price_chart( cid, sid, pricedate, price_chart_id ) {
 		 },
 		 seriesDefaults:{
 		     shadow: false,
+		     lineWidth: 1.0,
+		     showMarker: false
 		 },
 		 series: series_data,
 		 grid: {
@@ -334,17 +414,19 @@ function draw_price_chart( cid, sid, pricedate, price_chart_id ) {
 		     xaxis:{
 			 renderer:$.jqplot.DateAxisRenderer,
 			 tickOptions:{formatString:'%b %y'},
+			 max: max_date,
 		     },
 		     yaxis: {
 			 pad: 1.05,
-			 tickOptions: {formatString: '$%.2f'}
+			 tickOptions: {formatString: '$%d'},
+			 min: 0,
 		     }
 		 }
 	     });
 }
 
 function start_spinner(search_id) {
-
+    
     // Create the Spinner with options
     var spinner = new Spinner({
 	lines: 12, // The number of lines to draw

@@ -33,10 +33,10 @@ class Search < ActiveRecord::Base
                               :completed   => 0         )
       
       _target.get_matches(_fromdate,
-                          _thrudate,
-                          search.id,
-                          _limit,
-                          method(:search_callback))
+                         _thrudate,
+                         search.id,
+                         _limit,
+                         method(:search_callback))
 
     end
 

@@ -116,7 +116,6 @@ class FrontdoorController < ApplicationController
 
     end
     
-
     render :action => :home
     # streaming ...
     # render :action => :home, :stream => true
@@ -233,33 +232,48 @@ class FrontdoorController < ApplicationController
 
   end
 
-  # 
-  # This method will block if any of the searches in _search_id_list (comma sep
-  # string as it is getting them from client side) are actively running. 
-  #
-  # TODO: JDA & FE are discussing if this is the best approach. It may be 
-  # desirable to do this client side via a polling api. The current approach
-  # may enable denial of service attacks.
-  #
+  def get_price_time_series
 
-  def block_until_searches_are_complete( _search_id_list )
+    _cid = params[:cid]
+    _sid = params[:sid]
+    _pricedate = params[:pricedate]
 
-    (0..40).each do |step| 
+    if !_cid.blank? && !_sid.blank? && !_pricedate.blank?
 
-      count = 100
+      startdate = Date.parse(_pricedate) - 182
+      enddate   = Date.parse(_pricedate) + 366
 
-      # This needs to be uncached or it the result won't change
-      # per loop itteration (ActiveRecord will cache it)
-      Search.uncached {
-        count = Search.where("id IN (" +
-                             _search_id_list+") AND completed = 0").count()
-      }
+      prices = ExPrice::find_by_range(_cid,_sid,startdate,enddate)
 
-      logger.debug "******* COUNT IS #{count}"
-     
-      break if count == 0
- 
-      sleep(2)
+      render :json => prices.to_json
+
+    else
+
+      render :text => 'failed'
+
+    end
+
+  end
+
+  def get_growth_time_series
+
+    _cid = params[:cid]
+    _sid = params[:sid]
+    _pricedate = params[:pricedate]
+
+    if !_cid.blank? && !_sid.blank? && !_pricedate.blank?
+
+      type = 'ANN'
+      fields = ['datadate','sale','opi']
+      limit  = 4
+      fundamentals = ExFundmts::get_time_series(_cid,_sid,_pricedate,type,fields,
+                                                limit)
+
+      render :json => fundamentals.to_json
+
+    else
+
+      render :text => 'failed'
 
     end
 
@@ -286,6 +300,38 @@ private
   def validation_error
     @validation_error
   end
+
+  # 
+  # This method will block if any of the searches in _search_id_list (comma sep
+  # string as it is getting them from client side) are actively running. 
+  #
+  # TODO: JDA & FE are discussing if this is the best approach. It may be 
+  # desirable to do this client side via a polling api. The current approach
+  # may enable denial of service attacks.
+  #
+  def block_until_searches_are_complete( _search_id_list )
+
+    (0..40).each do |step| 
+
+      count = 100
+
+      # This needs to be uncached or it the result won't change
+      # per loop itteration (ActiveRecord will cache it)
+      Search.uncached {
+        count = Search.where("id IN (" +
+                             _search_id_list+") AND completed = 0").count()
+      }
+
+      logger.debug "******* COUNT IS #{count}"
+     
+      break if count == 0
+ 
+      sleep(2)
+
+    end
+
+  end
+
 end
 
 module QueryEM

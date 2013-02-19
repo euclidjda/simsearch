@@ -13,7 +13,10 @@
 	    <div id="carousel-inner-left" class="carousel-inner">
 
 	      <div id="carousel-item-left" 
-		   class="active item comparable-detail-left">
+		   class="active item comparable-detail-left"
+		   cid="<%= target_fields['cid'] %>"
+		   sid="<%= target_fields['sid'] %>"
+		   pricedate="<%= target_fields['pricedate'] %>">
 
 		<div class="company-name"><%= target_fields['name'] %></div>
 		<div class="ticker"><%= target_fields['ticker'] %></div>
@@ -119,7 +122,7 @@
 
   <div id="carousel-item-right-template"
        class="item comparable-detail-right"
-       style="display:none">
+       style="display:none" cid="000000" sid="00" pricedate="1900-01-01">
 
     <div class="company-name"></div>
     <div class="ticker"></div>
