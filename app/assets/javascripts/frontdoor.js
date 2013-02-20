@@ -8,7 +8,8 @@ $(document).ready(function() {
     if (search_id_list) {
 
 	// This function is implemented render_results.js
-        render_results(search_id_list);
+
+	// render_results(search_id_list);
 
     }
 

@@ -1,7 +1,7 @@
 var pos_small_icon = "assets/green-outperformance-small.png";
 var neg_small_icon = "assets/red-outperformance-small.png";
-var pos_big_icon   = "assets/green-outperformance-big.png";
-var neg_big_icon   = "assets/red-outperformance-big.png";
+var pos_big_icon   = "assets/green-outperformance-small.png";
+var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id_list) {
 
