@@ -167,31 +167,35 @@ class FrontdoorController < ApplicationController
 
       search = nil
       
-      block_until_searches_are_complete( _search_id )
+      if are_searches_complete?( _search_id )
       
-      details = SearchDetail.where( :search_id => _search_id )
+        details = SearchDetail.where( :search_id => _search_id )
 
-      details.each { |d|
+        details.each { |d|
 
-        snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
+          snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
 
-        comp_record = snapshot.to_hash()
+          comp_record = snapshot.to_hash()
         
-        comp_record[:distance] = d.dist
-        comp_record[:stk_rtn]  = d.stk_rtn
-        comp_record[:mrk_rtn]  = d.mrk_rtn
+          comp_record[:distance] = d.dist
+          comp_record[:stk_rtn]  = d.stk_rtn
+          comp_record[:mrk_rtn]  = d.mrk_rtn
         
-        result.push(comp_record)
+          result.push(comp_record)
         
-      }
+        }
+
+      else
+
+      end
 
     end
 
     if result.empty?
-      result[0] = "No comaprables for this epoch"
+      render :json => nil.to_json
+    else
+      render :json => result.to_json
     end
-
-    render :json => result.to_json
 
   end
 
@@ -202,31 +206,36 @@ class FrontdoorController < ApplicationController
 
   def get_search_summary
 
+    result = Hash::new()
+    
     _search_id_list = params[:search_id_list]
     
-    block_until_searches_are_complete( _search_id_list )
+    if are_searches_complete?( _search_id_list )
 
-    # TODO: JDA: Validate search_id_list before SQL
-    search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
+      search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
+      
+      perfs = Array::new()
+      weight_sum = 0
+      values_sum = 0
+      
+      search_details.each { |detail|
+        
+        next unless detail.dist > 0
+        
+        weight = Math.exp( -detail.dist )
+        
+        values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn ) 
+        weight_sum += weight
+        
+      }
 
-    perfs = Array::new()
-    weight_sum = 0
-    values_sum = 0
+      result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
 
-    search_details.each { |detail|
+    else
+      
+      result = nil
 
-      next unless detail.dist > 0
-
-      weight = Math.exp( -detail.dist )
-
-      values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn ) 
-      weight_sum += weight
-
-    }
-
-    result = Hash::new()
-
-    result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
+    end
 
     render :json => result.to_json
 
@@ -299,6 +308,19 @@ private
 
   def validation_error
     @validation_error
+  end
+
+  def are_searches_complete?( _search_id_list )
+
+    count = 1
+
+    Search.uncached {
+      count = Search.where("id IN (" +
+                           _search_id_list+") AND completed = 0").count()
+    }
+
+    (count == 0) ? true : false
+
   end
 
   # 

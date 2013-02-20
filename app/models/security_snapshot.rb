@@ -203,7 +203,7 @@ class SecuritySnapshot < Tableless
     username = config[Rails.env]["username"]
     password = config[Rails.env]["password"]
 
-    puts "********** host=#{host} databaase=#{database} username=#{username}"
+    logger.debug "********** host=#{host} databaase=#{database} username=#{username}"
 
     client1 = Mysql2::EM::Client.new(:host     => host     ,
                                      :database => database ,

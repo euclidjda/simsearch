@@ -46,15 +46,17 @@
 <div id="basic-chart"></div>
 
 <% first_row = true %>
+<% row_num = 0 %>
+
 <% FrontdoorHelper::epochs.each do |ep| %>
+        <% row_num += 1 %>
 	
 	<% if !first_row %>
 		</div> <!-- row fluid -->
 		<% first_row = false %>
 	<% end %>
 
-  	<% row = { :search_id => search_ids[ep] } %>
-
+  	<% row = { :search_id => search_ids[ep], :row_num => row_num } %>
   	<%= render :partial => "row", :object => row %>
 
 <% end %>
