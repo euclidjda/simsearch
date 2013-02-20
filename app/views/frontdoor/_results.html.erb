@@ -1,32 +1,46 @@
 <div class="span10">
   <div class="row-fluid summary-row">
-    <span class="span1 left-bar">
-      <span class="today-tag">
+    <div class="span1 left-bar">
+      <div class="today-tag">
         TODAY
-      </span>
-      <span class="today-date">
+      </div>
+      <div class="today-date">
         <% t = Time.now %>
         <%= sprintf("%02d", t.month) + "." + sprintf("%02d", t.day) + "." + sprintf("%02d", t.year - 2000) %>  
-      </span>
-    </span> 
-    <span class="span2 result-stats" id="target-info">
-      <div class="panel-header">
-        <span> <%= target_fields['name'] %> (<%= target_fields['ticker'] %>) </span>
       </div>
+    </div>
+ 
+
+    <div class="target-container">
+
+      <span class="date-label summary-label">JAN 13</span>
+
+      <div class="target-name"><%= target_fields['name'] %> </div>
+      
+      <div class="target-info">
+        <b>NASDAQ</b>: MANT - Jan 2013<br>
+        <b>Market Cap</b>: 850M<br>
+        <b>P/E</b>: 14.59 <b>Price</b>: 23.02
+      </div>
+    </div>
+
+<!--         
       <div>
         <% price_date = target_fields['pricedate'] %>
         <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
-      	Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
+        Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
         P/E: <%= sprintf("%.2f",target_fields['pe']) %><br>
       </div>
-    </span>
+
     <span class="span2 result-stats" id ="result-summary">
       Average 1 Year Relative Performance: 
       <div id="median-perf">
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
       </div>
-    </span>
+    </span> 
+
+-->
   </div> <!-- summary-row -->
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
