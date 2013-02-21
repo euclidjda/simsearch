@@ -218,7 +218,7 @@ class SecuritySnapshot < Tableless
     
     logger.debug sqlstr
 
-    defer1 = client1.query sqlstr
+    defer1 = client1.query(sqlstr,:stream => true)
 
     defer1.callback do |result|
       logger.debug "**** Calling callback for search_id: #{_search_id}"
