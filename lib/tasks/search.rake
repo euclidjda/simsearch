@@ -8,27 +8,31 @@ namespace :search do
 
     puts("***** logging from with search:exec #{_search_id} #{_limit}")
 
-    # TODO: Assert all values above
+    if !_search_id.nil?
 
-    search = Search.where( :id => _search_id ).first
+      # TODO: Assert all values above
 
-    target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate)
-    
-    candidates = Array::new()
+      search = Search.where( :id => _search_id ).first
 
-    target.each_match( search.fromdate, search.thrudate ) { |match|
+      target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate)
+      
+      candidates = Array::new()
+      
+      target.each_match( search.fromdate, search.thrudate ) { |match|
+        
+        dist = target.distance( match )
+        next if (dist < 0)
+        candidates.push( { :match => match, :dist => dist } )
+        
+      }
 
-      dist = target.distance( match )
-      next if (dist < 0)
-      candidates.push( { :match => match, :dist => dist } )
+      # debug info line here to make sure we are rendering the right number on screen.
+      puts "********** #{candidates.length}   ***********"
+      
+      search.completed = 1
+      search.save()
 
-    }
-
-    # debug info line here to make sure we are rendering the right number on screen.
-    puts "********** #{candidates.length}   ***********"
-
-    search.completed = 1
-    search.save()
+    end
 
   end
 
