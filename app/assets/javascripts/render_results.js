@@ -23,8 +23,10 @@ function render_results(search_id_list) {
 	    } else {
 
 		var perf = data.summary;
-	    
-		if (perf >= 0) {
+		
+		if (perf == null) {
+		    $("#summary-num").html("N/A");
+		} else if (perf >= 0) {
 		    $("#summary-image").attr("src",pos_big_icon);
 		    $("#summary-num").html(sprintf("%.2f%%",perf));
 		} else {
@@ -56,16 +58,24 @@ function render_results(search_id_list) {
 
 		    if (json_data != null) {
 
-			var max_panels = Math.min(3,json_data.length); 
+			if (json_data.length) {
 
-			for (var i=0; i < max_panels; i++) {
+			    var max_panels = Math.min(3,json_data.length); 
 
-			    populate_panels(json_data,search_id,i);
+			    for (var i=0; i < max_panels; i++) {
+				
+				populate_panels(json_data,search_id,i);
 			    
+			    }
+
+			} else {
+			    
+			    $('[search_id='+search_id+']')
+				.html("No comparables found.");
+
 			}
 
 		    }
-
 
 		});
 

@@ -165,8 +165,6 @@ class FrontdoorController < ApplicationController
 
     if !_search_id.blank?
 
-      search = nil
-      
       if are_searches_complete?( _search_id )
       
         details = SearchDetail.where( :search_id => _search_id )
@@ -187,11 +185,13 @@ class FrontdoorController < ApplicationController
 
       else
 
+        result = nil
+
       end
 
     end
 
-    if result.empty?
+    if result.nil?
       render :json => nil.to_json
     else
       render :json => result.to_json

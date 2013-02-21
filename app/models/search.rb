@@ -23,6 +23,7 @@ class Search < ActiveRecord::Base
 
     if search.nil?
 
+
       # if search has not been run, then we need to execute it
       search = Search.create( :cid         => cid       ,
                               :sid         => sid       ,
@@ -31,12 +32,16 @@ class Search < ActiveRecord::Base
                               :thrudate    => _thrudate ,
                               :search_type => _type     ,
                               :completed   => 0         )
-      
-      _target.get_matches(_fromdate,
-                         _thrudate,
-                         search.id,
-                         _limit,
-                         method(:search_callback))
+
+
+      system("rake search:exec search_id=#{search.id} limit=#{_limit} &")
+
+      # 
+      # _target.get_matches(_fromdate,
+      #                   _thrudate,
+      #                   search.id,
+      #                   _limit,
+      #                   method(:search_callback))
 
     end
 
