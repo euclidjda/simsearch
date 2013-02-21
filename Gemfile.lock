@@ -46,6 +46,7 @@ GEM
       activerecord (>= 2.1.0, < 4)
       delayed_job (~> 3.0)
     erubis (2.7.0)
+    eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
     hike (1.2.1)
@@ -121,6 +122,7 @@ DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 3.2.1)
   delayed_job_active_record
+  eventmachine
   mysql2 (~> 0.3.11)
   nifty-generators
   rack (= 1.4.1)
