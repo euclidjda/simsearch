@@ -12,7 +12,20 @@ namespace :search do
 
     search = Search.where( :id => _search_id ).first
 
-    sleep(3)
+    target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate)
+    
+    candidates = Array::new()
+
+    target.each_match( search.fromdate, search.thrudate ) { |match|
+
+      dist = target.distance( match )
+      next if (dist < 0)
+      candidates.push( { :match => match, :dist => dist } )
+
+    }
+
+    # debug info line here to make sure we are rendering the right number on screen.
+    puts "********** #{candidates.length}   ***********"
 
     search.completed = 1
     search.save()

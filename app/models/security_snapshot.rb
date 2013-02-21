@@ -175,6 +175,50 @@ class SecuritySnapshot < Tableless
     @fields[_name]
   end
 
+  def each_match( _start_date, _end_date )
+  
+    if !_start_date.blank? && !_end_date.blank?
+
+      # TODO: all of the following needs validation
+      target_ind = @fields['idxind']
+      target_new = @fields['idxnew']
+
+      price = @fields['price']  ? Float(@fields['price'])      : nil
+      csho  = @fields['csho']   ? Float(@fields['csho'])       : nil
+      eps   = @fields['epspxq'] ? Float(@fields['epspxq_ttm']) : nil
+
+      target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
+
+      logger.debug "***** start_date = #{_start_date} "+
+        "end_date = #{_end_date} target_cap = #{target_cap} "
+
+      sqlstr = SecuritySnapshot::get_match_sql(@cid,
+                                               target_ind,
+                                               target_new,
+                                               target_cap,
+                                               _start_date,
+                                               _end_date)
+      
+      results = Array::new()
+
+      ActiveRecord::Base.uncached() {
+
+        results = ActiveRecord::Base.connection.select_all(sqlstr) 
+
+      }
+
+      logger.debug "***** sql query done, running scan ... "
+
+      results.each { |record|
+
+        yield SecuritySnapshot::new( record )
+
+      }
+    
+    end
+
+  end
+
   # include this so we can use the event machine.
   require 'mysql2/em'
 
@@ -239,7 +283,11 @@ class SecuritySnapshot < Tableless
 
     logger.debug " ****  Sent the query for search_id: #{_search_id}"
 
-  end 
+  end
+
+  def get_comparables
+    
+  end
 
   def to_s
 
