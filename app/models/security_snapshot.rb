@@ -215,6 +215,8 @@ class SecuritySnapshot < Tableless
 
       }
     
+      results = nil
+
     end
 
   end

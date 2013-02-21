@@ -23,7 +23,6 @@ class Search < ActiveRecord::Base
 
     if search.nil?
 
-
       # if search has not been run, then we need to execute it
       search = Search.create( :cid         => cid       ,
                               :sid         => sid       ,
@@ -51,9 +50,13 @@ class Search < ActiveRecord::Base
     target.each_match( self.fromdate, self.thrudate ) { |match|
       
       dist = target.distance( match )
+
       next if (dist < 0)
-      candidates.push( { :match => match, :dist => dist } )
-      
+
+      candidates.push( { :cid       => match.get_field('cid'), 
+                         :sid       => match.get_field('sid'),
+                         :pricedate => match.get_field('pricedate'),
+                         :distance  => dist  } )
     }
 
     # debug info line here to make sure we are rendering the right number on screen.
@@ -84,7 +87,10 @@ class Search < ActiveRecord::Base
 
       dist = _target.distance( match )
       next if (dist < 0)
-      candidates.push( { :match => match, :dist => dist } )
+      candidates.push( { :cid       => match.get_field('cid'), 
+                         :sid       => match.get_field('sid'),
+                         :pricedate => match.get_field('pricedate'),
+                         :distance  => dist } )
 
     }
 
