@@ -199,7 +199,7 @@ class SecuritySnapshot < Tableless
                                                _start_date,
                                                _end_date)
       
-      results = Array::new()
+      results = nil
 
       ActiveRecord::Base.uncached() {
 
@@ -220,7 +220,7 @@ class SecuritySnapshot < Tableless
   end
 
   # include this so we can use the event machine.
-  require 'mysql2/em'
+  # require 'mysql2/em'
 
   def get_matches( _start_date, _end_date, _search_id, _limit, _the_callback)
 
@@ -283,10 +283,6 @@ class SecuritySnapshot < Tableless
 
     logger.debug " ****  Sent the query for search_id: #{_search_id}"
 
-  end
-
-  def get_comparables
-    
   end
 
   def to_s

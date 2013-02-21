@@ -36,14 +36,6 @@ class Search < ActiveRecord::Base
 
       search.delay.create_search_details()
 
-      # system("rake search:exec search_id=#{search.id} limit=#{_limit} &")
-      # 
-      # _target.get_matches(_fromdate,
-      #                   _thrudate,
-      #                   search.id,
-      #                   _limit,
-      #                   method(:search_callback))
-
     end
 
     return search
@@ -66,6 +58,8 @@ class Search < ActiveRecord::Base
 
     # debug info line here to make sure we are rendering the right number on screen.
     puts "********** #{candidates.length}   ***********"
+
+    candidates = nil
     
     self.completed = 1
     self.save()
