@@ -1,6 +1,6 @@
 class SecuritySnapshot < Tableless
 
-  attr_reader :cid, :sid, :pricedate, :fields, :factors, :factor_keys
+  attr_reader :cid, :sid, :pricedate, :fields, :factor_keys
 
   def initialize( _fields )
 
@@ -12,7 +12,7 @@ class SecuritySnapshot < Tableless
     @cid       = get_field('cid')
     @sid       = get_field('sid')
     @pricedate = get_field('pricedate')
-    @factors   = Hash::new()
+    # @factors   = Hash::new()
     @defer1    = nil;
 
     csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
@@ -112,8 +112,8 @@ class SecuritySnapshot < Tableless
 
   def self.distance(_obj0,_obj1)
 
-    vec0 = _obj0.class == SecuritySnapshot ? _obj0.factor_array : _obj0
-    vec1 = _obj1.class == SecuritySnapshot ? _obj1.factor_array : _obj1
+    vec0 = (_obj0.class == SecuritySnapshot) ? _obj0.factor_array : _obj0
+    vec1 = (_obj1.class == SecuritySnapshot) ? _obj1.factor_array : _obj1
 
     dist = 0
     dims = 0
@@ -368,7 +368,7 @@ class SecuritySnapshot < Tableless
       factor_value = -1.0 if factor_value < -1.0
     end
 
-    @factors[_factor_key] = factor_value
+    # @factors[_factor_key] = factor_value
 
     return factor_value
 

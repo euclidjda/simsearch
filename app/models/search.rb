@@ -45,32 +45,71 @@ class Search < ActiveRecord::Base
 
     target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
     
-    candidates = Array::new()
+    # TODO: all of the following needs validation
+    target_ind = target.get_field('idxind')
+    target_new = target.get_field('idxnew')
     
-    target.get_matches( self.fromdate, self.thrudate ).each { |row|
+    price = target.get_field('price')  ? Float(target.get_field('price'))      : nil
+    csho  = target.get_field('csho')   ? Float(target.get_field('csho'))       : nil
+    eps   = target.get_field('epspxq') ? Float(target.get_field('epspxq_ttm')) : nil
+    
+    target_cap = target.get_field('mrkcap') ? Float(target.get_field('mrkcap')).round() : nil
+    
+    fromdate = self.fromdate
+    thrudate = self.fromdate+500
+
+    candidates = Array::new()
+
+    while (1) do
+
+      logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
+
+      thrudate = self.thrudate if ((thrudate <=> self.thrudate) == 1)
+
+      sqlstr = SecuritySnapshot::get_match_sql(target.cid,
+                                               target_ind,
+                                               target_new,
+                                               target_cap,
+                                               fromdate,
+                                               thrudate)
       
-      match = SecuritySnapshot::new(row)
+      results = nil
+      
+      ActiveRecord::Base.uncached() {
+        
+        results = ActiveRecord::Base.connection.select_all(sqlstr) 
+        
+      }
+      
+      results.each { |row|
+        
+        match = SecuritySnapshot::new(row)
+        
+        dist = target.distance( match )
+        
+        next if (dist < 0)
+        
+        candidates.push( { :cid       => match.get_field('cid'), 
+                           :sid       => match.get_field('sid'),
+                           :pricedate => match.get_field('pricedate'),
+                           :distance  => dist  } )
+        
+      }
 
-      dist = target.distance( match )
+      break if (thrudate == self.thrudate)
 
-      next if (dist < 0)
+      fromdate = thrudate+1
+      thrudate = thrudate+500
 
-      candidates.push( { :cid       => match.get_field('cid'), 
-                         :sid       => match.get_field('sid'),
-                         :pricedate => match.get_field('pricedate'),
-                         :distance  => dist  } )
-
-      match = nil
-    }
+    end
 
     # debug info line here to make sure we are rendering the right number on screen.
-    puts "********** #{candidates.length}   ***********"
+    logger.debug "********** #{candidates.length}   ***********"
 
     candidates = nil
     
     self.completed = 1
     self.save()
-
 
   end
 
