@@ -26,16 +26,21 @@
       
     </div>
 
-<!--         
+    <!--         
       <div>
         <% price_date = target_fields['pricedate'] %>
         <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
         Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
         P/E: <%= sprintf("%.2f",target_fields['pe']) %><br>
       </div>
--->
+      -->
 
-    <span id="result-summary" class="summary-row">
+   <!-- HEADS UP: THE ELEMENTS BELOW ARE POPULATED BY THE SEARCH RESULTS -->
+   <!-- IF YOU CHANGE THIS MARKUP, MAKE SURE YOU KEEP THE THE TWO -->
+   <!-- SPANS WITH IDS summary-image AND summary-num. render_results.js  -->
+   <!-- REFERENCES THEM -->
+
+   <span id="result-summary" class="summary-row">
     Average 1 Year Relative Performance: 
     <span id="median-perf">
     <span><img id="summary-image" src=""></img></span>

@@ -224,10 +224,10 @@ class SecuritySnapshot < Tableless
       logger.debug "**** Calling callback for search_id: #{_search_id}"
 
       match_results = Hash::new
-      match_results[:search_id] = _search_id
-      match_results[:limit] = _limit
+      match_results[:search_id]   = _search_id
+      match_results[:limit]       = _limit
       match_results[:result_rows] = result
-      match_results[:target] = self
+      match_results[:target]      = self
 
       _the_callback.call match_results
     end
@@ -239,7 +239,6 @@ class SecuritySnapshot < Tableless
 
     logger.debug " ****  Sent the query for search_id: #{_search_id}"
 
-    # results = ActiveRecord::Base.connection.select_all(sqlstr) 
   end 
 
   def to_s
