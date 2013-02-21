@@ -34,8 +34,9 @@ class Search < ActiveRecord::Base
                               :completed   => 0         )
 
 
-      system("rake search:exec search_id=#{search.id} limit=#{_limit} &")
+      search.delay.create_search_details()
 
+      # system("rake search:exec search_id=#{search.id} limit=#{_limit} &")
       # 
       # _target.get_matches(_fromdate,
       #                   _thrudate,
@@ -46,6 +47,29 @@ class Search < ActiveRecord::Base
     end
 
     return search
+
+  end
+
+  def create_search_details
+
+    target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
+    
+    candidates = Array::new()
+    
+    target.each_match( self.fromdate, self.thrudate ) { |match|
+      
+      dist = target.distance( match )
+      next if (dist < 0)
+      candidates.push( { :match => match, :dist => dist } )
+      
+    }
+
+    # debug info line here to make sure we are rendering the right number on screen.
+    puts "********** #{candidates.length}   ***********"
+    
+    self.completed = 1
+    self.save()
+
 
   end
 
