@@ -47,8 +47,10 @@ class Search < ActiveRecord::Base
     
     candidates = Array::new()
     
-    target.each_match( self.fromdate, self.thrudate ) { |match|
+    target.get_matches( self.fromdate, self.thrudate ).each { |row|
       
+      match = SecuritySnapshot::new(row)
+
       dist = target.distance( match )
 
       next if (dist < 0)
@@ -57,6 +59,8 @@ class Search < ActiveRecord::Base
                          :sid       => match.get_field('sid'),
                          :pricedate => match.get_field('pricedate'),
                          :distance  => dist  } )
+
+      match = nil
     }
 
     # debug info line here to make sure we are rendering the right number on screen.

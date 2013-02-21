@@ -175,7 +175,7 @@ class SecuritySnapshot < Tableless
     @fields[_name]
   end
 
-  def each_match( _start_date, _end_date )
+  def get_matches( _start_date, _end_date )
   
     if !_start_date.blank? && !_end_date.blank?
 
@@ -208,14 +208,8 @@ class SecuritySnapshot < Tableless
       }
 
       logger.debug "***** sql query done, running scan ... "
-
-      results.each { |record|
-
-        yield SecuritySnapshot::new( record )
-
-      }
-    
-      results = nil
+      
+      return results;
 
     end
 
@@ -224,7 +218,7 @@ class SecuritySnapshot < Tableless
   # include this so we can use the event machine.
   # require 'mysql2/em'
 
-  def get_matches( _start_date, _end_date, _search_id, _limit, _the_callback)
+  def get_matches_old( _start_date, _end_date, _search_id, _limit, _the_callback)
 
     # TODO: all of the following needs validation
     target_ind = @fields['idxind']
