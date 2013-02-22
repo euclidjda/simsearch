@@ -1,10 +1,12 @@
 class SecuritySnapshot < Tableless
 
-  attr_reader :cid, :sid, :pricedate, :fields, :factors, :factor_keys
+  @@factor_weights = [ 100, 50, 1, 1, 1, 25]
+
+  attr_reader :cid, :sid, :pricedate, :fields, :factor_keys
 
   def initialize( _fields )
 
-    @factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
+    @factor_keys    = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
@@ -12,7 +14,6 @@ class SecuritySnapshot < Tableless
     @cid       = get_field('cid')
     @sid       = get_field('sid')
     @pricedate = get_field('pricedate')
-    @factors   = Hash::new()
     @defer1    = nil;
 
     csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
@@ -112,8 +113,8 @@ class SecuritySnapshot < Tableless
 
   def self.distance(_obj0,_obj1)
 
-    vec0 = _obj0.class == SecuritySnapshot ? _obj0.factor_array : _obj0
-    vec1 = _obj1.class == SecuritySnapshot ? _obj1.factor_array : _obj1
+    vec0 = (_obj0.class == SecuritySnapshot) ? _obj0.factor_array : _obj0
+    vec1 = (_obj1.class == SecuritySnapshot) ? _obj1.factor_array : _obj1
 
     dist = 0
     dims = 0
@@ -121,11 +122,12 @@ class SecuritySnapshot < Tableless
     vec0.each_with_index do |val0,index|
 
       val1 = vec1[index]
-      
+      wght = @@factor_weights[index]
+
       next if val0.nil?
 
       if !val1.nil?
-        dist += ( val0 - val1 ) * ( val0 - val1 )
+        dist += wght * ( val0 - val1 ) * ( val0 - val1 )
         dims += 1
       else
         dist = -1
@@ -174,59 +176,6 @@ class SecuritySnapshot < Tableless
   def get_field( _name )
     @fields[_name]
   end
-
-  # include this so we can use the event machine.
-  require 'mysql2/em'
-
-  def get_matches( _start_date, _end_date, _search_id, _limit, _the_callback)
-
-      # TODO: all of the following needs validation
-      target_ind = @fields['idxind']
-      target_new = @fields['idxnew']
-
-      price = @fields['price']  ? Float(@fields['price'])      : nil
-      csho  = @fields['csho']   ? Float(@fields['csho'])       : nil
-      eps   = @fields['epspxq'] ? Float(@fields['epspxq_ttm']) : nil
-
-      target_cap = @fields['mrkcap'] ? Float(@fields['mrkcap']).round() : nil
-
-      logger.debug "***** SQL QUERY: start_date = #{_start_date}" +
-      " end_date = #{_end_date} target_cap = #{target_cap} "
-
-      sqlstr = SecuritySnapshot::get_match_sql(@cid,
-                                               target_ind,target_new,target_cap,
-                                               _start_date,_end_date)
-
-      # TODO: FE: This is ugly. Need to specify this config outside of code.
-      client1 = Mysql2::EM::Client.new(:host => 'localhost', 
-                                       :username => 'root' , 
-                                       :database => 'simsearchdev') 
-      
-      logger.debug sqlstr
-
-      defer1 = client1.query sqlstr
-
-      defer1.callback do |result|
-        logger.debug "**** Calling callback for search_id: #{_search_id}"
-
-        match_results = Hash::new
-        match_results[:search_id] = _search_id
-        match_results[:limit] = _limit
-        match_results[:result_rows] = result
-        match_results[:target] = self
-
-        _the_callback.call match_results
-      end
-
-      defer1.errback do |err|
-        logger.error "Problem inserting into database: "+
-        "#{err.inspect} for search_id: #{_search_id}"
-      end
-
-      logger.debug " ****  Sent the query for search_id: #{_search_id}"
-
-      # results = ActiveRecord::Base.connection.select_all(sqlstr) 
-  end 
 
   def to_s
 
@@ -315,7 +264,7 @@ class SecuritySnapshot < Tableless
       factor_value = -1.0 if factor_value < -1.0
     end
 
-    @factors[_factor_key] = factor_value
+    # @factors[_factor_key] = factor_value
 
     return factor_value
 

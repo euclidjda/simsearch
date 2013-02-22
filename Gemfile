@@ -11,6 +11,8 @@ gem "unicorn", "4.5.0"
 
 gem 'rails3-jquery-autocomplete'
 
+gem 'delayed_job_active_record'
+
 # won't be necessary once the data model settles in, keeping it here for now.
 gem 'nifty-generators' 
 

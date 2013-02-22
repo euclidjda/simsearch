@@ -31,12 +31,9 @@ class Search < ActiveRecord::Base
                               :thrudate    => _thrudate ,
                               :search_type => _type     ,
                               :completed   => 0         )
-      
-      _target.get_matches(_fromdate,
-                         _thrudate,
-                         search.id,
-                         _limit,
-                         method(:search_callback))
+
+
+      search.delay.create_search_details(_limit)
 
     end
 
@@ -44,60 +41,90 @@ class Search < ActiveRecord::Base
 
   end
 
-  def self.search_callback(_result_hash)
+  def create_search_details(_limit)
 
-    # logger.debug "***** #{cid} #{sid} #{pricedate} #{fromdate} #{thrudate} "
-
-    _target    = _result_hash[:target]
-    _rows      = _result_hash[:result_rows]
-    _search_id = _result_hash[:search_id]
-    _limit     = _result_hash[:limit]
+    target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
+    
+    # TODO: all of the following needs validation
+    target_ind = target.get_field('idxind')
+    target_new = target.get_field('idxnew')
+    
+    price = target.get_field('price')  ? Float(target.get_field('price'))      : nil
+    csho  = target.get_field('csho')   ? Float(target.get_field('csho'))       : nil
+    eps   = target.get_field('epspxq') ? Float(target.get_field('epspxq_ttm')) : nil
+    
+    target_cap = target.get_field('mrkcap') ? Float(target.get_field('mrkcap')).round() : nil
+    
+    fromdate = self.fromdate
+    thrudate = self.fromdate+1000
 
     candidates = Array::new()
 
-    _rows.each { |row|
+    while (1) do
+
+      logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
+
+      thrudate = self.thrudate if ((thrudate <=> self.thrudate) == 1)
+
+      sqlstr = SecuritySnapshot::get_match_sql(target.cid,
+                                               target_ind,
+                                               target_new,
+                                               target_cap,
+                                               fromdate,
+                                               thrudate)
       
-      match = SecuritySnapshot::new(row)
+      results = nil
+      
+      ActiveRecord::Base.uncached() {
+        
+        results = ActiveRecord::Base.connection.select_all(sqlstr) 
+        
+      }
+      
+      results.each { |row|
+        
+        match = SecuritySnapshot::new(row)
+        
+        dist = target.distance( match )
+        
+        next if (dist < 0)
+        
+        candidates.push( { :cid       => match.get_field('cid'), 
+                           :sid       => match.get_field('sid'),
+                           :pricedate => match.get_field('pricedate'),
+                           :distance  => dist  } )
+        
+      }
 
-      dist = _target.distance( match )
-      next if (dist < 0)
-      candidates.push( { :match => match, :dist => dist } )
+      break if (thrudate == self.thrudate)
 
-    }
+      fromdate = thrudate+1
+      thrudate = thrudate+1000
+
+    end
+
+    # debug info line here to make sure we are rendering the right number on screen.
+    logger.debug "********** #{candidates.length}   ***********"
 
     comps = Search::consolidate_results( candidates, _limit )
     
+    candidates = nil
+
     comps.each { |c|
 
-      ccid  = c['cid']
-      csid  = c['sid']
-      cdate = c['pricedate']
-      cdist = c['distance']
-      cstk  = c['stk_rtn']
-      cmrk  = c['mrk_rtn']
-
-      logger.debug "****** #{_search_id} #{ccid} #{csid} #{cdate} #{cdist}"
-
-      SearchDetail::create( :search_id => _search_id ,
-                            :cid       => ccid       ,
-                            :sid       => csid       ,
-                            :pricedate => cdate      ,
-                            :dist      => cdist      ,
-                            :stk_rtn   => cstk       ,
-                            :mrk_rtn   => cmrk       )
+      SearchDetail::create( :search_id => self.id       ,
+                            :cid       => c[:cid]       ,
+                            :sid       => c[:sid]       ,
+                            :pricedate => c[:pricedate] ,
+                            :dist      => c[:distance]  ,
+                            :stk_rtn   => c[:stk_rtn]   ,
+                            :mrk_rtn   => c[:mrk_rtn]   )
 
       
     }
 
-    search = Search.where( :id => _search_id ).first
-
-    if !search.nil?
-      search.completed = 1
-      search.save()
-    else
-      logger.debug "******* Couldn't find searches id=#{_search_id}"
-    end
-
+    self.completed = 1
+    self.save()
 
   end
 
@@ -106,23 +133,20 @@ class Search < ActiveRecord::Base
     # debug info line here to make sure we are rendering the right number on screen.
     # puts "********** #{distances.length}   ***********"
     # We are guaranteed to have more than one distance in the array here. Sort it.
-    _candidates.sort! { |a,b| a[:dist] <=> b[:dist] }
+    _candidates.sort! { |a,b| a[:distance] <=> b[:distance] }
     
     comps_array = Array::new()
     cid_touched = Hash::new()
     
     _candidates.each { |item|
       
-      cid = item[:match].cid
+      cid = item[:cid]
       
       # only return limit number matches
       break if (comps_array.length >= _limit)
       next if cid_touched.has_key?(cid)
       
-      fields = item[:match].fields()
-      fields['distance'] = item[:dist]
-      
-      comps_array.push(fields)
+      comps_array.push(item)
       
       cid_touched[cid] = 1
 
@@ -133,10 +157,10 @@ class Search < ActiveRecord::Base
     
     comps_array.each { |comp|
       
-      prices = ExPrice::find_by_range(comp['cid'],
-                                      comp['sid'],
-                                      comp['pricedate'].to_s,
-                                      (comp['pricedate']+365).to_s)
+      prices = ExPrice::find_by_range(comp[:cid],
+                                      comp[:sid],
+                                      comp[:pricedate].to_s,
+                                      (comp[:pricedate]+365).to_s)
       
       first = prices.first
       last  = prices.last
@@ -146,14 +170,14 @@ class Search < ActiveRecord::Base
       mrk_price0 = first.mrk_price
       mrk_price1 = last.mrk_price
       
-      comp['stk_rtn'] = 100 * (stk_price1/stk_price0 - 1)
+      comp[:stk_rtn] = 100 * (stk_price1/stk_price0 - 1)
       
       # TODO: JDA: Need to fix this so that market price never
       # returns nil. We need to make market prices daily in ex_update
       if !mrk_price0.nil? && !mrk_price1.nil?
-        comp['mrk_rtn'] = 100 * (mrk_price1/mrk_price0 - 1)
+        comp[:mrk_rtn] = 100 * (mrk_price1/mrk_price0 - 1)
       else
-        comp['mrk_rtn'] = 0
+        comp[:mrk_rtn] = 0
       end
       
     }

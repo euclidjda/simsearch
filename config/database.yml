@@ -22,8 +22,9 @@ test:
 production:
   adapter: mysql2
   encoding: utf8
-  database: simsearch
+  database: heroku_6ed36d4f0d78c47
   pool: 5
-  username: root
-  password:
+  username: be1b32b68cb76d
+  password: 8fc1370f
+  host: us-cdbr-east-03.cleardb.com
   socket: /tmp/mysql.sock

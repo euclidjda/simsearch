@@ -165,33 +165,37 @@ class FrontdoorController < ApplicationController
 
     if !_search_id.blank?
 
-      search = nil
+      if are_searches_complete?( _search_id )
       
-      block_until_searches_are_complete( _search_id )
-      
-      details = SearchDetail.where( :search_id => _search_id )
+        details = SearchDetail.where( :search_id => _search_id )
 
-      details.each { |d|
+        details.each { |d|
 
-        snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
+          snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
 
-        comp_record = snapshot.to_hash()
+          comp_record = snapshot.to_hash()
         
-        comp_record[:distance] = d.dist
-        comp_record[:stk_rtn]  = d.stk_rtn
-        comp_record[:mrk_rtn]  = d.mrk_rtn
+          comp_record[:distance] = d.dist
+          comp_record[:stk_rtn]  = d.stk_rtn
+          comp_record[:mrk_rtn]  = d.mrk_rtn
         
-        result.push(comp_record)
+          result.push(comp_record)
         
-      }
+        }
+
+      else
+
+        result = nil
+
+      end
 
     end
 
-    if result.empty?
-      result[0] = "No comaprables for this epoch"
+    if result.nil?
+      render :json => nil.to_json
+    else
+      render :json => result.to_json
     end
-
-    render :json => result.to_json
 
   end
 
@@ -202,31 +206,36 @@ class FrontdoorController < ApplicationController
 
   def get_search_summary
 
+    result = Hash::new()
+    
     _search_id_list = params[:search_id_list]
     
-    block_until_searches_are_complete( _search_id_list )
+    if are_searches_complete?( _search_id_list )
 
-    # TODO: JDA: Validate search_id_list before SQL
-    search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
+      search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
+      
+      perfs = Array::new()
+      weight_sum = 0
+      values_sum = 0
+      
+      search_details.each { |detail|
+        
+        next unless detail.dist > 0
+        
+        weight = Math.exp( -detail.dist )
+        
+        values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn ) 
+        weight_sum += weight
+        
+      }
 
-    perfs = Array::new()
-    weight_sum = 0
-    values_sum = 0
+      result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
 
-    search_details.each { |detail|
+    else
+      
+      result = nil
 
-      next unless detail.dist > 0
-
-      weight = Math.exp( -detail.dist )
-
-      values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn ) 
-      weight_sum += weight
-
-    }
-
-    result = Hash::new()
-
-    result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
+    end
 
     render :json => result.to_json
 
@@ -301,54 +310,17 @@ private
     @validation_error
   end
 
-  # 
-  # This method will block if any of the searches in _search_id_list (comma sep
-  # string as it is getting them from client side) are actively running. 
-  #
-  # TODO: JDA & FE are discussing if this is the best approach. It may be 
-  # desirable to do this client side via a polling api. The current approach
-  # may enable denial of service attacks.
-  #
-  def block_until_searches_are_complete( _search_id_list )
+  def are_searches_complete?( _search_id_list )
 
-    (0..40).each do |step| 
+    count = 1
 
-      count = 100
-
-      # This needs to be uncached or it the result won't change
-      # per loop itteration (ActiveRecord will cache it)
-      Search.uncached {
-        count = Search.where("id IN (" +
-                             _search_id_list+") AND completed = 0").count()
-      }
-
-      logger.debug "******* COUNT IS #{count}"
-     
-      break if count == 0
- 
-      sleep(2)
-
-    end
-
-  end
-
-end
-
-module QueryEM
-  def self.start
-    
-    # faciliates debugging
-    Thread.abort_on_exception = true
-    # just spawn a thread and start it up
-    Thread.new { 
-      EM.run 
+    Search.uncached {
+      count = Search.where("id IN (" +
+                           _search_id_list+") AND completed = 0").count()
     }
-  end
-  
-  def self.die_gracefully_on_signal
-    Signal.trap("INT")  { EM.stop }
-    Signal.trap("TERM") { EM.stop }
-  end
-end
 
-QueryEM.start
+    (count == 0) ? true : false
+
+  end
+
+end

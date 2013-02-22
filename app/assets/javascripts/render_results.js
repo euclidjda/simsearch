@@ -1,71 +1,84 @@
 var pos_small_icon = "assets/green-outperformance-small.png";
 var neg_small_icon = "assets/red-outperformance-small.png";
-var pos_big_icon   = "assets/green-outperformance-big.png";
-var neg_big_icon   = "assets/red-outperformance-big.png";
+var pos_big_icon   = "assets/green-outperformance-small.png";
+var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id_list) {
 
-    $.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
+    start_spinner('row-1');
 
-        var perf = data.summary
+    (function poll_for_summary() {
 
-        if (perf >= 0) {
-            $("#summary-image").attr("src",pos_big_icon);
-            $("#summary-num").html(sprintf("%.2f%%",perf));
-        } else {
-            $("#summary-image").attr("src",neg_big_icon);
-            $("#summary-num").html(sprintf("%.2f%%",perf));
-        }
+	$.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
 	
-    });
+	    if (data == null) {
 
-    $('.row').each(function( index ) {
+		setTimeout(poll_for_summary,3000);
+		
+	    } else {
 
-        var search_id = $(this).attr('search_id');
-
-        start_spinner(search_id);
-
-        var post_data = new Object();
-        post_data['search_id'] = search_id;
-
-	//var json_data = null;
-
-	$.ajax({
-	    url:      'get_search_results',
-	    dataType: 'json',
-	    async:    true,
-	    data:     post_data,
-	    success:  function(json_data) {
-
-		$('[search_id='+search_id+']').empty();
-
-		if (json_data.length == 1 && (typeof(json_data[0])=="string")) {
-		    
-		    // If the json API isn't able to get a search result, it only
-		    // returns 1 record that is a string with a message. In that 
-		    // event, we display the message here ...
-		    
-		    $('[search_id='+search_id+']').append(json_data[0]);
-
+		var perf = data.summary;
+		
+		if (perf == null) {
+		    $("#summary-num").html("N/A");
+		} else if (perf >= 0) {
+		    $("#summary-image").attr("src",pos_big_icon);
+		    $("#summary-num").html(sprintf("%.2f%%",perf));
 		} else {
-		    // ... otherwise we process the results here:
-
-		    // only show three panels
-		    var max_panels = Math.min(3,json_data.length); 
-
-		    for (var i=0; i < max_panels; i++) {
-
-			populate_panels(json_data,search_id,i);
-			
-		    }
+		    $("#summary-image").attr("src",neg_big_icon);
+		    $("#summary-num").html(sprintf("%.2f%%",perf));
 		}
 
+
+		$('.row').each(function( index ) {
+
+		    var search_id = $(this).attr('search_id');
+
+		    var post_data = new Object();
+		    post_data['search_id'] = search_id;
+
+		    var json_data = null;
+
+		    $.ajax({
+			url:      'get_search_results',
+			dataType: 'json',
+			async:    false,
+			data:     post_data,
+			success:  function(data) {
+			    json_data = data;
+			}
+		    });
+
+		    $('[search_id='+search_id+']').empty();
+
+		    if (json_data != null) {
+
+			if (json_data.length) {
+
+			    var max_panels = Math.min(3,json_data.length); 
+
+			    for (var i=0; i < max_panels; i++) {
+				
+				populate_panels(json_data,search_id,i);
+			    
+			    }
+
+			} else {
+			    
+			    $('[search_id='+search_id+']')
+				.html("No comparables found.");
+
+			}
+
+		    }
+
+		});
+
 	    }
+
 	});
 
-    });
-
-    $('#comparable-carousel-right').carousel('pause');
+    })();
 
     $('#comparable-carousel-right').bind('slid', function() {
 
@@ -425,7 +438,7 @@ function draw_price_chart( cid, sid, pricedate, price_chart_id, side ) {
 	     });
 }
 
-function start_spinner(search_id) {
+function start_spinner(id) {
     
     // Create the Spinner with options
     var spinner = new Spinner({
@@ -439,7 +452,7 @@ function start_spinner(search_id) {
 	shadow: false // Whether to render a shadow
     });
 
-    spinner.spin(document.getElementById('row-'+search_id));
+    spinner.spin(document.getElementById(id));
 
 }
 

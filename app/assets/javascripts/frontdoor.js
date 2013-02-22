@@ -7,8 +7,8 @@ $(document).ready(function() {
     // loads for all pages, so we need to make sure.
     if (search_id_list) {
 
-	// This function is implemented render_results.js
-        render_results(search_id_list);
+	// This function is implemented render_results.
+	render_results(search_id_list);
 
     }
 
