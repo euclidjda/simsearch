@@ -1,17 +1,24 @@
-
 <div class="search-area">
   <div class="full-search-bar">
     <ul>
       <li> 
-        <span> <%= image_tag("logoV3b.jpg", :class => "logo-image") %> </span> 
+	<span> 
+	  <%= link_to( image_tag("logoV3.png", :class =>"logo-image"), "/") %>
+	</span> 
       </li>
       <li> 
         <span>
-          <form action="<%= search_path %>" method="get" class="search-bar-form" id="search-bar-form">
+          <form action="<%= search_path %>" 
+		method="get" 
+		class="search-bar-form" 
+		id="search-bar-form">
+
             <span class = "search-field-and-button">
-              <%= text_field_tag(:ticker, nil, :placeholder => "Enter a stock symbol, e.g. IBM", :id => "ticker") %>            
-              <% #Using a button tag below instead of the submit tag so we can place an icon on it. The form behaves the same. %>
-              <button class ="btn btn-large btn-inverse" id = "search-button">
+              <%= text_field_tag(:ticker, nil, 
+		  :placeholder => "Enter a stock symbol, e.g. IBM", 
+	          :id => "ticker") %>            
+
+              <button class ="btn btn-small btn-primary" id = "search-button">
                 <i class="icon-search icon-white"></i>
               </button>              
             </span>
@@ -26,14 +33,10 @@
 <div class="container-fluid main-content">
   <div class="row-fluid">
 
-    <div class="span2" id="history-sidebar-nav">
+    <div class="span2 history-sidebar-nav" id="history-sidebar-nav">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-          <li class="nav-header">History</li>
-          <li class="active"><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
+          <li class="nav-header">Searches</li>
         </ul>
       </div><!--/.well -->
     </div><!--/span2 sidebar -->

@@ -12,7 +12,7 @@
 
 .hero-unit {
   background-color: white;
-  margin-left: -16px;
+  margin-left: 200px;
   padding-left: 0px;
 }
 
@@ -47,54 +47,73 @@ footer {
   }
 }
 
-.full-search-bar {
-  ul {
-    list-style: none;
-    margin-top: 0;
-    margin-right: 0px;
+.history-sidebar-nav {
 
-    li {
-      display: inline;
-      list-style-type: none;
-      list-style: none;
+    width: 150px !important;
+
+    .nav-header {
+	font-family:"Helvetica", Helvetica, serif !important;
+	font-size: 8pt !important;
+	text-align: center;
+	
     }
-  }
+}
 
-  .logo-image {
-    width: 280px;
-    min-width: 280px;
-    margin-left: -20px;
-    margin-top: -12px;
-  }
+.search-area {
 
-  .search-bar-form {
-    height: 45px;
-    display: inline;
+    margin: -20px 0px 0px 0px;
 
-    .search-field-and-button {
+    .full-search-bar {
+	
+	ul {
+	    list-style: none;
+	    margin-top: 0;
+	    margin-right: 0px;
+	    
+	    li {
+		display: inline;
+		list-style-type: none;
+		list-style: none;
+	    }
+	}
+	
+	.logo-image {
+	    width: 260px;
+	    min-width: 260px;
+	    margin-left: -20px;
+	    margin-top: -12px;
+	}
+	
+	.search-bar-form {
+	    height: 45px;
+	    display: inline;
+	    
+	    .search-field-and-button {
+		
+		#search-button {
 
-      #search-button {
-        -webkit-border-radius: 0 6px 6px 0;
-        -moz-border-radius: 0 6px 6px 0;
-        border-radius: 0 6px 6px 0;
-        border-left: 0;
-        height: 45px;
-        width: 46px;
-        margin: -10px 0 0 -10px;
-      } 
+		    -webkit-border-radius: 6px 6px 6px 6px;
+		    -moz-border-radius: 6px 6px 6px 6px; 
+		    border-radius: 6px 6px 6px 6px;
+		    height: 32px;
+		    width: 60px;
+		    margin: -12px 0px 0px 10px;
+		} 
 
-      #ticker {
-        -webkit-border-radius: 6px 0 0 6px;
-        -moz-border-radius: 6px 0 0 6px;
-        border-radius: 6px 0 0 6px;
-        border-right: 0;
-        font-size: 20px;
-        line-height: 24px;
-        height: 35px;
-        left: 0px;
-        width: 60%;
-        min-width: 140px;
-      }
+		#ticker {
+		    /***
+		    -webkit-border-radius: 6px 6px 6px 6px;
+		    -moz-border-radius: 6px 6px 6px 6px;
+		    border-radius: 6px 6px 6px 6px; **/
+		    font-size: 18px;
+		    line-height: 20px;
+		    height: 24px;
+		    left: 0px;
+		    width: 50%;
+		    min-width: 120px;
+		}
+	    }
+	}
     }
-  }
+
 }

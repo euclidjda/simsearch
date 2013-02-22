@@ -18,6 +18,11 @@ Any media size specific and resize related rules should be here.
 	.summary-row {
 		height: $summaryRowHeight;
 	}
+
+	#history-sidebar-nav {
+		display: none;
+	}
+
 }
 
 @media (min-width: 767px) {
@@ -41,6 +46,11 @@ Any media size specific and resize related rules should be here.
 			height: 100px;
 		}
 	}
+
+	#history-sidebar-nav {
+		display: none;
+	}
+
 }
 
 @media  (max-width:979px) { 
@@ -55,6 +65,11 @@ Any media size specific and resize related rules should be here.
 	#result-summary {
 		margin-left: 0px !important;
 	}
+
+	#history-sidebar-nav {
+		display: none;
+	}
+
 }
 
 @media (max-width:767px) {

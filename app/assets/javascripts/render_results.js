@@ -30,7 +30,7 @@ function render_results(search_id_list) {
 		}
 
 
-		$('.row').each(function( index ) {
+		$('.result-container').each(function( index ) {
 
 		    var search_id = $(this).attr('search_id');
 

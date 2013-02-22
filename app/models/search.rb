@@ -31,6 +31,10 @@ class Search < ActiveRecord::Base
                               :search_type => _type     ,
                               :completed   => 0         )
 
+      
+      # This call to delay causes create_search_detail to be run ansyncronously
+      # by the delayed_job package. For the method to execute, the program
+      # "rake jobs:work" must be running in the background.
 
       search.delay.create_search_details(_limit)
 
@@ -52,18 +56,24 @@ class Search < ActiveRecord::Base
     csho  = target.get_field('csho')   ? Float(target.get_field('csho'))       : nil
     eps   = target.get_field('epspxq') ? Float(target.get_field('epspxq_ttm')) : nil
     
-    target_cap = target.get_field('mrkcap') ? Float(target.get_field('mrkcap')).round() : nil
+    target_cap = 
+      target.get_field('mrkcap') ? Float(target.get_field('mrkcap')).round() : nil
     
-    fromdate = self.fromdate
-    thrudate = self.fromdate+1000
+    fromdate = nil
+    thrudate = self.fromdate-1
 
     candidates = Array::new()
 
+    batch_size = 1000 # batch size is in days (not records)
+
     while (1) do
 
-      logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
+      fromdate = thrudate + 1
+      thrudate = thrudate + batch_size
 
       thrudate = self.thrudate if ((thrudate <=> self.thrudate) == 1)
+
+      logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
       sqlstr = SecuritySnapshot::get_match_sql(target.cid,
                                                target_ind,
@@ -97,9 +107,6 @@ class Search < ActiveRecord::Base
 
       break if (thrudate == self.thrudate)
 
-      fromdate = thrudate+1
-      thrudate = thrudate+1000
-
     end
 
     # debug info line here to make sure we are rendering the right number on screen.
@@ -122,6 +129,7 @@ class Search < ActiveRecord::Base
       
     }
 
+    # save the search
     self.completed = 1
     self.save()
 
@@ -129,9 +137,6 @@ class Search < ActiveRecord::Base
 
   def self.consolidate_results( _candidates, _limit )
 
-    # debug info line here to make sure we are rendering the right number on screen.
-    # puts "********** #{distances.length}   ***********"
-    # We are guaranteed to have more than one distance in the array here. Sort it.
     _candidates.sort! { |a,b| a[:distance] <=> b[:distance] }
     
     comps_array = Array::new()
