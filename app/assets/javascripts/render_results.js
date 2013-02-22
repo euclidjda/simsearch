@@ -5,18 +5,13 @@ var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id_list) {
 
-    var spinner_started = false;
+    start_spinner('row-1');
 
     (function poll_for_summary() {
 
 	$.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
 	
 	    if (data == null) {
-
-		if (!spinner_started) {
-		    start_spinner('row-1');
-		    spinner_started = true;
-		}
 
 		setTimeout(poll_for_summary,3000);
 		

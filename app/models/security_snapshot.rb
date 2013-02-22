@@ -1,10 +1,12 @@
 class SecuritySnapshot < Tableless
 
+  @@factor_weights = [ 100, 50, 1, 1, 1, 25]
+
   attr_reader :cid, :sid, :pricedate, :fields, :factor_keys
 
   def initialize( _fields )
 
-    @factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
+    @factor_keys    = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
@@ -12,7 +14,6 @@ class SecuritySnapshot < Tableless
     @cid       = get_field('cid')
     @sid       = get_field('sid')
     @pricedate = get_field('pricedate')
-    # @factors   = Hash::new()
     @defer1    = nil;
 
     csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
@@ -121,11 +122,12 @@ class SecuritySnapshot < Tableless
     vec0.each_with_index do |val0,index|
 
       val1 = vec1[index]
-      
+      wght = @@factor_weights[index]
+
       next if val0.nil?
 
       if !val1.nil?
-        dist += ( val0 - val1 ) * ( val0 - val1 )
+        dist += wght * ( val0 - val1 ) * ( val0 - val1 )
         dims += 1
       else
         dist = -1
