@@ -26,17 +26,6 @@ Any media size specific and resize related rules should be here.
 }
 
 @media (min-width: 767px) {
-	#target-info {
-		width: 470px !important;
-		margin-right: 8px;
-	}
-
-	#result-summary {
-		min-width: 220px;
-		width: 220px !important;
-		margin-left: 0px;
-	}
-
 	.comparable {
 		.panel-performance {
 			width: 140px;
