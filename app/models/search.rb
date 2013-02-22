@@ -19,7 +19,6 @@ class Search < ActiveRecord::Base
                            :fromdate    => _fromdate ,
                            :thrudate    => _thrudate ,
                            :search_type => _type     ).first
-    
 
     if search.nil?
 
