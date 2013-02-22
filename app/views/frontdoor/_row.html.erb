@@ -1,10 +1,17 @@
-
 <hr>
-<div class="row row-fluid dyna-roller">
-<div class="result-container" 
-     search_id="<%= row[:search_id] %>" 
-     id="row-<%= row[:row_num] %>">
-</div>
+<% row_type = ((row[:row_num]%2)==0) ? 'light-row' : 'dark-row' %>
+<div class="row row-fluid dyna-roller result-row <%= row_type %>">
+
+  <div class="span1 timeline-bar">
+    <div class="timeline-label">
+      <%= row[:epoch_label] %>
+    </div>
+  </div>
+
+  <div class="result-container" search_id="<%= row[:search_id] %>" 
+       id="row-<%= row[:row_num] %>">
+  </div>
+
 </div> <!-- dyna-roller -->
 
 

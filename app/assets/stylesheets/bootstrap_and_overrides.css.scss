@@ -15,7 +15,7 @@ Any media size specific and resize related rules should be here.
 		height: $resultRowHeight;
 	}
 
-	.summary-row {
+	.target-row {
 		height: $summaryRowHeight;
 	}
 
@@ -43,6 +43,7 @@ Any media size specific and resize related rules should be here.
 }
 
 @media  (max-width:979px) { 
+
 	.navbar-fixed-top { 
 		position: absolute;
 	} 
@@ -62,6 +63,7 @@ Any media size specific and resize related rules should be here.
 }
 
 @media (max-width:767px) {
+
 	.navbar-fixed-top {
 		margin-left:0px;
 		margin-right: 0px;

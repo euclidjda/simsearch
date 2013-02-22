@@ -1,49 +1,58 @@
 <div class="span10">
-  <div class="row-fluid summary-row">
-    <div class="span1 left-bar">
-      <div class="today-tag">
+  <div class="row-fluid target-row dark-row">
+    
+    <% pricedate = target_fields['pricedate'] %>
+    <% monthname = Date::MONTHNAMES[pricedate.month][0..2] %>
+
+
+    <div class="span1 timeline-bar">
+      <div class="timeline-label">
         TODAY
       </div>
-      <div class="today-date">
-        <% t = Time.now %>
-        <%= sprintf("%02d", t.month) + "." +
-	    sprintf("%02d", t.day) + "." +
-	    sprintf("%02d", t.year - 2000) %>  
+      <div class="timeline-date">
+        <%= sprintf("%02d", pricedate.month) + "." +
+	    sprintf("%02d", pricedate.day) + "." +
+	    sprintf("%02d", pricedate.year - 2000) %>  
       </div>
     </div>
  
 
     <div class="target-container">
 
-      <span class="date-label summary-label">JAN 13</span>
+      <span class="date-label summary-label">
 
-      <div class="target-name"><%= target_fields['name'] %> </div>
+	<%= monthname + " " + pricedate.day.to_s %>
+      </span>
+
+      <% fullname = target_fields['name'] %>
+      <% nickname = fullname.length > 22 ? fullname[0..18]+"..." : fullname %>
+
+      <div class="target-name"><%= nickname %> </div>
       
       <div class="target-info">
-        <b>NASDAQ</b>: MANT - Jan 2013<br>
-        <b>Market Cap</b>: 850M<br>
-        <b>P/E</b>: 14.59 <b>Price</b>: 23.02
+        <b>NASDAQ</b>: 
+	<%= target_fields['ticker'] + " - " +
+	    monthname + " " + pricedate.day.to_s %><br>
+        <b>Market Cap</b>: 
+	<%= sprintf("%.2fM",target_fields['mrkcap']) %> <br>
+        <b>P/E</b>: 
+	<%= sprintf("$%.2f",target_fields['price']) %>
+	<b>Price</b>: 
+	<%= sprintf("$%.2f",target_fields['price']) %>
       </div>
     </div>
 
-<!--         
-      <div>
-        <% price_date = target_fields['pricedate'] %>
-        <%= Date::MONTHNAMES[price_date.month][0..2] + ' ' + price_date.day.to_s + ', ' + price_date.year.to_s %><br>
-        Market Cap (MM): <%= sprintf("%.2f",target_fields['mrkcap']) %><br>
-        P/E: <%= sprintf("%.2f",target_fields['pe']) %><br>
-      </div>
+  </div> <!-- target-row -->
 
-    <span class="span2 result-stats" id ="result-summary">
+  <div class="row-fluid summary-row light-row">
+    <span class="" id ="result-summary">
       Average 1 Year Relative Performance: 
-      <div id="median-perf">
+      <span id="median-perf">
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
-      </div>
+      </span>
     </span> 
-
--->
-  </div> <!-- summary-row -->
+  </div>
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
 <div id="panel-name" title="Click to Compare to <%= target_fields['name'] %>"></div>
@@ -70,7 +79,12 @@
 		<% first_row = false %>
 	<% end %>
 	<% row_num += 1 %>
-  	<% row = { :row_num => row_num, :search_id => search_ids[ep] } %>
+	<% epoch_label = 
+	   (Date.parse(FrontdoorHelper::endDate(ep))+1).to_s[0..3] %>
+
+  	<% row = { :row_num     => row_num, 
+                   :search_id   => search_ids[ep],
+                   :epoch_label => epoch_label   } %>
 
   	<%= render :partial => "row", :object => row %>
 

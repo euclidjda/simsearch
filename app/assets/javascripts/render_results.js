@@ -9,7 +9,8 @@ function render_results(search_id_list) {
 
     (function poll_for_summary() {
 
-	$.getJSON('get_search_summary?search_id_list='+search_id_list,function(data) {
+	$.getJSON('get_search_summary?search_id_list='+search_id_list,
+		  function(data) {
 	
 	    if (data == null) {
 

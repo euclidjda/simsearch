@@ -31,149 +31,202 @@ $leftbarWidth: 70px;
 	padding-right: 10px;
 }
 
+.timeline-bar {
+
+    background-image: url("line-grey.png");
+    width: $leftbarWidth;
+    min-width: $leftbarWidth;
+    height: 100%;
+    left: 0px !important;
+    margin-left: 60px !important;
+
+}
+
+.dark-row {
+
+    background-color: $rowBackgroundDark !important;
+}
+
+.light-row {
+
+    background-color: $rowBackgroundLight !important;
+}
+
+.target-row {
+
+    
+    .timeline-bar {
+
+ 	.timeline-label {
+	    position: relative;
+	    top: 40%;
+	    
+	    margin-left: -19px;
+	    padding: 0 8px 0 8px; 
+
+	    font-size: 16pt;
+	    font-weight: bold;
+	    background-image: url('bgr-TODAY.png');
+
+	    -moz-background-size:cover; 
+	    -webkit-background-size:cover; 
+	    background-size:cover;
+	}
+
+	.timeline-date {
+	    background-color: rgb(71, 71, 71);
+	    color: rgb(255,255,255);
+	    font-size: 5.5 pt;
+	    width: $leftbarWidth;
+	    min-width: $leftbarWidth;
+	    position: relative;
+	    top: 36px;
+	    float: right;
+	    text-align: center;
+	}	
+    }
+
+    .target-container {
+	height: 70px;
+
+	position: relative;
+	top: 0px;
+
+	.summary-label {
+	}
+
+	.target-name {
+	    display:inline-block;
+
+	    width: 300px;
+	    min-width: 300px;
+
+	    background-color: white;
+
+	    border-left: solid orange 2px;
+
+	    border-bottom: solid gray 1px;
+
+	    font-size: 19pt;
+	    font-weight: bold;
+	    font-color: rgb(23, 23, 23);
+
+	    padding: 25px 10px 25px 10px;
+
+	    white-space: nowrap;
+	    overflow: hidden;
+
+	}
+
+	.target-info {
+	    display: inline-block;
+
+	    border-left: solid gray 2px;
+	    border-bottom: solid gray 1px;
+
+	    width: 200px;
+	    min-width: 200px;
+
+	    background-color: lightgray;
+	    color: rgb(23, 23, 23);
+
+	    position: relative;
+	    top: 10px;
+	    height: 70px;
+
+	    margin-left: -5px;
+
+	    font-size: 9pt;
+
+	    padding-left: 5px;
+	}
+
+    }
+
+
+}
+
 .summary-row {
-	background-color: $rowBackgroundDark;
 
-	.left-bar {
-		background-image: url("line-grey.png");
-		left: 10px;
-		width: $leftbarWidth;
-		min-width: $leftbarWidth;
-		height: $summaryRowHeight;
-		margin-left: 20px !important;
+    margin: 10px 0px 0px 0px;
+    font-family:"Helvetica", Helvetica, serif;
+    font-size: 16pt;
+}
 
-		.today-tag {
-			position: relative;
-			top: 40%;
-			margin-left: -19px;
-			padding: 0 8px 0 8px; 
+.result-row {
 
-			font-size: 16pt;
-			font-weight: bold;
-			background-image: url('bgr-TODAY.png');
+    .timeline-label {
+	position: relative;
+	top: 5%;
+	
+	margin-left: -19px;
+	padding: 2px 0px 0px 6px; 
+	
+	height: 80px;
+	
+	font-size: 16pt;
+	font-weight: bold;
+	background-image: url('bgr-year.png');
+	background-repeat: no-repeat;
+	background-size: 70px;
+	/*
+	-moz-background-size:cover; 
+	-webkit-background-size:cover; 
+	background-size: cover;*/
+    }
 
-			-moz-background-size:cover; 
-			-webkit-background-size:cover; 
-			background-size:cover;
-		}
+    .result-container {
 
-		.today-date {
-			background-color: rgb(71, 71, 71);
-			color: rgb(255,255,255);
-			font-size: 5.5 pt;
-			width: $leftbarWidth;
-			min-width: $leftbarWidth;
-			position: relative;
-			top: 36px;
-			float: right;
-			text-align: center;
-		}	
+	.comparable {
+	    background-color: $panelColor;
+	    margin-bottom: 12px;
+	    border-radius: 2px;
+	    padding: 4px;
+	    min-width: 220px;
+	    box-shadow: 4px 4px 2px #999;
+
+	    .panel-header {
+		font-weight: bold;
+		height:28px;
+		padding: 2px 0px 0px 2px;
+	    }
+
+	    .panel-ticker {
+		font-weight: bold;
+		font-size: 18px;
+		height: 20px;
+		float: left;
+	    }
+
+	    .panel-date {
+		font-weight: normal;
+		font-style: italic;
+		font-size: 14px;
+	    }
+
+	    .panel-performance {
+		float: right;
+		background: $accentColor2;
+		text-align: center;
+		// width and height are driven from reactive content in bootstrap_and_overrides.css.scss
+	    }
+
+	    .panel-body {
+		/*background-color: green;*/
+		overflow: hidden;
+		margin: 16px 0px 0px 2px;
+		width: 100%;
+		display: block;
+	    }
 	}
 
+	
 
-
-	.target-container {
-		height: 70px;
-
-		position: relative;
-		top: 0px;
-
-		.summary-label {
-		}
-
-		.target-name {
-			display:inline-block;
-
-			width: 300px;
-			min-width: 300px;
-
-			background-color: white;
-
-			border-left: solid orange 2px;
-
-			border-bottom: solid gray 1px;
-
-			font-size: 19pt;
-			font-weight: bold;
-			font-color: rgb(23, 23, 23);
-
-			padding: 25px 10px 25px 10px;
-
-			white-space: nowrap;
-			overflow: hidden;
-
-		}
-
-		.target-info {
-			display: inline-block;
-
-			border-left: solid gray 2px;
-			border-bottom: solid gray 1px;
-
-			width: 200px;
-			min-width: 200px;
-
-			background-color: lightgray;
-			color: rgb(23, 23, 23);
-
-			position: relative;
-			top: 10px;
-			height: 70px;
-
-			margin-left: -5px;
-
-			font-size: 9pt;
-
-			padding-left: 5px;
-		}
-
-	}
-
+    }	
 
 }
 
-.comparable {
-  background-color: $panelColor;
-  margin-bottom: 12px;
-  border-radius: 2px;
-  padding: 4px;
-  min-width: 220px;
-  box-shadow: 4px 4px 2px #999;
 
-  .panel-header {
-    font-weight: bold;
-    height:28px;
-    padding: 2px 0px 0px 2px;
-  }
-
-  .panel-ticker {
-    font-weight: bold;
-    font-size: 18px;
-    height: 20px;
-    float: left;
-  }
-
-  .panel-date {
-    font-weight: normal;
-    font-style: italic;
-    font-size: 14px;
-  }
-
-  .panel-performance {
-    float: right;
-    background: $accentColor2;
-    text-align: center;
-    // width and height are driven from reactive content in bootstrap_and_overrides.css.scss
-  }
-
-  .panel-body {
-    /*background-color: green;*/
-    overflow: hidden;
-    margin: 16px 0px 0px 2px;
-    width: 100%;
-    display: block;
-  }
-}
 
 .dyna-roller {
   white-space: nowrap;
