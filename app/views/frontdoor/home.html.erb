@@ -2,21 +2,18 @@
   <div class="full-search-bar">
     <ul>
       <li> 
-	<span> 
-	  <%= link_to( image_tag("logoV3.png", :class =>"logo-image"), "/") %>
-	</span> 
+        <span> 
+          <%= link_to( image_tag("logoV3.png", :class =>"logo-image"), "/") %>
+        </span> 
       </li>
       <li> 
         <span>
           <form action="<%= search_path %>" 
-		method="get" 
-		class="search-bar-form" 
-		id="search-bar-form">
-
+                method="get" 
+                class="search-bar-form" id="search-bar-form">
             <span class = "search-field-and-button">
               <%= text_field_tag(:ticker, nil, 
-		  :placeholder => "Enter a stock symbol, e.g. IBM", 
-	          :id => "ticker") %>            
+                :placeholder => "Enter a stock symbol, e.g. IBM", :id => "ticker") %>            
 
               <button class ="btn btn-small btn-primary" id = "search-button">
                 <i class="icon-search icon-white"></i>

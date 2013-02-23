@@ -1,9 +1,8 @@
 <div class="span12">
-  <div class="row-fluid target-row dark-row">
+  <div class="row row-fluid target-row dark-row">
     
     <% pricedate = target_fields['pricedate'] %>
     <% monthname = Date::MONTHNAMES[pricedate.month][0..2] %>
-
 
     <div class="span1 timeline-bar">
       <div class="timeline-label">
@@ -15,13 +14,10 @@
 	    sprintf("%02d", pricedate.year - 2000) %>  
       </div>
     </div>
- 
 
     <div class="target-container">
-
       <span class="date-label summary-label">
-
-	<%= monthname + " " + pricedate.day.to_s %>
+        <%= monthname + " " + pricedate.day.to_s %>
       </span>
 
       <% fullname = target_fields['name'] %>
@@ -30,15 +26,11 @@
       <div class="target-name"><%= nickname %> </div>
       
       <div class="target-info">
-        <b>NASDAQ</b>: 
-	<%= target_fields['ticker'] + " - " +
-	    monthname + " " + pricedate.day.to_s %><br>
-        <b>Market Cap</b>: 
-	<%= sprintf("%.2fM",target_fields['mrkcap']) %> <br>
-        <b>P/E</b>: 
-	<%= sprintf("$%.2f",target_fields['price']) %>
-	<b>Price</b>: 
-	<%= sprintf("$%.2f",target_fields['price']) %>
+        <b>NASDAQ</b>: <%= target_fields['ticker'] + " - " + monthname + " " + pricedate.day.to_s %><br>
+        <b>Market Cap</b>: <%= sprintf("%.2fM",target_fields['mrkcap']) %> <br>
+        <b>P/E</b>: <%= sprintf("$%.2f",target_fields['price']) %>
+        <b>Price</b>: 
+        <%= sprintf("$%.2f",target_fields['price']) %>
       </div>
     </div>
 

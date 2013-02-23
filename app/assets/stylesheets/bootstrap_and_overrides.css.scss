@@ -48,18 +48,9 @@ Any media size specific and resize related rules should be here.
 		position: absolute;
 	} 
 
-	.dyna-roller {
-		height: 160px;
-	}
-
-	#result-summary {
-		margin-left: 0px !important;
-	}
-
 	#history-sidebar-nav {
 		display: none;
 	}
-
 }
 
 @media (max-width:767px) {
@@ -73,16 +64,7 @@ Any media size specific and resize related rules should be here.
 		display: none;
 	}
 
-	.dyna-roller {
-		height: 640px;
-		padding-right: 4px;
-	}
-
 	.comparable {
-		.panel-sparkline {
-			width: 200px;
-			height: 60px;
-		}
 		.panel-body {
 			height: 80px;
 		}
