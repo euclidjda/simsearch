@@ -4,16 +4,94 @@
 
 @import "shared";
 
+hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
 .navbar {
   .brand {
     color: white;
   }
 }
 
+.euclid-slogan {
+
+    width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    line-height: 48px;
+
+    text-align: center;
+    font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    font-size: 36px;
+    -webkit-font-smoothing: antialiased;
+
+    padding: 4px 4px 4px 4px;
+
+    /*border: 2px solid #EA4A0B;*/
+}
+
 .hero-unit {
+
   background-color: white;
-  margin-left: 200px;
-  padding-left: 0px;
+
+  width: 600px;
+  height: 350px;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  text-align: center;
+  font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 200;
+  -webkit-font-smoothing: antialiased;
+
+  /* background-color: green; */
+  padding: 0px 20px 0px 20px;
+
+  border: 8px solid #665747;
+
+  h1 {
+      font-size: 24px;
+      font-weight: 200;
+  }
+
+  hr {
+      margin-top: 20px ;
+      margin-bottom: 20px;
+      size: 10px;
+  }
+
+  .carousel {
+
+      height: 100%;
+      /* border: 2px solid red; */
+      
+      .carousel-inner {
+	  margin-top: 10px;
+
+	  div {
+	      margin-top: 20px;
+	      margin-bottom: 30px;
+	  }
+	  
+	  .item-epoch {
+	      margin-left: 110px;
+	      text-align: left;
+	  }
+
+      }   
+      
+  }
+
 }
 
 footer {
@@ -61,7 +139,7 @@ footer {
 
 .search-area {
 
-    margin: -10px 0px 0px 0px;
+    margin: -5px 0px 0px 0px;
 
     .full-search-bar {
 	
@@ -92,19 +170,20 @@ footer {
 		
 		#search-button {
 
-		    -webkit-border-radius: 6px 6px 6px 6px;
-		    -moz-border-radius: 6px 6px 6px 6px; 
-		    border-radius: 6px 6px 6px 6px;
+		    -webkit-border-radius: 4px 4px 4px 4px;
+		    -moz-border-radius: 4px 4px 4px 4px; 
+		    border-radius: 4px 4px 4px 4px;
 		    height: 32px;
-		    width: 60px;
+		    width: 70px;
 		    margin: -12px 0px 0px 10px;
 		} 
 
 		#ticker {
 		    /***
-		    -webkit-border-radius: 6px 6px 6px 6px;
-		    -moz-border-radius: 6px 6px 6px 6px;
-		    border-radius: 6px 6px 6px 6px; **/
+		    -webkit-border-radius: 4px 4px 4px 4px;
+		    -moz-border-radius: 4px 4px 4px 4px;
+		    border-radius: 4px 4px 4px 4px; **/
+		    border-radius: 0px 0px 0px 0px;
 		    font-size: 18px;
 		    line-height: 20px;
 		    height: 24px;
