@@ -35,7 +35,6 @@ $leftbarWidth: 70px;
     width: $leftbarWidth;
     min-width: $leftbarWidth;
     height: 100%;
-    left: 0px !important;
     margin-left: 60px !important;
 }
 
@@ -61,19 +60,18 @@ $leftbarWidth: 70px;
 		    font-weight: bold;
 		    background-image: url('bgr-TODAY.png');
 
-		    -moz-background-size:cover; 
-		    -webkit-background-size:cover; 
-		    background-size:cover;
+		    -moz-background-size: 100% 100%; 
+		    -webkit-background-size: 100% 100%; 
+		    background-size: 100% 100%;
 		}
 
 		.timeline-date {
 		    background-color: rgb(71, 71, 71);
 		    color: rgb(255,255,255);
 		    font-size: 5.5 pt;
-		    width: $leftbarWidth;
-		    min-width: $leftbarWidth;
+		    width: 100%;
 		    position: relative;
-		    top: 36px;
+		    top: 38px;
 		    float: right;
 		    text-align: center;
 		}	
