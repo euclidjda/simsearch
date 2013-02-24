@@ -10,11 +10,11 @@ independent size and visibility rules in this file.
 
 */
 
-$summaryRowHeight: 95px;
+$summaryRowHeight: 90px;
 $rowBackgroundDark: rgb(232, 232, 232);
 $rowBackgroundLight: rgb(255, 255, 255);
 
-$resultRowHeight : 110px;
+$resultRowHeight : 160px;
 
 $leftbarWidth: 70px;
 
@@ -23,11 +23,10 @@ $leftbarWidth: 70px;
 	background-size: 100% 100%;
 
 	margin-left: 10px;
-	margin-right: 10px;
+	margin-right: 2px;
 
 	font-size: 10pt;
-	padding-left: 12px;
-	padding-right: 10px;
+	padding: 2px 6px 2px 12px; 
 }
 
 .timeline-bar {
@@ -51,10 +50,10 @@ $leftbarWidth: 70px;
     .timeline-bar {
 	 	.timeline-label {
 		    position: relative;
-		    top: 40%;
+		    top: 30%;
 		    
 		    margin-left: -19px;
-		    padding: 0 8px 0 8px; 
+		    padding: 6px 8px 4px 8px; 
 
 		    font-size: 16pt;
 		    font-weight: bold;
@@ -71,64 +70,43 @@ $leftbarWidth: 70px;
 		    font-size: 5.5 pt;
 		    width: 100%;
 		    position: relative;
-		    top: 38px;
+		    top: 28px;
 		    float: right;
 		    text-align: center;
 		}	
     }
 
     .target-container {
-		height: 70px;
-
-		position: relative;
-		top: 0px;
-
-		.summary-label {
-		}
+		height: 100%;
 
 		.target-name {
 		    display:inline-block;
-
 		    width: 300px;
 		    min-width: 300px;
-
 		    background-color: white;
-
 		    border-left: solid orange 2px;
-
 		    border-bottom: solid gray 1px;
-
 		    font-size: 19pt;
 		    font-weight: bold;
 		    font-color: rgb(23, 23, 23);
-
 		    padding: 25px 10px 25px 10px;
-
 		    white-space: nowrap;
 		    overflow: hidden;
-
 		}
 
 		.target-info {
 		    display: inline-block;
-
 		    border-left: solid gray 2px;
 		    border-bottom: solid gray 1px;
-
 		    width: 200px;
 		    min-width: 200px;
-
 		    background-color: lightgray;
 		    color: rgb(23, 23, 23);
-
 		    position: relative;
 		    top: 10px;
 		    height: 70px;
-
 		    margin-left: -5px;
-
 		    font-size: 9pt;
-
 		    padding-left: 5px;
 		}
     }
@@ -138,7 +116,19 @@ $leftbarWidth: 70px;
     margin: 10px 0px 0px 0px;
     font-family:"Helvetica", Helvetica, serif;
     font-size: 16pt;
+
+	#result-summary {
+		font-size: 18pt;
+		padding: 6px 0 10px 120px; 
+	}
+
+	#summary-image {
+		height: 28px;
+		position: relative;
+		top: -8px;
+	}
 }
+
 
 .result-row {
     .timeline-label {

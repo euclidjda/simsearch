@@ -4,6 +4,7 @@
     <% pricedate = target_fields['pricedate'] %>
     <% monthname = Date::MONTHNAMES[pricedate.month][0..2] %>
 
+
     <div class="span1 timeline-bar">
       <div class="timeline-label">
         TODAY
@@ -14,10 +15,12 @@
 	    sprintf("%02d", pricedate.year - 2000) %>  
       </div>
     </div>
+ 
 
     <div class="target-container">
-      <span class="date-label summary-label">
-        <%= monthname + " " + pricedate.day.to_s %>
+
+      <span class="date-label">
+        <%= monthname + " " + pricedate.year.to_s %>
       </span>
 
       <% fullname = target_fields['name'] %>
@@ -29,21 +32,20 @@
         <b>NASDAQ</b>: <%= target_fields['ticker'] + " - " + monthname + " " + pricedate.day.to_s %><br>
         <b>Market Cap</b>: <%= sprintf("%.2fM",target_fields['mrkcap']) %> <br>
         <b>P/E</b>: <%= sprintf("$%.2f",target_fields['price']) %>
-        <b>Price</b>: 
-        <%= sprintf("$%.2f",target_fields['price']) %>
+        <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
       </div>
     </div>
 
   </div> <!-- target-row -->
 
   <div class="row-fluid summary-row light-row">
-    <span class="" id ="result-summary">
+    <div id ="result-summary">
       Average 1 Year Relative Performance: 
       <span id="median-perf">
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
       </span>
-    </span> 
+    </div> 
   </div>
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
