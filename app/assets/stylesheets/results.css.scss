@@ -34,7 +34,7 @@ $leftbarWidth: 70px;
     width: $leftbarWidth;
     min-width: $leftbarWidth;
     height: 100%;
-    margin-left: 60px !important;
+    margin-left: 67px !important;
 }
 
 .dark-row {
@@ -79,6 +79,11 @@ $leftbarWidth: 70px;
     .target-container {
 		height: 100%;
 
+/*		box-shadow: inset 0px -8px 16px -8px #888888;
+		-webkit-box-shadow: inset 0px -8px 16px -8px #888888;
+		-moz-box-shadow: inset 0px -8px 16px -8px #888888;
+		-o-box-shadow: inset 0px -8px 16px -8px #888888;*/
+
 		.target-name {
 		    display:inline-block;
 		    width: 300px;
@@ -119,7 +124,7 @@ $leftbarWidth: 70px;
 
 	#result-summary {
 		font-size: 18pt;
-		padding: 6px 0 10px 120px; 
+		padding-left: 120px; 
 	}
 
 	#summary-image {
@@ -127,28 +132,52 @@ $leftbarWidth: 70px;
 		position: relative;
 		top: -8px;
 	}
+
+	#result-summary-bottom {
+		background-image: url("header-bottom.png");
+		
+		-moz-background-size: 100% 100%; 
+		-webkit-background-size: 100% 100%; 
+		background-size: 100% 100%;
+
+		height: 12px;
+		position: relative;
+		bottom: -12px;
+		margin-left: -30px;
+		width: 100%;
+	}
+
+	#result-summary-top {
+		background-image: url("header-top.png");
+		
+		-moz-background-size: 100% 100%; 
+		-webkit-background-size: 100% 100%; 
+		background-size: 100% 100%;		
+		height: 12px;
+		position: relative;
+		top: -18px;
+		margin-left: -30px;
+		width: 100%;
+	}
+
 }
 
 
 .result-row {
     .timeline-label {
-	position: relative;
-	top: 5%;
-	
-	margin-left: -19px;
-	padding: 2px 0px 0px 6px; 
-	
-	height: 80px;
-	
-	font-size: 16pt;
-	font-weight: bold;
-	background-image: url('bgr-year.png');
-	background-repeat: no-repeat;
-	background-size: 70px;
-	/*
-	-moz-background-size:cover; 
-	-webkit-background-size:cover; 
-	background-size: cover;*/
+		position: relative;
+		top: 5%;
+		
+		margin-left: -19px;
+		padding: 2px 0px 0px 6px; 
+		
+		height: 80px;
+		
+		font-size: 16pt;
+		font-weight: bold;
+		background-image: url('bgr-year.png');
+		background-repeat: no-repeat;
+		background-size: 70px;
     }
 
     .result-container {
