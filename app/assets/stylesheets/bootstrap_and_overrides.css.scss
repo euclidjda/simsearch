@@ -26,7 +26,6 @@ Any media size specific and resize related rules should be here.
 	#history-sidebar-nav {
 		display: none;
 	}
-
 }
 
 @media (min-width: 767px) {
@@ -63,6 +62,10 @@ Any media size specific and resize related rules should be here.
 
 	#history-sidebar-nav {
 		display: none;
+	}
+
+	.row-fluid [class*="timeline-bar"] {
+		margin-left: 0 !important;
 	}
 }
 
