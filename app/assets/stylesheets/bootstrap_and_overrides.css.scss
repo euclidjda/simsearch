@@ -1,3 +1,7 @@
+
+/* Want the menu for tablet. Show collapse for smaller screens. */
+$navbarCollapseWidth: 550px; 
+
 @import "bootstrap";
 @import "bootstrap-responsive";
 
@@ -22,24 +26,20 @@ Any media size specific and resize related rules should be here.
 	#history-sidebar-nav {
 		display: none;
 	}
-
 }
 
 @media (min-width: 767px) {
-	.comparable {
-		.panel-performance {
-			width: 140px;
-			height: 40px;
-		}
-		.panel-body {
-			height: 100px;
-		}
-	}
-
 	#history-sidebar-nav {
 		display: none;
 	}
 
+	.dyna-roller {
+		height: $resultRowHeight;
+	}
+
+	.target-row {
+		height: $summaryRowHeight;
+	}
 }
 
 @media  (max-width:979px) { 
@@ -64,10 +64,7 @@ Any media size specific and resize related rules should be here.
 		display: none;
 	}
 
-	.comparable {
-		.panel-body {
-			height: 80px;
-		}
+	.row-fluid [class*="timeline-bar"] {
+		margin-left: 0 !important;
 	}
 }
-

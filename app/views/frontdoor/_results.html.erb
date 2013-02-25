@@ -39,8 +39,6 @@
   </div> <!-- target-row -->
 
   <div class="row-fluid summary-row light-row">
-    <div id="result-summary-top">
-    </div>
     <div id ="result-summary">
       Average 1 Year Relative Performance of Comparables: 
       <span id="median-perf">
@@ -48,20 +46,22 @@
         <span id="summary-num"></span>
       </span>
     </div> 
-    <div id="result-summary-bottom">
-    </div>
   </div>
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
-<div id="panel-name" title="Click to Compare to <%= target_fields['name'] %>"></div>
-<div>
-  <span id="panel-ticker"></span> -
-  <span id="panel-date"></span>
-</div>
-<div id="panel-performance">
-  <span><img id="perf-image" src=""></img></span><span id="perf-num"></span>
-</div>
-<div id="panel-similarity"></div>
+  <div id="panel-name" title="Click to Compare to <%= target_fields['name'] %>"></div>
+  <div id="panel-ticker-and-date">
+    <span id="panel-ticker"></span>  -  <span id="panel-date"></span>
+  </div>
+  <div id="panel-performance">
+    P/E: <span id="perf-pne">99.99</span>
+    <span id="perf-image-and-num">
+      <img id="perf-image" src=""></img>
+      <span id="perf-num">
+      </span>
+    </span>
+  </div>
+  <div id="panel-similarity"></div>
 </div>
 
 <div id="all-search-ids" search_ids="<%= search_ids.values * ',' %>"></div>
@@ -89,4 +89,4 @@
 <% end %>
 
 <%= render :partial => "comparable_modal", :object => target_fields %>
-</div> <!-- end of span10-->
+</div> <!-- end of span12-->
