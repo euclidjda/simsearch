@@ -13,10 +13,9 @@ independent size and visibility rules in this file.
 $summaryRowHeight: 90px;
 $rowBackgroundDark: rgb(232, 232, 232);
 $rowBackgroundLight: rgb(255, 255, 255);
-
 $resultRowHeight : 160px;
-
 $leftbarWidth: 70px;
+$targetinfoWidth: 170px;
 
 .date-label {
 	background-image: url('date-box-orange.png');
@@ -102,8 +101,8 @@ $leftbarWidth: 70px;
 		    display: inline-block;
 		    border-left: solid gray 2px;
 		    border-bottom: solid gray 1px;
-		    width: 200px;
-		    min-width: 200px;
+		    width: $targetinfoWidth;
+		    min-width: $targetinfoWidth;
 		    background-color: lightgray;
 		    color: rgb(23, 23, 23);
 		    position: relative;

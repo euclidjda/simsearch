@@ -34,6 +34,13 @@ Any media size specific and resize related rules should be here.
 		display: none;
 	}
 
+	.dyna-roller {
+		height: $resultRowHeight;
+	}
+
+	.target-row {
+		height: $summaryRowHeight;
+	}
 }
 
 @media  (max-width:979px) { 
