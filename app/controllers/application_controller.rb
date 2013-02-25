@@ -4,12 +4,12 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :current_user_display_name
 
-  # before_filter :site_lockdown_authenticator
+  before_filter :site_lockdown_authenticator
 
 protected
   def site_lockdown_authenticator
     authenticate_or_request_with_http_basic do |username, password|
-      username == "admin" && password == "grebla"
+      username == "admin" && password == "simsearch"
     end
   end
 
