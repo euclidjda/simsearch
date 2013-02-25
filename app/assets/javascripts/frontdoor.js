@@ -1,6 +1,12 @@
 
 $(document).ready(function() {
 
+    var teaser = $('#teaser-carousel');
+
+    if (teaser) {
+	$('#teaser-carousel').carousel( );
+    }
+
     var search_id_list = $('#all-search-ids').attr('search_ids');
 
     // Only handle the output if we are on the results page. This script
