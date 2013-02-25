@@ -52,25 +52,22 @@
     overflow: hidden;
 
     top:  0% !important;
-    left: 0%;
 
-    margin: 40px 0px 0px 0px; /* top bottom right left */
+    /* top right bottom left --> TRouBLe */
+    margin: 50px 0px 0px -500px; 
 
     width: 1000px;
+    height: 680px;
 
    .modal-header {
-	/* There is no modal header */
     }
 
     .modal-body {
-
-	margin: 0px 0px 0px 0px; /* top bottom right left */
-	max-height: 1000px !important;
-
+		margin: -20px 0px 0px 0px; 
+		max-height: 1000px !important;
     }
 
     .modal-footer {
-	/* There is no modal header */
     }
 
     .chart-growth {
@@ -201,7 +198,9 @@
 	    width: 300px;
 	    font-weight: bold;
 	    font-size: 16pt;
+	    white-space: nowrap;
 	    overflow: hidden;
+	    text-overflow: ellipsis;
 	}
 
 	.ticker {
@@ -301,7 +300,10 @@
 	    width: 300px;
 	    font-weight: bold;
 	    font-size: 16pt;
+
+	    white-space: nowrap;
 	    overflow: hidden;
+	    text-overflow: ellipsis;
 	}
 
 	.ticker {
