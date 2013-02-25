@@ -158,46 +158,70 @@ $targetinfoWidth: 170px;
     }
 
     .result-container {
+
+		padding-left: 160px;
+
 		.comparable {
 		    background-color: $panelColor;
 		    margin-top: 28px;
 		    border-radius: 2px;
-		    padding: 4px;
 		    min-width: 220px;
 		    box-shadow: 4px 4px 2px #999;
 
-		    .panel-header {
+		    #panel-name {
 				font-weight: bold;
-				height:28px;
-				padding: 2px 0px 0px 2px;
+				font-size: 12pt;
+				color: rgb(23,23,23);
+				padding: 6px 4px 4px 4px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				border-bottom: solid darkgray 1px;
+				background-color: white;
 		    }
 
-		    .panel-ticker {
+		    #panel-ticker-and-date {
+		    	padding-top: 4px;
+		    }
+
+		    #panel-ticker {
 				font-weight: bold;
-				font-size: 18px;
+				font-size: 10pt;
+				color: rgb(35, 35, 35);
 				height: 20px;
 				float: left;
+				padding: 0 4px 0 4px; 
 		    }
 
-		    .panel-date {
+		    #panel-date {
 				font-weight: normal;
-				font-style: italic;
-				font-size: 14px;
+				font-size: 10pt;
+				color: rbg(23, 23, 23);
 		    }
 
-		    .panel-performance {
-				float: right;
-				background: $accentColor2;
-				text-align: center;
-				// width and height are driven from reactive content in bootstrap_and_overrides.css.scss
+		    #panel-performance {
+		    	padding: 0 4px 0 4px;
+		    	font-size: 11pt;
+		    	font-weight: bold;
+		    	line-height: 32px;
+
+		    	#perf-pne {
+		    		font-weight: normal;
+		    		padding-left: 2px;
+		    	}
+
+		    	#perf-image-and-num {
+		    		float: right;
+
+		    		#perf-image {
+		    			height: 20px;
+		    		}
+		    	}
 		    }
 
-		    .panel-body {
-				/*background-color: green;*/
-				overflow: hidden;
-				margin: 16px 0px 0px 2px;
-				width: 100%;
-				display: block;
+		    #panel-similarity {
+		    	padding-left: 4px;
+		    	background-color: lightgray;
 		    }
 		}
     }	
