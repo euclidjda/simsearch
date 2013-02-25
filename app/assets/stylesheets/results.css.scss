@@ -46,11 +46,10 @@ $leftbarWidth: 70px;
 }
 
 .target-row {
-    
     .timeline-bar {
 	 	.timeline-label {
 		    position: relative;
-		    top: 30%;
+		    top: 26px;
 		    
 		    margin-left: -19px;
 		    padding: 6px 8px 4px 8px; 
@@ -79,10 +78,10 @@ $leftbarWidth: 70px;
     .target-container {
 		height: 100%;
 
-/*		box-shadow: inset 0px -8px 16px -8px #888888;
+		box-shadow: inset 0px -8px 16px -8px #888888;
 		-webkit-box-shadow: inset 0px -8px 16px -8px #888888;
 		-moz-box-shadow: inset 0px -8px 16px -8px #888888;
-		-o-box-shadow: inset 0px -8px 16px -8px #888888;*/
+		-o-box-shadow: inset 0px -8px 16px -8px #888888;
 
 		.target-name {
 		    display:inline-block;
@@ -124,7 +123,7 @@ $leftbarWidth: 70px;
 
 	#result-summary {
 		font-size: 18pt;
-		padding-left: 120px; 
+		padding: 12px 0 16px 120px; 
 	}
 
 	#summary-image {
@@ -132,36 +131,14 @@ $leftbarWidth: 70px;
 		position: relative;
 		top: -8px;
 	}
-
-	#result-summary-bottom {
-		background-image: url("header-bottom.png");
-		
-		-moz-background-size: 100% 100%; 
-		-webkit-background-size: 100% 100%; 
-		background-size: 100% 100%;
-
-		height: 12px;
-		position: relative;
-		bottom: -12px;
-		margin-left: -30px;
-		width: 100%;
-	}
-
-	#result-summary-top {
-		background-image: url("header-top.png");
-		
-		-moz-background-size: 100% 100%; 
-		-webkit-background-size: 100% 100%; 
-		background-size: 100% 100%;		
-		height: 12px;
-		position: relative;
-		top: -18px;
-		margin-left: -30px;
-		width: 100%;
-	}
-
 }
 
+.first-row {
+	box-shadow: inset 0px 8px 16px -8px #888888;
+	-webkit-box-shadow: inset 0px 8px 16px -8px #888888;
+	-moz-box-shadow: inset 0px 8px 16px -8px #888888;
+	-o-box-shadow: inset 0px 8px 16px -8px #888888;
+}
 
 .result-row {
     .timeline-label {
@@ -183,7 +160,7 @@ $leftbarWidth: 70px;
     .result-container {
 		.comparable {
 		    background-color: $panelColor;
-		    margin-bottom: 12px;
+		    margin-top: 28px;
 		    border-radius: 2px;
 		    padding: 4px;
 		    min-width: 220px;

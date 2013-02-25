@@ -30,16 +30,6 @@ Any media size specific and resize related rules should be here.
 }
 
 @media (min-width: 767px) {
-	.comparable {
-		.panel-performance {
-			width: 140px;
-			height: 40px;
-		}
-		.panel-body {
-			height: 100px;
-		}
-	}
-
 	#history-sidebar-nav {
 		display: none;
 	}
@@ -66,12 +56,6 @@ Any media size specific and resize related rules should be here.
 
 	#history-sidebar-nav {
 		display: none;
-	}
-
-	.comparable {
-		.panel-body {
-			height: 80px;
-		}
 	}
 }
 
