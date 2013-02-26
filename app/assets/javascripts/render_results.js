@@ -194,34 +194,34 @@ function populate_panels(data,search_id,i) {
     detail_item.find('.pb-value').html(sprintf("%.2f",data[i].pb));
 
     detail_item.find('.factor-ey')
-	.html('EYd: '+ sprintf("%.2f%%",data[i].ey*100));
+	.html(sprintf("%.2f%%",data[i].ey*100));
 
     detail_item.find('.factor-roc')
-	.html('ROC: '+
-	      EGUI.fmtAsNumber(data[i].roc*100,{fmtstr:"%.2f%%"}));
+	.html(EGUI.fmtAsNumber(data[i].roc*100,{fmtstr:"%.2f%%"}));
 
 
     detail_item.find('.factor-grwth')
-	.html('GRW: '+
-	      EGUI.fmtAsNumber(data[i].grwth*100,{fmtstr:"%.2f%%"}));
+	.html(EGUI.fmtAsNumber(data[i].grwth*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.factor-epscon')
-	.html('CON: '+
-	      EGUI.fmtAsNumber(data[i].epscon,{fmtstr:"%.2f"}));
+	.html(EGUI.fmtAsNumber(data[i].epscon,{fmtstr:"%.2f"}));
 
 
     detail_item.find('.factor-ae')
-	.html('LIQ: ' +
-	      EGUI.fmtAsNumber(data[i].ae*100,{fmtstr:"%.2f%%"}));
+	.html(EGUI.fmtAsNumber(data[i].ae*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.factor-momentum')
-	.html('MOM: '+
-	      EGUI.fmtAsNumber(data[i].momentum*100,
+	.html(EGUI.fmtAsNumber(data[i].momentum*100,
 			       {fmtstr:"%.2f%%"}));
 
+    detail_item.find('.similarity-score')
+	.html(
+	      EGUI.fmtAsNumber(sim_score,{fmtstr:"%.2f"}));
+
+    
+			       
     var growth_chart_id = 'chart-growth-'+detail_item_id;
     detail_item.find('.chart-growth').attr('id',growth_chart_id);
-
 
     var price_chart_id = 'chart-price-'+detail_item_id;
     detail_item.find('.chart-price').attr('id',price_chart_id);

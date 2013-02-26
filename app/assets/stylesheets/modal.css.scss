@@ -60,11 +60,21 @@
     height: 680px;
 
    .modal-header {
-    }
+
+   }
 
     .modal-body {
 		margin: -20px 0px 0px 0px; 
 		max-height: 1000px !important;
+
+
+		.arrow-table {
+		    z-index: 500;
+		    position: absolute;
+		    top: 145px;
+		    left: 503px;
+    		}
+
     }
 
     .modal-footer {
@@ -118,11 +128,14 @@
 
     .comparable-table-left-pane {
 	width: 450px;
+
 	/*
 	border-right-style: dashed;
 	border-right-width: 1px;
 	border-right-color: grey;
 	*/
+
+
     }
 
     .comparable-table-right-pane {
@@ -141,33 +154,47 @@
 	background-repeat: no-repeat;
 	background-size: 430px;
 
-	overflow: hidden;
+	overflow-y: hidden;
+	overflow-x: scroll;
 	white-space:nowrap;
 	font-family:"Helvetica", Helvetica, serif;
 	font-weight: normal;
 
 	color: rgb(255,255,255);
 
-	.factors-header {
+	.factors {
+
+	    font-family:"Helvetica", Helvetica, serif;
+
+	    z-index: 5 !important;
+	    background-color: #f9af6f;
 
 	    position: absolute;
-	    top: 46pt;
-	    left: 215pt;
-	    width: 100px;
+	    top: 54px;
+	    left: 275px;
+	    width: 176px;
 	    font-size: 12pt;
 	    color: rgb(23,23,23);
-	}
 
-	.factors-body {
+	    table {
+		width: 100%;
+	    }
 
-	    font-family:"Courier";
-	    position: absolute;
-	    top: 70pt;
-	    left: 220pt;
-	    width: 100pt;
-	    height: 82pt;
-	    color: rgb(23,23,23);
-
+	    header {
+		padding-left: 4px;
+		padding-top: 8px;
+		padding-bottom: 6px;
+		text-align: center;
+	    }
+	    
+	    td {
+		padding: 4px 8px 3px 2px;
+		font-size: 10pt;
+	    }
+	    
+	    .col2 {
+		text-align: center;
+	    }
 	}
 
 	.key-stats-header {
@@ -251,27 +278,48 @@
 
 	color: rgb(255,255,255);
 
-	.factors-header {
+	.factors {
+
+	    font-family:"Helvetica", Helvetica, serif;
+
+	    z-index: 5 !important;
+	    overflow: visible;
+	    background-color: #f9af6f;
 
 	    position: absolute;
-	    top: 46pt;
-	    left: 15pt;
-	    width: 100px;
+	    top: 54px;
+	    left: 0px;
+	    margin-left: 0px;
+	    width: 160px;
 	    font-size: 12pt;
 	    color: rgb(23,23,23);
+
+	    table {
+		width: 100%;
+	    }
+
+	    header {
+		padding-left: 4px;
+		padding-top: 8px;
+		padding-bottom: 6px;
+		text-align: center;
+	    }
+	    
+	    td {
+		padding: 4px 0px 3px 10px;
+		font-size: 10pt;
+		text-align: left;
+	    }
+
+	    .similarity-score {
+		font-size: 22pt;
+		text-align: center;
+		border: 4px solid brown;
+	    }
+
+	    
 	}
 
-	.factors-body {
-
-	    font-family:"Courier";
-	    position: absolute;
-	    top: 70pt;
-	    left: 20pt;
-	    width: 100pt;
-	    height: 82pt;
-	    color: rgb(23,23,23);
-
-	}
 
 	.key-stats-header {
 	    
@@ -332,54 +380,6 @@
 	    font-size: 7pt;
 	}
 
-    }
-
-    .factors {
-	height: 12pt;
-	font-size: 10pt;
-
-    }
-    
-    .factor-ey {
-	position: absolute;
-	top: 0pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .factor-roc {
-	position: absolute;
-	top: 14pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .factor-grwth {
-	position: absolute;
-	top: 28pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .factor-epscon {
-	position: absolute;
-	top: 42pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .factor-ae {
-	position: absolute;
-	top: 56pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .factor-momentum {
-	position: absolute;
-	top: 70pt;
-	left: 0pt;
-	width: 120pt;
     }
 
     .key-stats {
@@ -480,6 +480,7 @@
 	width: 60pt;
 	text-align: right;
     }
+
 
 }
 

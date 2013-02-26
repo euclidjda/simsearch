@@ -159,7 +159,7 @@ $targetinfoWidth: 170px;
 
     .result-container {
 
-		padding-left: 160px;
+	padding-left: 160px;
 
 		.comparable {
 		    background-color: $panelColor;
@@ -200,7 +200,7 @@ $targetinfoWidth: 170px;
 		    }
 
 		    #panel-performance {
-		    	padding: 0 4px 0 4px;
+		    	padding: 0 4px 0 40px;
 		    	font-size: 11pt;
 		    	font-weight: bold;
 		    	line-height: 32px;
@@ -211,7 +211,6 @@ $targetinfoWidth: 170px;
 		    	}
 
 		    	#perf-image-and-num {
-		    		float: right;
 
 		    		#perf-image {
 		    			height: 20px;

@@ -3,6 +3,14 @@
 
   <div class="modal-body">
 
+    <table class="arrow-table">
+      <tr><td><i class="icon-arrow-right"></i></td></tr>
+      <tr><td><i class="icon-arrow-right"></i></td></tr>
+      <tr><td><i class="icon-arrow-right"></i></td></tr>
+      <tr><td><i class="icon-arrow-right"></i></td></tr>
+      <tr><td><i class="icon-arrow-right"></i></td></tr>
+    </table>
+
     <table class="comparable-table"><tr>
 
 	<td class="comparable-table-left-pane">
@@ -28,28 +36,6 @@
 		      price_date.year.to_s %>
 		</div>
 
-		<div class="factors-header">Factors</div>
-
-		<div class="factors-body">
-		  <div class="factors factor-ey">
-		    <%= sprintf("EYd: %.2f%%",100*target_fields[:ey]); %>
-		  </div>
-		  <div class="factors factor-roc">
-		    <%= sprintf("ROC: %.2f%%",100*target_fields[:roc]); %>
-		  </div>
-		  <div class="factors factor-grwth">
-		    <%= sprintf("GRW: %.2f%%",100*target_fields[:grwth]); %>
-		  </div>
-		  <div class="factors factor-epscon">
-		    <%= sprintf("CON: %.2f",target_fields[:epscon]); %>
-		  </div>
-		  <div class="factors factor-ae">
-		    <%= sprintf("LIQ: %.2f%%",100*target_fields[:ae]); %>
-		  </div>
-		  <div class="factors factor-momentum">
-		    <%= sprintf("MOM: %.2f%%",100*target_fields[:momentum]); %>
-		  </div>
-		</div>
 
 		<div class="key-stats-header">Key Statistics</div>
 
@@ -88,6 +74,38 @@
 		  </div>
 
 		</div> <!-- end key-stats-body -->
+
+		<div class="factors">
+		  <table class="factors-table">
+		    <header>Similarity Factors</header>
+		    <tr>
+		      <td>Earnings Yield</td>
+		      <td class="col2">
+			<%= sprintf("%.2f%%",100*target_fields[:ey]) %></td>
+		    </tr><tr>
+		      <td>Return On Capital</td> 
+		      <td class="col2">
+			<%= sprintf("%.2f%%",100*target_fields[:roc]) %></td>
+		    </tr><tr>
+		      <td>Revenue Growth</td> 
+		      <td class="col2">
+			<%= sprintf("%.2f%%",100*target_fields[:grwth]) %></td>
+		    </tr><tr>
+		      <td>EPS Consistency</td> 
+		      <td class="col2">
+			<%= sprintf("%.2f",target_fields[:epscon]); %></td>
+		    </tr><tr>
+		      <td>Liquidity</td> 
+		      <td class="col2">
+			<%= sprintf("%.2f%%",100*target_fields[:ae]) %> </td>
+		    </tr><tr>
+		      <td class="col1">Price Momentum</td> 
+		      <td class="col2">
+			<%= sprintf("%.2f%%",100*target_fields[:momentum]) %></td>
+		    </tr>
+		  </table>
+		</div>
+
 
 		<div id="chart-growth-left" class="chart-growth"></div>
 		<div id="chart-price-left" class="chart-price"></div>
@@ -129,15 +147,24 @@
     <div class="year"></div>
     <div class="date"></div>
 
-    <div class="factors-header">Factors</div>
-
-    <div class="factors-body">
-      <div class="factors factor-ey"></div>
-      <div class="factors factor-roc"></div>
-      <div class="factors factor-grwth"></div>
-      <div class="factors factor-epscon"></div>
-      <div class="factors factor-ae"></div>
-      <div class="factors factor-momentum"></div>
+    <div class="factors">
+      <table class="factors-table">
+	<header>Similarity Score </header>
+	<tr>
+	  <td class="factor-ey"></td>
+	  <td class="similarity-score" rowspan="6"> </td>
+	</tr><tr>
+	  <td class="factor-roc"></td>
+	</tr><tr>
+	  <td class="factor-grwth"></td>
+	</tr><tr>
+	  <td class="factor-epscon"></td>
+	</tr><tr>
+	  <td class="factor-ae"></td>
+	</tr><tr>
+	  <td class="factor-momentum"></td>
+	</tr>
+      </table>
     </div>
 
     <div class="key-stats-header">Key Statistics</div>
