@@ -25,9 +25,11 @@ function render_results(search_id_list) {
 		} else if (perf >= 0) {
 		    $("#summary-image").attr("src",pos_big_icon);
 		    $("#summary-num").html(sprintf("%.2f%%",perf));
+		    $("#summary-label").html("Outperformed");
 		} else {
 		    $("#summary-image").attr("src",neg_big_icon);
 		    $("#summary-num").html(sprintf("%.2f%%",perf));
+		    $("#summary-label").html("Underperformed");
 		}
 
 
@@ -211,12 +213,10 @@ function populate_panels(data,search_id,i) {
 	.html(EGUI.fmtAsNumber(data[i].ae*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.factor-momentum')
-	.html(EGUI.fmtAsNumber(data[i].momentum*100,
-			       {fmtstr:"%.2f%%"}));
+	.html(EGUI.fmtAsNumber(data[i].momentum*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.similarity-score')
-	.html(
-	      EGUI.fmtAsNumber(sim_score,{fmtstr:"%.2f"}));
+	.html(EGUI.fmtAsNumber(sim_score,{fmtstr:"%.2f"}));
 
     
 			       
