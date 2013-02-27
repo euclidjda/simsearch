@@ -4,7 +4,7 @@ $(document).ready(function() {
     var teaser = $('#teaser-carousel');
 
     if (teaser) {
-	$('#teaser-carousel').carousel( );
+	$('#teaser-carousel').carousel( { interval: 15000 } );
     }
 
     var search_id_list = $('#all-search-ids').attr('search_ids');

@@ -43,7 +43,8 @@
 
 		  <div class="key-stats mrkcap-label">Market Capitalization:</div>
 		  <div class="key-stats mrkcap-value">
-		    <%= sprintf("%.2fM",target_fields['mrkcap']); %>
+		    <%= number_with_delimiter(target_fields['mrkcap'].to_i,
+			:delimiter => ',') + "M" %>
 		  </div>
 		  
 		  <div class="key-stats price-label">Price/Share:</div>
