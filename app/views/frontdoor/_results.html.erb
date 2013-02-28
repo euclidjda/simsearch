@@ -29,7 +29,9 @@
       <div class="target-name"><%= nickname %> </div>
       
       <div class="target-info">
-        <b>NASDAQ</b>: <%= target_fields['ticker'] + " - " + monthname + " " + pricedate.day.to_s %><br>
+        <b>NASDAQ</b>: <%= target_fields['ticker'] + 
+			   " - " + monthname + " " + 
+			   pricedate.day.to_s %><br>
         <b>Market Cap</b>:
 	<%= number_with_delimiter(target_fields['mrkcap'].to_i,
 	    :delimiter => ',') + "M" %>
@@ -43,9 +45,9 @@
 
   <div class="row-fluid summary-row light-row">
     <div id ="result-summary">
-      Top Historical Comps 
+      <%= target_fields['ticker'] %>'s Historical Comparables 
       <i><span id="summary-label">Outperformed</span></i>
-      the Market by an Average of:
+      by an Average of:
       <span id="median-perf">
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
@@ -54,24 +56,20 @@
   </div>
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
-  <div id="panel-name" title="Click to Compare to <%= target_fields['name'] %>"></div>
-  <div id="panel-ticker-and-date">
-    <span id="panel-ticker"></span>  -  <span id="panel-date"></span>
+  <div class="panel-name" title="Click to Compare to <%= target_fields['name'] %>">
   </div>
-  <div id="panel-performance">
-    <span id="perf-pne"></span>
-    <span id="perf-image-and-num">
-      <img id="perf-image" src=""></img>
-      <span id="perf-num">
-      </span>
-    </span>
+  <div class="panel-ticker-and-date">
+    <span class="panel-ticker"></span>  -  <span class="panel-date"></span>
   </div>
-  <div id="panel-similarity"></div>
+  <div class="panel-performance">
+      <img class="perf-image" src=""></img>
+      <span class="perf-num"></span>
+      <span class="perf-tag"></span>
+  </div>
+  <div class="panel-similarity"></div>
 </div>
 
 <div id="all-search-ids" search_ids="<%= search_ids.values * ',' %>"></div>
-
-<div id="basic-chart"></div>
 
 <% first_row = true %>
 <% row_num = 0 %>

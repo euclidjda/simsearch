@@ -116,6 +116,7 @@ $targetinfoWidth: 170px;
 }
 
 .summary-row {
+
     margin: 10px 0px 0px 0px;
     font-family:"Helvetica", Helvetica, serif;
     font-size: 16pt;
@@ -123,7 +124,7 @@ $targetinfoWidth: 170px;
 	#result-summary {
 		font-size: 16pt;
 		line-height: 22pt;
-		padding: 12px 0 16px 120px; 
+		padding: 12px 0 16px 60px; 
 	}
 
 	#summary-image {
@@ -131,6 +132,7 @@ $targetinfoWidth: 170px;
 		position: relative;
 		top: -8px;
 	}
+
 }
 
 .first-row {
@@ -141,6 +143,7 @@ $targetinfoWidth: 170px;
 }
 
 .result-row {
+
     .timeline-label {
 		position: relative;
 		top: 5%;
@@ -160,6 +163,7 @@ $targetinfoWidth: 170px;
     .result-container {
 
 	padding-left: 160px;
+	height: 100px;
 
 		.comparable {
 		    background-color: $panelColor;
@@ -168,23 +172,24 @@ $targetinfoWidth: 170px;
 		    min-width: 220px;
 		    box-shadow: 4px 4px 2px #999;
 
-		    #panel-name {
+		    .panel-name {
 				font-weight: bold;
 				font-size: 12pt;
 				color: rgb(23,23,23);
 				padding: 6px 4px 4px 4px;
 				overflow: hidden;
 				white-space: nowrap;
+
 				text-overflow: ellipsis;
 				border-bottom: solid darkgray 1px;
 				background-color: white;
 		    }
 
-		    #panel-ticker-and-date {
+		    .panel-ticker-and-date {
 		    	padding-top: 4px;
 		    }
 
-		    #panel-ticker {
+		    .panel-ticker {
 				font-weight: bold;
 				font-size: 10pt;
 				color: rgb(35, 35, 35);
@@ -193,32 +198,46 @@ $targetinfoWidth: 170px;
 				padding: 0 4px 0 4px; 
 		    }
 
-		    #panel-date {
+		    .panel-date {
 				font-weight: normal;
 				font-size: 10pt;
 				color: rbg(23, 23, 23);
 		    }
 
-		    #panel-performance {
-		    	padding: 0 4px 0 40px;
-		    	font-size: 11pt;
-		    	font-weight: bold;
-		    	line-height: 32px;
+		    .panel-performance {
+			  padding: 4px 4px 6px 10px;
 
-		    	#perf-pne {
-		    		font-weight: normal;
-		    		padding-left: 2px;
-		    	}
+		    		.perf-image {
 
-		    	#perf-image-and-num {
-
-		    		#perf-image {
-		    			height: 20px;
+		    		    height: 30px;
+				    vertical-align: top;
+				    
 		    		}
-		    	}
+
+		    		.perf-num {
+				    height: 30px;
+				    vertical-align: top;
+				    font-size: 11pt;
+				    font-weight: bold;
+				    margin-left: 6px;
+
+		    		}
+
+				.perf-tag {
+
+		    		    height: 30px;
+				    vertical-align: top;
+				    display: inline-block;
+				    font-size: 8pt;
+				    line-height: 10pt;
+				    width: 80px;
+				    margin-left: 6px;
+
+				}
+
 		    }
 
-		    #panel-similarity {
+		    .panel-similarity {
 		    	padding-left: 4px;
 		    	background-color: lightgray;
 		    }

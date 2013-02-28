@@ -111,35 +111,37 @@ function populate_panels(data,search_id,i) {
 
     // TODO: JDA Not sure the best way to truncate the string here
     // we really just want it to not flow over the panel
-    panel.find('#panel-name').html(data[i].name.substring(0,23));
+    panel.find('.panel-name').html(data[i].name.substring(0,23));
     
     var ticker = data[i].ticker;
     var exchg  = exchange_code_to_name(data[i].exchg,ticker);
 
-    panel.find('#panel-ticker').html(exchg+': '+ticker);
+    panel.find('.panel-ticker').html(exchg+': '+ticker);
 
     var dd = new Date(data[i].pricedate);
 
     var datearr = dd.toDateString().split(" ");
     var datestr = datearr[1] + " " + datearr[2] + ", " + datearr[3]; 
 
-    panel.find('#panel-date').html(datestr);
+    panel.find('.panel-date').html(datestr);
     
     // calc outperformance
     var perf = data[i].stk_rtn - data[i].mrk_rtn;
     
     if (perf >= 0) {
-        panel.find("#perf-image").attr("src",pos_small_icon);
-        panel.find("#perf-num").html(sprintf("%.2f%%",perf));
+        panel.find(".perf-image").attr("src",pos_small_icon);
+        panel.find(".perf-num").html(sprintf("%.2f%%",perf));
+        panel.find(".perf-tag").html("1 Yr Rtn <br><u>Above</u> Mrkt");
     } else {
-        panel.find("#perf-image").attr("src",neg_small_icon);
-        panel.find("#perf-num").html(sprintf("%.2f%%",perf));
+        panel.find(".perf-image").attr("src",neg_small_icon);
+        panel.find(".perf-num").html(sprintf("%.2f%%",perf));
+        panel.find(".perf-tag").html("1 Yr. Rtn <br><u>Below</u> Mrkt");
     }
     
     var sim_score = sprintf("%.2f", 
 			    (100 * Math.exp(-(data[i].distance))));
     
-    panel.find('#panel-similarity')
+    panel.find('.panel-similarity')
 	.html('Similarity Score: '+ sim_score);
     
     // show makes the panel visible (the template from which it 
