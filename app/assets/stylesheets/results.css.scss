@@ -94,7 +94,8 @@ $targetinfoWidth: 170px;
 		    font-color: rgb(23, 23, 23);
 		    padding: 25px 10px 25px 10px;
 		    white-space: nowrap;
-		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    /* overflow: hidden; */
 		}
 
 		.target-info {

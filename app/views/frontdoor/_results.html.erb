@@ -24,9 +24,7 @@
       </span>
 
       <% fullname = target_fields['name'] %>
-      <% nickname = fullname.length > 22 ? fullname[0..18]+"..." : fullname %>
-
-      <div class="target-name"><%= nickname %> </div>
+      <div class="target-name"><%= fullname %> </div>
       
       <div class="target-info">
         <b>NASDAQ</b>: <%= target_fields['ticker'] + 
