@@ -178,15 +178,27 @@ html>/**/body #cuatro {
 
 .result-row {
 
+
+    div.line {
+	-webkit-transform-origin: 0 100%;
+	transform-origin: 0 100%;
+	height: 3px; /* Line width of 3 */
+	background: #000; /* Black fill */
+    }
+
     .timeline-label {
-		position: relative;
-		top: 5%;
-		
+		position: absolute;
+
+		z-index: 10;
+
+		margin-top: -10px;
 		margin-left: -19px;
+		margin-bottom: 0px;
 		padding: 2px 0px 0px 6px; 
 		
-		height: 80px;
-		
+		height: 30px;
+		width: 150px;
+
 		font-size: 16pt;
 		font-weight: bold;
 		background-image: url('bgr-year.png');
@@ -194,14 +206,33 @@ html>/**/body #cuatro {
 		background-size: 70px;
     }
 
+    .timeline-ticks {
+
+	position: relative;
+	top: 15px;
+	/* font-weight: bold; */
+	font-size: 8pt;
+	line-height: 12pt;
+	margin-left: 24px;
+	margin-top: 0px;
+	color: white;
+
+	.timeline-tick {
+
+	    margin-top: 14px;
+	    margin-bottom: 12px;
+	}
+
+    }
+
     .result-container {
 
 	padding-left: 160px;
-	height: 100px;
+	height: 200px;
 
 		.comparable {
 		    background-color: $panelColor;
-		    margin-top: 28px;
+		    margin-top: 14px;
 		    border-radius: 2px;
 		    min-width: 220px;
 		    box-shadow: 4px 4px 2px #999;
@@ -239,7 +270,7 @@ html>/**/body #cuatro {
 		    }
 
 		    .panel-performance {
-			  padding: 4px 4px 6px 10px;
+			  padding: 8px 4px 10px 10px;
 
 		    		.perf-image {
 
@@ -274,6 +305,7 @@ html>/**/body #cuatro {
 		    .panel-similarity {
 		    	padding-left: 4px;
 		    	background-color: lightgray;
+			vertical-align: bottom;
 		    }
 		}
     }	

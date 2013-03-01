@@ -159,6 +159,11 @@ function populate_panels(data,search_id,i) {
     // This packs  the panel into the DOM so it can be seenn
     $('[search_id='+search_id+']').append(panel);
 
+    /***
+    var offset = panel.offset();
+    var line = createLine(0,0,offset.left,offset.top);
+    $('[search_id='+search_id+']').append(line); **/
+
     // Add to detailed compare
     var detail_item = $('#carousel-item-right-template').clone();
 
@@ -490,4 +495,24 @@ function get_row_from_year(year) {
     else
 	return 0;
 
+}
+
+function createLine(x1,y1, x2,y2) {
+    //alert("creating line "+x1+" "+y1+" "+x2+" "+y2);
+
+    var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    var transform = 'rotate('+angle+'deg)';
+    
+    var line = $('<div>')
+        .appendTo('body')
+        .addClass('line')
+        .css({
+            'position': 'absolute',
+            'transform': transform
+        })
+        .width(length)
+        .offset({left: x1, top: y1});
+    
+    return line;
 }

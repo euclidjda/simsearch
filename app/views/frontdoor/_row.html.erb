@@ -5,11 +5,25 @@
 <div class="row row-fluid dyna-roller result-row <%= row_type %> <%= first_row %>">
 
 	<div class="span1 timeline-bar">
-		<div class="timeline-label">
-			<%= row[:epoch_label] %>
-		</div>
-	</div>
 
+	  <div class="timeline-label">
+	    <%= row[:epoch_label] %>
+	  </div>
+	  
+	  <div class="timeline-ticks">
+	    
+	    <% [2,4,6,8].each do | year | %>
+	    
+	    <div class="timeline-tick timeline-tick-<%= year %>">
+	      <%= row[:epoch_label].to_i-year %>
+	    </div>
+
+	    <% end %>
+	    
+	  </div>
+
+	</div>
+	
 	<div class="result-container" 
 		search_id="<%= row[:search_id] %>" id="row-<%= row[:row_num] %>">
 	</div>
