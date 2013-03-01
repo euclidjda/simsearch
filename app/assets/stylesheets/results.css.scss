@@ -18,6 +18,7 @@ $leftbarWidth: 70px;
 $targetinfoWidth: 170px;
 
 .date-label {
+
 	background-image: url('date-box-orange.png');
 	background-size: 100% 100%;
 
@@ -26,6 +27,8 @@ $targetinfoWidth: 170px;
 
 	font-size: 10pt;
 	padding: 2px 6px 2px 12px; 
+
+	display: inline-block;
 }
 
 .timeline-bar {
@@ -107,13 +110,43 @@ $targetinfoWidth: 170px;
 		    background-color: lightgray;
 		    color: rgb(23, 23, 23);
 		    position: relative;
-		    top: 10px;
 		    height: 70px;
 		    margin-left: -5px;
 		    font-size: 9pt;
 		    padding-left: 5px;
 		}
     }
+}
+
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+	.date-label {
+		position: relative;
+		top: -20px;
+	}
+
+	.target-name {
+		position: relative;
+		top: 10px;
+	}
+
+	.target-info {
+		top: -6px;
+	}
+}
+
+/* saf3+, chrome1+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.target-info {
+		top: 10px;
+	} 
+}
+
+/* IE8, FF, Saf, Opera (Everything but IE 6,7) */
+html>/**/body #cuatro { 
+	.target-info {
+		top: -8px;
+	}
 }
 
 .summary-row {
