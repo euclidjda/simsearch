@@ -1,6 +1,6 @@
 <div class="span12">
   <div class="row row-fluid target-row dark-row">
-    
+
     <% pricedate = target_fields['pricedate'] %>
     <% monthname = Date::MONTHNAMES[pricedate.month][0..2] %>
 
@@ -11,11 +11,11 @@
       </div>
       <div class="timeline-date">
         <%= sprintf("%02d", pricedate.month) + "." +
-	    sprintf("%02d", pricedate.day) + "." +
-	    sprintf("%02d", pricedate.year - 2000) %>  
+            sprintf("%02d", pricedate.day) + "." +
+            sprintf("%02d", pricedate.year - 2000) %>
       </div>
     </div>
- 
+
 
     <div class="target-container">
 
@@ -25,15 +25,15 @@
 
       <% fullname = target_fields['name'] %>
       <div class="target-name"><%= fullname %> </div>
-      
+
       <div class="target-info">
-        <b>NASDAQ</b>: <%= target_fields['ticker'] + 
-			   " - " + monthname + " " + 
-			   pricedate.day.to_s %><br>
+        <b>NASDAQ</b>: <%= target_fields['ticker'] +
+                           " - " + monthname + " " +
+                           pricedate.day.to_s %><br>
         <b>Market Cap</b>:
-	<%= number_with_delimiter(target_fields['mrkcap'].to_i,
-	    :delimiter => ',') + "M" %>
-	<br>
+        <%= number_with_delimiter(target_fields['mrkcap'].to_i,
+            :delimiter => ',') + "M" %>
+        <br>
         <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) %>
         <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
       </div>
@@ -43,14 +43,14 @@
 
   <div class="row-fluid summary-row light-row">
     <div id ="result-summary">
-      <%= target_fields['ticker'] %>'s Historical Comparables 
+      <%= target_fields['ticker'] %>'s Historical Comparables
       <i><span id="summary-label">Outperformed</span></i>
       by an Average of:
       <span id="median-perf">
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
       </span>
-    </div> 
+    </div>
   </div>
 
 <div id="comparable-panel-template" style="display:none" class="span2 comparable">
@@ -67,27 +67,32 @@
   <div class="panel-similarity"></div>
 </div>
 
-<div id="all-search-ids" search_ids="<%= search_ids.values * ',' %>"></div>
+<div id="all-search-ids" search_ids="<%= the_search.id %>"></div>
 
 <% first_row = true %>
 <% row_num = 0 %>
-<% FrontdoorHelper::epochs.each do |ep| %>
-	
-	<% if !first_row %>
-		</div> <!-- row fluid -->
-		<% first_row = false %>
-	<% end %>
-	<% row_num += 1 %>
-	<% epoch_label = 
-	   (Date.parse(FrontdoorHelper::endDate(ep))+1).to_s[0..3] %>
 
-  	<% row = { :row_num     => row_num, 
-                   :search_id   => search_ids[ep],
-                   :epoch_label => epoch_label   } %>
+<% epochs.each do |ep| %>
 
-  	<%= render :partial => "row", :object => row %>
+        <% if !first_row %>
+                </div> <!-- row fluid -->
+                <% first_row = false %>
+        <% end %>
+
+        <% row_num += 1 %>
+
+        <% epoch_label = (ep.thrudate+1).to_s[0..3] %>
+
+        <% row = { :row_num     => row_num       ,
+        :search_id => the_search.id ,
+        :fromdate  => ep.fromdate   ,
+        :thrudate  => ep.thrudate   ,
+        :epoch_label => epoch_label } %>
+
+        <%= render :partial => "row", :object => row %>
 
 <% end %>
 
 <%= render :partial => "comparable_modal", :object => target_fields %>
+
 </div> <!-- end of span12-->

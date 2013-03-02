@@ -1,7 +1,7 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_sec, :target_fields, :search_ids, :form_refresh?, :validation_error
+  helper_method :target_sec, :target_fields, :form_refresh?, :validation_error, :epochs, :the_search
 
   @target_sec = nil
   @target_fields = nil
@@ -22,8 +22,8 @@ class FrontdoorController < ApplicationController
 
       # create the user
       user = User.create_with_form_data(
-          :email => _email, 
-          :username => _username, 
+          :email => _email,
+          :username => _username,
           :password => _password
           )
 
@@ -37,7 +37,7 @@ class FrontdoorController < ApplicationController
         redirect_to root_path, :notice => "Register succeeded. Signed in."
       end
 
-    end 
+    end
   end
 
   def login
@@ -89,41 +89,34 @@ class FrontdoorController < ApplicationController
       @target_sec = ExSecurity::find_by_ticker(ticker_value)
 
       if !@target_sec.nil?
-        
+
         target = SecuritySnapshot::get_target(@target_sec.cid,@target_sec.sid)
 
         # Get the target's factor fields
         @target_fields = target.to_hash()
 
-        @search_ids = Hash::new()
+        @epochs = [ Epoch.new( Date.parse('2000-01-01') ,Date.parse('2011-12-31') ),
+                    Epoch.new( Date.parse('1990-01-01') ,Date.parse('1999-12-31') ),
+                    Epoch.new( Date.parse('1980-01-01') ,Date.parse('1989-12-31') ),
+                    Epoch.new( Date.parse('1970-01-01') ,Date.parse('1979-12-31') ) ]
 
-        FrontdoorHelper::epochs.each do |ep|
-          
-          fromdate = FrontdoorHelper::startDate(ep)
-          thrudate = FrontdoorHelper::endDate(ep)
-          
-          search = Search::exec( :target      => target   ,
-                                 :fromdate    => fromdate ,
-                                 :thrudate    => thrudate ,
-                                 :search_type => 'foo'    ,
-                                 :limit       => 10       )
-          
-          @search_ids[ep] = search.id
-          
-        end
-        
+        @the_search = Search::exec( :target      => target    ,
+                                    :epochs      => @epochs   ,
+                                    :search_type => 'foo'     ,
+                                    :limit       => 10        )
+
       end
 
     end
-    
+
     render :action => :home
     # streaming ...
     # render :action => :home, :stream => true
 
-    # Comment the above line and uncomment the line below to see JSON output 
+    # Comment the above line and uncomment the line below to see JSON output
     # with no rendering. Helps with debugging.
     # render :json => @comparables.to_json()
-    
+
   end
 
   #
@@ -137,7 +130,7 @@ class FrontdoorController < ApplicationController
         term = term[1.._term.length]
         items = Filter.
           select("distinct id as cid, id as sid, name as shortname, description as longname").
-          where("LOWER(CONCAT(name, description)) like ?", '%' + 
+          where("LOWER(CONCAT(name, description)) like ?", '%' +
                 _term.downcase + '%').
           limit(10).order(:shortname)
       else
@@ -160,27 +153,31 @@ class FrontdoorController < ApplicationController
   #
   def get_search_results
     _search_id = params[:search_id]
+    _fromdate  = params[:fromdate]
+    _thrudate  = params[:thrudate]
 
     result = Array::new(0)
 
     if !_search_id.blank?
 
       if are_searches_complete?( _search_id )
-      
-        details = SearchDetail.where( :search_id => _search_id )
+
+        details = SearchDetail
+          .where( "search_id = #{_search_id} AND "+
+                  "pricedate BETWEEN '#{_fromdate}' AND '#{_thrudate}'")
 
         details.each { |d|
 
           snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
 
           comp_record = snapshot.to_hash()
-        
+
           comp_record[:distance] = d.dist
           comp_record[:stk_rtn]  = d.stk_rtn
           comp_record[:mrk_rtn]  = d.mrk_rtn
-        
+
           result.push(comp_record)
-        
+
         }
 
       else
@@ -207,32 +204,32 @@ class FrontdoorController < ApplicationController
   def get_search_summary
 
     result = Hash::new()
-    
+
     _search_id_list = params[:search_id_list]
-    
+
     if are_searches_complete?( _search_id_list )
 
       search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
-      
+
       perfs = Array::new()
       weight_sum = 0
       values_sum = 0
-      
+
       search_details.each { |detail|
-        
+
         next unless detail.dist > 0
-        
+
         weight = Math.exp( -detail.dist )
-        
-        values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn ) 
+
+        values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn )
         weight_sum += weight
-        
+
       }
 
       result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
 
     else
-      
+
       result = nil
 
     end
@@ -298,9 +295,14 @@ private
     @target_fields
   end
 
-  def search_ids
-    @search_ids
+  def the_search
+    @the_search
   end
+
+  def epochs
+    @epochs
+  end
+
 
   def form_refresh?
     @form_refresh
@@ -324,3 +326,4 @@ private
   end
 
 end
+
