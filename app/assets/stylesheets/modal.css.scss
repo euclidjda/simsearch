@@ -263,153 +263,147 @@
 
     .comparable-detail-right {
 
-	width: 450px;
-	height: 800px;
-	margin: 0px 0px 0px 20px;
+		width: 450px;
+		height: 800px;
+		margin: 0px 0px 0px 20px;
 
-	background-image: url('box-bgr-mirrored.png');	
-	background-repeat: no-repeat;
-	background-size: 430px;
+		background-image: url('box-bgr-mirrored.png');	
+		background-repeat: no-repeat;
+		background-size: 430px;
 
-	overflow: hidden;
-	white-space:nowrap;
-	font-family:"Helvetica", Helvetica, serif;
-	font-weight: normal;
+		overflow: hidden;
+		white-space:nowrap;
+		font-family:"Helvetica", Helvetica, serif;
+		font-weight: normal;
 
-	color: rgb(255,255,255);
+		color: rgb(255,255,255);
 
-	.factors {
+		.factors {
 
-	    font-family:"Helvetica", Helvetica, serif;
+		    font-family:"Helvetica", Helvetica, serif;
 
-	    z-index: 5 !important;
-	    overflow: visible;
-	    background-color: #f9af6f;
+		    z-index: 5 !important;
+		    overflow: visible;
+		    background-color: #f9af6f;
 
-	    position: absolute;
-	    top: 54px;
-	    left: 0px;
-	    margin-left: 0px;
-	    width: 160px;
-	    font-size: 12pt;
-	    color: rgb(23,23,23);
+		    position: absolute;
+		    top: 54px;
+		    left: 0px;
+		    margin-left: 0px;
+		    width: 160px;
+		    font-size: 12pt;
+		    color: rgb(23,23,23);
 
-	    table {
-		width: 100%;
-	    }
+		    table {
+			width: 100%;
+		    }
 
-	    header {
-		padding-left: 4px;
-		padding-top: 8px;
-		padding-bottom: 6px;
-		text-align: center;
-	    }
-	    
-	    td {
-		padding: 4px 0px 3px 10px;
-		font-size: 10pt;
-		text-align: left;
-	    }
+		    header {
+			padding-left: 4px;
+			padding-top: 8px;
+			padding-bottom: 6px;
+			text-align: center;
+		    }
+		    
+		    td {
+			padding: 4px 0px 3px 10px;
+			font-size: 10pt;
+			text-align: left;
+		    }
 
-	    .similarity-score {
-		font-size: 22pt;
-		text-align: center;
-		border: 4px solid brown;
-	    }
+		    .similarity-score {
+			font-size: 22pt;
+			text-align: center;
+			border: 4px solid brown;
+		    }
+		}
 
-	    
-	}
+		.key-stats-header {
+		    position: absolute;
+		    top: 46pt;
+		    left: 125pt;
+		    width: 100px;
+		    font-size: 12pt;
+		}
 
+		.key-stats-body {
+		    position: absolute;
+		    top: 70pt;
+		    left: 125pt;
+		    width: 180pt;
+		    height: 82pt;
+		}
 
-	.key-stats-header {
-	    
-	    position: absolute;
-	    top: 46pt;
-	    left: 125pt;
-	    width: 100px;
-	    font-size: 12pt;
-	}
+		.company-name {
+		    position: absolute;
 
-	.key-stats-body {
+		    top: 12pt;
+		    left: 8pt;
 
-	    position: absolute;
-	    top: 70pt;
-	    left: 125pt;
-	    width: 180pt;
-	    height: 82pt;
-	}
+		    width: 300px;
+		    font-weight: bold;
+		    font-size: 16pt;
 
-	.company-name {
-	    position: absolute;
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		}
 
-	    top: 12pt;
-	    left: 8pt;
+		.ticker {
+		    position: absolute;
+		    top: 28pt;
+		    left: 8pt;
+		    width: 100px;
+		    font-size: 9pt;
+		}
 
-	    width: 300px;
-	    font-weight: bold;
-	    font-size: 16pt;
+		.year {
+		    position: absolute;
+		    top: 13pt;
+		    left: 258pt;
+		    width: 100px;
+		    font-weight: bold;
+		    font-size: 14pt;
+		    color: rgb(35,35,35);
+		}
 
-	    white-space: nowrap;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	}
-
-	.ticker {
-	    position: absolute;
-	    top: 28pt;
-	    left: 8pt;
-	    width: 100px;
-	    font-size: 9pt;
-	}
-
-	.year {
-	    position: absolute;
-	    top: 13pt;
-	    left: 258pt;
-	    width: 100px;
-	    font-weight: bold;
-	    font-size: 14pt;
-	    color: rgb(35,35,35);
-	}
-
-	.date {
-	    position: absolute;
-	    top: 32pt;
-	    left: 253pt;
-	    width: 90px;
-	    font-size: 7pt;
-	}
-
+		.date {
+		    position: absolute;
+		    top: 32pt;
+		    left: 253pt;
+		    width: 90px;
+		    font-size: 7pt;
+		}
     }
 
     .key-stats {
-	height: 12pt;
-	font-size: 10pt;
+		height: 12pt;
+		font-size: 10pt;
     }
 
     .mrkcap-label {
-	position: absolute;
-	/*
-	  top: 70pt;
-	  left: 125pt;
-	  */
-	top: 0pt;
-	left: 0pt;
-	width: 120pt;
+		position: absolute;
+		/*
+		  top: 70pt;
+		  left: 125pt;
+		  */
+		top: 0pt;
+		left: 0pt;
+		width: 120pt;
     }
 
     .price-label {
-	position: absolute;
-	top: 14pt;
-	left: 0pt;
-	width: 120pt;
+		position: absolute;
+		top: 14pt;
+		left: 0pt;
+		width: 120pt;
     }
 
     .dividend-label {
-	position: absolute;
-	top: 28pt;
-	left: 0pt;
-	width: 120pt;
+		position: absolute;
+		top: 28pt;
+		left: 0pt;
+		width: 120pt;
     }
 
     .eps-label {

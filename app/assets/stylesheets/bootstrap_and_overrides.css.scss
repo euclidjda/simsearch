@@ -5,7 +5,7 @@ $navbarCollapseWidth: 550px;
 @import "bootstrap";
 @import "bootstrap-responsive";
 
-@import "results";
+@import "shared";
 
 /*
 This file contains overrides for bootstrapper styles and any media query
@@ -13,20 +13,6 @@ based styling that applies to all style classes we use.
 
 Any media size specific and resize related rules should be here.
 */
-
-@media (min-width:979px) {
-	.dyna-roller {
-		height: $resultRowHeight;
-	}
-
-	.target-row {
-		height: $summaryRowHeight;
-	}
-
-	#history-sidebar-nav {
-		display: none;
-	}
-}
 
 @media (min-width: 767px) {
 	#history-sidebar-nav {
@@ -40,16 +26,42 @@ Any media size specific and resize related rules should be here.
 	.target-row {
 		height: $summaryRowHeight;
 	}
+
+	.timeline-bar {
+		/* width parameters overwritten based on size */
+	    width: $leftbarWidth !important;
+	    min-width: $leftbarWidth;
+	    max-width: $leftbarWidth;
+	}
+
+	.result-container {
+		padding-left: 120px;
+		height: 200px;
+	}
 }
 
-@media  (max-width:979px) { 
+@media (min-width:979px) {
+	.dyna-roller {
+		height: $resultRowHeight;
+	}
 
-	.navbar-fixed-top { 
-		position: absolute;
-	} 
+	.target-row {
+		height: $summaryRowHeight;
+	}
 
 	#history-sidebar-nav {
 		display: none;
+	}
+
+	.summary-row {
+		#result-summary {
+			font-size: 16pt;
+			padding-left: 60px; 
+		}
+
+		#summary-image {
+			height: 22px;
+		}
 	}
 }
 
@@ -66,5 +78,42 @@ Any media size specific and resize related rules should be here.
 
 	.row-fluid [class*="timeline-bar"] {
 		margin-left: 0 !important;
+	}
+
+	.timeline-ticks {
+		display: none;
+	}
+
+	.timeline-bar {
+		width: 100% !important;
+		max-width: 100%;
+		min-width: 100%;
+	}
+
+	.result-container {
+		padding-left: 0px;
+		height: 420px;
+	}
+}
+
+@media  (max-width:979px) { 
+
+	.navbar-fixed-top { 
+		position: absolute;
+	} 
+
+	#history-sidebar-nav {
+		display: none;
+	}
+
+	.summary-row {
+		#result-summary {
+			font-size: 14pt;
+			padding-left: 16px;
+		}
+
+		#summary-image {
+			height: 18px;
+		}
 	}
 }
