@@ -94,6 +94,10 @@ Any media size specific and resize related rules should be here.
 		padding-left: 0px;
 		height: 420px;
 	}
+
+	.timeline-label-now {
+		display: none;
+	}
 }
 
 @media  (max-width:979px) { 
