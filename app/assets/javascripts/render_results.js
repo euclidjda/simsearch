@@ -72,7 +72,7 @@ function render_results(search_id_list) {
 
                         } else {
 
-                            $(this).html("No comparables found.");
+                            $(this).html("<div class='no-results-found'>No comparables found for this period.</div>");
 
                         }
 

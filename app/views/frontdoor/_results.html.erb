@@ -81,7 +81,7 @@
 
         <% row_num += 1 %>
 
-        <% epoch_label = (ep.thrudate+1).to_s[0..3] %>
+        <% epoch_label = (ep.fromdate).to_s[0..3] %>
 
         <% row = { :row_num     => row_num       ,
         :search_id => the_search.id ,

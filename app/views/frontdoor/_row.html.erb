@@ -1,25 +1,31 @@
 
 <% row_type = ((row[:row_num]%2)==0) ? 'light-row' : 'dark-row' %>
-<% first_row = (row[:row_num] == 1) ? 'first-row' : '' %>
+<% first_row_class = (row[:row_num] == 1) ? 'first-row' : '' %>
 
-<div class="row row-fluid dyna-roller result-row <%= row_type %> <%= first_row %>">
+<div class="row row-fluid dyna-roller result-row <%= row_type %> <%= first_row_class %>">
 
         <div class="span1 timeline-bar">
 
-          <div class="timeline-label">
-            <%= row[:epoch_label] %>
-          </div>
+          <% if row[:row_num] == 1 %>
+            <div class="timeline-label timeline-label-now">
+              <%= Time.now.year %>
+            </div>
+          <% end %>
 
           <div class="timeline-ticks">
 
-            <% [2,4,6,8].each do | year | %>
+            <% [8, 6, 4, 2].each do | year | %>
 
             <div class="timeline-tick timeline-tick-<%= year %>">
-              <%= row[:epoch_label].to_i-year %>
+              <%= row[:epoch_label].to_i + year %>
             </div>
 
             <% end %>
 
+          </div>
+
+          <div class="timeline-label">
+            <%= row[:epoch_label] %>
           </div>
 
         </div>
