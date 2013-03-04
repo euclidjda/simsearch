@@ -25,6 +25,21 @@ Any media size specific and resize related rules should be here.
 
 	.target-row {
 		height: $summaryRowHeight;
+
+		.target-container {
+			.target-name {
+				width: 340px;
+				min-width: 340px;
+				padding: 25px 0px 25px 0px;
+			}
+
+			.target-info {
+				padding-left: 5px;
+				width: $targetinfoWidth;
+				min-width: $targetinfoWidth;
+				margin-left: -5px;
+			}
+		}
 	}
 
 	.timeline-bar {
@@ -51,6 +66,10 @@ Any media size specific and resize related rules should be here.
 	.timeline-label-narrow {
     	display:none;
     }
+
+    .date-label {
+		display: inline-block;
+	}
 }
 
 @media (min-width:979px) {
@@ -101,6 +120,14 @@ Any media size specific and resize related rules should be here.
 		width: 100% !important;
 		max-width: 100%;
 		min-width: 100%;
+
+		.timeline-label-narrow {
+			display: inline-block;
+		}
+
+		.timeline-label-thisyear {
+			display: none;
+		}
 	}
 
 	.result-container {
@@ -113,14 +140,6 @@ Any media size specific and resize related rules should be here.
 		background-image: url('bgr-year-rotated.png');
 	}
 
-	.timeline-label-narrow {
-		display: inline-block;
-	}
-
-	.timeline-label-thisyear {
-		display: none;
-	}
-
 	.target-row {
 		.timeline-label {
 			margin-left: 0px !important;
@@ -130,6 +149,29 @@ Any media size specific and resize related rules should be here.
 		.timeline-date {
 			top: -18px;
 		}
+
+		.target-container {
+
+			.target-name {
+				width: 100%;
+				margin-left: -2px;
+				border-right: solid orange 2px;
+				padding: 25px 0px 25px 0px;
+			}
+
+			.target-info {
+				margin-left: -2px;
+				padding-left: 0px;
+				padding-top: 5px; 
+				width: 100%;
+				border-right: solid gray 2px;
+			}
+		}
+		
+	}
+
+	.date-label {
+		display: none;
 	}
 }
 
