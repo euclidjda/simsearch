@@ -38,6 +38,16 @@ Any media size specific and resize related rules should be here.
 		padding-left: 120px;
 		height: 200px;
 	}
+
+	.timeline-label {
+		margin: 5px 0px 0px -15px;
+		background-image: url('bgr-year.png');
+
+	}
+
+	.timeline-label-narrow {
+    	display:none;
+    }
 }
 
 @media (min-width:979px) {
@@ -95,8 +105,24 @@ Any media size specific and resize related rules should be here.
 		height: 420px;
 	}
 
-	.timeline-label-now {
+	.timeline-label {
+		margin: 3px 0px 0px 0px;
+		background-image: url('bgr-year-rotated.png');
+	}
+
+	.timeline-label-narrow {
+		display: inline-block;
+	}
+
+	.timeline-label-thisyear {
 		display: none;
+	}
+
+	.target-row {
+		.timeline-label {
+			margin-left: 0px !important;
+			top: 3px !important;
+		}
 	}
 }
 

@@ -39,11 +39,10 @@
 		    top: 26px;
 		    width: 74px;
 		    margin-left: -20px;
-		    padding: 6px 8px 4px 8px; 
+		    padding: 3px 8px 2px 8px; 
 
 		    font-size: 16pt;
 		    font-weight: bold;
-		    background-image: url('bgr-TODAY.png');
 
 		    -moz-background-size: 100% 100%; 
 		    -webkit-background-size: 100% 100%; 
@@ -180,7 +179,6 @@ html>/**/body #cuatro {
 
 		z-index: 10;
 
-		margin: 5px 0px 0px -15px;
 		padding: 2px 0px 2px 6px; 
 		
 		height: 20px;
@@ -188,12 +186,11 @@ html>/**/body #cuatro {
 
 		font-size: 12pt;
 		font-weight: bold;
-		background-image: url('bgr-year.png');
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
     }
 
-    .timeline-label-now {
+    .timeline-label-thisyear {
     	margin-top: -10px;
     }
 

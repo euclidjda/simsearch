@@ -7,7 +7,7 @@
         <div class="span1 timeline-bar">
 
           <% if row[:row_num] == 1 %>
-            <div class="timeline-label timeline-label-now">
+            <div class="timeline-label timeline-label-thisyear">
               <%= Time.now.year %>
             </div>
           <% end %>
@@ -25,7 +25,7 @@
           </div>
 
           <div class="timeline-label">
-            <%= row[:epoch_label] %>
+            <%= row[:epoch_label] %><div class="timeline-label-narrow">'s</div>
           </div>
 
         </div>
