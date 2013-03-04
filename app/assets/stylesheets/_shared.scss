@@ -1,4 +1,20 @@
 
+/*
+
+Heights and visibility of many of the result objects are
+impacted by resize operations. As such, their configurations
+are in bootstrap_and_overrides.css.scss file. Only add resize
+independent size and visibility rules in this file.
+
+*/
+
+$summaryRowHeight: 90px;
+$rowBackgroundDark: rgb(232, 232, 232);
+$rowBackgroundLight: rgb(255, 255, 255);
+$resultRowHeight : 150px;
+$leftbarWidth: 70px;
+$targetinfoWidth: 170px;
+
 $backgroundColor: #F9F9F9;
 $panelColor: #EAEAEA;
 

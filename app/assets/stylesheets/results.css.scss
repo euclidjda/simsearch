@@ -1,22 +1,6 @@
 
 @import "shared";
 
-/*
-
-Heights and visibility of many of the result objects are
-impacted by resize operations. As such, their configurations
-are in bootstrap_and_overrides.css.scss file. Only add resize
-independent size and visibility rules in this file.
-
-*/
-
-$summaryRowHeight: 90px;
-$rowBackgroundDark: rgb(232, 232, 232);
-$rowBackgroundLight: rgb(255, 255, 255);
-$resultRowHeight : 160px;
-$leftbarWidth: 70px;
-$targetinfoWidth: 170px;
-
 .date-label {
 
 	background-image: url('date-box-orange.png');
@@ -27,16 +11,15 @@ $targetinfoWidth: 170px;
 
 	font-size: 10pt;
 	padding: 2px 6px 2px 12px; 
-
-	display: inline-block;
 }
 
 .timeline-bar {
     background-image: url("line-grey.png");
-    width: $leftbarWidth;
-    min-width: $leftbarWidth;
+
+    /* width is set among overrides. */
+
     height: 100%;
-    margin-left: 67px !important;
+    margin-left: 20px !important;
 }
 
 .dark-row {
@@ -54,11 +37,10 @@ $targetinfoWidth: 170px;
 		    top: 26px;
 		    width: 74px;
 		    margin-left: -20px;
-		    padding: 6px 8px 4px 8px; 
+		    padding: 3px 8px 2px 8px; 
 
 		    font-size: 16pt;
 		    font-weight: bold;
-		    background-image: url('bgr-TODAY.png');
 
 		    -moz-background-size: 100% 100%; 
 		    -webkit-background-size: 100% 100%; 
@@ -66,12 +48,12 @@ $targetinfoWidth: 170px;
 		}
 
 		.timeline-date {
+			display: inline-block;
 		    background-color: rgb(71, 71, 71);
 		    color: rgb(255,255,255);
 		    font-size: 5.5 pt;
 		    width: 70px;
 		    position: relative;
-		    top: 28px;
 		    float: right;
 		    text-align: center;
 		}	
@@ -87,33 +69,26 @@ $targetinfoWidth: 170px;
 
 		.target-name {
 		    display:inline-block;
-		    width: 300px;
-		    min-width: 300px;
 		    background-color: white;
 		    border-left: solid orange 2px;
 		    border-bottom: solid gray 1px;
 		    font-size: 19pt;
 		    font-weight: bold;
 		    font-color: rgb(23, 23, 23);
-		    padding: 25px 10px 25px 10px;
 		    white-space: nowrap;
 		    text-overflow: ellipsis;
-		    /* overflow: hidden; */
+		    overflow: hidden; 
 		}
 
 		.target-info {
 		    display: inline-block;
 		    border-left: solid gray 2px;
 		    border-bottom: solid gray 1px;
-		    width: $targetinfoWidth;
-		    min-width: $targetinfoWidth;
 		    background-color: lightgray;
 		    color: rgb(23, 23, 23);
 		    position: relative;
 		    height: 70px;
-		    margin-left: -5px;
 		    font-size: 9pt;
-		    padding-left: 5px;
 		}
     }
 }
@@ -153,20 +128,25 @@ html>/**/body #cuatro {
 
     margin: 10px 0px 0px 0px;
     font-family:"Helvetica", Helvetica, serif;
-    font-size: 16pt;
 
 	#result-summary {
-		font-size: 16pt;
+		/*font size coming in from override file, don't set it here */ 
 		line-height: 22pt;
-		padding: 12px 0 16px 60px; 
+
+		/*padding left comes from override file. */ 
+		padding-top: 12px;
+		padding-bottom: 16px;
+
+		#median-perf {
+			display: inline-block;
+		}
 	}
 
 	#summary-image {
-		height: 22px;
+		/* height is from override file, don't set it here. */ 
 		position: relative;
 		top: -8px;
 	}
-
 }
 
 .first-row {
@@ -178,12 +158,11 @@ html>/**/body #cuatro {
 
 .result-row {
 
-
     div.line {
-	-webkit-transform-origin: 0 100%;
-	transform-origin: 0 100%;
-	height: 3px; /* Line width of 3 */
-	background: #000; /* Black fill */
+		-webkit-transform-origin: 0 100%;
+		transform-origin: 0 100%;
+		height: 3px; /* Line width of 3 */
+		background: #000; /* Black fill */
     }
 
     .timeline-label {
@@ -191,51 +170,50 @@ html>/**/body #cuatro {
 
 		z-index: 10;
 
-		margin-top: -10px;
-		margin-left: -19px;
-		margin-bottom: 0px;
-		padding: 2px 0px 0px 6px; 
+		padding: 2px 0px 2px 6px; 
 		
-		height: 30px;
-		width: 150px;
+		height: 20px;
+		width: 50px;
 
-		font-size: 16pt;
+		font-size: 12pt;
 		font-weight: bold;
-		background-image: url('bgr-year.png');
 		background-repeat: no-repeat;
-		background-size: 70px;
+		background-size: 100% 100%;
+    }
+
+    .timeline-label-thisyear {
+    	margin-top: -10px;
     }
 
     .timeline-ticks {
+		position: relative;
+		top: 15px;
+		font-size: 8pt;
+		line-height: 12pt;
+		margin-left: 24px;
+		margin-top: 0px;
+		color: white;
 
-	position: relative;
-	top: 15px;
-	/* font-weight: bold; */
-	font-size: 8pt;
-	line-height: 12pt;
-	margin-left: 24px;
-	margin-top: 0px;
-	color: white;
-
-	.timeline-tick {
-
-	    margin-top: 14px;
-	    margin-bottom: 12px;
-	}
-
+		.timeline-tick {
+		    margin-top: 14px;
+		    margin-bottom: 12px;
+		}
     }
 
     .result-container {
 
-	padding-left: 160px;
-	height: 200px;
+    	.no-results-found {
+    		font-size: 16pt;
+			padding-top: 60px;
+    	}
 
 		.comparable {
 		    background-color: $panelColor;
 		    margin-top: 14px;
 		    border-radius: 2px;
 		    min-width: 220px;
-		    box-shadow: 4px 4px 2px #999;
+		    /*box-shadow: 4px 4px 2px #999;*/
+		    border: 1px solid black; 
 
 		    .panel-name {
 				font-weight: bold;
@@ -289,23 +267,20 @@ html>/**/body #cuatro {
 		    		}
 
 				.perf-tag {
-
-		    		    height: 30px;
+		    		height: 30px;
 				    vertical-align: top;
 				    display: inline-block;
 				    font-size: 8pt;
 				    line-height: 10pt;
 				    width: 80px;
 				    margin-left: 6px;
-
 				}
-
 		    }
 
 		    .panel-similarity {
 		    	padding-left: 4px;
 		    	background-color: lightgray;
-			vertical-align: bottom;
+				vertical-align: bottom;
 		    }
 		}
     }	

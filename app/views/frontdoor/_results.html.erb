@@ -6,7 +6,7 @@
 
 
     <div class="span1 timeline-bar">
-      <div class="timeline-label">
+      <div class="timeline-label timeline-label-today">
         TODAY
       </div>
       <div class="timeline-date">
@@ -24,18 +24,19 @@
       </div>
 
       <% fullname = target_fields['name'] %>
-      <div class="target-name"><%= fullname %> </div>
-
+      <div class="target-name">
+        <%= fullname %> 
+      </div>
       <div class="target-info">
-        <b>NASDAQ</b>: <%= target_fields['ticker'] +
-                           " - " + monthname + " " +
-                           pricedate.day.to_s %><br>
-        <b>Market Cap</b>:
-        <%= number_with_delimiter(target_fields['mrkcap'].to_i,
-            :delimiter => ',') + "M" %>
-        <br>
-        <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) %>
-        <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
+          <b>NASDAQ</b>: <%= target_fields['ticker'] +
+                             " - " + monthname + " " +
+                             pricedate.day.to_s %><br>
+          <b>Market Cap</b>:
+          <%= number_with_delimiter(target_fields['mrkcap'].to_i,
+              :delimiter => ',') + "M" %>
+          <br>
+          <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) %>
+          <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
       </div>
     </div>
 
@@ -46,10 +47,10 @@
       <%= target_fields['ticker'] %>'s Historical Comparables
       <i><span id="summary-label">Outperformed</span></i>
       by an Average of:
-      <span id="median-perf">
+      <div id="median-perf">
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
-      </span>
+      </div>
     </div>
   </div>
 
@@ -81,7 +82,7 @@
 
         <% row_num += 1 %>
 
-        <% epoch_label = (ep.thrudate+1).to_s[0..3] %>
+        <% epoch_label = (ep.fromdate).to_s[0..3] %>
 
         <% row = { :row_num     => row_num       ,
         :search_id => the_search.id ,

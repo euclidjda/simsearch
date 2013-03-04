@@ -5,7 +5,7 @@ $navbarCollapseWidth: 550px;
 @import "bootstrap";
 @import "bootstrap-responsive";
 
-@import "results";
+@import "shared";
 
 /*
 This file contains overrides for bootstrapper styles and any media query
@@ -13,6 +13,64 @@ based styling that applies to all style classes we use.
 
 Any media size specific and resize related rules should be here.
 */
+
+@media (min-width: 767px) {
+	#history-sidebar-nav {
+		display: none;
+	}
+
+	.dyna-roller {
+		height: $resultRowHeight;
+	}
+
+	.target-row {
+		height: $summaryRowHeight;
+
+		.target-container {
+			.target-name {
+				width: 340px;
+				min-width: 340px;
+				padding: 25px 0px 25px 0px;
+			}
+
+			.target-info {
+				padding-left: 5px;
+				width: $targetinfoWidth;
+				min-width: $targetinfoWidth;
+				margin-left: -5px;
+			}
+		}
+	}
+
+	.timeline-bar {
+		/* width parameters overwritten based on size */
+	    width: $leftbarWidth !important;
+	    min-width: $leftbarWidth;
+	    max-width: $leftbarWidth;
+	}
+
+	.result-container {
+		padding-left: 120px;
+		height: 200px;
+	}
+
+	.timeline-label {
+		margin: 5px 0px 0px -15px;
+		background-image: url('bgr-year.png');
+	}
+
+	.timeline-date {
+		top: 28px;
+	}
+
+	.timeline-label-narrow {
+    	display:none;
+    }
+
+    .date-label {
+		display: inline-block;
+	}
+}
 
 @media (min-width:979px) {
 	.dyna-roller {
@@ -26,30 +84,16 @@ Any media size specific and resize related rules should be here.
 	#history-sidebar-nav {
 		display: none;
 	}
-}
 
-@media (min-width: 767px) {
-	#history-sidebar-nav {
-		display: none;
-	}
+	.summary-row {
+		#result-summary {
+			font-size: 16pt;
+			padding-left: 60px; 
+		}
 
-	.dyna-roller {
-		height: $resultRowHeight;
-	}
-
-	.target-row {
-		height: $summaryRowHeight;
-	}
-}
-
-@media  (max-width:979px) { 
-
-	.navbar-fixed-top { 
-		position: absolute;
-	} 
-
-	#history-sidebar-nav {
-		display: none;
+		#summary-image {
+			height: 22px;
+		}
 	}
 }
 
@@ -66,5 +110,89 @@ Any media size specific and resize related rules should be here.
 
 	.row-fluid [class*="timeline-bar"] {
 		margin-left: 0 !important;
+	}
+
+	.timeline-ticks {
+		display: none;
+	}
+
+	.timeline-bar {
+		width: 100% !important;
+		max-width: 100%;
+		min-width: 100%;
+
+		.timeline-label-narrow {
+			display: inline-block;
+		}
+
+		.timeline-label-thisyear {
+			display: none;
+		}
+	}
+
+	.result-container {
+		padding-left: 0px;
+		height: 420px;
+	}
+
+	.timeline-label {
+		margin: 3px 0px 0px 0px;
+		background-image: url('bgr-year-rotated.png');
+	}
+
+	.target-row {
+		.timeline-label {
+			margin-left: 0px !important;
+			top: 3px !important;
+		}
+
+		.timeline-date {
+			top: -18px;
+		}
+
+		.target-container {
+
+			.target-name {
+				width: 100%;
+				margin-left: -2px;
+				border-right: solid orange 2px;
+				padding: 25px 0px 25px 0px;
+			}
+
+			.target-info {
+				margin-left: -2px;
+				padding-left: 0px;
+				padding-top: 5px; 
+				width: 100%;
+				border-right: solid gray 2px;
+			}
+		}
+		
+	}
+
+	.date-label {
+		display: none;
+	}
+}
+
+@media  (max-width:979px) { 
+
+	.navbar-fixed-top { 
+		position: absolute;
+	} 
+
+	#history-sidebar-nav {
+		display: none;
+	}
+
+	.summary-row {
+		#result-summary {
+			font-size: 14pt;
+			padding-left: 16px;
+		}
+
+		#summary-image {
+			height: 18px;
+		}
 	}
 }
