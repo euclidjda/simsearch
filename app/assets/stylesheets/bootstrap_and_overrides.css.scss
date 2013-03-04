@@ -42,7 +42,10 @@ Any media size specific and resize related rules should be here.
 	.timeline-label {
 		margin: 5px 0px 0px -15px;
 		background-image: url('bgr-year.png');
+	}
 
+	.timeline-date {
+		top: 28px;
 	}
 
 	.timeline-label-narrow {
@@ -122,6 +125,10 @@ Any media size specific and resize related rules should be here.
 		.timeline-label {
 			margin-left: 0px !important;
 			top: 3px !important;
+		}
+
+		.timeline-date {
+			top: -18px;
 		}
 	}
 }
