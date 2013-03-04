@@ -6,9 +6,11 @@
 
         <div class="span1 timeline-bar">
 
+	  <% cur_epoch = row[:epoch] %>
+
           <% if row[:row_num] == 1 %>
             <div class="timeline-label timeline-label-thisyear">
-              <%= (Date.today-365).year %>
+              <%= (cur_epoch.thrudate+1).year %>
             </div>
           <% end %>
 
@@ -17,7 +19,7 @@
             <% [8, 6, 4, 2].each do | year | %>
 
             <div class="timeline-tick timeline-tick-<%= year %>">
-              <%= row[:epoch_label].to_i + year %>
+              <%= cur_epoch.fromdate.year + year %>
             </div>
 
             <% end %>
@@ -25,15 +27,15 @@
           </div>
 
           <div class="timeline-label">
-            <%= row[:epoch_label] %><div class="timeline-label-narrow">'s</div>
+            <%= cur_epoch.fromdate.year %><div class="timeline-label-narrow">'s</div>
           </div>
 
         </div>
 
         <div class="result-container"
              search_id="<%= row[:search_id] %>"
-             fromdate="<%= row[:fromdate] %>"
-             thrudate="<%= row[:thrudate] %>"
+             fromdate="<%= cur_epoch.fromdate.to_s %>"
+             thrudate="<%= cur_epoch.thrudate.to_s %>"
              id="row-<%= row[:row_num] %>">
         </div>
 

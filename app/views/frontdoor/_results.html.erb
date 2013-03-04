@@ -82,13 +82,7 @@
 
         <% row_num += 1 %>
 
-        <% epoch_label = (ep.fromdate).to_s[0..3] %>
-
-        <% row = { :row_num     => row_num       ,
-        :search_id => the_search.id ,
-        :fromdate  => ep.fromdate   ,
-        :thrudate  => ep.thrudate   ,
-        :epoch_label => epoch_label } %>
+        <% row= { :row_num=>row_num,:search_id => the_search.id,:epoch=>ep } %>
 
         <%= render :partial => "row", :object => row %>
 
