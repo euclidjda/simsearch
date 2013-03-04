@@ -8,7 +8,7 @@
 
           <% if row[:row_num] == 1 %>
             <div class="timeline-label timeline-label-thisyear">
-              <%= Time.now.year %>
+              <%= (Date.today-365).year %>
             </div>
           <% end %>
 

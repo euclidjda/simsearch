@@ -95,6 +95,9 @@ class FrontdoorController < ApplicationController
         # Get the target's factor fields
         @target_fields = target.to_hash()
 
+        # TODO: JDA: Right now the epochs are static but they should be custom
+        # in future iteration
+
         @epochs = [ Epoch.new( Date.parse('2000-01-01') ,Date.parse('2011-12-31') ),
                     Epoch.new( Date.parse('1990-01-01') ,Date.parse('1999-12-31') ),
                     Epoch.new( Date.parse('1980-01-01') ,Date.parse('1989-12-31') ),
