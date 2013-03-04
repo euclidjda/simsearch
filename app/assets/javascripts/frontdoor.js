@@ -7,13 +7,13 @@ $(document).ready(function() {
 	$('#teaser-carousel').carousel( { interval: 15000 } );
     }
 
-    var search_id_list = $('#all-search-ids').attr('search_ids');
+    var search_id = $('#search-info').attr('search-id');
 
     // Only handle the output if we are on the results page. This script
     // loads for all pages, so we need to make sure.
-    if (search_id_list) {
+    if (search_id) {
     	// This function is implemented render_results.
-    	render_results(search_id_list);
+    	render_results(search_id);
     }
 
 });

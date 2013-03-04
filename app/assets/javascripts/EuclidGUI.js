@@ -51,7 +51,6 @@ function EuclidGUIFactory() {
   this.whitespace      = Euclid_whitespace;
   this.fmtAsNumber     = Euclid_fmtAsNumber;
   this.fmtAsMoney      = Euclid_fmtAsMoney;
-  //this.fmtAsPercent    = Euclid_fmtAsPercent;
 
 }
 
@@ -263,8 +262,6 @@ function Euclid_setAttr(element,attr) {
 
  EGUI.fmtAsNumber(val,{decimals:2,commas:'yes',zerostr:'-',nullstr:'N/A'});
  EGUI.fmtAsMoney(val,{decimals:2,commas:'yes',currency:'$',zerostr:'-',nullstr:'N/A'});
- EGUI.fmtAsPercent(val);
- EGUI.fmtAsDate(val);
 
 *************************************************************************/
 

@@ -147,6 +147,22 @@ html>/**/body #cuatro {
 		position: relative;
 		top: -8px;
 	}
+
+	#summary-stats {
+
+	    font-size: 10pt;
+	    font-weight: bold;
+
+	    .sum-stat {
+		margin-left: 35px;
+		white-space: nowrap;
+	
+		.sum-val {
+		    text-align: right;
+		    padding-left: 15px;
+		}
+	    }
+	}
 }
 
 .first-row {

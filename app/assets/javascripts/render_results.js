@@ -3,14 +3,13 @@ var neg_small_icon = "assets/red-outperformance-small.png";
 var pos_big_icon   = "assets/green-outperformance-small.png";
 var neg_big_icon   = "assets/red-outperformance-small.png";
 
-function render_results(search_id_list) {
+function render_results(search_id) {
 
     start_spinner('row-1');
 
     (function poll_for_summary() {
 
-        $.getJSON('get_search_summary?search_id_list='+search_id_list,
-                  function(data) {
+        $.getJSON('get_search_summary?search_id='+search_id,function(data) {
 
             if (data == null) {
 
@@ -18,7 +17,10 @@ function render_results(search_id_list) {
 
             } else {
 
-                var perf = data.summary;
+                var perf  = data.summary;
+		var pcnt  = data.percent;
+		var best  = data.best;
+		var worst = data.worst;
 
                 if (perf == null) {
                     $("#summary-num").html("N/A");
@@ -32,10 +34,22 @@ function render_results(search_id_list) {
                     $("#summary-label").html("Underperformed");
                 }
 
+		$("#summary-pcnt")
+		    .html(EGUI.fmtAsNumber(pcnt,{fmtstr:"%.2f%%"}));
+
+		$("#summary-worst")
+		    .html(EGUI.fmtAsNumber(worst,{fmtstr:"%.2f%%"}));
+
+		$("#summary-best")
+		    .html(EGUI.fmtAsNumber(best,{fmtstr:"%.2f%%"}));
+
+		if( worst < 0) 
+		    $("#summary-worst").css('color','red');
+		else
+		    $("#summary-worst").css('color','green');
 
                 $('.result-container').each(function( index ) {
 
-                    var search_id = $(this).attr('search_id');
                     var fromdate = $(this).attr('fromdate');
                     var thrudate = $(this).attr('thrudate');
 

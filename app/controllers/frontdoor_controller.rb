@@ -97,11 +97,7 @@ class FrontdoorController < ApplicationController
 
         # TODO: JDA: Right now the epochs are static but they should be custom
         # in future iteration
-
-        @epochs = [ Epoch.new( Date.parse('2000-01-01') ,Date.parse('2011-12-31') ),
-                    Epoch.new( Date.parse('1990-01-01') ,Date.parse('1999-12-31') ),
-                    Epoch.new( Date.parse('1980-01-01') ,Date.parse('1989-12-31') ),
-                    Epoch.new( Date.parse('1970-01-01') ,Date.parse('1979-12-31') ) ]
+        @epochs = Epoch.default_epochs_array()
 
         @the_search = Search::exec( :target      => target    ,
                                     :epochs      => @epochs   ,
@@ -208,15 +204,21 @@ class FrontdoorController < ApplicationController
 
     result = Hash::new()
 
-    _search_id_list = params[:search_id_list]
+    _search_id = params[:search_id]
 
-    if are_searches_complete?( _search_id_list )
+    if are_searches_complete?( _search_id )
 
-      search_details = SearchDetail.where("search_id IN ("+_search_id_list+")")
+      search_details = SearchDetail.where("search_id = #{_search_id}")
 
       perfs = Array::new()
-      weight_sum = 0
-      values_sum = 0
+      weight_sum = 0.0
+      values_sum = 0.0
+
+      count_wins  = 0.0
+      count_total = 0.0
+
+      best    = nil
+      worst   = nil
 
       search_details.each { |detail|
 
@@ -224,12 +226,22 @@ class FrontdoorController < ApplicationController
 
         weight = Math.exp( -detail.dist )
 
-        values_sum += weight * ( detail.stk_rtn - detail.mrk_rtn )
+        outperformance = detail.stk_rtn - detail.mrk_rtn
+
+        count_total += 1.0
+        count_wins  += 1.0 if outperformance >= 0
+
+        values_sum += weight * outperformance
         weight_sum += weight
 
+        best  = outperformance if (best.nil?  || outperformance >= best)
+        worst = outperformance if (worst.nil? || outperformance <= worst)
       }
 
-      result[:summary] = (weight_sum > 0) ? (values_sum / weight_sum) : nil
+      result[:summary] = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+      result[:percent] = (count_total > 0) ? (100 * count_wins / count_total) : nil
+      result[:worst]   = worst
+      result[:best]    = best
 
     else
 

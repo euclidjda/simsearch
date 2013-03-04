@@ -51,6 +51,20 @@
         <span><img id="summary-image" src=""></img></span>
         <span id="summary-num"></span>
       </div>
+      <div id="summary-stats">
+	<span class="sum-stat">
+	  Percent Outperformed: 
+	  <span id="summary-pcnt" class="sum-val"></span>
+	</span>
+	<span class="sum-stat">
+	  Worst Performing: 
+	  <span id="summary-worst" class="sum-val"></span>
+	</span>
+	<span class="sum-stat">
+	  Best Performing: 
+	  <span id="summary-best" class="sum-val"></span>
+	</span>
+      </div>
     </div>
   </div>
 
@@ -68,7 +82,7 @@
   <div class="panel-similarity"></div>
 </div>
 
-<div id="all-search-ids" search_ids="<%= the_search.id %>"></div>
+<div id="search-info" search-id="<%= the_search.id %>"></div>
 
 <% first_row = true %>
 <% row_num = 0 %>
@@ -82,7 +96,7 @@
 
         <% row_num += 1 %>
 
-        <% row= { :row_num=>row_num,:search_id => the_search.id,:epoch=>ep } %>
+        <% row= { :row_num=>row_num, :epoch=>ep } %>
 
         <%= render :partial => "row", :object => row %>
 

@@ -147,15 +147,23 @@ footer {
 
 .search-area {
 
+    font-family:"Helvetica", Helvetica, serif;
+
     margin: -5px 0px 0px 0px;
 
+    #custom-search-link {
+
+    }
+    
     .full-search-bar {
-	
+
 	ul {
 	    list-style: none;
 	    margin-top: 0;
 	    margin-right: 0px;
-	    
+	    margin-left: 20px;
+	    margin-bottom: 0px;
+
 	    li {
 		display: inline;
 		list-style-type: none;
@@ -176,6 +184,30 @@ footer {
 	    
 	    .search-field-and-button {
 		
+		#custom-search-link {
+		    position: absolute;
+		    width: 200px;
+		    left: 280px;
+		    top: 100px;
+		    font-size: 12px;
+
+		}
+
+		#ticker {
+		    /***
+		    -webkit-border-radius: 4px 4px 4px 4px;
+		    -moz-border-radius: 4px 4px 4px 4px;
+		    border-radius: 4px 4px 4px 4px; **/
+		    position: relative;
+		    border-radius: 0px 0px 0px 0px;
+		    font-size: 18px;
+		    line-height: 20px;
+		    height: 24px;
+		    left: 0px;
+		    width: 50%;
+		    min-width: 120px;
+		}
+
 		#search-button {
 
 		    -webkit-border-radius: 4px 4px 4px 4px;
@@ -186,19 +218,6 @@ footer {
 		    margin: -12px 0px 0px 10px;
 		} 
 
-		#ticker {
-		    /***
-		    -webkit-border-radius: 4px 4px 4px 4px;
-		    -moz-border-radius: 4px 4px 4px 4px;
-		    border-radius: 4px 4px 4px 4px; **/
-		    border-radius: 0px 0px 0px 0px;
-		    font-size: 18px;
-		    line-height: 20px;
-		    height: 24px;
-		    left: 0px;
-		    width: 50%;
-		    min-width: 120px;
-		}
 	    }
 	}
     }
