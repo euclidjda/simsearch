@@ -37,12 +37,15 @@ function init_frontdoor() {
 
     });
 
-    $('#factor-slider1').slider();
-    $('#factor-slider2').slider();
-    $('#factor-slider3').slider();
-    $('#factor-slider4').slider();
-    $('#factor-slider5').slider();
-    $('#factor-slider6').slider();
+    for (var i=1; i<= 6; i++) { 
+
+	$('#factor-slider'+i).slider(
+	    { min: 0,
+	      max: 10,
+	      value: 5
+	    });
+
+    }
 
     $('.industry-select').attr('disabled','disabled');
 

@@ -69,18 +69,21 @@
 	    <td colspan=2>Weights</td>
 	  </tr>
 
+	  <% factors  = Factors::all %>
+	  <% defaults = Factors::defaults %>
+	  <% weights  = Factors::default_weights %>
+
 	  <% (1..6).each do |index| %>
 	  <tr>
 	    <td class="col1">
 	      <%= select_tag(:factor1,
-		  options_for_select([['Earnings Yield', 'ey'], 
-		['Return On Capital', 'roc']],'roc'),
+		  options_for_select(factors,defaults[index-1]),
 		  :class=>"factor-select") %>
 	    </td>
 	    <td class="col2">
-	      <div id="factor-slider<%= index %>" class="factor-slider"></div>
+	      <div id="factor-slider<%= index %>" class="factor-slider" value="5"></div>
 	    </td>
-	    <td class="col3">0.00</td>
+	    <td class="col3">5.00</td>
 	  </tr>
 	  <% end %>
 
