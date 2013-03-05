@@ -12,15 +12,12 @@ function render_results(search_id) {
         $.getJSON('get_search_summary?search_id='+search_id,function(data) {
 
             if (data == null) {
-
+		
                 setTimeout(poll_for_summary,3000);
-
+		
             } else {
 
                 var perf  = data.summary;
-		var pcnt  = data.percent;
-		var best  = data.best;
-		var worst = data.worst;
 
                 if (perf == null) {
                     $("#summary-num").html("N/A");
@@ -31,23 +28,27 @@ function render_results(search_id) {
                 } else {
                     $("#summary-image").attr("src",neg_big_icon);
                     $("#summary-num").html(sprintf("%.2f%%",perf));
+		    $("#summary-num").css('color','red');
                     $("#summary-label").html("Underperformed");
                 }
 
-		$("#summary-pcnt")
-		    .html(EGUI.fmtAsNumber(pcnt,{fmtstr:"%.2f%%"}));
-
 		$("#summary-worst")
-		    .html(EGUI.fmtAsNumber(worst,{fmtstr:"%.2f%%"}));
+		    .html(EGUI.fmtAsNumber(data.worst,{fmtstr:"%.2f%%"}));
 
 		$("#summary-best")
-		    .html(EGUI.fmtAsNumber(best,{fmtstr:"%.2f%%"}));
+		    .html(EGUI.fmtAsNumber(data.best,{fmtstr:"%.2f%%"}));
 
-		if( worst < 0) 
-		    $("#summary-worst").css('color','red');
-		else
-		    $("#summary-worst").css('color','green');
+		if( data.worst < 0) $("#summary-worst").css('color','red');
+		if( data.best  < 0) $("#summary-best").css('color','red');
 
+		
+		if ((data.tot_count != null) && (data.win_count != null)) {
+		    
+		    $('#summary-count')
+			.html(data.win_count + ' of ' + data.tot_count);
+
+		}
+		
                 $('.result-container').each(function( index ) {
 
                     var fromdate = $(this).attr('fromdate');
@@ -86,7 +87,8 @@ function render_results(search_id) {
 
                         } else {
 
-                            $(this).html("<div class='no-results-found'>No comparables found for this period.</div>");
+                            $(this).html("<div class='no-results-found'>"+
+					 "No comparables found for this period.</div>");
 
                         }
 
@@ -100,19 +102,8 @@ function render_results(search_id) {
 
     })();
 
-    $('#comparable-carousel-right').bind('slid', function() {
+    setup_detail_modal();
 
-        $('#comparable-carousel-right').carousel('pause');
-        draw_charts('right');
-    });
-
-    $('#comparable-modal').bind('shown', function() {
-
-        $('#comparable-carousel-right').carousel('pause');
-        draw_charts('left');
-        draw_charts('right');
-
-    });
 
 }
 
@@ -176,11 +167,6 @@ function populate_panels(row_obj,data,i) {
     // This packs  the panel into the DOM so it can be seenn
     $(row_obj).append(panel);
 
-    /***
-    var offset = panel.offset();
-    var line = createLine(0,0,offset.left,offset.top);
-    $(row_obj).append(line); **/
-
     // Add to detailed compare
     var detail_item = $('#carousel-item-right-template').clone();
 
@@ -222,7 +208,7 @@ function populate_panels(row_obj,data,i) {
 	EGUI.fmtAsMoney(data[i].pb,{fmtstr:"%.2f"}));
 
     detail_item.find('.factor-ey').html(
-	    EGUI.fmtAsMoney(data[i].ey*100,{fmtstr:"%.2f"}));
+	    EGUI.fmtAsNumber(data[i].ey*100,{fmtstr:"%.2f"}));
 
 
     detail_item.find('.factor-roc')
@@ -255,6 +241,23 @@ function populate_panels(row_obj,data,i) {
 
     $('#carousel-inner-right').append(detail_item);
 
+}
+
+function setup_detail_modal() {
+
+    $('#comparable-carousel-right').bind('slid', function() {
+
+        $('#comparable-carousel-right').carousel('pause');
+        draw_charts('right');
+    });
+
+    $('#comparable-modal').bind('shown', function() {
+
+        $('#comparable-carousel-right').carousel('pause');
+        draw_charts('left');
+        draw_charts('right');
+
+    });
 }
 
 function draw_charts(side) {

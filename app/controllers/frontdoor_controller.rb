@@ -214,8 +214,8 @@ class FrontdoorController < ApplicationController
       weight_sum = 0.0
       values_sum = 0.0
 
-      count_wins  = 0.0
-      count_total = 0.0
+      win_count = 0
+      tot_count = 0
 
       best    = nil
       worst   = nil
@@ -228,8 +228,8 @@ class FrontdoorController < ApplicationController
 
         outperformance = detail.stk_rtn - detail.mrk_rtn
 
-        count_total += 1.0
-        count_wins  += 1.0 if outperformance >= 0
+        tot_count += 1
+        win_count += 1 if outperformance >= 0
 
         values_sum += weight * outperformance
         weight_sum += weight
@@ -238,10 +238,11 @@ class FrontdoorController < ApplicationController
         worst = outperformance if (worst.nil? || outperformance <= worst)
       }
 
-      result[:summary] = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
-      result[:percent] = (count_total > 0) ? (100 * count_wins / count_total) : nil
-      result[:worst]   = worst
-      result[:best]    = best
+      result[:summary]   = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+      result[:tot_count] = tot_count
+      result[:win_count] = win_count
+      result[:worst]     = worst
+      result[:best]      = best
 
     else
 

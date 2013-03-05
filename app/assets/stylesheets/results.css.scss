@@ -150,16 +150,17 @@ html>/**/body #cuatro {
 
 	#summary-stats {
 
+	    margin-left: 10pt;
 	    font-size: 10pt;
 	    font-weight: bold;
 
 	    .sum-stat {
-		margin-left: 35px;
+		margin-left: 20px;
 		white-space: nowrap;
 	
 		.sum-val {
 		    text-align: right;
-		    padding-left: 15px;
+		    padding-left: 5px;
 		}
 	    }
 	}
