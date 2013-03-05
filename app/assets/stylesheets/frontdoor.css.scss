@@ -151,10 +151,6 @@ footer {
 
     margin: -5px 0px 0px 0px;
 
-    #custom-search-link {
-
-    }
-    
     .full-search-bar {
 
 	ul {
@@ -208,7 +204,7 @@ footer {
 		    min-width: 120px;
 		}
 
-		#search-button {
+		.search-button {
 
 		    -webkit-border-radius: 4px 4px 4px 4px;
 		    -moz-border-radius: 4px 4px 4px 4px; 
@@ -222,4 +218,134 @@ footer {
 	}
     }
 
+
 }
+
+.modal-backdrop {
+    opacity: 0;
+}
+
+
+#custom-search-modal {
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0px 0px 0px 0px;
+    
+    font-size: 10pt;
+
+    -webkit-border-radius: 0px 0px 0px 0px;
+    -moz-border-radius: 0px 0px 0px 0px; 
+    border-radius: 0px 0px 0px 0px;
+
+    .modal-header {
+
+	margin: 0px 0px 0px 0px;
+	padding: 8px 8px 8px 8px;
+
+	.close {
+	    line-height: 14px;
+	    font-size: 14px;
+	}
+
+    }
+
+    .modal-body {
+
+	margin: 0px 0px 0px 0px;
+	padding: 8px 8px 8px 8px;
+	max-height: 600px;
+
+	form {
+	    margin: 0px 0px 0px 0px;
+	    padding: 0px 0px 0px 0px;
+	}
+
+	label {
+
+	}
+
+	input {
+	    -webkit-border-radius: 0px 0px 0px 0px;
+	    -moz-border-radius: 0px 0px 0px 0px; 
+	    border-radius: 0px 0px 0px 0px;
+	    width: 60%;
+	    height: 18pt;
+	    font-size: 10pt;
+	}
+
+	.factor-select {
+	    -webkit-border-radius: 0px 0px 0px 0px;
+	    -moz-border-radius: 0px 0px 0px 0px; 
+	    border-radius: 0px 0px 0px 0px;
+	    margin: 0px 0px 0px 0px;
+	    width: 95%;
+	    height: 18pt;
+	    font-size: 10pt;
+	}
+
+	.factor-slider {
+	    -webkit-border-radius: 0px 0px 0px 0px;
+	    -moz-border-radius: 0px 0px 0px 0px; 
+	    border-radius: 0px 0px 0px 0px;
+	    margin: 5px 0px 0px 5px;
+	    width: 110px;
+	}
+
+	.industry-select {
+	    -webkit-border-radius: 0px 0px 0px 0px;
+	    -moz-border-radius: 0px 0px 0px 0px; 
+	    border-radius: 0px 0px 0px 0px;
+	    margin: 0px 0px 0px 0px;
+	    height: 18pt;
+	    font-size: 10pt;
+	}
+
+	.search-button {
+	    
+	    -webkit-border-radius: 4px 4px 4px 4px;
+	    -moz-border-radius: 4px 4px 4px 4px; 
+	    border-radius: 4px 4px 4px 4px;
+	    height: 32px;
+	    width: 70px;
+	    margin: 0px 0px 0px 0px;
+	}
+
+	#factor-table {
+
+	    width: 95%;
+
+	    td {
+		padding: 4px 4px 4px 4px;
+	    }
+
+	    .header {
+
+
+	    }
+
+	    .col1 {
+		width: 55%;
+	    }
+
+	    .col2 {
+		width: 30%;
+	    }
+
+	    .col3 {
+
+	    }
+
+	}
+
+	#restore-defaults {
+	    float: right;
+	    vertical-align: bottom;
+	}
+
+
+    }
+
+}
+

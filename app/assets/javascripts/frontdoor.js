@@ -1,11 +1,64 @@
 
 $(document).ready(function() {
 
+    init_frontdoor();
+
+    handle_teaser();
+
+    handle_search();
+
+});
+
+function init_frontdoor() {
+
+    var link = $("<a id='custom-search-link'>Custom Search >></a>");
+
+    link.css('position','absolute');
+    link.css('top','100px');
+    link.css('left','280px');
+
+    $('body').append(link);
+
+    $('#custom-search-link').click( function() {
+
+	var offset = $('#ticker').offset();
+	var width  = $('#ticker').outerWidth();
+	var height = $('#ticker').outerHeight();
+
+	var left = offset.left + 'px';
+	var top  = (offset.top + height) + 'px';
+	
+	$('#custom-search-modal').css('left',left);
+	$('#custom-search-modal').css('top',top);
+	$('#custom-search-modal').css('width',width);
+	
+
+	$('#custom-search-modal').modal();
+
+    });
+
+    $('#factor-slider1').slider();
+    $('#factor-slider2').slider();
+    $('#factor-slider3').slider();
+    $('#factor-slider4').slider();
+    $('#factor-slider5').slider();
+    $('#factor-slider6').slider();
+
+    $('.industry-select').attr('disabled','disabled');
+
+}
+
+function handle_teaser() {
+
     var teaser = $('#teaser-carousel');
 
     if (teaser) {
 	$('#teaser-carousel').carousel( { interval: 15000 } );
     }
+
+}
+
+function handle_search() {
 
     var search_id = $('#search-info').attr('search-id');
 
@@ -16,7 +69,7 @@ $(document).ready(function() {
     	render_results(search_id);
     }
 
-});
+}
 
 /*
   Event Handlers for button.click, document.ready, etc.
@@ -121,7 +174,7 @@ $(function() {
     });
 
     // Search field autocomplete handler/renderer
-    $( "#ticker" )
+    $( ".ticker-entry" )
         .bind( "keydown", function( event ) {
             if ( event.keyCode === $.ui.keyCode.TAB &&
                     $( this ).data( "autocomplete" ).menu.active ) {
@@ -135,12 +188,12 @@ $(function() {
             }
         })
         .autocomplete({
-            minLength: 2,
+            minLength: 1,
              search: function() {
                 // custom minLength
                 var term = extractLast( this.value );
                 console.log("Term is: ->" + term + "<-, length=" + term.length);
-                if ( term.length < 2 ) {
+                if ( term.length < 1 ) {
                     // If the term has less then 2 characters close the menu. 
                     // This can happen if we we are editing characters in a secondary term.
                     $( this ).data( "autocomplete" ).close();

@@ -16,14 +16,13 @@
 
             <span class = "search-field-and-button">
 
-	      <a id="custom-search-link" onclick="alert('Coming Soon!')">Custom Search >> </a>
-
 	      <%= text_field_tag(:ticker, nil, 
 		  :placeholder => "Enter a stock symbol, e.g. IBM",
-              :id => "ticker")
+              :id => "ticker",
+	      :class=>"ticker-entry")
               %>
 
-              <button class ="btn btn-small btn-primary" id = "search-button">
+              <button class ="btn btn-small btn-primary search-button">
                 <i class="icon-search icon-white"></i>
               </button>              
 	      
@@ -35,7 +34,78 @@
     </ul>
   </div><!--/.full-search-bar -->
 
+
 </div><!--/.search-area -->
+
+<div id="custom-search-modal" class="modal hide" tab-index="-1"
+     role="dialog" aria-hidden="true" data-backdrop="true">
+
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+      &times;</button>
+    
+    Custom Search
+  </div>
+
+  <div class="modal-body">
+
+    <form action="<%= search_path %>" 
+          method="get" 
+          class="search-bar-form" id="custom-search-bar-form">
+
+      <div>
+
+	<%= label_tag(:ticker, "Ticker:") %>
+	
+	<%= text_field_tag(:ticker, nil, 
+	    :placeholder => "Enter a stock symbol, e.g. IBM",
+	:id => "ticker-custom",
+	:class => "ticker-entry") %>
+
+	<table id="factor-table"> 
+
+	  <tr class="header">
+	    <td>Factors</td>
+	    <td colspan=2>Weights</td>
+	  </tr>
+
+	  <% (1..6).each do |index| %>
+	  <tr>
+	    <td class="col1">
+	      <%= select_tag(:factor1,
+		  options_for_select([['Earnings Yield', 'ey'], 
+		['Return On Capital', 'roc']],'roc'),
+		  :class=>"factor-select") %>
+	    </td>
+	    <td class="col2">
+	      <div id="factor-slider<%= index %>" class="factor-slider"></div>
+	    </td>
+	    <td class="col3">0.00</td>
+	  </tr>
+	  <% end %>
+
+	</table><br>
+
+	<%= label_tag(:industry, "GICS Industry Restriction:") %>
+
+	<%= select_tag(:industry,
+	    options_for_select([['Sector', '1'],['Industry Group', '2'],['Industry', '3'],['Sub-Industry','4']],'1'),
+	    :class=>"industry-select") %>
+	
+      </div>
+      <br>
+      <button class ="btn btn-small btn-primary search-button">
+        <i class="icon-search icon-white"></i>
+      </button>              
+      
+      <a id="restore-defaults">Restore Defaults</a>
+
+    </form>
+
+  </div>
+
+</div>
+
 
 <hr>
 
