@@ -265,32 +265,28 @@ html>/**/body #cuatro {
 		    }
 
 		    .panel-performance {
-			  padding: 8px 4px 10px 10px;
+		    	text-align: right;
+		    	padding: 8px 8px 10px 0px;
 
-		    		.perf-image {
+		    	.perf-image {
+					height: 30px;
+					vertical-align: top;
+		    	}
 
-		    		    height: 30px;
-				    vertical-align: top;
-				    
-		    		}
-
-		    		.perf-num {
-				    height: 30px;
-				    vertical-align: top;
-				    font-size: 11pt;
-				    font-weight: bold;
-				    margin-left: 6px;
-
-		    		}
+				.perf-num {
+					height: 30px;
+					vertical-align: top;
+					font-size: 11pt;
+					font-weight: bold;
+				}
 
 				.perf-tag {
 		    		height: 30px;
-				    vertical-align: top;
-				    display: inline-block;
-				    font-size: 8pt;
-				    line-height: 10pt;
-				    width: 80px;
-				    margin-left: 6px;
+					vertical-align: top;
+					display: inline-block;
+					font-size: 8pt;
+					line-height: 10pt;
+					width: 80px;
 				}
 		    }
 
