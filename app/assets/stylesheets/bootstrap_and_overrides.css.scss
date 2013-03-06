@@ -70,6 +70,12 @@ Any media size specific and resize related rules should be here.
     .date-label {
 		display: inline-block;
 	}
+
+	#summary-stats {
+		.sum-stat {
+			display: inline;
+		}
+	}
 }
 
 @media (min-width:979px) {
@@ -172,6 +178,12 @@ Any media size specific and resize related rules should be here.
 
 	.date-label {
 		display: none;
+	}
+
+	#summary-stats {
+		.sum-stat {
+			display: list-item;			
+		}
 	}
 }
 

@@ -78,6 +78,7 @@
 		    white-space: nowrap;
 		    text-overflow: ellipsis;
 		    overflow: hidden; 
+		    padding-left: 3px;
 		}
 
 		.target-info {
@@ -89,6 +90,7 @@
 		    position: relative;
 		    height: 70px;
 		    font-size: 9pt;
+		    padding-left: 3px;
 		}
     }
 }
@@ -150,18 +152,18 @@ html>/**/body #cuatro {
 
 	#summary-stats {
 
-	    margin-left: 10pt;
-	    font-size: 10pt;
+	    margin-left: 10px;
+	    font-size: 12pt;
 	    font-weight: bold;
+	    list-style: none;
 
 	    .sum-stat {
-		margin-left: 20px;
-		white-space: nowrap;
-	
-		.sum-val {
-		    text-align: right;
-		    padding-left: 5px;
-		}
+		    padding-left: 15px;
+		    padding-right: 20px; 
+		    .sum-val {
+		    	white-space: nowrap;
+		    	display: inline-block;
+		    }
 	    }
 	}
 }
