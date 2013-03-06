@@ -15,7 +15,7 @@ function init_frontdoor() {
 
     link.css('position','absolute');
     link.css('top','100px');
-    link.css('left','280px');
+    link.css('left','310px');
 
     $('body').append(link);
 
@@ -26,12 +26,11 @@ function init_frontdoor() {
 	var height = $('#ticker').outerHeight();
 
 	var left = offset.left + 'px';
-	var top  = (offset.top + height) + 'px';
+	var top  = (offset.top+height) + 'px';
 	
 	$('#custom-search-modal').css('left',left);
 	$('#custom-search-modal').css('top',top);
 	$('#custom-search-modal').css('width',width);
-	
 
 	$('#custom-search-modal').modal();
 
@@ -46,8 +45,6 @@ function init_frontdoor() {
 	    });
 
     }
-
-    $('.industry-select').attr('disabled','disabled');
 
 }
 
@@ -243,6 +240,8 @@ $(function() {
             },
         })
         .data( "autocomplete" )._renderItem = function( ul, item ) {
+
+	    ul.css('z-index',99);
 
             var v = item.value + " - " + item.longname;
 

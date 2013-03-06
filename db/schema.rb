@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130221194643) do
+ActiveRecord::Schema.define(:version => 20130306225142) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -264,16 +264,25 @@ ActiveRecord::Schema.define(:version => 20130221194643) do
     t.float   "mrk_rtn"
   end
 
+  create_table "search_types", :force => true do |t|
+    t.string   "factors"
+    t.string   "weights"
+    t.string   "gicslevel"
+    t.string   "newflag"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "searches", :force => true do |t|
     t.string   "cid"
     t.string   "sid"
     t.date     "pricedate"
     t.date     "fromdate"
     t.date     "thrudate"
-    t.string   "search_type"
+    t.integer  "type_id"
     t.integer  "completed"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
