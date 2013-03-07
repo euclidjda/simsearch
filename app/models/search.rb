@@ -73,7 +73,7 @@ class Search < ActiveRecord::Base
 
     candidates = Array::new()
 
-    batch_size = 100 # batch size is in days (not records)
+    batch_size = 1000 # batch size is in days (not records)
 
     while (1) do
 
@@ -82,7 +82,7 @@ class Search < ActiveRecord::Base
 
       thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
 
-      # logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
+      puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
       sqlstr = SecuritySnapshot::get_match_sql(target.cid,
                                                target_ind,
