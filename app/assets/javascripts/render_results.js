@@ -5,8 +5,6 @@ var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id) {
 
-    return;
-
     start_spinner('row-1');
 
     (function poll_for_summary() {

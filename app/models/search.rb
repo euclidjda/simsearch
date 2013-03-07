@@ -66,8 +66,6 @@ class Search < ActiveRecord::Base
 
     cur_epoch = _epochs.shift
 
-    logger.debug "***** epoch.fromdate=#{cur_epoch.fromdate} thrudate=#{cur_epoch.thrudate}"
-
     fromdate = nil
     thrudate = cur_epoch.fromdate-1
 
@@ -119,7 +117,7 @@ class Search < ActiveRecord::Base
     end
 
     # debug info line here to make sure we are rendering the right number on screen.
-    logger.debug "********** #{candidates.length}   ***********"
+    puts "********** #{candidates.length}   ***********"
 
     comps = consolidate_results( candidates, limit )
 
