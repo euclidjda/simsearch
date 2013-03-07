@@ -169,9 +169,13 @@ class FrontdoorController < ApplicationController
 
     result = Array::new(0)
 
-    if !_search_id.blank?
+    if !_search_id.blank? && !_fromdate.blank? && !_thrudate.blank?
 
-      if are_searches_complete?( _search_id )
+      status = SearchStatus::where( :search_id => _search_id ,
+                                    :fromdate  => _fromdate  ,
+                                    :thrudate  => _thrudate  ).first
+
+      if !status.nil? && status.complete?
 
         details = SearchDetail
           .where( "search_id = #{_search_id} AND "+
@@ -190,6 +194,10 @@ class FrontdoorController < ApplicationController
           result.push(comp_record)
 
         }
+
+      elsif !status.nil
+
+        result = status
 
       else
 
@@ -339,13 +347,13 @@ private
     @validation_error
   end
 
-  def are_searches_complete?( _search_id_list )
+  def are_searches_complete?( _search_id )
 
     count = 1
 
-    Search.uncached {
-      count = Search.where("id IN (" +
-                           _search_id_list+") AND completed = 0").count()
+    SearchStatus.uncached {
+      count = SearchStatus.where( :search_id => _search_id ,
+                                  :complete  => false      ).count()
     }
 
     (count == 0) ? true : false

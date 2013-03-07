@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  search_id: 1
+  fromdate: 2013-03-07
+  thrudate: 2013-03-07
+  comment: MyString
+  num_steps: 1
+  cur_step: 1
+  complete: false
+
+two:
+  search_id: 1
+  fromdate: 2013-03-07
+  thrudate: 2013-03-07
+  comment: MyString
+  num_steps: 1
+  cur_step: 1
+  complete: false

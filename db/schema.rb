@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306225142) do
+ActiveRecord::Schema.define(:version => 20130307230909) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -262,6 +262,18 @@ ActiveRecord::Schema.define(:version => 20130306225142) do
     t.float   "dist"
     t.float   "stk_rtn"
     t.float   "mrk_rtn"
+  end
+
+  create_table "search_statuses", :force => true do |t|
+    t.integer  "search_id"
+    t.date     "fromdate"
+    t.date     "thrudate"
+    t.string   "comment"
+    t.integer  "num_steps"
+    t.integer  "cur_step"
+    t.boolean  "complete"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "search_types", :force => true do |t|

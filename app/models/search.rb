@@ -1,5 +1,5 @@
 class Search < ActiveRecord::Base
-  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id, :completed
+  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id
 
   def self.exec(_args)
 
@@ -32,8 +32,21 @@ class Search < ActiveRecord::Base
                               :pricedate => pricedate ,
                               :fromdate  => fromdate  ,
                               :thrudate  => thrudate  ,
-                              :type_id   => _type.id  ,
-                              :completed => 0         )
+                              :type_id   => _type.id  )
+
+      _epochs.each { |ep|
+
+        status = SearchStatus.find_or_create( :search_id => search.id  ,
+                                              :fromdate  => ep.fromdate,
+                                              :thrudate  => ep.thrudate)
+
+        status.comment    = "Started"
+        status.num_steps  = nil
+        status.cur_step   = nil
+        status.complete   = false
+        status.save()
+
+      }
 
       # This call to delay causes create_search_detail to be run ansyncronously
       # by the delayed_job package. For the method to execute, the program
@@ -66,6 +79,10 @@ class Search < ActiveRecord::Base
 
     cur_epoch = _epochs.shift
 
+    status = SearchStatus.where( :search_id => self.id            ,
+                                 :fromdate  => cur_epoch.fromdate ,
+                                 :thrudate  => cur_epoch.thrudate ).first
+
     fromdate = nil
     thrudate = cur_epoch.fromdate-1
 
@@ -94,6 +111,9 @@ class Search < ActiveRecord::Base
       thrudate = thrudate + batch_size
 
       thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
+
+      status.comment = "fromdate=#{fromdate} thrudate=#{thrudate}"
+      status.save()
 
       puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
@@ -129,6 +149,9 @@ class Search < ActiveRecord::Base
     # debug info line here to make sure we are rendering the right number on screen.
     puts "********** sql_result_size = #{candidates.length}   ***********"
 
+    status.comment = "Processing #{candidates.length} candidate comps."
+    status.save()
+
     comps = consolidate_results( candidates, limit )
 
     candidates = nil
@@ -144,16 +167,16 @@ class Search < ActiveRecord::Base
                             :mrk_rtn   => c[:mrk_rtn]   )
     }
 
+    status.comment  = "Done."
+    status.complete = true
+    status.save()
+
     if (!_epochs.empty?)
 
       puts "*********** SEARCH NEXT EPOCH"
       create_search_details(_epochs)
 
     end
-
-    # save the search
-    self.completed = 1
-    self.save()
 
     puts "*********** SEARCH IS DONE"
 
