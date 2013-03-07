@@ -88,6 +88,7 @@ class Search < ActiveRecord::Base
                                                target_cap,
                                                fromdate,
                                                thrudate)
+      puts "***** #{sqlstr}"
 
       results = nil
 
@@ -99,7 +100,7 @@ class Search < ActiveRecord::Base
 
       results.each { |row|
 
-        match = SecuritySnapshot::new(row)
+        match = SecuritySnapshot::new( row )
 
         dist = target.distance( match )
 

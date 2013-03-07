@@ -301,11 +301,9 @@ GET_TARGET_SQL
     idxcapl_max = (5.0*_target_cap).round()
 
 <<GET_MATCH_SQL
-    SELECT A.*, B.*
-    FROM ex_combined A, ex_securities B
+    SELECT A.*
+    FROM ex_combined A
     WHERE A.cid != '#{_cid}' 
-    AND A.cid = B.cid
-    AND A.sid = B.sid
     AND A.idxind = #{_target_ind}
     AND A.idxnew = #{_target_new}
     AND A.idxcaph >= #{idxcaph_min}
