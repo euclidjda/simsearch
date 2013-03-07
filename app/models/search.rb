@@ -88,8 +88,6 @@ class Search < ActiveRecord::Base
                                                target_cap,
                                                fromdate,
                                                thrudate)
-      puts "***** #{sqlstr}"
-
       results = nil
 
       ActiveRecord::Base.uncached() {
@@ -118,7 +116,7 @@ class Search < ActiveRecord::Base
     end
 
     # debug info line here to make sure we are rendering the right number on screen.
-    puts "********** #{candidates.length}   ***********"
+    puts "********** sql_result_size = #{candidates.length}   ***********"
 
     comps = consolidate_results( candidates, limit )
 
@@ -133,19 +131,20 @@ class Search < ActiveRecord::Base
                             :dist      => c[:distance]  ,
                             :stk_rtn   => c[:stk_rtn]   ,
                             :mrk_rtn   => c[:mrk_rtn]   )
-
-
     }
 
     if (!_epochs.empty?)
 
       create_search_details(_epochs)
+      puts "*********** SEARCH NEXT EPOCH"
 
     end
 
     # save the search
     self.completed = 1
     self.save()
+
+      puts "*********** SEARCH IS DONE"
 
   end
 
