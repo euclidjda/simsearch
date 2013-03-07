@@ -14,7 +14,6 @@ class SecuritySnapshot < Tableless
     @cid       = get_field('cid')
     @sid       = get_field('sid')
     @pricedate = get_field('pricedate')
-    @defer1    = nil;
 
     csho   = @fields['csho']       ? Float(@fields['csho'])       : nil
     price  = @fields['price']      ? Float(@fields['price'])      : nil

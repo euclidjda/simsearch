@@ -71,7 +71,7 @@ class Search < ActiveRecord::Base
 
     candidates = Array::new()
 
-    batch_size = 100 # batch size is in days (not records)
+    batch_size = 365 # batch size is in days (not records)
 
     while (1) do
 
