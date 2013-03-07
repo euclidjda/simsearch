@@ -71,7 +71,22 @@ class Search < ActiveRecord::Base
 
     candidates = Array::new()
 
-    batch_size = 365 # batch size is in days (not records)
+    batch_size = 366*2 # batch size is in days (not records)
+
+    # create mysql connection. no need for pooling here.
+    config   = Rails.configuration.database_configuration
+    host     = config[Rails.env]["host"]
+    database = config[Rails.env]["database"]
+    username = config[Rails.env]["username"]
+    password = config[Rails.env]["password"]
+
+    puts "********** host=#{host} database=#{database} " +
+      "username=#{username} password=#{password}"
+
+    client = Mysql2::Client.new(:host     => host       ,
+                                :database => database   ,
+                                :username => username   ,
+                                :password => password   )
 
     while (1) do
 
@@ -82,19 +97,13 @@ class Search < ActiveRecord::Base
 
       puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
-      sqlstr = SecuritySnapshot::get_match_sql(target.cid,
-                                               target_ind,
-                                               target_new,
-                                               target_cap,
-                                               fromdate,
-                                               thrudate)
-      results = nil
-
-      ActiveRecord::Base.uncached() {
-
-        results = ActiveRecord::Base.connection.select_all(sqlstr)
-
-      }
+      sqlstr = SecuritySnapshot::get_match_sql(target.cid ,
+                                               target_ind ,
+                                               target_new ,
+                                               target_cap ,
+                                               fromdate   ,
+                                               thrudate   )
+      results = client.query(sqlstr, :stream=>true, :cache_rows=>false)
 
       results.each { |row|
 
@@ -114,6 +123,8 @@ class Search < ActiveRecord::Base
       break if (thrudate == cur_epoch.thrudate)
 
     end
+
+    client.close()
 
     # debug info line here to make sure we are rendering the right number on screen.
     puts "********** sql_result_size = #{candidates.length}   ***********"
@@ -135,8 +146,8 @@ class Search < ActiveRecord::Base
 
     if (!_epochs.empty?)
 
-      create_search_details(_epochs)
       puts "*********** SEARCH NEXT EPOCH"
+      create_search_details(_epochs)
 
     end
 
@@ -144,7 +155,7 @@ class Search < ActiveRecord::Base
     self.completed = 1
     self.save()
 
-      puts "*********** SEARCH IS DONE"
+    puts "*********** SEARCH IS DONE"
 
   end
 
