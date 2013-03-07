@@ -11,7 +11,7 @@ class Factors
 
   @@Defaults = [:ey,:roc,:grwth,:epscon,:ae,:mom]
 
-  @@DefaultWeights = [3,4,5,2,1,8]
+  @@DefaultWeights = [5,5,5,5,5,5]
 
   def self.all
     return @@Factors
