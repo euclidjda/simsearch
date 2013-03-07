@@ -1,5 +1,5 @@
 class Search < ActiveRecord::Base
-  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :search_type, :completed
+  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id, :completed
 
   def self.exec(_args)
 
@@ -17,24 +17,23 @@ class Search < ActiveRecord::Base
 
     puts "******** search: fromdate = #{fromdate} thrudate = #{thrudate}"
 
-    search = Search.where( :cid         => cid       ,
-                           :sid         => sid       ,
-                           :pricedate   => pricedate ,
-                           :fromdate    => fromdate  ,
-                           :thrudate    => thrudate   ,
-                           :search_type => _type     ).first
+    search = Search.where( :cid       => cid       ,
+                           :sid       => sid       ,
+                           :pricedate => pricedate ,
+                           :fromdate  => fromdate  ,
+                           :thrudate  => thrudate  ,
+                           :type_id   => _type.id  ).first
 
     if search.nil?
 
       # if search has not been run, then we need to execute it
-      search = Search.create( :cid         => cid       ,
-                              :sid         => sid       ,
-                              :pricedate   => pricedate ,
-                              :fromdate    => fromdate  ,
-                              :thrudate    => thrudate  ,
-                              :search_type => _type     ,
-                              :completed   => 0         )
-
+      search = Search.create( :cid       => cid       ,
+                              :sid       => sid       ,
+                              :pricedate => pricedate ,
+                              :fromdate  => fromdate  ,
+                              :thrudate  => thrudate  ,
+                              :type_id   => _type.id  ,
+                              :completed => 0         )
 
       # This call to delay causes create_search_detail to be run ansyncronously
       # by the delayed_job package. For the method to execute, the program

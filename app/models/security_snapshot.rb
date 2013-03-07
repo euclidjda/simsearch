@@ -6,7 +6,7 @@ class SecuritySnapshot < Tableless
 
   def initialize( _fields )
 
-    @factor_keys    = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
+    @factor_keys    = [:ey,:roc,:grwth,:epscon,:ae,:mom]
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
@@ -248,7 +248,7 @@ class SecuritySnapshot < Tableless
 
       factor_value = equity / assets if (!equity.nil? && assets > 0)
 
-    when :momentum # Momentum
+    when :mom # Momentum
 
       factor_value = get_field('pch6m')
 

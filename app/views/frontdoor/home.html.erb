@@ -28,6 +28,73 @@
 	      
             </span>
 
+	    <div id="custom-search-modal" class="modal hide" tab-index="-1"
+		 role="dialog" aria-hidden="true" data-backdrop="false">
+
+	      <div class="modal-body">
+
+		<button type="button" class="close" 
+			aria-hidden="true"
+			onclick="$('#custom-search-modal').modal('hide');">
+		  &times;</button>
+
+		<div>
+
+		  <table id="factor-table"> 
+
+		    <tr class="header">
+		      <td>Factors</td>
+		      <td colspan=2>Weights</td>
+		    </tr>
+
+		    <% factors  = Factors::all %>
+		    <% defaults = Factors::defaults %>
+		    <% default_weights  = Factors::default_weights %>
+
+		    <% (1..6).each do |index| %>
+		    <tr>
+		      <td class="col1">
+			<% fac_val = params["factor#{index}"] || defaults[index-1] %>
+			<%= select_tag("factor#{index}",
+			    options_for_select(factors,fac_val),
+			    :class=>"factor-select") %>
+		      </td>
+		      <td class="col2">
+			<% weight_name  = "weight#{index}" %>
+			<% weight_value = params[weight_name] || default_weights[index-1] %>
+			<input type="hidden" 
+			       name="<%= weight_name %>"
+			       value="<%= weight_value %>">
+			<div id="factor-slider<%= index %>"
+			     class="factor-slider" value=<%= weight_value %>></div>
+		      </td>
+		      <td class="col3"><%= weight_value %></td>
+		    </tr>
+		    <% end %>
+
+		  </table><br>
+		  
+		  <% gicslevel = params[:gicslevel] || 'sector' %>
+
+		  <%= label_tag(:gicslevel,
+		      "GICS Industry Classification Restriction:") %>
+
+		  <%= select_tag(:gicslevel,
+		      options_for_select([['Level 1: Sector', 'sector'],
+		      ['Level 2: Industry Group', 'group'],['Level 3: Industry',
+		      'ind'],['Level 4: Sub-Industry','sub']],gicslevel),
+		      :class=>"industry-select") %>
+		  
+		  <input type="hidden" name="newflag" value="1">
+
+		</div>
+
+		<a id="restore-defaults">Restore Defaults</a>
+
+	      </div>
+
+	    </div>
+
           </form>
         </span> 
       </li>
@@ -37,77 +104,6 @@
 
 </div><!--/.search-area -->
 
-<div id="custom-search-modal" class="modal hide" tab-index="-1"
-     role="dialog" aria-hidden="true" data-backdrop="true">
-
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-      &times;</button>
-    
-    Custom Search
-  </div>
-
-  <div class="modal-body">
-
-    <form action="<%= search_path %>" 
-          method="get" 
-          class="search-bar-form" id="custom-search-bar-form">
-
-      <div>
-
-	<%= label_tag(:ticker, "Ticker:") %>
-	
-	<%= text_field_tag(:ticker, nil, 
-	    :placeholder => "Enter a stock symbol, e.g. IBM",
-	:id => "ticker-custom",
-	:class => "ticker-entry") %>
-
-	<table id="factor-table"> 
-
-	  <tr class="header">
-	    <td>Factors</td>
-	    <td colspan=2>Weights</td>
-	  </tr>
-
-	  <% factors  = Factors::all %>
-	  <% defaults = Factors::defaults %>
-	  <% weights  = Factors::default_weights %>
-
-	  <% (1..6).each do |index| %>
-	  <tr>
-	    <td class="col1">
-	      <%= select_tag(:factor1,
-		  options_for_select(factors,defaults[index-1]),
-		  :class=>"factor-select") %>
-	    </td>
-	    <td class="col2">
-	      <div id="factor-slider<%= index %>" class="factor-slider" value="5"></div>
-	    </td>
-	    <td class="col3">5.00</td>
-	  </tr>
-	  <% end %>
-
-	</table><br>
-
-	<%= label_tag(:industry, "GICS Industry Restriction:") %>
-
-	<%= select_tag(:industry,
-	    options_for_select([['Sector', '1'],['Industry Group', '2'],['Industry', '3'],['Sub-Industry','4']],'1'),
-	    :class=>"industry-select") %>
-	
-      </div>
-      <br>
-      <button class ="btn btn-small btn-primary search-button">
-        <i class="icon-search icon-white"></i>
-      </button>              
-      
-      <a id="restore-defaults">Restore Defaults</a>
-
-    </form>
-
-  </div>
-
-</div>
 
 
 <hr>

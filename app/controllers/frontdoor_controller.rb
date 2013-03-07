@@ -95,14 +95,26 @@ class FrontdoorController < ApplicationController
         # Get the target's factor fields
         @target_fields = target.to_hash()
 
-        # TODO: JDA: Right now the epochs are static but they should be custom
-        # in future iteration
         @epochs = Epoch.default_epochs_array()
 
-        @the_search = Search::exec( :target      => target    ,
-                                    :epochs      => @epochs   ,
-                                    :search_type => 'foo'     ,
-                                    :limit       => 10        )
+        factors = [params[:factor1],params[:factor2],params[:factor3],
+                   params[:factor4],params[:factor5],params[:factor6]]
+
+        weights = [params[:weight1],params[:weight2],params[:weight3],
+                   params[:weight4],params[:weight5],params[:weight6]]
+
+        search_type =
+          SearchType::find_or_create(:factors   => SearchType::arr2key(factors) ,
+                                     :weights   => SearchType::arr2key(weights) ,
+                                     :gicslevel => params[:gicslevel]           ,
+                                     :newflag   => params[:newflag]             )
+        
+        
+
+        @the_search = Search::exec( :target      => target      ,
+                                    :epochs      => @epochs     ,
+                                    :search_type => search_type ,
+                                    :limit       => 10          )
 
       end
 
@@ -318,7 +330,6 @@ private
   def epochs
     @epochs
   end
-
 
   def form_refresh?
     @form_refresh

@@ -6,7 +6,7 @@ class CreateSearches < ActiveRecord::Migration
       t.date :pricedate
       t.date :fromdate
       t.date :thrudate
-      t.string :search_type
+      t.integer :type_id
       t.integer :completed
 
       t.timestamps

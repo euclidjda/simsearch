@@ -6,12 +6,12 @@ class Factors
                ['Revenue Growth (4yr)',:grwth],
                ['EPS Growth Consist. (10yr)',:epscon],
                ['Equity/Assets',:ae],
-               ['Price Momentum (6mo)',:momentum]
+               ['Price Momentum (6mo)',:mom]
               ]
 
-  @@Defaults = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
+  @@Defaults = [:ey,:roc,:grwth,:epscon,:ae,:mom]
 
-  @@DefaultWeights = [5,5,5,5,5,5]
+  @@DefaultWeights = [3,4,5,2,1,8]
 
   def self.all
     return @@Factors

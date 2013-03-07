@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  factors: MyString
+  weights: MyString
+  indlevel: MyString
+  newflag: MyString
+
+two:
+  factors: MyString
+  weights: MyString
+  indlevel: MyString
+  newflag: MyString
