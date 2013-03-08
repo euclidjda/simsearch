@@ -112,9 +112,6 @@ class Search < ActiveRecord::Base
 
       thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
 
-      status.comment = sprintf("Processing year %d",fromdate.year)
-      status.save()
-
       puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
       sqlstr = SecuritySnapshot::get_match_sql(target.cid ,
@@ -124,6 +121,10 @@ class Search < ActiveRecord::Base
                                                fromdate   ,
                                                thrudate   )
       results = client.query(sqlstr, :stream=>true, :cache_rows=>false)
+
+      status.comment = sprintf("Processing year %d (%d records)",
+                               fromdate.year,results.count)
+      status.save()
 
       results.each { |row|
 
