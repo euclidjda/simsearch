@@ -88,7 +88,7 @@ class Search < ActiveRecord::Base
 
     candidates = Array::new()
 
-    batch_size = 366*2 # batch size is in days (not records)
+    batch_size = 366 # batch size is in days (not records)
 
     # create mysql connection. no need for pooling here.
     config   = Rails.configuration.database_configuration
@@ -112,7 +112,7 @@ class Search < ActiveRecord::Base
 
       thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
 
-      status.comment = "fromdate=#{fromdate} thrudate=#{thrudate}"
+      status.comment = sprintf("Processing year %d",fromdate.year)
       status.save()
 
       puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
