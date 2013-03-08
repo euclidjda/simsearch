@@ -144,6 +144,7 @@ class Search < ActiveRecord::Base
 
     end
 
+    # we can close client here
     client.close()
 
     # debug info line here to make sure we are rendering the right number on screen.
