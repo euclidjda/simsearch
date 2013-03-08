@@ -5,7 +5,6 @@ var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id) {
 
-
     $('.result-container').each(function( index ) {
 
 	start_spinner($(this).attr('id'));
@@ -66,47 +65,40 @@ function render_results(search_id) {
 
         $.getJSON('get_search_summary?search_id='+search_id,function(data) {
 
-            if (data == null) {
-		
-                setTimeout(poll_for_summary,3000);
-		
+            var perf  = data.summary;
+
+            if (perf == null) {
+                $("#summary-num").html("N/A");
+            } else if (perf >= 0) {
+                $("#summary-image").attr("src",pos_big_icon);
+                $("#summary-num").html(sprintf("%.2f%%",perf));
+                $("#summary-label").html("Outperformed");
             } else {
-
-                var perf  = data.summary;
-
-                if (perf == null) {
-                    $("#summary-num").html("N/A");
-                } else if (perf >= 0) {
-                    $("#summary-image").attr("src",pos_big_icon);
-                    $("#summary-num").html(sprintf("%.2f%%",perf));
-                    $("#summary-label").html("Outperformed");
-                } else {
-                    $("#summary-image").attr("src",neg_big_icon);
-                    $("#summary-num").html(sprintf("%.2f%%",perf));
-		    $("#summary-num").css('color','red');
-                    $("#summary-label").html("Underperformed");
-                }
-
-		$("#summary-worst")
-		    .html(EGUI.fmtAsNumber(data.worst,{fmtstr:"%.2f%%"}));
-
-		$("#summary-best")
-		    .html(EGUI.fmtAsNumber(data.best,{fmtstr:"%.2f%%"}));
-
-		if( data.worst < 0) $("#summary-worst").css('color','red');
-		if( data.best  < 0) $("#summary-best").css('color','red');
-
-		
-		if ((data.tot_count != null) && (data.win_count != null)) {
-		    
-		    $('#summary-count')
-			.html(data.win_count + ' of ' + data.tot_count);
-
-		}
-		
-
-
+                $("#summary-image").attr("src",neg_big_icon);
+                $("#summary-num").html(sprintf("%.2f%%",perf));
+		$("#summary-num").css('color','red');
+                $("#summary-label").html("Underperformed");
             }
+
+	    $("#summary-worst")
+		.html(EGUI.fmtAsNumber(data.worst,{fmtstr:"%.2f%%"}));
+
+	    $("#summary-best")
+		.html(EGUI.fmtAsNumber(data.best,{fmtstr:"%.2f%%"}));
+
+	    if( data.worst < 0) $("#summary-worst").css('color','red');
+	    if( data.best  < 0) $("#summary-best").css('color','red');
+
+	    
+	    if ((data.tot_count != null) && (data.win_count != null)) {
+		
+		$('#summary-count')
+		    .html(data.win_count + ' of ' + data.tot_count);
+
+	    }
+
+	    if (!data.complete)
+		setTimeout(poll_for_summary,3000);
 
         });
 
@@ -214,8 +206,9 @@ function populate_panels(row_obj,data,i) {
     detail_item.find('.pe-value').html(
 	EGUI.fmtAsMoney(data[i].pe,{fmtstr:"%.2f"}));
 
-    detail_item.find('.pb-value').html(
-	EGUI.fmtAsMoney(data[i].pb,{fmtstr:"%.2f"}));
+    detail_item.find('.pb-value').html(EGUI.fmtAsMoney(data[i].pb,
+						       {fmtstr:"%.2f"}));
+
 
     detail_item.find('.factor-ey').html(
 	    EGUI.fmtAsNumber(data[i].ey*100,{fmtstr:"%.2f"}));
@@ -236,7 +229,7 @@ function populate_panels(row_obj,data,i) {
         .html(EGUI.fmtAsNumber(data[i].ae*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.factor-momentum')
-        .html(EGUI.fmtAsNumber(data[i].momentum*100,{fmtstr:"%.2f%%"}));
+        .html(EGUI.fmtAsNumber(data[i].mom*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.similarity-score')
         .html(EGUI.fmtAsNumber(sim_score,{fmtstr:"%.2f"}));

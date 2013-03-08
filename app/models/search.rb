@@ -46,13 +46,13 @@ class Search < ActiveRecord::Base
         status.complete   = false
         status.save()
 
+        # This call to delay causes create_search_detail to be run ansyncronously
+        # by the delayed_job package. For the method to execute, the program
+        # "rake jobs:work" must be running in the background.
+
+        search.delay.create_search_details(ep)
+
       }
-
-      # This call to delay causes create_search_detail to be run ansyncronously
-      # by the delayed_job package. For the method to execute, the program
-      # "rake jobs:work" must be running in the background.
-
-      search.delay.create_search_details(_epochs)
 
     end
 
@@ -60,7 +60,9 @@ class Search < ActiveRecord::Base
 
   end
 
-  def create_search_details(_epochs)
+  def create_search_details(_epoch)
+
+    puts "********************* STARTING SEARCH DETAIL"
 
     limit = 10
 
@@ -77,18 +79,16 @@ class Search < ActiveRecord::Base
     target_cap =
       target.get_field('mrkcap') ? Float(target.get_field('mrkcap')).round() : nil
 
-    cur_epoch = _epochs.shift
-
     status = SearchStatus.where( :search_id => self.id            ,
-                                 :fromdate  => cur_epoch.fromdate ,
-                                 :thrudate  => cur_epoch.thrudate ).first
+                                 :fromdate  => _epoch.fromdate ,
+                                 :thrudate  => _epoch.thrudate ).first
 
     fromdate = nil
-    thrudate = cur_epoch.fromdate-1
+    thrudate = _epoch.fromdate-1
 
     candidates = Array::new()
 
-    batch_size = 366 # batch size is in days (not records)
+    batch_size = 500 # batch size is in days (not records)
 
     # create mysql connection. no need for pooling here.
     config   = Rails.configuration.database_configuration
@@ -100,17 +100,17 @@ class Search < ActiveRecord::Base
     puts "********** host=#{host} database=#{database} " +
       "username=#{username} password=#{password}"
 
-    client = Mysql2::Client.new(:host     => host       ,
-                                :database => database   ,
-                                :username => username   ,
-                                :password => password   )
+    client = Mysql2::Client.new(:host     => host     ,
+                                :database => database ,
+                                :username => username ,
+                                :password => password )
 
     while (1) do
 
       fromdate = thrudate + 1
       thrudate = thrudate + batch_size
 
-      thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
+      thrudate = _epoch.thrudate if ((thrudate <=> _epoch.thrudate) == 1)
 
       puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
@@ -120,6 +120,7 @@ class Search < ActiveRecord::Base
                                                target_cap ,
                                                fromdate   ,
                                                thrudate   )
+
       results = client.query(sqlstr, :stream=>true, :cache_rows=>false)
 
       status.comment = sprintf("Processing year %d (%d records)",
@@ -141,7 +142,7 @@ class Search < ActiveRecord::Base
 
       }
 
-      break if (thrudate == cur_epoch.thrudate)
+      break if (thrudate == _epoch.thrudate)
 
     end
 

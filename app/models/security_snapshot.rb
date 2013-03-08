@@ -297,7 +297,7 @@ GET_TARGET_SQL
                          _begin_date, _end_date)
 
     idxcaph_min = [10000,_target_cap*0.5].min.round()
-    idxcapl_max = (5.0*_target_cap).round()
+    idxcapl_max = (4.0*_target_cap).round()
 
 <<GET_MATCH_SQL
     SELECT A.*

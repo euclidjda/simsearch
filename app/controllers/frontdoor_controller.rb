@@ -226,49 +226,42 @@ class FrontdoorController < ApplicationController
 
     _search_id = params[:search_id]
 
-    if are_searches_complete?( _search_id )
+    search_details = SearchDetail.where("search_id = #{_search_id}")
 
-      search_details = SearchDetail.where("search_id = #{_search_id}")
+    perfs = Array::new()
+    weight_sum = 0.0
+    values_sum = 0.0
 
-      perfs = Array::new()
-      weight_sum = 0.0
-      values_sum = 0.0
+    win_count = 0
+    tot_count = 0
 
-      win_count = 0
-      tot_count = 0
+    best    = nil
+    worst   = nil
 
-      best    = nil
-      worst   = nil
+    search_details.each { |detail|
 
-      search_details.each { |detail|
+      next unless detail.dist > 0
 
-        next unless detail.dist > 0
+      weight = Math.exp( -detail.dist )
 
-        weight = Math.exp( -detail.dist )
+      outperformance = detail.stk_rtn - detail.mrk_rtn
 
-        outperformance = detail.stk_rtn - detail.mrk_rtn
+      tot_count += 1
+      win_count += 1 if outperformance >= 0
 
-        tot_count += 1
-        win_count += 1 if outperformance >= 0
+      values_sum += weight * outperformance
+      weight_sum += weight
 
-        values_sum += weight * outperformance
-        weight_sum += weight
+      best  = outperformance if (best.nil?  || outperformance >= best)
+      worst = outperformance if (worst.nil? || outperformance <= worst)
+    }
 
-        best  = outperformance if (best.nil?  || outperformance >= best)
-        worst = outperformance if (worst.nil? || outperformance <= worst)
-      }
-
-      result[:summary]   = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
-      result[:tot_count] = tot_count
-      result[:win_count] = win_count
-      result[:worst]     = worst
-      result[:best]      = best
-
-    else
-
-      result = nil
-
-    end
+    result[:summary]   = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+    result[:tot_count] = tot_count
+    result[:win_count] = win_count
+    result[:worst]     = worst
+    result[:best]      = best
+    result[:complete]  = are_searches_complete?(_search_id) ? 1 : 0
 
     render :json => result.to_json
 
