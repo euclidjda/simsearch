@@ -174,13 +174,6 @@ class Search < ActiveRecord::Base
     status.complete = true
     status.save()
 
-    if (!_epochs.empty?)
-
-      puts "*********** SEARCH NEXT EPOCH"
-      create_search_details(_epochs)
-
-    end
-
     puts "*********** SEARCH IS DONE"
 
   end
