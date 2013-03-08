@@ -195,7 +195,7 @@ class FrontdoorController < ApplicationController
 
         }
 
-      elsif !status.nil
+      elsif !status.nil?
 
         result = status
 

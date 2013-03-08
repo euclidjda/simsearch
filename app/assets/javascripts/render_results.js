@@ -5,7 +5,62 @@ var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id) {
 
-    start_spinner('row-1');
+
+    $('.result-container').each(function( index ) {
+
+	start_spinner($(this).attr('id'));
+
+        var fromdate = $(this).attr('fromdate');
+        var thrudate = $(this).attr('thrudate');
+
+        var post_data = new Object();
+        post_data['search_id'] = search_id;
+        post_data['fromdate'] = fromdate;
+        post_data['thrudate'] = thrudate;
+
+	var this_obj = $(this);
+
+	(function poll_for_result() {
+
+	    //alert("fromdate = "+fromdate);
+
+	    $.getJSON('get_search_results',post_data,function(json_data) {
+
+		this_obj.empty();
+
+		if (json_data != null) {
+		    
+		    if (json_data.comment != null) {
+			
+			start_spinner(this_obj.attr('id'));
+			this_obj.append(json_data.comment);
+			setTimeout(poll_for_result,1000);
+			
+		    } else if (json_data.length) {
+			
+			var max_panels = Math.min(3,json_data.length);
+			
+			for (var i=0; i < max_panels; i++) {
+			    
+			    populate_panels(this_obj,json_data,i);
+			    
+			}
+			
+		    } else {
+			    
+			this_obj.html("<div class='no-results-found'>"+
+				      "No comparables found for this period.</div>");
+			
+		    }
+		    
+		}
+		
+	    });
+
+	})();
+
+    });
+
 
     (function poll_for_summary() {
 
@@ -49,52 +104,7 @@ function render_results(search_id) {
 
 		}
 		
-                $('.result-container').each(function( index ) {
 
-                    var fromdate = $(this).attr('fromdate');
-                    var thrudate = $(this).attr('thrudate');
-
-                    var post_data = new Object();
-                    post_data['search_id'] = search_id;
-                    post_data['fromdate'] = fromdate;
-                    post_data['thrudate'] = thrudate;
-
-                    var json_data = null;
-
-                    $.ajax({
-                        url:      'get_search_results',
-                        dataType: 'json',
-                        async:    false,
-                        data:     post_data,
-                        success:  function(data) {
-                            json_data = data;
-                        }
-                    });
-
-                    $(this).empty();
-
-                    if (json_data != null) {
-
-                        if (json_data.length) {
-
-                            var max_panels = Math.min(3,json_data.length);
-
-                            for (var i=0; i < max_panels; i++) {
-
-                                populate_panels(this,json_data,i);
-
-                            }
-
-                        } else {
-
-                            $(this).html("<div class='no-results-found'>"+
-					 "No comparables found for this period.</div>");
-
-                        }
-
-                    }
-
-                });
 
             }
 
