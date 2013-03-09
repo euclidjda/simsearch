@@ -28,26 +28,22 @@ function render_results(search_id) {
                 } else {
                     $("#summary-image").attr("src",neg_big_icon);
                     $("#summary-num").html(sprintf("%.2f%%",perf));
-		    $("#summary-num").css('color','red');
+                    $("#summary-num").css('color','red');
                     $("#summary-label").html("Underperformed");
                 }
 
-		$("#summary-worst")
-		    .html(EGUI.fmtAsNumber(data.worst,{fmtstr:"%.2f%%"}));
+                $("#summary-worst").html(EGUI.fmtAsNumber(data.worst,{fmtstr:"%.2f%%"}));
 
-		$("#summary-best")
-		    .html(EGUI.fmtAsNumber(data.best,{fmtstr:"%.2f%%"}));
+                $("#summary-best").html(EGUI.fmtAsNumber(data.best,{fmtstr:"%.2f%%"}));
 
-		if( data.worst < 0) $("#summary-worst").css('color','red');
-		if( data.best  < 0) $("#summary-best").css('color','red');
+                if( data.worst < 0) $("#summary-worst").css('color','red');
+                if( data.best  < 0) $("#summary-best").css('color','red');
 
 		
-		if ((data.tot_count != null) && (data.win_count != null)) {
-		    
-		    $('#summary-count')
-			.html(data.win_count + ' of ' + data.tot_count);
-
-		}
+                if ((data.tot_count != null) && (data.win_count != null)) {
+                    $('#summary-count')
+                	.html(data.win_count + ' of ' + data.tot_count);
+                }
 		
                 $('.result-container').each(function( index ) {
 
@@ -71,19 +67,25 @@ function render_results(search_id) {
                         }
                     });
 
-                    $(this).empty();
+                    $(this).find(".spinner").remove();
+                    $(this).find(".bxslider").empty();
 
                     if (json_data != null) {
 
                         if (json_data.length) {
 
-                            var max_panels = Math.min(3,json_data.length);
+                            var max_panels = json_data.length;
 
                             for (var i=0; i < max_panels; i++) {
-
                                 populate_panels(this,json_data,i);
-
                             }
+
+                            $(this).find(".bxslider").bxSlider({
+                                minSlides:1, 
+                                maxSlides:6, 
+                                slideWidth: 240, 
+                                slideMargin: 10
+                            });
 
                         } else {
 
@@ -165,7 +167,10 @@ function populate_panels(row_obj,data,i) {
     });
 
     // This packs  the panel into the DOM so it can be seenn
-    $(row_obj).append(panel);
+    var theList = $(row_obj).find("ul");
+    var listItem = document.createElement("li");
+    $(theList).append(listItem);
+    $(listItem).append(panel);
 
     // Add to detailed compare
     var detail_item = $('#carousel-item-right-template').clone();
