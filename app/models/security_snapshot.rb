@@ -302,12 +302,12 @@ GET_TARGET_SQL
 <<GET_MATCH_SQL
     SELECT A.*
     FROM ex_combined A
-    WHERE A.cid != '#{_cid}' 
-    AND A.idxind = #{_target_ind}
-    AND A.idxnew = #{_target_new}
+    WHERE A.idxind = #{_target_ind}
+    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
     AND A.idxcaph >= #{idxcaph_min}
     AND A.idxcapl <= #{idxcapl_max}
-    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
+    AND A.idxnew = #{_target_new}
+    AND A.cid != '#{_cid}' 
 GET_MATCH_SQL
   end
 

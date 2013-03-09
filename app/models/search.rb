@@ -121,6 +121,8 @@ class Search < ActiveRecord::Base
                                                fromdate   ,
                                                thrudate   )
 
+      puts sqlstr, "\n";
+
       results = client.query(sqlstr, :stream=>true, :cache_rows=>false)
 
       status.comment = sprintf("Processing year %d (%d records)",
