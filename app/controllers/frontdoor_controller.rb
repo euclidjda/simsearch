@@ -132,7 +132,7 @@ class FrontdoorController < ApplicationController
 
   #
   # Method that returns, as a json, a list of tickers that are matching the term.
-  #
+  
   def autocomplete_security_ticker
     _term = params[:term]
     if _term && !_term.empty?
