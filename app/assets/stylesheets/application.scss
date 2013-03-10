@@ -40,6 +40,13 @@
 	margin-left: -20px !important;
 }
 
+.dark-row {
+	.bx-viewport {
+		background-color: rgb(232, 232, 232) !important;
+		border-color: rgb(232, 232, 232) !important;
+	}
+}
+
 .bxslider {
 	margin-top: -8px;
 }

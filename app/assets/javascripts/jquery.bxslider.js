@@ -40,13 +40,13 @@
 		preventDefaultSwipeX: true,
 		preventDefaultSwipeY: false,
 		
-		// bxpager
-		bxpager: true,
-		bxpagerType: 'full',
-		bxpagerShortSeparator: ' / ',
-		bxpagerSelector: null,
-		buildbxpager: null,
-		bxpagerCustom: null,
+		// pager
+		pager: true,
+		pagerType: 'full',
+		pagerShortSeparator: ' / ',
+		pagerSelector: null,
+		buildpager: null,
+		pagerCustom: null,
 		
 		// CONTROLS
 		controls: true,
@@ -223,7 +223,7 @@
 				// prepare the z-index on the showing element
 				slider.children.eq(slider.settings.startSlide).css({zIndex: 50, display: 'block'});
 			}
-			// create an element to contain all slider controls (bxpager, start / stop, etc)
+			// create an element to contain all slider controls (pager, start / stop, etc)
 			slider.controls.el = $('<div class="bx-controls" />');
 			// if captions are requested, add them
 			if(slider.settings.captions) appendCaptions();
@@ -235,7 +235,7 @@
 				el.append(sliceAppend).prepend(slicePrepend);
 			}
 			// check if startSlide is last slide
-			slider.active.last = slider.settings.startSlide == getbxpagerQty() - 1;
+			slider.active.last = slider.settings.startSlide == getpagerQty() - 1;
 			// if video is true, set up the fitVids plugin
 			if(slider.settings.video) el.fitVids();
 			// set the default preload selector (visible)
@@ -243,14 +243,14 @@
 			if (slider.settings.preloadImages == "all") preloadSelector = el.children();
 			// only check for control addition if not in "ticker" mode
 			if(!slider.settings.ticker){
-				// if bxpager is requested, add it
-				if(slider.settings.bxpager) appendbxpager();
+				// if pager is requested, add it
+				if(slider.settings.pager) appendpager();
 				// if controls are requested, add them
 				if(slider.settings.controls) appendControls();
 				// if auto is true, and auto controls are requested, add them
 				if(slider.settings.auto && slider.settings.autoControls) appendControlsAuto();
 				// if any control option is requested, add the controls wrapper
-				if(slider.settings.controls || slider.settings.autoControls || slider.settings.bxpager) slider.viewport.after(slider.controls.el);
+				if(slider.settings.controls || slider.settings.autoControls || slider.settings.pager) slider.viewport.after(slider.controls.el);
 			}
 			// preload all images, then perform final DOM / CSS modifications that depend on images being loaded
 			preloadSelector.imagesLoaded(start);
@@ -280,8 +280,8 @@
 			if (slider.settings.auto && slider.settings.autoStart) initAuto();
 			// if ticker is true, start the ticker
 			if (slider.settings.ticker) initTicker();
-			// if bxpager is requested, make the appropriate bxpager link active
-			if (slider.settings.bxpager) updatebxpagerActive(slider.settings.startSlide);
+			// if pager is requested, make the appropriate pager link active
+			if (slider.settings.pager) updatepagerActive(slider.settings.startSlide);
 			// check for any updates to the controls (like hideControlOnEnd updates)
 			if (slider.settings.controls) updateDirectionControls();
 			// if touchEnabled is true, setup the touch events
@@ -403,28 +403,28 @@
 		/**
 		 * Returns the number of pages (one full viewport of slides is one "page")
 		 */
-		var getbxpagerQty = function(){
-			var bxpagerQty = 0;
+		var getpagerQty = function(){
+			var pagerQty = 0;
 			// if moveSlides is specified by the user
 			if(slider.settings.moveSlides > 0){
 				if(slider.settings.infiniteLoop){
-					bxpagerQty = slider.children.length / getMoveBy();
+					pagerQty = slider.children.length / getMoveBy();
 				}else{
 					// use a while loop to determine pages
 					var breakPoint = 0;
 					var counter = 0
 					// when breakpoint goes above children length, counter is the number of pages
 					while (breakPoint < slider.children.length){
-						++bxpagerQty;
+						++pagerQty;
 						breakPoint = counter + getNumberSlidesShowing();
 						counter += slider.settings.moveSlides <= getNumberSlidesShowing() ? slider.settings.moveSlides : getNumberSlidesShowing();
 					}
 				}
 			// if moveSlides is 0 (auto) divide children length by sides showing, then round up
 			}else{
-				bxpagerQty = Math.ceil(slider.children.length / getNumberSlidesShowing());
+				pagerQty = Math.ceil(slider.children.length / getNumberSlidesShowing());
 			}
-			return bxpagerQty;
+			return pagerQty;
 		}
 		
 		/**
@@ -463,7 +463,7 @@
 				// get the position of the first showing slide
 				var position = slider.children.eq(slider.active.index * getMoveBy()).position();
 				// check for last slide
-				if (slider.active.index == getbxpagerQty() - 1) slider.active.last = true;
+				if (slider.active.index == getpagerQty() - 1) slider.active.last = true;
 				// set the repective position
 				if (position != undefined){
 					if (slider.settings.mode == 'horizontal') setPositionProperty(-position.left, 'reset', 0);
@@ -541,51 +541,51 @@
 		}
 		
 		/**
-		 * Populates the bxpager with proper amount of pages
+		 * Populates the pager with proper amount of pages
 		 */
-		var populatebxpager = function(){
-			var bxpagerHtml = '';
-			bxpagerQty = getbxpagerQty();
-			// loop through each bxpager item
-			for(var i=0; i < bxpagerQty; i++){
+		var populatepager = function(){
+			var pagerHtml = '';
+			pagerQty = getpagerQty();
+			// loop through each pager item
+			for(var i=0; i < pagerQty; i++){
 				var linkContent = '';
-				// if a buildbxpager function is supplied, use it to get bxpager link value, else use index + 1
-				if(slider.settings.buildbxpager && $.isFunction(slider.settings.buildbxpager)){
-					linkContent = slider.settings.buildbxpager(i);
-					slider.bxpagerEl.addClass('bx-custom-bxpager');
+				// if a buildpager function is supplied, use it to get pager link value, else use index + 1
+				if(slider.settings.buildpager && $.isFunction(slider.settings.buildpager)){
+					linkContent = slider.settings.buildpager(i);
+					slider.pagerEl.addClass('bx-custom-pager');
 				}else{
 					linkContent = i + 1;
-					slider.bxpagerEl.addClass('bx-default-bxpager');
+					slider.pagerEl.addClass('bx-default-pager');
 				}
-				// var linkContent = slider.settings.buildbxpager && $.isFunction(slider.settings.buildbxpager) ? slider.settings.buildbxpager(i) : i + 1;
+				// var linkContent = slider.settings.buildpager && $.isFunction(slider.settings.buildpager) ? slider.settings.buildpager(i) : i + 1;
 				// add the markup to the string
-				bxpagerHtml += '<div class="bx-pager-item"><a href="" data-slide-index="' + i + '" class="bx-pager-link">' + linkContent + '</a></div>';
+				pagerHtml += '<div class="bx-pager-item"><a href="" data-slide-index="' + i + '" class="bx-pager-link">' + linkContent + '</a></div>';
 			};
-			// populate the bxpager element with bxpager links
-			slider.bxpagerEl.html(bxpagerHtml);
+			// populate the pager element with pager links
+			slider.pagerEl.html(pagerHtml);
 		}
 		
 		/**
-		 * Appends the bxpager to the controls element
+		 * Appends the pager to the controls element
 		 */
-		var appendbxpager = function(){
-			if(!slider.settings.bxpagerCustom){
-				// create the bxpager DOM element
-				slider.bxpagerEl = $('<div class="bx-pager" />');
-				// if a bxpager selector was supplied, populate it with the bxpager
-				if(slider.settings.bxpagerSelector){
-					$(slider.settings.bxpagerSelector).html(slider.bxpagerEl);
-				// if no bxpager selector was supplied, add it after the wrapper
+		var appendpager = function(){
+			if(!slider.settings.pagerCustom){
+				// create the pager DOM element
+				slider.pagerEl = $('<div class="bx-pager" />');
+				// if a pager selector was supplied, populate it with the pager
+				if(slider.settings.pagerSelector){
+					$(slider.settings.pagerSelector).html(slider.pagerEl);
+				// if no pager selector was supplied, add it after the wrapper
 				}else{
-					slider.controls.el.addClass('bx-has-bxpager').append(slider.bxpagerEl);
+					slider.controls.el.addClass('bx-has-pager').append(slider.pagerEl);
 				}
-				// populate the bxpager
-				populatebxpager();
+				// populate the pager
+				populatepager();
 			}else{
-				slider.bxpagerEl = $(slider.settings.bxpagerCustom);
+				slider.pagerEl = $(slider.settings.pagerCustom);
 			}
-			// assign the bxpager click binding
-			slider.bxpagerEl.delegate('a', 'click', clickbxpagerBind);
+			// assign the pager click binding
+			slider.pagerEl.delegate('a', 'click', clickpagerBind);
 		}
 		
 		/**
@@ -707,37 +707,37 @@
 		}
 
 		/**
-		 * Click bxpager binding
+		 * Click pager binding
 		 *
 		 * @param e (event) 
 		 *  - DOM event object
 		 */
-		var clickbxpagerBind = function(e){
+		var clickpagerBind = function(e){
 			// if auto show is running, stop it
 			if (slider.settings.auto) el.stopAuto();
-			var bxpagerLink = $(e.currentTarget);
-			var bxpagerIndex = parseInt(bxpagerLink.attr('data-slide-index'));
-			// if clicked bxpager link is not active, continue with the goToSlide call
-			if(bxpagerIndex != slider.active.index) el.goToSlide(bxpagerIndex);
+			var pagerLink = $(e.currentTarget);
+			var pagerIndex = parseInt(pagerLink.attr('data-slide-index'));
+			// if clicked pager link is not active, continue with the goToSlide call
+			if(pagerIndex != slider.active.index) el.goToSlide(pagerIndex);
 			e.preventDefault();
 		}
 		
 		/**
-		 * Updates the bxpager links with an active class
+		 * Updates the pager links with an active class
 		 *
 		 * @param slideIndex (int) 
 		 *  - index of slide to make active
 		 */
-		var updatebxpagerActive = function(slideIndex){
-			// if "short" bxpager type
-			if(slider.settings.bxpagerType == 'short'){
-				slider.bxpagerEl.html((slideIndex + 1) + slider.settings.bxpagerShortSeparator + slider.children.length);
+		var updatepagerActive = function(slideIndex){
+			// if "short" pager type
+			if(slider.settings.pagerType == 'short'){
+				slider.pagerEl.html((slideIndex + 1) + slider.settings.pagerShortSeparator + slider.children.length);
 				return;
 			}
-			// remove all bxpager active classes
-			slider.bxpagerEl.find('a').removeClass('active');
-			// apply the active class for all bxpagers
-			slider.bxpagerEl.each(function(i, el) { $(el).find('a').eq(slideIndex).addClass('active'); });
+			// remove all pager active classes
+			slider.pagerEl.find('a').removeClass('active');
+			// apply the active class for all pagers
+			slider.pagerEl.each(function(i, el) { $(el).find('a').eq(slideIndex).addClass('active'); });
 		}
 		
 		/**
@@ -752,8 +752,8 @@
 					// set the new position
 					position = slider.children.eq(0).position();
 				// carousel, last slide
-				}else if(slider.active.index == getbxpagerQty() - 1 && slider.carousel){
-					position = slider.children.eq((getbxpagerQty() - 1) * getMoveBy()).position();
+				}else if(slider.active.index == getpagerQty() - 1 && slider.carousel){
+					position = slider.children.eq((getpagerQty() - 1) * getMoveBy()).position();
 				// last slide
 				}else if(slider.active.index == slider.children.length - 1){
 					position = slider.children.eq(slider.children.length - 1).position();
@@ -795,7 +795,7 @@
 					slider.controls.prev.addClass('disabled');
 					slider.controls.next.removeClass('disabled');
 				// if last slide
-				}else if(slider.active.index == getbxpagerQty() - 1){
+				}else if(slider.active.index == getpagerQty() - 1){
 					slider.controls.next.addClass('disabled');
 					slider.controls.prev.removeClass('disabled');
 				// if any slide in the middle
@@ -804,7 +804,7 @@
 					slider.controls.next.removeClass('disabled');
 				}
 			// if slider has only one page, disable controls
-			}else if(getbxpagerQty() == 1){
+			}else if(getpagerQty() == 1){
 				slider.controls.prev.addClass('disabled');
 				slider.controls.next.addClass('disabled');
 			}
@@ -860,7 +860,7 @@
 			}
 			setPositionProperty(startPosition, 'reset', 0);
 			// do not allow controls in ticker mode
-			slider.settings.bxpager = false;
+			slider.settings.pager = false;
 			slider.settings.controls = false;
 			slider.settings.autoControls = false;
 			// if autoHover is requested
@@ -1066,9 +1066,9 @@
 			slider.oldIndex = slider.active.index;
 			// if slideIndex is less than zero, set active index to last child (this happens during infinite loop)
 			if(slideIndex < 0){
-				slider.active.index = getbxpagerQty() - 1;
+				slider.active.index = getpagerQty() - 1;
 			// if slideIndex is greater than children length, set active index to 0 (this happens during infinite loop)
-			}else if(slideIndex >= getbxpagerQty()){
+			}else if(slideIndex >= getpagerQty()){
 				slider.active.index = 0;
 			// set active index to requested slide
 			}else{
@@ -1082,9 +1082,9 @@
 				slider.settings.onSlidePrev(slider.children.eq(slider.active.index), slider.oldIndex, slider.active.index);
 			}
 			// check if last slide
-			slider.active.last = slider.active.index >= getbxpagerQty() - 1;
-			// update the bxpager with active class
-			if(slider.settings.bxpager) updatebxpagerActive(slider.active.index);
+			slider.active.last = slider.active.index >= getpagerQty() - 1;
+			// update the pager with active class
+			if(slider.settings.pager) updatepagerActive(slider.active.index);
 			// // check for direction control update
 			if(slider.settings.controls) updateDirectionControls();
 			// if slider is set to mode: "fade"
@@ -1124,7 +1124,7 @@
 					// horizontal carousel, going previous while on first slide (infiniteLoop mode)
 				}else if(slider.carousel && slider.active.last && direction == 'prev'){
 					// get the last child position
-					var eq = slider.settings.moveSlides == 1 ? slider.settings.maxSlides - getMoveBy() : ((getbxpagerQty() - 1) * getMoveBy()) - (slider.children.length - slider.settings.maxSlides);
+					var eq = slider.settings.moveSlides == 1 ? slider.settings.maxSlides - getMoveBy() : ((getpagerQty() - 1) * getMoveBy()) - (slider.children.length - slider.settings.maxSlides);
 					var lastChild = el.children('.bx-clone').eq(eq);
 					position = lastChild.position();
 				// if infinite loop and "Next" is clicked on the last slide
@@ -1149,8 +1149,8 @@
 		el.goToNextSlide = function(){
 			// if infiniteLoop is false and last page is showing, disregard call
 			if (!slider.settings.infiniteLoop && slider.active.last) return;
-			var bxpagerIndex = parseInt(slider.active.index) + 1;
-			el.goToSlide(bxpagerIndex, 'next');
+			var pagerIndex = parseInt(slider.active.index) + 1;
+			el.goToSlide(pagerIndex, 'next');
 		}
 		
 		/**
@@ -1159,8 +1159,8 @@
 		el.goToPrevSlide = function(){
 			// if infiniteLoop is false and last page is showing, disregard call
 			if (!slider.settings.infiniteLoop && slider.active.index == 0) return;
-			var bxpagerIndex = parseInt(slider.active.index) - 1;
-			el.goToSlide(bxpagerIndex, 'prev');
+			var pagerIndex = parseInt(slider.active.index) - 1;
+			el.goToSlide(pagerIndex, 'prev');
 		}
 		
 		/**
@@ -1222,13 +1222,13 @@
 			if(!slider.settings.ticker) setSlidePosition();
 			// if active.last was true before the screen resize, we want
 			// to keep it last no matter what screen size we end on
-			if (slider.active.last) slider.active.index = getbxpagerQty() - 1;
+			if (slider.active.last) slider.active.index = getpagerQty() - 1;
 			// if the active index (page) no longer exists due to the resize, simply set the index as last
-			if (slider.active.index >= getbxpagerQty()) slider.active.last = true;
-			// if a bxpager is being displayed and a custom bxpager is not being used, update it
-			if(slider.settings.bxpager && !slider.settings.bxpagerCustom){
-				populatebxpager();
-				updatebxpagerActive(slider.active.index);
+			if (slider.active.index >= getpagerQty()) slider.active.last = true;
+			// if a pager is being displayed and a custom pager is not being used, update it
+			if(slider.settings.pager && !slider.settings.pagerCustom){
+				populatepager();
+				updatepagerActive(slider.active.index);
 			}
 		}
 
@@ -1245,7 +1245,7 @@
 			if(slider.controls.el) slider.controls.el.remove();
 			if(slider.controls.next) slider.controls.next.remove();
 			if(slider.controls.prev) slider.controls.prev.remove();
-			if(slider.bxpagerEl) slider.bxpagerEl.remove();
+			if(slider.pagerEl) slider.pagerEl.remove();
 			$('.bx-caption', this).remove();
 			if(slider.controls.autoEl) slider.controls.autoEl.remove();
 			clearInterval(slider.interval);

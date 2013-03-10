@@ -83,8 +83,12 @@ function render_results(search_id) {
                             $(this).find(".bxslider").bxSlider({
                                 minSlides:1, 
                                 maxSlides:6, 
+                                moveSlides: 1,
                                 slideWidth: 240, 
-                                slideMargin: 10
+                                slideMargin: 10,
+                                pager: true,
+                                hideControlOnEnd: true
+
                             });
 
                         } else {
