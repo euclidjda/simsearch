@@ -297,16 +297,16 @@ GET_TARGET_SQL
                          _begin_date, _end_date)
 
     idxcaph_min = [10000,_target_cap*0.5].min.round()
-    idxcapl_max = (4.0*_target_cap).round()
+    idxcapl_max = (5.0*_target_cap).round()
 
 <<GET_MATCH_SQL
     SELECT A.*
     FROM ex_combined A
     WHERE A.idxind = #{_target_ind}
-    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
-    AND A.idxcaph >= #{idxcaph_min}
-    AND A.idxcapl <= #{idxcapl_max}
     AND A.idxnew = #{_target_new}
+    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
+    AND A.idxcapl <= #{idxcapl_max}
+    AND A.idxcaph >= #{idxcaph_min}
     AND A.cid != '#{_cid}' 
 GET_MATCH_SQL
   end
