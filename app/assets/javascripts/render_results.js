@@ -82,7 +82,7 @@ function render_results(search_id) {
 
                             $(this).find(".bxslider").bxSlider({
                                 minSlides:1, 
-                                maxSlides:6, 
+                                maxSlides:10, 
                                 moveSlides: 1,
                                 slideWidth: 240, 
                                 slideMargin: 10,
