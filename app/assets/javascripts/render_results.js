@@ -87,7 +87,8 @@ function render_results(search_id) {
                                 slideWidth: 240, 
                                 slideMargin: 10,
                                 pager: true,
-                                hideControlOnEnd: true
+                                hideControlOnEnd: true,
+                                infiniteLoop: false
 
                             });
 
