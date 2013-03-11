@@ -12,6 +12,7 @@
 //
 //= require jquery-1.8.2.min
 //= require jquery-ui-1.9.1.custom.min 
+//= require_tree ../../../vendor/assets/javascripts/.
 //= require bootstrap
 //= require_tree .
 
