@@ -130,7 +130,8 @@ function populate_panels(row_obj,data,i) {
     panel_name.html(data[i].name);
     panel_name.tooltip({
       placement: 'bottom',
-      title: data[i].name
+      title: 'Click to see details for ' + data[i].name,
+      container: "body"
     }); 
 
     var ticker = data[i].ticker;
