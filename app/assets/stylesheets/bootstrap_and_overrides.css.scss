@@ -14,6 +14,17 @@ based styling that applies to all style classes we use.
 Any media size specific and resize related rules should be here.
 */
 
+
+
+/*
+	Somehow there is a border/outline left when the focus leaves the <a> tag after
+	clicking a link that is in the nav bar. This is to prevent that ghost effect.
+*/
+.nav a {
+	outline: 0px none !important;
+}
+
+
 @media (min-width: 767px) {
 	#history-sidebar-nav {
 		display: none;
