@@ -92,7 +92,7 @@ function logout_action_handler() {
 ***
 */
 $(function() {
-    
+
     // Bind click event handler for login/logout
     $("#banner-logout-btn").click(function(){
         logout_action_handler();

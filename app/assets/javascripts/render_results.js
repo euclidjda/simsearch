@@ -25,7 +25,8 @@ function render_results(search_id) {
 
 	    $.getJSON('get_search_results',post_data,function(json_data) {
 
-		this_obj.empty();
+                this_obj.find(".spinner").remove();
+                this_obj.find(".bxslider").empty();
 
 		if (json_data != null) {
 		    
@@ -37,13 +38,24 @@ function render_results(search_id) {
 			
 		    } else if (json_data.length) {
 			
-			var max_panels = Math.min(3,json_data.length);
+			var max_panels = json_data.length;
 			
 			for (var i=0; i < max_panels; i++) {
 			    
 			    populate_panels(this_obj,json_data,i);
 			    
 			}
+
+                        this_obj.find(".bxslider").bxSlider({
+                            minSlides:1, 
+                            maxSlides:10, 
+                            moveSlides: 1,
+                            slideWidth: 240, 
+                            slideMargin: 10,
+                            pager: true,
+                            hideControlOnEnd: true,
+                            infiniteLoop: false
+			});
 			
 		    } else {
 			    
@@ -59,7 +71,6 @@ function render_results(search_id) {
 	})();
 
     });
-
 
     (function poll_for_summary() {
 
@@ -121,7 +132,13 @@ function populate_panels(row_obj,data,i) {
 
     // TODO: JDA Not sure the best way to truncate the string here
     // we really just want it to not flow over the panel
-    panel.find('.panel-name').html(data[i].name.substring(0,23));
+    var panel_name = panel.find('.panel-name');
+    panel_name.html(data[i].name);
+    panel_name.tooltip({
+      placement: 'bottom',
+      title: 'Click to see details for ' + data[i].name,
+      container: "body"
+    }); 
 
     var ticker = data[i].ticker;
     var exchg  = exchange_code_to_name(data[i].exchg,ticker);
@@ -167,7 +184,10 @@ function populate_panels(row_obj,data,i) {
     });
 
     // This packs  the panel into the DOM so it can be seenn
-    $(row_obj).append(panel);
+    var theList = $(row_obj).find("ul");
+    var listItem = document.createElement("li");
+    $(theList).append(listItem);
+    $(listItem).append(panel);
 
     // Add to detailed compare
     var detail_item = $('#carousel-item-right-template').clone();

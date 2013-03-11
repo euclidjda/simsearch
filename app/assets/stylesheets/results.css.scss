@@ -208,7 +208,7 @@ html>/**/body #cuatro {
 		position: relative;
 		top: 15px;
 		font-size: 8pt;
-		line-height: 12pt;
+		line-height: 26pt;
 		margin-left: 24px;
 		margin-top: 0px;
 		color: white;
@@ -311,4 +311,21 @@ html>/**/body #cuatro {
   -webkit-transition: all 500ms ease-in-out;
   -webkit-transform: translateX(0px);
 */
+}
+
+.bx-wrapper {
+	padding-top: 5px !important;
+	padding-right: 10px !important;
+	margin-left: -20px !important;
+}
+
+.dark-row {
+	.bx-viewport {
+		background-color: rgb(232, 232, 232) !important;
+		border-color: rgb(232, 232, 232) !important;
+	}
+}
+
+.bxslider {
+	margin-top: -8px;
 }
