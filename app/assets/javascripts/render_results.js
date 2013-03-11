@@ -126,7 +126,12 @@ function populate_panels(row_obj,data,i) {
 
     // TODO: JDA Not sure the best way to truncate the string here
     // we really just want it to not flow over the panel
-    panel.find('.panel-name').html(data[i].name.substring(0,23));
+    var panel_name = panel.find('.panel-name');
+    panel_name.html(data[i].name);
+    panel_name.tooltip({
+      placement: 'bottom',
+      title: data[i].name
+    }); 
 
     var ticker = data[i].ticker;
     var exchg  = exchange_code_to_name(data[i].exchg,ticker);
