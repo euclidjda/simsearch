@@ -191,6 +191,7 @@ html>/**/body #cuatro {
 
 		z-index: 10;
 
+		margin-top: -45px;
 		padding: 2px 0px 2px 6px; 
 		
 		height: 20px;
@@ -222,6 +223,8 @@ html>/**/body #cuatro {
     }
 
     .result-container {
+
+	height: 120px;
 
     	.no-results-found {
     		font-size: 16pt;
@@ -331,6 +334,7 @@ html>/**/body #cuatro {
 
 .bxslider {
 	margin-top: -8px;
+	background-color: blue;
 }
 
 .bx-pager {
