@@ -177,6 +177,8 @@ html>/**/body #cuatro {
 
 .result-row {
 
+    height: 170px;
+
     div.line {
 		-webkit-transform-origin: 0 100%;
 		transform-origin: 0 100%;
@@ -223,7 +225,7 @@ html>/**/body #cuatro {
 
     	.no-results-found {
     		font-size: 16pt;
-			padding-top: 60px;
+		padding-top: 60px;
     	}
 
 		.comparable {
@@ -271,8 +273,9 @@ html>/**/body #cuatro {
 		    	padding: 8px 8px 10px 0px;
 
 		    	.perf-image {
-					height: 30px;
-					vertical-align: top;
+			    float: left;
+			    height: 30px;
+			    vertical-align: top;
 		    	}
 
 				.perf-num {
@@ -328,4 +331,12 @@ html>/**/body #cuatro {
 
 .bxslider {
 	margin-top: -8px;
+}
+
+.bx-pager {
+    position: absolute;
+    top: 0px;
+    margin-top: 130px;
+    margin-left: 0px;
+    /* text-align: right !important; */
 }

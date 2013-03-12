@@ -1,9 +1,9 @@
 class UserMailer < ActionMailer::Base
-  default from: "Welcome.Mailer@Netarota.com"
+  default from: "web-mailer@euclidean.com"
 
   def welcome_email(user)
     @user = user
-    @url  = "http://Fundamentals.Euclidean.com"
+    @url  = "http://www.euclidean.com/fundamentals"
     mail( :to => @user.email, 
           :subject => "Welcome to Euclidean Fundamentals")
   end

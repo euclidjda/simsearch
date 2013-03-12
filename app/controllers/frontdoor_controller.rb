@@ -95,7 +95,7 @@ class FrontdoorController < ApplicationController
         # Get the target's factor fields
         @target_fields = target.to_hash()
 
-        @epochs = Epoch.default_epochs_array()
+        @epochs = Epoch::default_epochs_array()
 
         factors = [params[:factor1],params[:factor2],params[:factor3],
                    params[:factor4],params[:factor5],params[:factor6]]

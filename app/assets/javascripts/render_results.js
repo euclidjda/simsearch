@@ -48,11 +48,12 @@ function render_results(search_id) {
 
                         this_obj.find(".bxslider").bxSlider({
                             minSlides:1, 
-                            maxSlides:10, 
+                            maxSlides:3, 
                             moveSlides: 1,
                             slideWidth: 240, 
                             slideMargin: 10,
                             pager: true,
+			    //pagerSelector: this_obj.find(".row-pager"),
                             hideControlOnEnd: true,
                             infiniteLoop: false
 			});
