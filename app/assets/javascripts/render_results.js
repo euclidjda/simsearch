@@ -84,6 +84,7 @@ function render_results(search_id) {
             } else if (perf >= 0) {
                 $("#summary-image").attr("src",pos_big_icon);
                 $("#summary-num").html(sprintf("%.2f%%",perf));
+		$("#summary-num").css('color','black');
                 $("#summary-label").html("Outperformed");
             } else {
                 $("#summary-image").attr("src",neg_big_icon);

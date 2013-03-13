@@ -1,9 +1,8 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_sec, :target_fields, :form_refresh?, :validation_error, :epochs, :the_search
+  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search
 
-  @target_sec = nil
   @target_fields = nil
   @search_ids = nil
   @validation_error = nil
@@ -75,22 +74,34 @@ class FrontdoorController < ApplicationController
   def search
 
     # Get the parameter from the parameter array, this is coming from the browser.
+    _search_id    = params[:search_id]
     _search_entry = params[:ticker]
 
     # Default to nil, which pushes the "invalid query" response.
-    @target_sec = nil
     @target_fields = nil
 
-    if !_search_entry.blank?
+    if !_search_id.blank?
+      
+      # load the search
+      @the_search = Search::where( :id => _search_id ).first
+
+      target_cid = @the_search.cid()
+      target_sid = @the_search.sid()
+
+      @target_fields = SecuritySnapshot::get_target(target_cid,target_sid).to_hash()
+
+      @epochs = Epoch::default_epochs_array()
+
+    elsif !_search_entry.blank?
       # We currently on support one ticker and no filters.
       ticker_value = _search_entry.split(" ").first
 
       # The ticker can only match one result and that will be the first.
-      @target_sec = ExSecurity::find_by_ticker(ticker_value)
+      target_sec = ExSecurity::find_by_ticker(ticker_value)
 
-      if !@target_sec.nil?
+      if !target_sec.nil?
 
-        target = SecuritySnapshot::get_target(@target_sec.cid,@target_sec.sid)
+        target = SecuritySnapshot::get_target(target_sec.cid,target_sec.sid)
 
         # Get the target's factor fields
         @target_fields = target.to_hash()
@@ -108,8 +119,6 @@ class FrontdoorController < ApplicationController
                                      :weights   => SearchType::arr2key(weights) ,
                                      :gicslevel => params[:gicslevel]           ,
                                      :newflag   => params[:newflag]             )
-        
-        
 
         @the_search = Search::exec( :target      => target      ,
                                     :epochs      => @epochs     ,
@@ -315,10 +324,6 @@ class FrontdoorController < ApplicationController
   end
 
 private
-
-  def target_sec
-    @target_sec
-  end
 
   def target_fields
     @target_fields
