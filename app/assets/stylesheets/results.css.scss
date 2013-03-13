@@ -15,11 +15,7 @@
 
 .timeline-bar {
     background-image: url("line-grey.png");
-
-    /* width is set among overrides. */
-
-    height: 100%;
-    margin-left: 20px !important;
+    /* height / width is set among overrides. */
 }
 
 .dark-row {
@@ -177,8 +173,6 @@ html>/**/body #cuatro {
 
 .result-row {
 
-    height: 170px;
-
     div.line {
 		-webkit-transform-origin: 0 100%;
 		transform-origin: 0 100%;
@@ -191,7 +185,6 @@ html>/**/body #cuatro {
 
 		z-index: 10;
 
-		margin-top: -45px;
 		padding: 2px 0px 2px 6px; 
 		
 		height: 20px;
@@ -211,24 +204,24 @@ html>/**/body #cuatro {
 		position: relative;
 		top: 15px;
 		font-size: 8pt;
-		line-height: 26pt;
+		line-height: 16pt;
 		margin-left: 24px;
 		margin-top: 0px;
 		color: white;
 
 		.timeline-tick {
-		    margin-top: 14px;
+		    margin-top: 8px;
 		    margin-bottom: 12px;
 		}
     }
 
     .result-container {
 
-	height: 120px;
+		height: 120px;
 
     	.no-results-found {
     		font-size: 16pt;
-		padding-top: 60px;
+			padding-top: 60px;
     	}
 
 		.comparable {
@@ -320,9 +313,20 @@ html>/**/body #cuatro {
 }
 
 .bx-wrapper {
-	padding-top: 5px !important;
+	padding-top: 10px !important;
 	padding-right: 10px !important;
-	margin-left: -20px !important;
+
+	.bx-controls-direction a {
+		top: 155px;
+	}
+
+	/* Remove border box shadow for a better integrated look. */
+	.bx-viewport {
+		-moz-box-shadow: 0 0 0px #ccc;
+		-webkit-box-shadow: 0 0 0px #ccc;
+		box-shadow: 0 0 0px #ccc;
+	}
+
 }
 
 .dark-row {
@@ -333,8 +337,7 @@ html>/**/body #cuatro {
 }
 
 .bxslider {
-	margin-top: -8px;
-	background-color: blue;
+	margin: -14px 0 0 2px;
 }
 
 .bx-pager {
@@ -342,5 +345,25 @@ html>/**/body #cuatro {
     top: 0px;
     margin-top: 130px;
     margin-left: 0px;
-    /* text-align: right !important; */
+    padding-top: 16px !important;
+}
+
+/*
+Overriding these values here but we will remove them when we use our own images.
+*/
+.bx-wrapper .bx-prev {
+	background: url(images/controls.png) no-repeat 0 -32px !important;
+	opacity: 0.5;
+}
+
+.bx-wrapper .bx-next {
+	background: url(images/controls.png) no-repeat -43px -32px !important;
+	opacity: 0.5;
+}
+.bx-wrapper .bx-prev:hover {
+	opacity: 1;
+}
+
+.bx-wrapper .bx-next:hover {
+	opacity: 1;
 }

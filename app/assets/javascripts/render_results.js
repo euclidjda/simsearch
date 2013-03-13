@@ -48,7 +48,7 @@ function render_results(search_id) {
 
                         this_obj.find(".bxslider").bxSlider({
                             minSlides:1, 
-                            maxSlides:3, 
+                            maxSlides:4, 
                             moveSlides: 1,
                             slideWidth: 240, 
                             slideMargin: 10,

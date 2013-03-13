@@ -30,10 +30,6 @@ Any media size specific and resize related rules should be here.
 		display: none;
 	}
 
-	.dyna-roller {
-		height: $resultRowHeight;
-	}
-
 	.target-row {
 		height: $summaryRowHeight;
 
@@ -58,15 +54,27 @@ Any media size specific and resize related rules should be here.
 	    width: $leftbarWidth !important;
 	    min-width: $leftbarWidth;
 	    max-width: $leftbarWidth;
+	    height: 100%;
+	    margin-left: 10px !important;
 	}
 
-	.result-container {
-		padding-left: 120px;
-		height: 200px;
+	.result-row {
+		height: 170px;
+		.result-container {
+			padding-left: 120px;
+			height: 200px;
+		}	
+		.bx-wrapper {
+			margin-left: -30px !important;
+		}
+
+		.timeline-label {
+			margin-top: 16px;
+		}
 	}
 
 	.timeline-label {
-		margin: 5px 0px 0px -15px;
+		margin: 5px 0px 0px 5px;
 		background-image: url('bgr-year.png');
 	}
 
@@ -90,10 +98,6 @@ Any media size specific and resize related rules should be here.
 }
 
 @media (min-width:979px) {
-	.dyna-roller {
-		height: $resultRowHeight;
-	}
-
 	.target-row {
 		height: $summaryRowHeight;
 	}
@@ -125,16 +129,14 @@ Any media size specific and resize related rules should be here.
 		display: none;
 	}
 
-	.row-fluid [class*="timeline-bar"] {
-		margin-left: 0 !important;
-	}
-
 	.timeline-ticks {
 		display: none;
 	}
 
 	.timeline-bar {
+		margin-left: 0px;
 		width: 100% !important;
+		height: 30px;
 		max-width: 100%;
 		min-width: 100%;
 
@@ -147,14 +149,21 @@ Any media size specific and resize related rules should be here.
 		}
 	}
 
-	.result-container {
-		padding-left: 0px;
-		height: 240px;
-	}
+	.result-row {
+		height: 200px;
+		.result-container {
+			padding-left: 0px;
+			height: 240px;
+		}
 
-	.timeline-label {
-		margin: 3px 0px 0px 0px;
-		background-image: url('bgr-year-rotated.png');
+		.timeline-label {
+			margin: 3px 0px 0px 0px;
+			background-image: url('bgr-year-rotated.png');
+		}
+
+		.bx-wrapper {
+			margin-left: 0px;
+		}
 	}
 
 	.target-row {
