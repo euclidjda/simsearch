@@ -58,8 +58,15 @@ Any media size specific and resize related rules should be here.
 	    margin-left: 10px !important;
 	}
 
+	.summary-row {
+		#short-summary {
+			display: none;
+		}
+	}
+
 	.result-row {
 		height: 170px;
+
 		.result-container {
 			padding-left: 120px;
 			height: 200px;
@@ -112,7 +119,7 @@ Any media size specific and resize related rules should be here.
 			padding-left: 60px; 
 		}
 
-		#summary-image {
+		.summary-image {
 			height: 22px;
 		}
 	}
@@ -192,17 +199,41 @@ Any media size specific and resize related rules should be here.
 				width: 100%;
 				border-right: solid gray 2px;
 			}
-		}
-		
+		}	
 	}
 
 	.date-label {
 		display: none;
 	}
+	.summary-row {
+		#wide-summary {
+			display: none;
+		}
 
-	#summary-stats {
-		.sum-stat {
-			display: list-item;			
+		#short-summary {
+			font-size: 14pt;
+			text-align: center;
+		}
+
+		#summary-stats {
+			.sum-stat {
+				display: list-item;		
+				line-height: 24pt;	
+			}
+
+			.sum-val {
+				width: 100%;
+			}
+
+			#sum-middle-row {
+				border-top: solid lightgray 1px;
+				border-bottom: solid lightgray 1px;
+			}
+
+			#summary-count, #summary-best, #summary-worst {
+				float: right;
+				margin-right: 50px;
+			}
 		}
 	}
 }
@@ -223,7 +254,7 @@ Any media size specific and resize related rules should be here.
 			padding-left: 16px;
 		}
 
-		#summary-image {
+		.summary-image {
 			height: 18px;
 		}
 	}

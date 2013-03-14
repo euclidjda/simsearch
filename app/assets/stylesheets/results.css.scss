@@ -140,6 +140,9 @@ html>/**/body #cuatro {
 		}
 	}
 
+	#result-summary-short {
+	}
+
 	#summary-image {
 		/* height is from override file, don't set it here. */ 
 		position: relative;
@@ -152,6 +155,7 @@ html>/**/body #cuatro {
 	    font-size: 12pt;
 	    font-weight: bold;
 	    list-style: none;
+	    line-height: 20pt !important;
 
 	    .sum-stat {
 		    padding-left: 15px;
@@ -317,7 +321,7 @@ html>/**/body #cuatro {
 	padding-right: 10px !important;
 
 	.bx-controls-direction a {
-		top: 155px;
+		top: 50%;
 	}
 
 	/* Remove border box shadow for a better integrated look. */
@@ -352,13 +356,14 @@ html>/**/body #cuatro {
 Overriding these values here but we will remove them when we use our own images.
 */
 .bx-wrapper .bx-prev {
+	left: 0px;
 	background: url(images/controls.png) no-repeat 0 -32px !important;
-	opacity: 0.5;
+	opacity: 0.2;
 }
 
 .bx-wrapper .bx-next {
 	background: url(images/controls.png) no-repeat -43px -32px !important;
-	opacity: 0.5;
+	opacity: 0.2;
 }
 .bx-wrapper .bx-prev:hover {
 	opacity: 1;

@@ -43,28 +43,33 @@
   </div> <!-- target-row -->
 
   <div class="row-fluid summary-row light-row">
-    <div id ="result-summary">
-      <%= target_fields['ticker'] %>'s Historical Comparables
-      <i><span id="summary-label">Outperformed</span></i>
-      by an Average of:
-      <div id="median-perf">
-        <span><img id="summary-image" src=""></img></span>
-        <span id="summary-num"></span>
+    <div id = "result-summary">
+      <div id="short-summary">
+        Comparable Average  
+        <div id="median-perf">
+          <span><img class="summary-image" src=""></img></span>
+          <span class="summary-num"></span>
+        </div>
       </div>
-  
+      <div id="wide-summary">
+        <%= target_fields['ticker'] %>'s Historical Comparables
+        <i><span class="summary-label">Outperformed</span></i>
+        by an Average of:
+        <div id="median-perf">
+          <span><img class="summary-image" src=""></img></span>
+          <span class="summary-num"></span>
+        </div>
+      </div>
       <div>
         <ul id="summary-stats">
           <li class="sum-stat">
-            <div class="sum-val"> Num Outperformed: 
-	      <span id="summary-count"></span></div>
+            <div class="sum-val"> Num Outperformed: <span id="summary-count"></span></div>
           </li>
           <li class="sum-stat">
-            <div class="sum-val"> Worst Performing: 
-	      <span id="summary-worst" class="sum-val"></span></div>
+            <div class="sum-val" id="sum-middle-row"> Worst Performing: <span id="summary-worst"></span></div>
           </li>
           <li class="sum-stat">
-            <div class="sum-val"> Best Performing: 
-	      <span id="summary-best" class="sum-val"></span></div>
+            <div class="sum-val"> Best Performing: <span id="summary-best"></span></div>
           </li>
         </ul>
       </div>
