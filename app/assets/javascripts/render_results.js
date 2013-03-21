@@ -7,7 +7,7 @@ function render_results(search_id) {
 
     $('.result-container').each(function( index ) {
 
-	start_spinner($(this).attr('id'));
+    	start_spinner($(this).attr('id'));
 
         var fromdate = $(this).attr('fromdate');
         var thrudate = $(this).attr('thrudate');
@@ -17,34 +17,31 @@ function render_results(search_id) {
         post_data['fromdate'] = fromdate;
         post_data['thrudate'] = thrudate;
 
-	var this_obj = $(this);
+    	var this_obj = $(this);
 
-	(function poll_for_result() {
+        (function poll_for_result() {
 
-	    //alert("fromdate = "+fromdate);
-
-	    $.getJSON('get_search_results',post_data,function(json_data) {
+    	    $.getJSON('get_search_results',post_data,function(json_data) {
 
                 this_obj.find(".spinner").remove();
                 this_obj.find(".bxslider").empty();
+                var search_status = this_obj.find(".search-status");
 
-		if (json_data != null) {
-		    
-		    if (json_data.comment != null) {
-			
-			start_spinner(this_obj.attr('id'));
-			this_obj.append(json_data.comment);
-			setTimeout(poll_for_result,1000);
-			
-		    } else if (json_data.length) {
-			
-			var max_panels = json_data.length;
-			
-			for (var i=0; i < max_panels; i++) {
-			    
-			    populate_panels(this_obj,json_data,i);
-			    
-			}
+                if (json_data != null) {
+                    
+                    if (json_data.comment != null) {
+                        start_spinner(this_obj.attr('id'));
+                        $(search_status).css("display","inline-block");
+                        $(search_status).text(json_data.comment);
+                        setTimeout(poll_for_result,1000);
+
+                    } else if (json_data.length) {
+                        $(search_status).css("display", "none");
+                        var max_panels = json_data.length;
+
+                        for (var i=0; i < max_panels; i++) {
+                            populate_panels(this_obj,json_data,i);
+                        }
 
                         this_obj.find(".bxslider").bxSlider({
                             minSlides:1, 
@@ -53,24 +50,18 @@ function render_results(search_id) {
                             slideWidth: 240, 
                             slideMargin: 10,
                             pager: true,
-			    //pagerSelector: this_obj.find(".row-pager"),
                             hideControlOnEnd: true,
                             infiniteLoop: false
-			});
-			
-		    } else {
-			    
-			this_obj.html("<div class='no-results-found'>"+
-				      "No comparables found for this period.</div>");
-			
-		    }
-		    
-		}
-		
-	    });
+                        });
+                    } else {
 
-	})();
+                        this_obj.html("<div class='no-results-found'>"+
+                           "No comparables found for this period.</div>");
+                    }
+                }
+            });
 
+        })();
     });
 
     (function poll_for_summary() {
