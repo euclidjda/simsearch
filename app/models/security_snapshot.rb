@@ -293,24 +293,33 @@ GET_TARGET_SQL
 GET_TARGET_SQL
   end
 
-  def self.get_match_sql(_cid, _target_ind, _target_new, _target_cap,
-                         _begin_date, _end_date)
+  def get_match_sql(_search_type,_fromdate,_thrudate)
 
-    idxcaph_min = [10000,_target_cap*0.5].min.round()
-    idxcapl_max = (5.0*_target_cap).round()
+    gics_level  = _search_type.gicslevel
+    gics_idx    = "idx#{gics_level}"
+    gics_code   = self.get_field(gics_idx)
+    gics_clause = "A.#{gics_idx} = '#{gics_code}'"
+    target_new  = self.get_field('idxnew')
+
+    logger.debug "*********** gics_level=#{gics_level} gics_idx=#{gics_idx} gics_code=#{gics_code} gics_clause=#{gics_clause}"
+
+    target_cap =
+      self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
+
+    idxcaph_min = [10000,target_cap*0.5].min.round()
+    idxcapl_max = (5.0*target_cap).round()
 
 <<GET_MATCH_SQL
     SELECT A.*
     FROM ex_combined A
-    WHERE A.idxind = #{_target_ind}
-    AND A.idxnew = #{_target_new}
-    AND A.pricedate BETWEEN '#{_begin_date}' AND '#{_end_date}'
+    WHERE #{gics_clause}
+    AND A.idxnew = #{target_new}
+    AND A.pricedate BETWEEN '#{_fromdate}' AND '#{_thrudate}'
     AND A.idxcapl <= #{idxcapl_max}
     AND A.idxcaph >= #{idxcaph_min}
-    AND A.cid != '#{_cid}' 
+    AND A.cid != '#{self.cid}' 
 GET_MATCH_SQL
   end
-
 
   def self.get_match_sql_SLOWLY(_cid, _target_ind, _target_new, _target_cap,
                                 _begin_date, _end_date)

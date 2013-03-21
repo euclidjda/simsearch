@@ -7,7 +7,11 @@ class CreateSearches < ActiveRecord::Migration
       t.date :fromdate
       t.date :thrudate
       t.integer :type_id
-      t.integer :completed
+      t.integer :count
+      t.integer :wins
+      t.float :mean
+      t.float :max
+      t.float :min
 
       t.timestamps
     end

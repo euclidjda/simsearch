@@ -77,7 +77,7 @@ function render_results(search_id) {
 
         $.getJSON('get_search_summary?search_id='+search_id,function(data) {
 
-        var perf  = data.summary;
+        var perf  = data.mean;
 
         if (perf == null) {
             $(".summary-num").html("N/A");
@@ -94,19 +94,19 @@ function render_results(search_id) {
         }
 
 	    $("#summary-worst")
-		.html(EGUI.fmtAsNumber(data.worst,{fmtstr:"%.2f%%"}));
+		.html(EGUI.fmtAsNumber(data.min,{fmtstr:"%.2f%%"}));
 
 	    $("#summary-best")
-		.html(EGUI.fmtAsNumber(data.best,{fmtstr:"%.2f%%"}));
+		.html(EGUI.fmtAsNumber(data.max,{fmtstr:"%.2f%%"}));
 
-	    if( data.worst < 0) $("#summary-worst").css('color','red');
-	    if( data.best  < 0) $("#summary-best").css('color','red');
+	    if( data.min < 0) $("#summary-worst").css('color','red');
+	    if( data.max  < 0) $("#summary-best").css('color','red');
 
 	    
-	    if ((data.tot_count != null) && (data.win_count != null)) {
+	    if ((data.count != null) && (data.wins != null)) {
 		
 		$('#summary-count')
-		    .html(data.win_count + ' of ' + data.tot_count);
+		    .html(data.wins + ' of ' + data.count);
 
 	    }
 

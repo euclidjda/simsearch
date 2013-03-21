@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307230909) do
+ActiveRecord::Schema.define(:version => 20130321030534) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -42,7 +42,10 @@ ActiveRecord::Schema.define(:version => 20130307230909) do
   create_table "ex_combined", :id => false, :force => true do |t|
     t.string  "cid",           :limit => 6, :null => false
     t.string  "sid",           :limit => 3, :null => false
-    t.integer "idxind",                     :null => false
+    t.string  "idxsec",        :limit => 2, :null => false
+    t.string  "idxgrp",        :limit => 4, :null => false
+    t.string  "idxind",        :limit => 6, :null => false
+    t.string  "idxsub",        :limit => 8, :null => false
     t.integer "idxnew",                     :null => false
     t.integer "idxcapl",                    :null => false
     t.integer "idxcaph",                    :null => false
@@ -81,7 +84,10 @@ ActiveRecord::Schema.define(:version => 20130307230909) do
   end
 
   add_index "ex_combined", ["cid", "sid", "fromdate", "thrudate"], :name => "ex_combined_ix01"
-  add_index "ex_combined", ["idxind", "idxnew", "idxcapl", "idxcaph", "pricedate"], :name => "ex_combined_ix02"
+  add_index "ex_combined", ["idxgrp", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix03"
+  add_index "ex_combined", ["idxind", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix04"
+  add_index "ex_combined", ["idxsec", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix02"
+  add_index "ex_combined", ["idxsub", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix05"
 
   create_table "ex_dists", :id => false, :force => true do |t|
     t.integer "ex_centers_id",              :null => false
@@ -111,7 +117,10 @@ ActiveRecord::Schema.define(:version => 20130307230909) do
     t.date    "fromdate",                   :null => false
     t.date    "thrudate",                   :null => false
     t.date    "datadate",                   :null => false
-    t.integer "idxind",                     :null => false
+    t.string  "idxsec",        :limit => 2, :null => false
+    t.string  "idxgrp",        :limit => 4, :null => false
+    t.string  "idxind",        :limit => 6, :null => false
+    t.string  "idxsub",        :limit => 8, :null => false
     t.integer "idxnew",                     :null => false
     t.integer "idxcapl",                    :null => false
     t.integer "idxcaph",                    :null => false
@@ -137,7 +146,10 @@ ActiveRecord::Schema.define(:version => 20130307230909) do
   end
 
   add_index "ex_factdata", ["cid", "sid", "fromdate", "thrudate"], :name => "ex_factdata_ix01"
-  add_index "ex_factdata", ["idxind", "idxnew", "idxcapl", "idxcaph"], :name => "ex_factdata_ix02"
+  add_index "ex_factdata", ["idxgrp", "idxnew", "idxcapl", "idxcaph"], :name => "ex_factdata_ix03"
+  add_index "ex_factdata", ["idxind", "idxnew", "idxcapl", "idxcaph"], :name => "ex_factdata_ix04"
+  add_index "ex_factdata", ["idxsec", "idxnew", "idxcapl", "idxcaph"], :name => "ex_factdata_ix02"
+  add_index "ex_factdata", ["idxsub", "idxnew", "idxcapl", "idxcaph"], :name => "ex_factdata_ix05"
 
   create_table "ex_fundmts", :id => false, :force => true do |t|
     t.string "cid",      :limit => 6, :null => false
@@ -292,7 +304,11 @@ ActiveRecord::Schema.define(:version => 20130307230909) do
     t.date     "fromdate"
     t.date     "thrudate"
     t.integer  "type_id"
-    t.integer  "completed"
+    t.integer  "count"
+    t.integer  "wins"
+    t.float    "mean"
+    t.float    "max"
+    t.float    "min"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

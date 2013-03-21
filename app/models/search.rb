@@ -1,5 +1,5 @@
 class Search < ActiveRecord::Base
-  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id
+  attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id, :mean, :count, :wins, :min, :max
 
   def self.exec(_args)
 
@@ -62,26 +62,17 @@ class Search < ActiveRecord::Base
 
   def create_search_details(_epoch)
 
-    puts "********************* STARTING SEARCH DETAIL"
+    puts "********************* STARTING SEARCH DETAIL FOR #{_epoch.fromdate}"
 
     limit = 10
 
-    target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
-
-    # TODO: all of the following needs validation
-    target_ind = target.get_field('idxind')
-    target_new = target.get_field('idxnew')
-
-    price = target.get_field('price')  ? Float(target.get_field('price'))      : nil
-    csho  = target.get_field('csho')   ? Float(target.get_field('csho'))       : nil
-    eps   = target.get_field('epspxq') ? Float(target.get_field('epspxq_ttm')) : nil
-
-    target_cap =
-      target.get_field('mrkcap') ? Float(target.get_field('mrkcap')).round() : nil
-
-    status = SearchStatus.where( :search_id => self.id            ,
+    status = SearchStatus.where( :search_id => self.id         ,
                                  :fromdate  => _epoch.fromdate ,
                                  :thrudate  => _epoch.thrudate ).first
+
+    target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
+
+    search_type = SearchType.where( :id => self.type_id ).first
 
     fromdate = nil
     thrudate = _epoch.fromdate-1
@@ -112,16 +103,11 @@ class Search < ActiveRecord::Base
 
       thrudate = _epoch.thrudate if ((thrudate <=> _epoch.thrudate) == 1)
 
-      puts "***** fromdate=#{fromdate} thrudate=#{thrudate}"
+      logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
-      sqlstr = SecuritySnapshot::get_match_sql(target.cid ,
-                                               target_ind ,
-                                               target_new ,
-                                               target_cap ,
-                                               fromdate   ,
-                                               thrudate   )
+      sqlstr = target.get_match_sql(search_type, fromdate, thrudate)
 
-      puts sqlstr, "\n";
+      logger.debug sqlstr
 
       results = client.query(sqlstr, :stream=>true, :cache_rows=>false)
 
@@ -175,6 +161,8 @@ class Search < ActiveRecord::Base
     status.comment  = "Done."
     status.complete = true
     status.save()
+
+    calculate_summary()
 
     puts "*********** SEARCH IS DONE"
 
@@ -236,6 +224,52 @@ class Search < ActiveRecord::Base
 
     # make result size no greater than limit
     return comps_array
+
+  end
+
+  def calculate_summary
+
+   search_details = SearchDetail.where( :search_id => self.id )
+
+    perfs = Array::new()
+    weight_sum = 0.0
+    values_sum = 0.0
+
+    win_count = 0
+    tot_count = 0
+
+    best    = nil
+    worst   = nil
+
+    search_details.each { |detail|
+
+      next unless detail.dist > 0
+
+      weight = Math.exp( -detail.dist )
+
+      outperformance = detail.stk_rtn - detail.mrk_rtn
+
+      tot_count += 1
+      win_count += 1 if outperformance >= 0
+
+      values_sum += weight * outperformance
+      weight_sum += weight
+
+      best  = outperformance if (best.nil?  || outperformance >= best)
+      worst = outperformance if (worst.nil? || outperformance <= worst)
+    }
+
+    self.with_lock do
+
+      self.mean  = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+      self.count = tot_count
+      self.wins  = win_count
+      self.min   = worst
+      self.max   = best
+      self.save
+
+    end
+
 
   end
 
