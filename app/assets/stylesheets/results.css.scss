@@ -223,10 +223,16 @@ html>/**/body #cuatro {
 
 		height: 120px;
 
-    	.no-results-found {
-    		font-size: 16pt;
+		.search-status {
+			display: inline-block;
 			padding-top: 60px;
-    	}
+			font-size: 14pt;
+		}
+
+		.no-results-found {
+			font-size: 16pt;
+			padding-top: 60px;
+		}
 
 		.comparable {
 		    background-color: $panelColor;
