@@ -79,6 +79,9 @@ class Search < ActiveRecord::Base
 
     search_type = SearchType.where( :id => self.type_id ).first
 
+    factor_keys = search_type.factor_keys()
+    weights     = search_type.weight_array()
+
     fromdate = nil
     thrudate = _epoch.fromdate-1
 
@@ -124,7 +127,7 @@ class Search < ActiveRecord::Base
 
         match = SecuritySnapshot::new( row )
 
-        dist = target.distance( match )
+        dist = target.distance( match, factor_keys, weights )
 
         next if (dist < 0)
 

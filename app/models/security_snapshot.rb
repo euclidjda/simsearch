@@ -1,12 +1,10 @@
 class SecuritySnapshot < Tableless
 
-  @@factor_weights = [ 31.0, 6.5, 3.9, 1.8, 4.54, 5.26]
-
-  attr_reader :cid, :sid, :pricedate, :fields, :factor_keys
+  attr_reader :cid, :sid, :pricedate, :fields, :factor_keys, :factors
 
   def initialize( _fields )
 
-    @factor_keys    = [:ey,:roc,:grwth,:epscon,:ae,:mom]
+    @factors = Hash::new()
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
@@ -65,7 +63,7 @@ class SecuritySnapshot < Tableless
 
   end
 
-  def self.each_snapshots_on(_pricedate)
+  def self.each_snapshot_on(_pricedate)
 
     sqlstr = SecuritySnapshot::get_snapshots_on_sql(_pricedate)
 
@@ -124,10 +122,10 @@ class SecuritySnapshot < Tableless
 
   end
 
-  def self.distance(_obj0,_obj1)
+  def self.distance(_obj0,_obj1,_factor_keys,_user_weights)
 
-    vec0 = (_obj0.class == SecuritySnapshot) ? _obj0.factor_array : _obj0
-    vec1 = (_obj1.class == SecuritySnapshot) ? _obj1.factor_array : _obj1
+    vec0 = _obj0.factor_array(_factor_keys)
+    vec1 = _obj1.factor_array(_factor_keys)
 
     dist = 0
     dims = 0
@@ -135,7 +133,7 @@ class SecuritySnapshot < Tableless
     vec0.each_with_index do |val0,index|
 
       val1 = vec1[index]
-      wght = @@factor_weights[index]
+      wght = Factors::intrinsic_weight(_factor_keys[index])
 
       next if val0.nil?
 
@@ -153,9 +151,9 @@ class SecuritySnapshot < Tableless
 
   end
   
-  def distance(_obj) 
+  def distance(_obj,_factor_keys,_user_weights) 
     
-    SecuritySnapshot::distance(self,_obj)
+    SecuritySnapshot::distance(self,_obj,_factor_keys,_user_weights)
     
   end
 
@@ -196,7 +194,7 @@ class SecuritySnapshot < Tableless
 
   end
 
-  def to_hash
+  def to_hash( args )
 
     result = Hash::new()
 
@@ -204,7 +202,9 @@ class SecuritySnapshot < Tableless
       result[key] = get_field(key)
     end
     
-    @factor_keys.each do |key|
+    _factor_keys = args[:factor_keys].nil? ? Factors::defaults : args[:factor_keys]
+
+    _factor_keys.each do |key|
       result[key] = get_factor(key)
     end
 
@@ -212,15 +212,15 @@ class SecuritySnapshot < Tableless
 
   end
 
-  def factor_array
+  def factor_array(_factor_keys)
 
-    @factor_keys.map { |key| get_factor(key) }
+    _factor_keys.map { |key| get_factor(key) }
 
   end
 
   def get_factor(_factor_key)
 
-    # return @factors[_factor_key] if (@factors.has_key?(_factor_key))
+    return @factors[_factor_key] if (@factors.has_key?(_factor_key))
 
     factor_value = nil
 
@@ -287,7 +287,7 @@ class SecuritySnapshot < Tableless
     #  factor_value = -1.0 if factor_value < -1.0
     # end
 
-    # @factors[_factor_key] = factor_value
+    @factors[_factor_key] = factor_value
 
     return factor_value
 

@@ -103,22 +103,24 @@ class FrontdoorController < ApplicationController
 
         target = SecuritySnapshot::get_target(target_sec.cid,target_sec.sid)
 
-        # Get the target's factor fields
-        @target_fields = target.to_hash()
-
-        @epochs = Epoch::default_epochs_array()
-
         factors = [params[:factor1],params[:factor2],params[:factor3],
                    params[:factor4],params[:factor5],params[:factor6]]
 
         weights = [params[:weight1],params[:weight2],params[:weight3],
                    params[:weight4],params[:weight5],params[:weight6]]
 
+        factor_keys = factors.map { |f| f.to_sym }
+
+        # Get the target's factor fields
+        @target_fields = target.to_hash( :factor_keys => factor_keys )
+
+        @epochs = Epoch::default_epochs_array()
+
         search_type =
-          SearchType::find_or_create(:factors   => SearchType::arr2key(factors) ,
-                                     :weights   => SearchType::arr2key(weights) ,
-                                     :gicslevel => params[:gicslevel]           ,
-                                     :newflag   => params[:newflag]             )
+          SearchType::find_or_create(:factors   => factor_keys        ,
+                                     :weights   => weights            ,
+                                     :gicslevel => params[:gicslevel] ,
+                                     :newflag   => params[:newflag]   )
 
         @the_search = Search::exec( :target      => target      ,
                                     :epochs      => @epochs     ,
@@ -181,11 +183,15 @@ class FrontdoorController < ApplicationController
 
     if !_search_id.blank? && !_fromdate.blank? && !_thrudate.blank?
 
+      search = Search::where( :id => _search_id ).first
+
       status = SearchStatus::where( :search_id => _search_id ,
                                     :fromdate  => _fromdate  ,
                                     :thrudate  => _thrudate  ).first
 
       if !status.nil? && status.complete?
+
+        search_type = SearchType.where( :id => search.type_id ).first;
 
         details = SearchDetail
           .where( "search_id = #{_search_id} AND "+
@@ -195,7 +201,7 @@ class FrontdoorController < ApplicationController
 
           snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
 
-          comp_record = snapshot.to_hash()
+          comp_record = snapshot.to_hash( :factor_keys => search_type.factor_keys )
 
           comp_record[:distance] = d.dist
           comp_record[:stk_rtn]  = d.stk_rtn

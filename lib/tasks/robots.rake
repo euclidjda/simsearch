@@ -10,7 +10,7 @@ namespace :robots do
     
     snapshots = Array::new()
 
-    SecuritySnapshot.each_snapshots_on( date ) { |s|
+    SecuritySnapshot.each_snapshot_on( date ) { |s|
 
       count += 1
       snapshots.push(s)
@@ -25,23 +25,23 @@ namespace :robots do
 
     }
     
-    factors = [:ey,:roc,:grwth,:epscon,:ae,:mom]
-    weights = [5,5,5,5,5,5]
-    epochs = Epoch::default_epochs_array()
-    gicslevel = 'sec'
+    factor_keys = Factors::defaults
+    weights     = Factors::default_weights
+    epochs      = Epoch::default_epochs_array()
+    gicslevel   = 'sec'
 
+    search_type =
+      SearchType::find_or_create(:factors   => factor_keys ,
+                                 :weights   => weights     ,
+                                 :gicslevel => gicslevel   ,
+                                 :newflag   => 1           )
+ 
     snapshots.each { |target|
 
       name   = target.get_field('name')
       ticker = target.get_field('ticket')
-      print "Searching on #{name} #{ticker} ..."
-
-      search_type =
-      SearchType::find_or_create(:factors   => SearchType::arr2key(factors) ,
-                                 :weights   => SearchType::arr2key(weights) ,
-                                 :gicslevel => gicslevel                    ,
-                                 :newflag   => 1                            )
-      
+      print "Executing search for on #{name} #{ticker} ..."
+     
       Search::exec( :target      => target      ,
                     :epochs      => epochs      ,
                     :search_type => search_type ,

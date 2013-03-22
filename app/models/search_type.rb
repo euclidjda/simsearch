@@ -5,17 +5,20 @@ class SearchType < ActiveRecord::Base
   # - or -
   # Create new object with the given attributes
   #
-  def self.find_or_create(attributes)
-    SearchType.where(attributes).first || SearchType.create(attributes)
+  def self.find_or_create(attr)
+    # These need to be serialized before they are compared and set
+    attr[:factors] = attr[:factors].join(',')
+    attr[:weights] = attr[:weights].join(',')
+
+    SearchType.where(attr).first || SearchType.create(attr)
   end
 
-  # Serialize and un-serialize arrays for storing as keys
-  def self.arr2key(arr) 
-    arr.join(',')
+  def factor_keys
+    self.factors.split(",").map { |a| a.to_sym }
   end
 
-  def self.key2arr(key)
-    key.split(',')
+  def weight_array
+    self.weights.split(",").map { |a| a.to_f }
   end
 
 end
