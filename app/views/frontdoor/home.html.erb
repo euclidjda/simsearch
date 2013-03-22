@@ -16,7 +16,7 @@
 
             <span class = "search-field-and-button">
 
-	      <%= text_field_tag(:ticker, nil, 
+	      <%= text_field_tag(:ticker, params[:ticker], 
 		  :placeholder => "Enter a stock symbol, e.g. IBM",
               :id => "ticker",
 	      :class=>"ticker-entry")

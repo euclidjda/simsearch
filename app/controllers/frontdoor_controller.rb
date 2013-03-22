@@ -123,7 +123,8 @@ class FrontdoorController < ApplicationController
         @the_search = Search::exec( :target      => target      ,
                                     :epochs      => @epochs     ,
                                     :search_type => search_type ,
-                                    :limit       => 10          )
+                                    :limit       => 10          ,
+                                    :async       => true        )
 
       end
 

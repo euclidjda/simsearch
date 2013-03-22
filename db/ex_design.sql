@@ -1,5 +1,6 @@
 -- ex_securities
 
+DROP TABLE IF EXISTS ex_securities;
 CREATE TABLE ex_securities (
 
      cid VARCHAR(6) NOT NULL, -- company id
@@ -31,6 +32,7 @@ CREATE TABLE ex_securities (
 -- This table holds price data
 --
 
+DROP TABLE IF EXISTS ex_prices;
 CREATE TABLE ex_prices (
 
        cid VARCHAR(6) NOT NULL, -- company id
@@ -52,30 +54,13 @@ CREATE TABLE ex_prices (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- ex_econ
---
--- This table holds economic data
---
-
-CREATE TABLE ex_econ (
-
-       datadate DATE NOT NULL, -- weekly or month, tbd
-
-       cape      FLOAT,
-       tbill1mo  FLOAT,
-       tbill6mo  FLOAT,
-       note10yr  FLOAT,
-
-       INDEX ex_econ_ix01 (datadate)
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 -- ex_factdata
 --
 -- This table holds the data used to calculate factors and
 -- search for similar investments efficiently
 --
 
+DROP TABLE IF EXISTS ex_factdata;
 CREATE TABLE ex_factdata (
        
        cid VARCHAR(6) NOT NULL, -- company id
@@ -88,13 +73,15 @@ CREATE TABLE ex_factdata (
        --
        -- search index data
        --
-       idxind  INT NOT NULL,  -- industry indexing
-       idxdiv  INT NOT NULL,  -- pays dividend as of datadate
+       
+       idxsec  CHAR(2) NOT NULL,  -- industry indexing
+       idxgrp  CHAR(4) NOT NULL,  -- industry indexing
+       idxind  CHAR(6) NOT NULL,  -- industry indexing
+       idxsub  CHAR(8) NOT NULL,  -- industry indexing
+
        idxnew  INT NOT NULL,  -- is new issue? (within 9 mo of IPO)
        idxcapl INT NOT NULL,  -- lo market cap (size) in range fromdate -> thrudate
        idxcaph INT NOT NULL,  -- hi market cap (size) in range fromdate -> thrudate
-       idxvall INT NOT NULL,  -- ho value (e.g., P/E) in range fromdate -> thrudate
-       idxvalh INT NOT NULL,  -- hi value (e.g., P/E) in range fromdate -> thrudate
        
        --
        -- the fields below are used to calculate factors "on the fly"
@@ -112,16 +99,19 @@ CREATE TABLE ex_factdata (
        seqq_mrq      FLOAT, -- Shareholders' Equity
        cheq_mrq	     FLOAT, -- Cash & Cash Equiv
        atq_mrq       FLOAT, -- Total Assets
-       dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
+       dlttq_mrq     FLOAT, -- Long-Term Debt
        pstkq_mrq     FLOAT, -- Prefered Stock
        mibnq_mrq     FLOAT, -- Non-controlling interests non-redeamable - balance
        mibq_mrq	     FLOAT, -- Non-controlling interests redeamable - balance sheet
        fcfq_mrq	     FLOAT, -- Free Cash Flow TTM
        fcfq_4yISm    FLOAT, -- Free Cash Flow 4 year median
- 
+       
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
-       INDEX ex_factdata_ix02 (idxind,idxdiv,idxnew,idxcapl,idxcaph,idxvall,idxvalh)
+       INDEX ex_factdata_ix02 (idxsec,idxnew,idxcapl,idxcaph),
+       INDEX ex_factdata_ix03 (idxgrp,idxnew,idxcapl,idxcaph),
+       INDEX ex_factdata_ix04 (idxind,idxnew,idxcapl,idxcaph),
+       INDEX ex_factdata_ix05 (idxsub,idxnew,idxcapl,idxcaph)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -130,6 +120,7 @@ CREATE TABLE ex_factdata (
 -- This table holds point in time fundemental data for all companies
 --
 
+DROP TABLE IF EXISTS ex_fundmts;
 CREATE TABLE ex_fundmts (
 
        cid VARCHAR(6) NOT NULL, -- company id (gvkey in compustat)
@@ -212,42 +203,51 @@ CREATE TABLE ex_fundmts (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- MODEL QUERY FOR FETCHING A TARGET
+DROP TABLE IF EXISTS ex_centers;
+CREATE TABLE ex_centers (
 
--- SET @cid = '001690'; -- APPLE COMPUTER
--- SET @sid = '01';
--- SET @datadate = '2012-11-23'; -- MOST RECENT PRICING DATE
+     ex_centers_id INT NOT NULL,
 
--- SELECT A.*,B.*
--- FROM ex_prices A, ex_factdata B
--- WHERE A.cid = @cid AND A.sid = @sid
--- AND B.cid = @cid AND B.sid = @sid
--- AND A.datadate = @datadate
--- AND A.datadate BETWEEN B.fromdate AND B.thrudate;
--- 
--- SET @target_ind = '4520'; 
--- SET @target_div = 0;
--- SET @target_new = 0;
--- SET @target_cap = 1000;
--- SET @target_val = 14;
--- 
--- SELECT *
--- FROM ex_prices A,
---    (SELECT *
---     FROM ex_factdata
---     WHERE idxind = @target_ind
---     AND idxdiv   = @target_div
---     AND idxnew   = @target_new
---     AND idxcapl >= 0.5*@target_cap
---     AND idxcaph <= 5*@target_cap
---     AND idxvall <= @target_val
---     AND idxvalh >= @target_val) B,
---     securities C
--- WHERE A.cid = B.cid
--- AND A.sid = B.sid
--- AND A.cid = C.cid
--- AND A.sid = C.sid
--- AND A.price IS NOT NULL
--- AND A.csho IS NOT NULL
--- AND A.datadate BETWEEN B.fromdate AND B.thrudate
+     cid        VARCHAR(6) NOT NULL, -- company id
+     sid        VARCHAR(3) NOT NULL, -- security id
+     pricedate  DATE       NOT NULL, -- pricing weekly
 
+     INDEX ex_centers_ix01 (ex_centers_id), 
+     INDEX ex_centers_ix02 (cid,sid,pricedate)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS ex_dists;
+CREATE TABLE ex_dists (
+
+     ex_centers_id INT NOT NULL,
+
+     cid        VARCHAR(6) NOT NULL, -- company id
+     sid        VARCHAR(3) NOT NULL, -- security id
+     pricedate  DATE       NOT NULL, -- pricing date weekly
+     dist       FLOAT,      
+
+     INDEX ex_dist_ix01 (ex_centers_id), 
+     INDEX ex_dist_ix02 (cid,sid,pricedate),
+     INDEX ex_dist_ix03 (dist)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ex_econ
+--
+-- This table holds economic data
+--
+
+DROP TABLE IF EXISTS ex_econ;
+CREATE TABLE ex_econ (
+
+       datadate DATE NOT NULL, -- weekly or month, tbd
+
+       cape      FLOAT,
+       tbill1mo  FLOAT,
+       tbill6mo  FLOAT,
+       note10yr  FLOAT,
+
+       INDEX ex_econ_ix01 (datadate)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

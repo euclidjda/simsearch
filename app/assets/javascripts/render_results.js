@@ -171,7 +171,7 @@ function populate_panels(row_obj,data,i) {
     panel.click(function() {
 
         $('#comparable-modal').modal('show');
-        var idx = 3 * row + col;
+        var idx = 10 * row + col;
 
         $('#comparable-carousel-right').carousel(idx);
     });

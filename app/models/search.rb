@@ -7,6 +7,7 @@ class Search < ActiveRecord::Base
     _epochs = _args[:epochs]
     _type   = _args[:search_type]
     _limit  = _args[:limit]
+    _async  = _args[:async]
 
     cid       = _target.cid
     sid       = _target.sid
@@ -50,7 +51,11 @@ class Search < ActiveRecord::Base
         # by the delayed_job package. For the method to execute, the program
         # "rake jobs:work" must be running in the background.
 
-        search.delay.create_search_details(ep)
+        if ( _async )
+          search.delay.create_search_details(ep)
+        else
+          search.create_search_details(ep)
+        end
 
       }
 
@@ -170,9 +175,13 @@ class Search < ActiveRecord::Base
 
   def consolidate_results( _candidates, _limit )
 
-    if @cid_touched.nil?
-      @cid_touched = Hash::new()
-    end
+    cid_touched = Hash::new()
+
+    SearchDetail.where( :search_id => self.id ).each { |d|
+
+      cid_touched[d.cid] = 1
+
+    }
 
     _candidates.sort! { |a,b| a[:distance] <=> b[:distance] }
 
@@ -184,11 +193,11 @@ class Search < ActiveRecord::Base
 
       # only return limit number matches
       break if (comps_array.length >= _limit)
-      next if @cid_touched.has_key?(cid)
+      next if cid_touched.has_key?(cid)
 
       comps_array.push(item)
 
-      @cid_touched[cid] = 1
+      cid_touched[cid] = 1
 
     }
 

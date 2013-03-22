@@ -1,6 +1,6 @@
 class SecuritySnapshot < Tableless
 
-  @@factor_weights = [ 100, 50, 1, 1, 1, 25]
+  @@factor_weights = [ 31.0, 6.5, 3.9, 1.8, 4.54, 5.26]
 
   attr_reader :cid, :sid, :pricedate, :fields, :factor_keys
 
@@ -62,6 +62,20 @@ class SecuritySnapshot < Tableless
     end
 
     return obj
+
+  end
+
+  def self.each_snapshots_on(_pricedate)
+
+    sqlstr = SecuritySnapshot::get_snapshots_on_sql(_pricedate)
+
+    result = ActiveRecord::Base.connection.select_all(sqlstr) 
+
+    result.each { |record|
+
+      yield SecuritySnapshot::new( record )
+
+    }
 
   end
 
@@ -215,7 +229,7 @@ class SecuritySnapshot < Tableless
     when :ey # Earnings Yield
 
       oiadp  = get_field('oiadpq_ttm')
-      mrkcap = get_field('price')*get_field('csho')
+      mrkcap = get_field('price').to_f * get_field('csho').to_f
       debt   = get_field('dlttq_mrq').to_f + get_field('dlcq_mrq').to_f
       cash   = get_field('cheq_mrq').to_f
       pstk   = get_field('pstkq_mrq').to_f
@@ -224,6 +238,7 @@ class SecuritySnapshot < Tableless
       denom  = mrkcap+debt+cash+pstk+mii
 
       factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
 
     when :roc # Return On Capital
 
@@ -231,6 +246,15 @@ class SecuritySnapshot < Tableless
       capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
 
       factor_value = oiadp / capital if (!oiadp.nil? && capital != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
+    when :gmar # Gross Margin
+
+      revenue = get_field('saleq_ttm').to_f
+      cogs    = get_field('cogsq_ttm').to_f
+      
+      factor_value = (revenue - cogs)/revenue if (revenue > 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
 
     when :grwth # Revenue Growth
 
@@ -258,10 +282,10 @@ class SecuritySnapshot < Tableless
 
     end
 
-    if !factor_value.nil?
-      factor_value = 1.0 if factor_value > 1.0
-      factor_value = -1.0 if factor_value < -1.0
-    end
+    # if !factor_value.nil?
+    #  factor_value = 1.0 if factor_value > 1.0
+    #  factor_value = -1.0 if factor_value < -1.0
+    # end
 
     # @factors[_factor_key] = factor_value
 
@@ -270,7 +294,7 @@ class SecuritySnapshot < Tableless
   end
 
   def self.get_snapshot_sql(_cid,_sid,_pricedate)
-<<GET_TARGET_SQL
+<<GET_SNAPSHOT_SQL
   SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
   FROM ex_prices A, ex_factdata B, ex_securities C 
   WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}' 
@@ -278,7 +302,18 @@ class SecuritySnapshot < Tableless
   AND C.cid = '#{_cid}' AND C.sid = '#{_sid}' 
   AND A.datadate = '#{_pricedate}'
   AND '#{_pricedate}' BETWEEN B.fromdate AND B.thrudate
-GET_TARGET_SQL
+GET_SNAPSHOT_SQL
+  end
+
+  def self.get_snapshots_on_sql(_pricedate)
+<<GET_SNAPSHOTS_ON_SQL
+  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
+  FROM ex_prices A, ex_factdata B, ex_securities C 
+  WHERE A.cid = B.cid AND A.sid = B.sid 
+  AND A.cid = C.cid AND A.sid = C.sid
+  AND A.datadate = '#{_pricedate}'
+  AND '#{_pricedate}' BETWEEN B.fromdate AND B.thrudate
+GET_SNAPSHOTS_ON_SQL
   end
   
   def self.get_target_sql(_cid,_sid)
