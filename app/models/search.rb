@@ -170,7 +170,7 @@ class Search < ActiveRecord::Base
     status.complete = true
     status.save()
 
-    calculate_summary()
+    # calculate_summary()
 
     puts "*********** SEARCH IS DONE"
 
