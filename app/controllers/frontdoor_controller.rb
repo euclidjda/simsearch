@@ -88,7 +88,11 @@ class FrontdoorController < ApplicationController
       target_cid = @the_search.cid()
       target_sid = @the_search.sid()
 
-      @target_fields = SecuritySnapshot::get_target(target_cid,target_sid).to_hash()
+      search_type = SearchType.where( :id => @the_search.type_id ).first;
+
+      @target_fields = 
+        SecuritySnapshot
+        .get_target(target_cid,target_sid).to_hash( :factor_keys => search_type.factor_keys )
 
       @epochs = Epoch::default_epochs_array()
 
