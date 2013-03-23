@@ -246,6 +246,8 @@ class FrontdoorController < ApplicationController
 
     search.calculate_summary()
 
+    # Set results for json
+
     result[:mean]  = search.mean
     result[:count] = search.count
     result[:wins]  = search.wins
