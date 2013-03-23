@@ -170,7 +170,7 @@ class Search < ActiveRecord::Base
     status.complete = true
     status.save()
 
-    # calculate_summary()
+    calculate_summary()
 
     puts "*********** SEARCH IS DONE"
 
@@ -271,14 +271,14 @@ class Search < ActiveRecord::Base
       worst = outperformance if (worst.nil? || outperformance <= worst)
     }
 
-    with_lock do
+    self.with_lock do
 
-      mean  = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
-      count = tot_count
-      wins  = win_count
-      min   = worst
-      max   = best
-      save
+      self.mean  = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+      self.count = tot_count
+      self.wins  = win_count
+      self.min   = worst
+      self.max   = best
+      self.save
 
     end
 
