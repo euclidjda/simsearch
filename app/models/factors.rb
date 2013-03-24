@@ -2,9 +2,13 @@ class Factors < Tableless
 
   attr_reader :cid, :sid, :datadate, :fields, :factors, :factor_keys
 
+  def self.aa
+    "aa"
+  end
+
   def initialize( _fields )
 
-    @factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:momentum]
+    @factor_keys = FactorKeys::all
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?

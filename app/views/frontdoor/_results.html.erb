@@ -4,7 +4,6 @@
     <% pricedate = target_fields['pricedate'] %>
     <% monthname = Date::MONTHNAMES[pricedate.month][0..2] %>
 
-
     <div class="span1 timeline-bar">
       <div class="timeline-label timeline-label-today">
         TODAY
@@ -16,9 +15,7 @@
       </div>
     </div>
 
-
     <div class="target-container">
-
       <div class="date-label">
         <%= monthname + " " + pricedate.year.to_s %>
       </div>
@@ -39,7 +36,6 @@
           <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
       </div>
     </div>
-
   </div> <!-- target-row -->
 
   <div class="row-fluid summary-row light-row">
@@ -76,40 +72,41 @@
     </div>
   </div>
 
-<div id="comparable-panel-template" style="display:none" class="span2 comparable">
-  <div class="panel-name">
+  <div id="comparable-panel-template" style="display:none" class="span2 comparable">
+    <div class="panel-name">
+    </div>
+    <div class="panel-ticker-and-date">
+      <span class="panel-ticker"></span>  -  <span class="panel-date"></span>
+    </div>
+    <div class="panel-performance">
+        <img class="perf-image" src=""></img>
+        <span class="perf-num"></span>
+        <span class="perf-tag"></span>
+    </div>
+    <div class="panel-similarity"></div>
   </div>
-  <div class="panel-ticker-and-date">
-    <span class="panel-ticker"></span>  -  <span class="panel-date"></span>
-  </div>
-  <div class="panel-performance">
-      <img class="perf-image" src=""></img>
-      <span class="perf-num"></span>
-      <span class="perf-tag"></span>
-  </div>
-  <div class="panel-similarity"></div>
-</div>
 
-<div id="search-info" search-id="<%= the_search.id %>"></div>
+  <div id="search-info" 
+    search-id="<%= the_search.id %>"></div>
 
-<% first_row = true %>
-<% row_num = 0 %>
+  <% first_row = true %>
+  <% row_num = 0 %>
 
-<% epochs.each do |ep| %>
+  <% epochs.each do |ep| %>
 
-        <% if !first_row %>
-                </div> <!-- row fluid -->
-                <% first_row = false %>
-        <% end %>
+          <% if !first_row %>
+                  </div> <!-- row fluid -->
+                  <% first_row = false %>
+          <% end %>
 
-        <% row_num += 1 %>
+          <% row_num += 1 %>
 
-        <% row= { :row_num=>row_num, :epoch=>ep } %>
+          <% row= { :row_num=>row_num, :epoch=>ep } %>
 
-        <%= render :partial => "row", :object => row %>
+          <%= render :partial => "row", :object => row %>
 
-<% end %>
+  <% end %>
 
-<%= render :partial => "comparable_modal", :object => target_fields %>
+  <%= render :partial => "comparable_modal", :object => target_fields %>
 
 </div> <!-- end of span12-->

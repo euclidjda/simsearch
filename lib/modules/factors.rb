@@ -1,6 +1,6 @@
 class Factors
 
-  @@Factors = [
+  @@FactorKeys = [
                ['Earnings Yield',:ey],
                ['Return On Capital',:roc],
                ['Revenue Growth (4yr)',:grwth],
@@ -14,7 +14,7 @@ class Factors
   @@DefaultWeights = [5,5,5,5,5,5]
 
   def self.all
-    return @@Factors
+    return @@FactorKeys
   end
 
   def self.defaults

@@ -7,7 +7,7 @@ function render_results(search_id) {
 
     $('.result-container').each(function( index ) {
 
-    	start_spinner($(this).attr('id'));
+        start_spinner($(this).attr('id'));
 
         var fromdate = $(this).attr('fromdate');
         var thrudate = $(this).attr('thrudate');
@@ -17,11 +17,16 @@ function render_results(search_id) {
         post_data['fromdate'] = fromdate;
         post_data['thrudate'] = thrudate;
 
-    	var this_obj = $(this);
+        var this_obj = $(this);
+
+        // set the URL of the page to the search_id so we can see it nice and clean.
+        // window.history.replaceState( {}, 
+        //     "Euclidean Fundamentals Search ID " + search_id, 
+        //     "/search?search_id=" + search_id);
 
         (function poll_for_result() {
 
-    	    $.getJSON('get_search_results',post_data,function(json_data) {
+            $.getJSON('get_search_results',post_data,function(json_data) {
 
                 this_obj.find(".spinner").remove();
                 this_obj.find(".bxslider").empty();
@@ -68,49 +73,44 @@ function render_results(search_id) {
 
         $.getJSON('get_search_summary?search_id='+search_id,function(data) {
 
-        var perf  = data.mean;
+            var perf  = data.mean;
 
-        if (perf == null) {
-            $(".summary-num").html("N/A");
-        } else if (perf >= 0) {
-            $(".summary-image").attr("src",pos_big_icon);
-            $(".summary-num").html(sprintf("%.2f%%",perf));
-            $(".summary-num").css('color','black');
-            $(".summary-label").html("Outperformed");
-        } else {
-            $(".summary-image").attr("src",neg_big_icon);
-            $(".summary-num").html(sprintf("%.2f%%",perf));
-            $(".summary-num").css('color','red');
-            $(".summary-label").html("Underperformed");
+            if (perf == null) {
+                $(".summary-num").html("N/A");
+            } else if (perf >= 0) {
+                $(".summary-image").attr("src",pos_big_icon);
+                $(".summary-num").html(sprintf("%.2f%%",perf));
+                $(".summary-num").css('color','black');
+                $(".summary-label").html("Outperformed");
+            } else {
+                $(".summary-image").attr("src",neg_big_icon);
+                $(".summary-num").html(sprintf("%.2f%%",perf));
+                $(".summary-num").css('color','red');
+                $(".summary-label").html("Underperformed");
+            }
+
+            $("#summary-worst")
+                .html(EGUI.fmtAsNumber(data.min,{fmtstr:"%.2f%%"}));
+
+            $("#summary-best")
+                .html(EGUI.fmtAsNumber(data.max,{fmtstr:"%.2f%%"}));
+
+            if( data.min < 0) $("#summary-worst").css('color','red');
+            if( data.max  < 0) $("#summary-best").css('color','red');
+
+            if ((data.count != null) && (data.wins != null)) {
+            
+            $('#summary-count')
+                .html(data.wins + ' of ' + data.count);
         }
 
-	    $("#summary-worst")
-		.html(EGUI.fmtAsNumber(data.min,{fmtstr:"%.2f%%"}));
-
-	    $("#summary-best")
-		.html(EGUI.fmtAsNumber(data.max,{fmtstr:"%.2f%%"}));
-
-	    if( data.min < 0) $("#summary-worst").css('color','red');
-	    if( data.max  < 0) $("#summary-best").css('color','red');
-
-	    
-	    if ((data.count != null) && (data.wins != null)) {
-		
-		$('#summary-count')
-		    .html(data.wins + ' of ' + data.count);
-
-	    }
-
-	    if (!data.complete)
-		setTimeout(poll_for_summary,3000);
-
+        if (!data.complete)
+            setTimeout(poll_for_summary,3000);
         });
 
     })();
 
     setup_detail_modal();
-
-
 }
 
 function populate_panels(row_obj,data,i) {
@@ -217,14 +217,13 @@ function populate_panels(row_obj,data,i) {
         EGUI.fmtAsMoney(data[i].epspxq_ttm,{fmtstr:"%.2f"}));
 
     detail_item.find('.pe-value').html(
-	EGUI.fmtAsMoney(data[i].pe,{fmtstr:"%.2f"}));
+        EGUI.fmtAsMoney(data[i].pe,{fmtstr:"%.2f"}));
 
     detail_item.find('.pb-value').html(EGUI.fmtAsMoney(data[i].pb,
-						       {fmtstr:"%.2f"}));
-
+                               {fmtstr:"%.2f"}));
 
     detail_item.find('.factor-ey').html(
-	    EGUI.fmtAsNumber(data[i].ey*100,{fmtstr:"%.2f"}));
+        EGUI.fmtAsNumber(data[i].ey*100,{fmtstr:"%.2f"}));
 
 
     detail_item.find('.factor-roc')
