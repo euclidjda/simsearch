@@ -2,10 +2,6 @@ class Factors < Tableless
 
   attr_reader :cid, :sid, :datadate, :fields, :factors, :factor_keys
 
-  def self.aa
-    "aa"
-  end
-
   def initialize( _fields )
 
     @factor_keys = FactorKeys::all
