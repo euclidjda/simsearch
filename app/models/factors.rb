@@ -4,7 +4,7 @@ class Factors < Tableless
 
   def initialize( _fields )
 
-    @factor_keys = FactorKeys::all
+    @factor_keys = Factors::all
 
     # TODO: JDA: we want to assert this structure it args
     # cid, sid, datadate cannot be blank?
