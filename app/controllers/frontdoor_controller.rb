@@ -71,6 +71,20 @@ class FrontdoorController < ApplicationController
       session[:user_id] = _user_arg.id
   end
 
+  #redirect to search if we get a search with a ticker or search id on the 
+  #address bar. This is to support sharing.
+  def search_with_id
+
+    _search_id    = params[:search_id]
+    _search_entry = params[:ticker]
+
+    if !_search_id.blank? || !_search_entry.blank?
+      search
+    else
+      redirect_to root_path
+    end
+  end
+
   def search
 
     # Get the parameter from the parameter array, this is coming from the browser.
@@ -136,9 +150,8 @@ class FrontdoorController < ApplicationController
 
     end
 
-    render :action => :home
     # streaming ...
-    # render :action => :home, :stream => true
+    render :action => :home, :stream => true
 
     # Comment the above line and uncomment the line below to see JSON output
     # with no rendering. Helps with debugging.

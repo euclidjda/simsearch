@@ -1,7 +1,5 @@
 <div class="search-area">
-
   <div class="full-search-bar">
-
     <ul>
       <li> 
         <span>
@@ -11,106 +9,96 @@
       <li> 
         <span>
           <form action="<%= search_path %>" 
-                method="get" 
-                class="search-bar-form" id="search-bar-form">
+            method="post" 
+            class="search-bar-form" id="search-bar-form">
 
-            <span class = "search-field-and-button">
+            <div class = "search-field-and-button">
 
-	      <%= text_field_tag(:ticker, params[:ticker], 
-		  :placeholder => "Enter a stock symbol, e.g. IBM",
-              :id => "ticker",
-	      :class=>"ticker-entry")
+              <%= text_field_tag(:ticker, params[:ticker], 
+                  :placeholder => "Enter a stock symbol, e.g. IBM",
+                  :id => "ticker",
+                  :class=>"ticker-entry")
               %>
 
               <button class ="btn btn-small btn-primary search-button">
                 <i class="icon-search icon-white"></i>
               </button>              
-	      
-            </span>
+              
+              <a class="custom-search-config" id="custom-search-config">Custom Search</a>
 
-	    <div id="custom-search-modal" class="modal hide" tab-index="-1"
-		 role="dialog" aria-hidden="true" data-backdrop="false">
+            </div>
+            
+            <div id="custom-search-modal" class="modal hide" tab-index="-1"
+              role="dialog" aria-hidden="true" data-backdrop="false">
 
-	      <div class="modal-body">
+              <div class="modal-body">
 
-		<button type="button" class="close" 
-			aria-hidden="true"
-			onclick="$('#custom-search-modal').modal('hide');">
-		  &times;</button>
+                <button type="button" class="close" 
+                  aria-hidden="true" 
+                  onclick="$('#custom-search-modal').modal('hide');">&times;</button>
 
-		<div>
+                <div>
+                  <table id="factor-table"> 
+                    <tr class="header">
+                        <td>Factors</td>
+                        <td colspan=2>Weights</td>
+                    </tr>
+                    <% factors  = Factors::all %>
+                    <% defaults = Factors::defaults %>
+                    <% default_weights  = Factors::default_weights %>
 
-		  <table id="factor-table"> 
+                    <% (1..6).each do |index| %>
+                    <tr>
+                      <td class="col1">
+                        <% fac_val = params["factor#{index}"] || defaults[index-1] %>
+                        <%= select_tag("factor#{index}", options_for_select(factors,fac_val), :class=>"factor-select") %>
+                      </td>
+                      <td class="col2">
+                        <% weight_name  = "weight#{index}" %>
+                        <% weight_value = params[weight_name] || default_weights[index-1] %>
+                        <input type="hidden" 
+                          name="<%= weight_name %>"
+                          value="<%= weight_value %>">
+                        <div id="factor-slider<%= index %>" 
+                          class="factor-slider" value=<%= weight_value %>></div>
+                      </td>
+                      <td class="col3"><%= weight_value %></td>
+                    </tr>
 
-		    <tr class="header">
-		      <td>Factors</td>
-		      <td colspan=2>Weights</td>
-		    </tr>
+                    <% end %>
 
-		    <% factors  = Factors::all %>
-		    <% defaults = Factors::defaults %>
-		    <% default_weights  = Factors::default_weights %>
+                  </table>
+                  <br>
 
-		    <% (1..6).each do |index| %>
-		    <tr>
-		      <td class="col1">
-			<% fac_val = params["factor#{index}"] || defaults[index-1] %>
-			<%= select_tag("factor#{index}",
-			    options_for_select(factors,fac_val),
-			    :class=>"factor-select") %>
-		      </td>
-		      <td class="col2">
-			<% weight_name  = "weight#{index}" %>
-			<% weight_value = params[weight_name] || default_weights[index-1] %>
-			<input type="hidden" 
-			       name="<%= weight_name %>"
-			       value="<%= weight_value %>">
-			<div id="factor-slider<%= index %>"
-			     class="factor-slider" value=<%= weight_value %>></div>
-		      </td>
-		      <td class="col3"><%= weight_value %></td>
-		    </tr>
-		    <% end %>
+                  <% gicslevel = params[:gicslevel] || 'sector' %>
 
-		  </table><br>
-		  
-		  <% gicslevel = params[:gicslevel] || 'sector' %>
+                  <%= label_tag(:gicslevel,
+                    "GICS Industry Classification Restriction:") %>
 
-		  <%= label_tag(:gicslevel,
-		      "GICS Industry Classification Restriction:") %>
+                  <%= select_tag(:gicslevel,
+                    options_for_select([['Level 1: Sector', 'sec'],
+                    ['Level 2: Industry Group', 'grp'],['Level 3: Industry',
+                    'ind'],['Level 4: Sub-Industry','sub']],gicslevel),
+                    :class=>"industry-select") %>
 
-		  <%= select_tag(:gicslevel,
-		      options_for_select([['Level 1: Sector', 'sec'],
-		      ['Level 2: Industry Group', 'grp'],['Level 3: Industry',
-		      'ind'],['Level 4: Sub-Industry','sub']],gicslevel),
-		      :class=>"industry-select") %>
-		  
-		  <input type="hidden" name="newflag" value="1">
+                  <input type="hidden" name="newflag" value="1">
 
-		</div>
+                </div>
 
-		<a id="restore-defaults">Restore Defaults</a>
-
-	      </div>
-
-	    </div>
-
+                <a id="restore-defaults">Restore Defaults</a>
+              </div>
+            </div>
           </form>
         </span> 
       </li>
     </ul>
   </div><!--/.full-search-bar -->
-
-
 </div><!--/.search-area -->
-
-
 
 <hr>
 
 <div class="container-fluid main-content">
   <div class="row-fluid">
-
     <div class="span2 history-sidebar-nav" id="history-sidebar-nav">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
@@ -119,13 +107,11 @@
       </div><!--/.well -->
     </div><!--/span2 sidebar -->
 
-  <% if target_fields() %>
-    <%= render "frontdoor/results" %>
-  <% else %>
-    <%= render "frontdoor/welcome" %>
-  <% end %>
+    <% if target_fields() %>
+        <%= render "frontdoor/results" %>
+    <% else %>
+        <%= render "frontdoor/welcome" %>
+    <% end %>
 
   </div><!--/row-->
-
 </div><!--/.fluid-container-->
-

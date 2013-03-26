@@ -11,39 +11,30 @@ $(document).ready(function() {
 
 function init_frontdoor() {
 
-    var link = $("<a id='custom-search-link'>Custom Search >></a>");
+    $('#custom-search-config').click( function() {
 
-    link.css('position','absolute');
-    link.css('top','100px');
-    link.css('left','310px');
+        var offset = $('#ticker').offset();
+        var width  = $('#ticker').outerWidth();
+        var height = $('#ticker').outerHeight();
 
-    $('body').append(link);
+        var left = offset.left + 'px';
+        var top  = (offset.top+height) + 'px';
+        
+        $('#custom-search-modal').css('left',left);
+        $('#custom-search-modal').css('top',top);
+        $('#custom-search-modal').css('width',width);
 
-    $('#custom-search-link').click( function() {
-
-	var offset = $('#ticker').offset();
-	var width  = $('#ticker').outerWidth();
-	var height = $('#ticker').outerHeight();
-
-	var left = offset.left + 'px';
-	var top  = (offset.top+height) + 'px';
-	
-	$('#custom-search-modal').css('left',left);
-	$('#custom-search-modal').css('top',top);
-	$('#custom-search-modal').css('width',width);
-
-	$('#custom-search-modal').modal();
+        $('#custom-search-modal').modal();
 
     });
 
     for (var i=1; i<= 6; i++) { 
 
-	$('#factor-slider'+i).slider(
-	    { min: 0,
-	      max: 10,
-	      value: 5
-	    });
-
+        $('#factor-slider'+i).slider(
+            { min: 0,
+              max: 10,
+              value: 5
+            });
     }
 
 }
@@ -53,7 +44,7 @@ function handle_teaser() {
     var teaser = $('#teaser-carousel');
 
     if (teaser) {
-	$('#teaser-carousel').carousel( { interval: 15000 } );
+        $('#teaser-carousel').carousel( { interval: 15000 } );
     }
 
 }
@@ -65,8 +56,8 @@ function handle_search() {
     // Only handle the output if we are on the results page. This script
     // loads for all pages, so we need to make sure.
     if (search_id) {
-    	// This function is implemented render_results.
-    	render_results(search_id);
+        // This function is implemented render_results.
+        render_results(search_id);
     }
 
 }
@@ -192,7 +183,7 @@ $(function() {
              search: function() {
                 // custom minLength
                 var term = extractLast( this.value );
-                console.log("Term is: ->" + term + "<-, length=" + term.length);
+                // console.log("Term is: ->" + term + "<-, length=" + term.length);
                 if ( term.length < 1 ) {
                     // If the term has less then 2 characters close the menu. 
                     // This can happen if we we are editing characters in a secondary term.
@@ -215,9 +206,9 @@ $(function() {
                 });
             },
             select: function( event, ui ) {
-                console.log( ui.item ?
-                    "Selected: " + ui.item.sid + ":" + ui.item.cid + " - " + ui.item.value + " - "+ ui.item.longname :
-                    "Nothing selected, input was " + this.value );
+                // console.log( ui.item ?
+                //     "Selected: " + ui.item.sid + ":" + ui.item.cid + " - " + ui.item.value + " - "+ ui.item.longname :
+                //     "Nothing selected, input was " + this.value );
                 
                 var terms = split( this.value );
                 // remove the current input
@@ -232,7 +223,7 @@ $(function() {
                 return false;
             },
             change: function( event, ui ) {
-                console.log("Selection changed");
+                // console.log("Selection changed");
             },
             focus: function() {
                 // prevent value inserted on focus
@@ -241,7 +232,7 @@ $(function() {
         })
         .data( "autocomplete" )._renderItem = function( ul, item ) {
 
-	    ul.css('z-index',99);
+            ul.css('z-index',99);
 
             var v = item.value + " - " + item.longname;
 
