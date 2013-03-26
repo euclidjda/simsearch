@@ -206,7 +206,7 @@ class FrontdoorController < ApplicationController
           snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
 
           comp_record = snapshot.to_hash( :factor_keys => search_type.factor_keys )
-
+          
           comp_record[:distance] = d.dist
           comp_record[:stk_rtn]  = d.stk_rtn
           comp_record[:mrk_rtn]  = d.mrk_rtn
