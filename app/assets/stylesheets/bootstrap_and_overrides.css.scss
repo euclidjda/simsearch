@@ -17,245 +17,261 @@ Any media size specific and resize related rules should be here.
 
 
 /*
-	Somehow there is a border/outline left when the focus leaves the <a> tag after
-	clicking a link that is in the nav bar. This is to prevent that ghost effect.
+  Somehow there is a border/outline left when the focus leaves the <a> tag after
+  clicking a link that is in the nav bar. This is to prevent that ghost effect.
 */
 .nav a {
-	outline: 0px none !important;
+  outline: 0px none !important;
 }
 
 
 @media (min-width: 767px) {
-	#history-sidebar-nav {
-		display: none;
-	}
 
-	.target-row {
-		height: $summaryRowHeight;
+ .search-field-and-button {
+    width: 70%;
+  }
 
-		.target-container {
-			.target-name {
-				width: 340px;
-				min-width: 340px;
-				padding: 25px 0px 25px 0px;
-			}
+  #history-sidebar-nav {
+    display: none;
+  }
 
-			.target-info {
-				padding-left: 5px;
-				width: $targetinfoWidth;
-				min-width: $targetinfoWidth;
-				margin-left: -5px;
-			}
-		}
-	}
+  .target-row {
+    height: $summaryRowHeight;
 
-	.timeline-bar {
-		/* width parameters overwritten based on size */
-	    width: $leftbarWidth !important;
-	    min-width: $leftbarWidth;
-	    max-width: $leftbarWidth;
-	    height: 100%;
-	    margin-left: 10px !important;
-	}
+    .target-container {
+      .target-name {
+        width: 340px;
+        min-width: 340px;
+        padding: 25px 0px 25px 0px;
+      }
 
-	.summary-row {
-		#short-summary {
-			display: none;
-		}
-	}
+      .target-info {
+        padding-left: 5px;
+        width: $targetinfoWidth;
+        min-width: $targetinfoWidth;
+        margin-left: -5px;
+      }
+    }
+  }
 
-	.result-row {
-		height: 170px;
+  .timeline-bar {
+    /* width parameters overwritten based on size */
+      width: $leftbarWidth !important;
+      min-width: $leftbarWidth;
+      max-width: $leftbarWidth;
+      height: 100%;
+      margin-left: 10px !important;
+  }
 
-		.result-container {
-			padding-left: 120px;
-			height: 200px;
-		}	
-		.bx-wrapper {
-			margin-left: -30px !important;
-		}
+  .summary-row {
+    #short-summary {
+      display: none;
+    }
+  }
 
-		.timeline-label {
-			margin-top: 16px;
-		}
-	}
+  .result-row {
+    height: 170px;
 
-	.timeline-label {
-		margin: 5px 0px 0px 5px;
-		background-image: url('bgr-year.png');
-	}
+    .result-container {
+      padding-left: 120px;
+      height: 200px;
+    } 
+    .bx-wrapper {
+      margin-left: -30px !important;
+    }
 
-	.timeline-date {
-		top: 28px;
-	}
+    .timeline-label {
+      margin-top: 16px;
+    }
+  }
 
-	.timeline-label-narrow {
-    	display:none;
+  .timeline-label {
+    margin: 5px 0px 0px 5px;
+    background-image: url('bgr-year.png');
+  }
+
+  .timeline-date {
+    top: 28px;
+  }
+
+  .timeline-label-narrow {
+      display:none;
     }
 
     .date-label {
-		display: inline-block;
-	}
+    display: inline-block;
+  }
 
-	#summary-stats {
-		.sum-stat {
-			display: inline;
-		}
-	}
+  #summary-stats {
+    .sum-stat {
+      display: inline;
+    }
+  }
 }
 
 @media (min-width:979px) {
-	.target-row {
-		height: $summaryRowHeight;
-	}
 
-	#history-sidebar-nav {
-		display: none;
-	}
+  .target-row {
+    height: $summaryRowHeight;
+  }
 
-	.summary-row {
-		#result-summary {
-			font-size: 16pt;
-			padding-left: 60px; 
-		}
+  #history-sidebar-nav {
+    display: none;
+  }
 
-		.summary-image {
-			height: 22px;
-		}
-	}
+  .summary-row {
+    #result-summary {
+      font-size: 16pt;
+      padding-left: 60px; 
+    }
+
+    .summary-image {
+      height: 22px;
+    }
+  }
 }
 
 @media (max-width:767px) {
 
-	.navbar-fixed-top {
-		margin-left:0px;
-		margin-right: 0px;
-	}
+  hr {
+    margin-top: 6px !important;
+  }
 
-	#history-sidebar-nav {
-		display: none;
-	}
+  .search-field-and-button {
+    width: 100%;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
 
-	.timeline-ticks {
-		display: none;
-	}
+  .navbar-fixed-top {
+    margin-left:0px;
+    margin-right: 0px;
+  }
 
-	.timeline-bar {
-		margin-left: 0px;
-		width: 100% !important;
-		height: 30px;
-		max-width: 100%;
-		min-width: 100%;
+  #history-sidebar-nav {
+    display: none;
+  }
 
-		.timeline-label-narrow {
-			display: inline-block;
-		}
+  .timeline-ticks {
+    display: none;
+  }
 
-		.timeline-label-thisyear {
-			display: none;
-		}
-	}
+  .timeline-bar {
+    margin-left: 0px;
+    width: 100% !important;
+    height: 30px;
+    max-width: 100%;
+    min-width: 100%;
 
-	.result-row {
-		height: 200px;
-		.result-container {
-			padding-left: 0px;
-			height: 240px;
-		}
+    .timeline-label-narrow {
+      display: inline-block;
+    }
 
-		.timeline-label {
-			margin: 3px 0px 0px 0px;
-			background-image: url('bgr-year-rotated.png');
-		}
+    .timeline-label-thisyear {
+      display: none;
+    }
+  }
 
-		.bx-wrapper {
-			margin-left: 0px;
-		}
-	}
+  .result-row {
+    height: 200px;
+    .result-container {
+      padding-left: 0px;
+      height: 240px;
+    }
 
-	.target-row {
-		.timeline-label {
-			margin-left: 0px !important;
-			top: 3px !important;
-		}
+    .timeline-label {
+      margin: 3px 0px 0px 0px;
+      background-image: url('bgr-year-rotated.png');
+    }
 
-		.timeline-date {
-			top: -18px;
-		}
+    .bx-wrapper {
+      margin-left: 0px;
+    }
+  }
 
-		.target-container {
+  .target-row {
+    .timeline-label {
+      margin-left: 0px !important;
+      top: 3px !important;
+    }
 
-			.target-name {
-				width: 100%;
-				margin-left: -2px;
-				border-right: solid orange 2px;
-				padding: 25px 0px 25px 0px;
-			}
+    .timeline-date {
+      top: -18px;
+    }
 
-			.target-info {
-				margin-left: -2px;
-				padding-left: 0px;
-				padding-top: 5px; 
-				width: 100%;
-				border-right: solid gray 2px;
-			}
-		}	
-	}
+    .target-container {
 
-	.date-label {
-		display: none;
-	}
-	.summary-row {
-		#wide-summary {
-			display: none;
-		}
+      .target-name {
+        width: 100%;
+        margin-left: -2px;
+        border-right: solid orange 2px;
+        padding: 25px 0px 25px 0px;
+      }
 
-		#short-summary {
-			font-size: 14pt;
-			text-align: center;
-		}
+      .target-info {
+        margin-left: -2px;
+        padding-left: 0px;
+        padding-top: 5px; 
+        width: 100%;
+        border-right: solid gray 2px;
+      }
+    } 
+  }
 
-		#summary-stats {
-			.sum-stat {
-				display: list-item;		
-				line-height: 24pt;	
-			}
+  .date-label {
+    display: none;
+  }
+  .summary-row {
+    #wide-summary {
+      display: none;
+    }
 
-			.sum-val {
-				width: 100%;
-			}
+    #short-summary {
+      font-size: 14pt;
+      text-align: center;
+    }
 
-			#sum-middle-row {
-				border-top: solid lightgray 1px;
-				border-bottom: solid lightgray 1px;
-			}
+    #summary-stats {
+      .sum-stat {
+        display: list-item;   
+        line-height: 24pt;  
+      }
 
-			#summary-count, #summary-best, #summary-worst {
-				float: right;
-				margin-right: 50px;
-			}
-		}
-	}
+      .sum-val {
+        width: 100%;
+      }
+
+      #sum-middle-row {
+        border-top: solid lightgray 1px;
+        border-bottom: solid lightgray 1px;
+      }
+
+      #summary-count, #summary-best, #summary-worst {
+        float: right;
+        margin-right: 50px;
+      }
+    }
+  }
 }
 
 @media  (max-width:979px) { 
 
-	.navbar-fixed-top { 
-		position: absolute;
-	} 
+  .navbar-fixed-top { 
+    position: absolute;
+  } 
 
-	#history-sidebar-nav {
-		display: none;
-	}
+  #history-sidebar-nav {
+    display: none;
+  }
 
-	.summary-row {
-		#result-summary {
-			font-size: 14pt;
-			padding-left: 16px;
-		}
+  .summary-row {
+    #result-summary {
+      font-size: 14pt;
+      padding-left: 16px;
+    }
 
-		.summary-image {
-			height: 18px;
-		}
-	}
+    .summary-image {
+      height: 18px;
+    }
+  }
 }

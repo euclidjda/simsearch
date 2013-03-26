@@ -12,7 +12,7 @@
             method="post" 
             class="search-bar-form" id="search-bar-form">
 
-            <span class = "search-field-and-button">
+            <div class = "search-field-and-button">
 
               <%= text_field_tag(:ticker, params[:ticker], 
                   :placeholder => "Enter a stock symbol, e.g. IBM",
@@ -24,7 +24,9 @@
                 <i class="icon-search icon-white"></i>
               </button>              
               
-            </span>
+              <a class="custom-search-config" id="custom-search-config">Custom Search</a>
+
+            </div>
             
             <div id="custom-search-modal" class="modal hide" tab-index="-1"
               role="dialog" aria-hidden="true" data-backdrop="false">

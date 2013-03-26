@@ -11,15 +11,7 @@ $(document).ready(function() {
 
 function init_frontdoor() {
 
-    var link = $("<a id='custom-search-link'>Custom Search >></a>");
-
-    link.css('position','absolute');
-    link.css('top','100px');
-    link.css('left','310px');
-
-    $('body').append(link);
-
-    $('#custom-search-link').click( function() {
+    $('#custom-search-config').click( function() {
 
         var offset = $('#ticker').offset();
         var width  = $('#ticker').outerWidth();
