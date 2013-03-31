@@ -9,7 +9,14 @@ class ApplicationController < ActionController::Base
 protected
   def site_lockdown_authenticator
     authenticate_or_request_with_http_basic do |username, password|
-      username == "admin" && password == "stalingrad"
+      case username
+      when "admin"
+        password == "fifthavenue"
+      when "capiq"
+        password == "compustat"
+      else
+        false
+      end
     end
   end
 
