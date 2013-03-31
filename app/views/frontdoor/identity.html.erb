@@ -1,0 +1,85 @@
+<script>
+
+$(document).ready(function() {
+
+  var form_refresh = "<%= form_refresh?() %>";
+  var message = "<%= validation_error %>";
+  var messageElement;
+
+  switch (form_refresh) {
+    case "register":
+      // show register UI again
+      messageElement = $("#register-message");
+      break;
+
+    case "signin":
+      // show signin UI again.
+      messageElement = $("#signin-message");
+      break;
+  }
+
+  if (message) {
+    $(messageElement).text(message);
+    $(messageElement).css("color", "red");
+  }
+});
+
+</script>
+
+<div class="logo-image-container">
+  <%= link_to( image_tag("logoV3.png", :class =>"logo-image"), "/") %>
+</div> 
+
+
+<% case @identity_path %>
+<% when "/register"%>
+
+<div id="register" class="credentials ">
+  <div class="modal-header">
+    <h3 id="registerLabel">Register</h3>
+  </div>
+
+  <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-form") do %>
+
+  <div class="modal-body">
+    <p id="register-message">  Join with your email address. </p>
+    <%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %><br>
+    <%= email_field_tag(:register_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
+    <%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+  </div>
+
+  <div class="modal-footer">
+    <p>  Already have an account ? <a href="">Sign in</a></p>
+    <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
+
+  </div>
+  <% end %>
+</div>
+
+<% when "/signin" %>
+<div id="signin" class="credentials">
+
+  <div class="modal-header">
+    <h3 id="signinLabel">Sign In</h3>
+  </div>
+
+  <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
+
+  <div class="modal-body">
+      <p id="signin-message">  Sign in with your email address. </p>
+      <%= email_field_tag(:signin_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
+      <%= password_field_tag(:signin_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+  </div>
+
+  <div class="modal-footer">
+    <p>  Don't have an account yet ? <a href="">Register</a></p>
+    <%= submit_tag("Sign in", :class => "btn btn-large btn-primary") %>
+  </div>
+  <% end %>
+</div>
+
+<% end %>
+<p>
+<hr>
+
+<%= render "frontdoor/membership" %>

@@ -171,6 +171,17 @@ footer {
 
 }
 
+    
+.logo-image-container {
+  margin-top: -12px;
+  margin-right: auto;
+
+  .logo-image {
+    width: 260px;
+    min-width: 260px;
+  }
+}
+
 .search-area {
 
   font-family:"Helvetica", Helvetica, serif;

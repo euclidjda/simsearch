@@ -1,479 +1,409 @@
-.credentials-modal {
-
-    max-width: 440px;
-
-	h3 {
-		text-align: center;
-	}
-
-	.modal-header {
-		width: 140px;
-		position: relative;
-		left: 50%;
-		margin-left: -80px;
-	}
-
-	.close {
-		right: 10px;
-		margin-right: 14px;
-		margin-top: 8px;
-	}
-
-	.modal-body {
-		margin-right: 20px;
-		margin-left: 5px;
-
-		input[type="text"], input[type="email"], input[type="password"] {
-			width: 100%;
-			margin-bottom: 20px;
-			font-size: 18px;
-			height: 24px;
-			letter-spacing: 2px;
-		}
-	}
-
-	.modal-footer {
-		text-align: center;
-
-		.btn {
-			margin-top: 5px;
-		}
-	}
-}
-
-
 
 .comparable-modal {
 
-    background-image: url('bgr.png');
+  background-image: url('bgr.png');
+  background-repeat: no-repeat;
+  background-size: 1000px;
+  overflow: hidden;
+
+  top:  0% !important;
+
+  /* top right bottom left --> TRouBLe */
+  margin: 50px 0px 0px -500px; 
+
+  width: 1000px;
+  height: 680px;
+
+  .modal-header {
+  }
+
+  .modal-body {
+    margin: -20px 0px 0px 0px; 
+    max-height: 1000px !important;
+
+    .arrow-table {
+      z-index: 500;
+      position: absolute;
+      top: 145px;
+      left: 503px;
+    }
+  }
+
+  .modal-footer {
+  }
+
+  .chart-growth {
+    position: absolute;
+    top: 220px;
+    left: 25px;
+    width: 385px;
+    height: 185px;
+    /*
+    border: 2px solid #EA4A0B;
+    */
+    background-color: #F2F2F2;
+  }
+
+  .chart-price {
+    position: absolute;
+    top: 415px;
+    left: 25px;
+    width: 385px;
+    height: 185px;
+    background-color: #F2F2F2;
+  }
+
+  .close {
+    right: 10px;
+    margin-right: 14px;
+    margin-top: 8px;
+  }
+
+  .carousel-control {
+    border: 2px solid #EA4A0B;
+    width: 40px;
+    height: 40px;
+    background-color: orange; /* need to change to site orange */
+  }
+  
+  .comparable-table {
+    width: 900px;
+    border: 0px solid black;
+    margin: 40px 0px 0px 12px;
+  }
+
+  .comparable-table-left-pane {
+    width: 450px;
+  }
+
+  .comparable-table-right-pane {
+    width: 450px;
+  }
+
+  .comparable-detail-left {
+
+    width: 450px;
+    height: 800px;
+    margin: 0px 0px 0px 20px;
+
+    background-image: url('box-bgr.png'); 
     background-repeat: no-repeat;
-    background-size: 1000px;
+    background-size: 430px;
+
+    overflow-y: hidden;
+    overflow-x: scroll;
+    white-space:nowrap;
+    font-family:"Helvetica", Helvetica, serif;
+    font-weight: normal;
+
+    color: rgb(255,255,255);
+
+    .factors {
+
+      font-family:"Helvetica", Helvetica, serif;
+
+      z-index: 5 !important;
+      background-color: #f9af6f;
+
+      position: absolute;
+      top: 54px;
+      left: 275px;
+      width: 176px;
+      font-size: 12pt;
+      color: rgb(23,23,23);
+
+      table {
+        width: 100%;
+      }
+
+      header {
+        padding-left: 4px;
+        padding-top: 8px;
+        padding-bottom: 6px;
+        text-align: center;
+      }
+      
+      td {
+        padding: 4px 8px 3px 2px;
+        font-size: 10pt;
+      }
+      
+      .col2 {
+        text-align: center;
+      }
+    }
+
+    .key-stats-header {
+      
+      position: absolute;
+      top: 46pt;
+      left: 20pt;
+      width: 100px;
+      font-size: 12pt;
+    }
+
+    .key-stats-body {
+
+      position: absolute;
+      top: 70pt;
+      left: 20pt;
+      width: 180pt;
+      height: 82pt;
+    }
+
+    .company-name {
+      position: absolute;
+      top: 12pt;
+      left: 88pt;
+
+      text-align: right;
+
+      width: 300px;
+      font-weight: bold;
+      font-size: 16pt;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ticker {
+      position: absolute;
+      top: 28pt;
+      left: 238pt;
+
+      text-align: right;
+      
+      width: 100px;
+      font-size: 9pt;
+    }
+
+    .year {
+      position: absolute;
+      top: 13pt;
+      left: 20pt;
+      width: 100px;
+      font-weight: bold;
+      font-size: 14pt;
+      color: rgb(35,35,35);
+    }
+
+    .date {
+      position: absolute;
+      top: 32pt;
+      left: 28pt;
+      width: 90px;
+      font-size: 7pt;
+    }
+
+  }
+
+  .comparable-detail-right {
+
+    width: 450px;
+    height: 800px;
+    margin: 0px 0px 0px 20px;
+
+    background-image: url('box-bgr-mirrored.png');  
+    background-repeat: no-repeat;
+    background-size: 430px;
+
     overflow: hidden;
+    white-space:nowrap;
+    font-family:"Helvetica", Helvetica, serif;
+    font-weight: normal;
 
-    top:  0% !important;
+    color: rgb(255,255,255);
 
-    /* top right bottom left --> TRouBLe */
-    margin: 50px 0px 0px -500px; 
+    .factors {
 
-    width: 1000px;
-    height: 680px;
+      font-family:"Helvetica", Helvetica, serif;
 
-   .modal-header {
+      z-index: 5 !important;
+      overflow: visible;
+      background-color: #f9af6f;
 
-   }
+      position: absolute;
+      top: 54px;
+      left: 0px;
+      margin-left: 0px;
+      width: 160px;
+      font-size: 12pt;
+      color: rgb(23,23,23);
 
-    .modal-body {
-		margin: -20px 0px 0px 0px; 
-		max-height: 1000px !important;
+      table {
+        width: 100%;
+      }
 
+      header {
+        padding-left: 4px;
+        padding-top: 8px;
+        padding-bottom: 6px;
+        text-align: center;
+      }
+      
+      td {
+        padding: 4px 0px 3px 10px;
+        font-size: 10pt;
+        text-align: left;
+      }
 
-		.arrow-table {
-		    z-index: 500;
-		    position: absolute;
-		    top: 145px;
-		    left: 503px;
-    		}
-
+      .similarity-score {
+        font-size: 22pt;
+        text-align: center;
+        border: 4px solid brown;
+      }
     }
 
-    .modal-footer {
+    .key-stats-header {
+      position: absolute;
+      top: 46pt;
+      left: 125pt;
+      width: 100px;
+      font-size: 12pt;
     }
 
-    .chart-growth {
-
-	position: absolute;
-	top: 220px;
-	left: 25px;
-	width: 385px;
-	height: 185px;
-	/*
-	border: 2px solid #EA4A0B;
-	*/
-	background-color: #F2F2F2;
+    .key-stats-body {
+      position: absolute;
+      top: 70pt;
+      left: 125pt;
+      width: 180pt;
+      height: 82pt;
     }
 
-    .chart-price {
+    .company-name {
+      position: absolute;
 
-	position: absolute;
-	top: 415px;
-	left: 25px;
-	width: 385px;
-	height: 185px;
-	/*
-	border: 2px solid #EA4A0B;
-	*/
-	background-color: #F2F2F2;
+      top: 12pt;
+      left: 8pt;
 
+      width: 300px;
+      font-weight: bold;
+      font-size: 16pt;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-   .close {
-	right: 10px;
-	margin-right: 14px;
-	margin-top: 8px;
-    }
- 
-    .carousel-control {
-	border: 2px solid #EA4A0B;
-	width: 40px;
-	height: 40px;
-	background-color: orange; /* need to change to site orange */
-   }
-    
-    .comparable-table {
-	width: 900px;
-	border: 0px solid black;
-	margin: 40px 0px 0px 12px;
+    .ticker {
+      position: absolute;
+      top: 28pt;
+      left: 8pt;
+      width: 100px;
+      font-size: 9pt;
     }
 
-    .comparable-table-left-pane {
-	width: 450px;
-
-	/*
-	border-right-style: dashed;
-	border-right-width: 1px;
-	border-right-color: grey;
-	*/
-
-
+    .year {
+      position: absolute;
+      top: 13pt;
+      left: 258pt;
+      width: 100px;
+      font-weight: bold;
+      font-size: 14pt;
+      color: rgb(35,35,35);
     }
 
-    .comparable-table-right-pane {
-
-	width: 450px;
-
+    .date {
+      position: absolute;
+      top: 32pt;
+      left: 253pt;
+      width: 90px;
+      font-size: 7pt;
     }
+  }
 
-   .comparable-detail-left {
+  .key-stats {
+    height: 12pt;
+    font-size: 10pt;
+  }
 
-	width: 450px;
-	height: 800px;
-	margin: 0px 0px 0px 20px;
+  .mrkcap-label {
+    position: absolute;
+    top: 0pt;
+    left: 0pt;
+    width: 120pt;
+  }
 
-	background-image: url('box-bgr.png');	
-	background-repeat: no-repeat;
-	background-size: 430px;
+  .price-label {
+    position: absolute;
+    top: 14pt;
+    left: 0pt;
+    width: 120pt;
+  }
 
-	overflow-y: hidden;
-	overflow-x: scroll;
-	white-space:nowrap;
-	font-family:"Helvetica", Helvetica, serif;
-	font-weight: normal;
+  .dividend-label {
+    position: absolute;
+    top: 28pt;
+    left: 0pt;
+    width: 120pt;
+  }
 
-	color: rgb(255,255,255);
+  .eps-label {
+    position: absolute;
+    top: 42pt;
+    left: 0pt;
+    width: 120pt;
+  }
 
-	.factors {
+  .pe-label {
+    position: absolute;
+    top: 56pt;
+    left: 0pt;
+    width: 120pt;
+  }
 
-	    font-family:"Helvetica", Helvetica, serif;
+  .pb-label {
+    position: absolute;
+    top: 70pt;
+    left: 0pt;
+    width: 120pt;
+  }
 
-	    z-index: 5 !important;
-	    background-color: #f9af6f;
+  .mrkcap-value {
+    position: absolute;
+    top: 0pt;
+    left: 115pt;
+    width: 60pt;
+    text-align: right;
+  }
 
-	    position: absolute;
-	    top: 54px;
-	    left: 275px;
-	    width: 176px;
-	    font-size: 12pt;
-	    color: rgb(23,23,23);
+  .price-value {
+    position: absolute;
+    top: 14pt;
+    left: 115pt;
+    width: 60pt;
+    text-align: right;
+  }
 
-	    table {
-		width: 100%;
-	    }
+  .dividend-value {
+    position: absolute;
+    top: 28pt;
+    left: 115pt;
+    width: 60pt;
+    text-align: right;
+  }
 
-	    header {
-		padding-left: 4px;
-		padding-top: 8px;
-		padding-bottom: 6px;
-		text-align: center;
-	    }
-	    
-	    td {
-		padding: 4px 8px 3px 2px;
-		font-size: 10pt;
-	    }
-	    
-	    .col2 {
-		text-align: center;
-	    }
-	}
+  .eps-value {
+    position: absolute;
+    top: 42pt;
+    left: 115pt;
+    width: 60pt;
+    text-align: right;
+  }
 
-	.key-stats-header {
-	    
-	    position: absolute;
-	    top: 46pt;
-	    left: 20pt;
-	    width: 100px;
-	    font-size: 12pt;
-	}
+  .pe-value {
+    position: absolute;
+    top: 56pt;
+    left: 115pt;
+    width: 60pt;
+    text-align: right;
+  }
 
-	.key-stats-body {
-
-	    position: absolute;
-	    top: 70pt;
-	    left: 20pt;
-	    width: 180pt;
-	    height: 82pt;
-	}
-
-	.company-name {
-	    position: absolute;
-	    top: 12pt;
-	    left: 88pt;
-
-	    text-align: right;
-
-	    width: 300px;
-	    font-weight: bold;
-	    font-size: 16pt;
-	    white-space: nowrap;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	}
-
-	.ticker {
-	    position: absolute;
-	    top: 28pt;
-	    left: 238pt;
-
-	    text-align: right;
-	    
-	    width: 100px;
-	    font-size: 9pt;
-	}
-
-	.year {
-	    position: absolute;
-	    top: 13pt;
-	    left: 20pt;
-	    width: 100px;
-	    font-weight: bold;
-	    font-size: 14pt;
-	    color: rgb(35,35,35);
-	}
-
-	.date {
-	    position: absolute;
-	    top: 32pt;
-	    left: 28pt;
-	    width: 90px;
-	    font-size: 7pt;
-	}
-
-    }
-
-    .comparable-detail-right {
-
-		width: 450px;
-		height: 800px;
-		margin: 0px 0px 0px 20px;
-
-		background-image: url('box-bgr-mirrored.png');	
-		background-repeat: no-repeat;
-		background-size: 430px;
-
-		overflow: hidden;
-		white-space:nowrap;
-		font-family:"Helvetica", Helvetica, serif;
-		font-weight: normal;
-
-		color: rgb(255,255,255);
-
-		.factors {
-
-		    font-family:"Helvetica", Helvetica, serif;
-
-		    z-index: 5 !important;
-		    overflow: visible;
-		    background-color: #f9af6f;
-
-		    position: absolute;
-		    top: 54px;
-		    left: 0px;
-		    margin-left: 0px;
-		    width: 160px;
-		    font-size: 12pt;
-		    color: rgb(23,23,23);
-
-		    table {
-			width: 100%;
-		    }
-
-		    header {
-			padding-left: 4px;
-			padding-top: 8px;
-			padding-bottom: 6px;
-			text-align: center;
-		    }
-		    
-		    td {
-			padding: 4px 0px 3px 10px;
-			font-size: 10pt;
-			text-align: left;
-		    }
-
-		    .similarity-score {
-			font-size: 22pt;
-			text-align: center;
-			border: 4px solid brown;
-		    }
-		}
-
-		.key-stats-header {
-		    position: absolute;
-		    top: 46pt;
-		    left: 125pt;
-		    width: 100px;
-		    font-size: 12pt;
-		}
-
-		.key-stats-body {
-		    position: absolute;
-		    top: 70pt;
-		    left: 125pt;
-		    width: 180pt;
-		    height: 82pt;
-		}
-
-		.company-name {
-		    position: absolute;
-
-		    top: 12pt;
-		    left: 8pt;
-
-		    width: 300px;
-		    font-weight: bold;
-		    font-size: 16pt;
-
-		    white-space: nowrap;
-		    overflow: hidden;
-		    text-overflow: ellipsis;
-		}
-
-		.ticker {
-		    position: absolute;
-		    top: 28pt;
-		    left: 8pt;
-		    width: 100px;
-		    font-size: 9pt;
-		}
-
-		.year {
-		    position: absolute;
-		    top: 13pt;
-		    left: 258pt;
-		    width: 100px;
-		    font-weight: bold;
-		    font-size: 14pt;
-		    color: rgb(35,35,35);
-		}
-
-		.date {
-		    position: absolute;
-		    top: 32pt;
-		    left: 253pt;
-		    width: 90px;
-		    font-size: 7pt;
-		}
-    }
-
-    .key-stats {
-		height: 12pt;
-		font-size: 10pt;
-    }
-
-    .mrkcap-label {
-		position: absolute;
-		/*
-		  top: 70pt;
-		  left: 125pt;
-		  */
-		top: 0pt;
-		left: 0pt;
-		width: 120pt;
-    }
-
-    .price-label {
-		position: absolute;
-		top: 14pt;
-		left: 0pt;
-		width: 120pt;
-    }
-
-    .dividend-label {
-		position: absolute;
-		top: 28pt;
-		left: 0pt;
-		width: 120pt;
-    }
-
-    .eps-label {
-	position: absolute;
-	top: 42pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .pe-label {
-	position: absolute;
-	top: 56pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .pb-label {
-	position: absolute;
-	top: 70pt;
-	left: 0pt;
-	width: 120pt;
-    }
-
-    .mrkcap-value {
-	position: absolute;
-	top: 0pt;
-	left: 115pt;
-	width: 60pt;
-	text-align: right;
-    }
-
-    .price-value {
-	position: absolute;
-	top: 14pt;
-	left: 115pt;
-	width: 60pt;
-	text-align: right;
-    }
-
-    .dividend-value {
-	position: absolute;
-	top: 28pt;
-	left: 115pt;
-	width: 60pt;
-	text-align: right;
-    }
-
-    .eps-value {
-	position: absolute;
-	top: 42pt;
-	left: 115pt;
-	width: 60pt;
-	text-align: right;
-    }
-
-    .pe-value {
-	position: absolute;
-	top: 56pt;
-	left: 115pt;
-	width: 60pt;
-	text-align: right;
-    }
-
-    .pb-value {
-	position: absolute;
-	top: 70pt;
-	left: 115pt;
-	width: 60pt;
-	text-align: right;
-    }
-
-
+  .pb-value {
+    position: absolute;
+    top: 70pt;
+    left: 115pt;
+    width: 60pt;
+    text-align: right;
+  }
 }
-
