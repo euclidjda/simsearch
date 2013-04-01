@@ -8,6 +8,10 @@ Simsearch::Application.routes.draw do
   get "register" => "frontdoor#identity"
   get "subscribe" => "frontdoor#identity"
 
+  get "privacy" => "frontdoor#privacy"
+  get "terms" => "frontdoor#terms"
+  get "about" => "frontdoor#about"
+
   post "signin" => "frontdoor#signin"
   post "register" => "frontdoor#register"
   post "signout" => "frontdoor#destroy_session"
