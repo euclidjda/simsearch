@@ -6,6 +6,7 @@ Simsearch::Application.routes.draw do
   get "signin" => "frontdoor#identity"
   get "signout" => "frontdoor#identity"
   get "register" => "frontdoor#identity"
+  get "subscribe" => "frontdoor#identity"
 
   post "signin" => "frontdoor#signin"
   post "register" => "frontdoor#register"
