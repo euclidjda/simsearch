@@ -336,8 +336,6 @@ GET_TARGET_SQL
     gics_clause = "A.#{gics_idx} = '#{gics_code}'"
     target_new  = self.get_field('idxnew')
 
-    logger.debug "*********** gics_level=#{gics_level} gics_idx=#{gics_idx} gics_code=#{gics_code} gics_clause=#{gics_clause}"
-
     target_cap =
       self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
 

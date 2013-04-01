@@ -41,7 +41,7 @@ class Search < ActiveRecord::Base
                                               :fromdate  => ep.fromdate,
                                               :thrudate  => ep.thrudate)
 
-        status.comment    = "Started"
+        status.comment    = "Starting "
         status.num_steps  = nil
         status.cur_step   = nil
         status.complete   = false
@@ -96,8 +96,8 @@ class Search < ActiveRecord::Base
     username = config[Rails.env]["username"]
     password = config[Rails.env]["password"]
 
-    puts "********** host=#{host} database=#{database} " +
-      "username=#{username} password=#{password}"
+    # puts "********** host=#{host} database=#{database} " +
+    #  "username=#{username} password=#{password}"
 
     client = Mysql2::Client.new(:host     => host     ,
                                 :database => database ,

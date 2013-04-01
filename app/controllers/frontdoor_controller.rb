@@ -253,6 +253,8 @@ class FrontdoorController < ApplicationController
       elsif !status.nil?
 
         result = status
+        status.comment += "."
+        status.save
 
       else
 
