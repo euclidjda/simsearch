@@ -3,10 +3,18 @@ Simsearch::Application.routes.draw do
   root :to => 'frontdoor#root'
   
   get "home" => "frontdoor#home"
+  get "signin" => "frontdoor#identity"
+  get "signout" => "frontdoor#identity"
+  get "register" => "frontdoor#identity"
+  get "subscribe" => "frontdoor#identity"
 
-  post "login" => "frontdoor#login"
+  get "privacy" => "frontdoor#privacy"
+  get "terms" => "frontdoor#terms"
+  get "about" => "frontdoor#about"
+
+  post "signin" => "frontdoor#signin"
   post "register" => "frontdoor#register"
-  get "logout" => "frontdoor#destroy_session"
+  post "signout" => "frontdoor#destroy_session"
 
   get "autocomplete_security_ticker" => "frontdoor#autocomplete_security_ticker" # to autocomplete
 

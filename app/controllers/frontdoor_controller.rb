@@ -12,12 +12,28 @@ class FrontdoorController < ApplicationController
     redirect_to :action => :home
   end
 
+  def home
+
+    @form_refresh = nil;
+
+    if current_user
+    end
+  end
+
+  def identity
+    @identity_path = request.fullpath
+    render :identity
+    #render :text => request.fullpath
+  end
+
   def register
     _email = params[:register_email_entry]
     _username = params[:register_username_entry]
     _password = params[:register_password_entry]
 
     if !_email.blank? && !_username.blank? && !_password.blank?
+
+      logger.debug "****** we have all fields"
 
       # create the user
       user = User.create_with_form_data(
@@ -27,9 +43,11 @@ class FrontdoorController < ApplicationController
           )
 
       if user.errors.size > 0
+
         @form_refresh = :register
         @validation_error = user.errors.full_messages[0]
-        render :action => :home, :notice => "Register failed."
+        @identity_path = "/register"
+        render :identity, :notice => "Register failed."
       else
         create_session(user)
         UserMailer.welcome_email(user).deliver
@@ -39,26 +57,30 @@ class FrontdoorController < ApplicationController
     end
   end
 
-  def login
-    _email = params[:login_email_entry];
-    _password = params[:login_password_entry]
+  def signin
+    _email = params[:signin_email_entry];
+    _password = params[:signin_password_entry]
 
     # find the user, if not create one.
     user = User.find_by_email(_email)
 
     if user
-      create_session(user)
+
+      if user.match_password(_password)
+        create_session(user)
+        redirect_to root_path, :notice => "Signed in"
+      else
+        @form_refresh = "signin"
+        @validation_error = "Invalid password"
+        @identity_path = "/signin"
+        render :identity, :notice => "Signin failded. Invalid passowrd."
+      end
+
     else
-      render root_path, :notice => "User not found"
-    end
-
-    redirect_to root_path, :notice => "Signed in"
-  end
-
-  def home
-    @form_refresh = nil;
-
-    if current_user
+      @form_refresh = "signin"
+      @validation_error = "There is no user with this e-mail"
+      @identity_path = "/signin"
+      render :identity, :notice => "Signin failed. User not found."
     end
   end
 

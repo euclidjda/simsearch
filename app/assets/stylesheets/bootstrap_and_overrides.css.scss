@@ -24,8 +24,11 @@ Any media size specific and resize related rules should be here.
   outline: 0px none !important;
 }
 
+@media (min-width: 768px) {
 
-@media (min-width: 767px) {
+  #logo-image-span {
+    display: inline;
+  }
 
  .search-field-and-button {
     width: 70%;
@@ -109,7 +112,7 @@ Any media size specific and resize related rules should be here.
   }
 }
 
-@media (min-width:979px) {
+@media (min-width:980px) {
 
   .target-row {
     height: $summaryRowHeight;
@@ -132,6 +135,27 @@ Any media size specific and resize related rules should be here.
 }
 
 @media (max-width:767px) {
+
+  #logo-image-span {
+    display: block;
+
+    .logo-image {
+      position: relative;
+      margin-left: -130px;
+      left: 50%;
+    }
+
+  }
+
+  .logo-image-container {
+    margin-left: auto;
+    width: 100%;
+    .logo-image {
+      position: relative;
+      left: 50%;
+      margin-left: -130px;
+    }
+  }
 
   hr {
     margin-top: 6px !important;

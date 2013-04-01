@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
   # we declare a validator for the password.
   attr_accessor :password
 
-  #validates_confirmation_of :password
-  #validates_presence_of :password, :on => :create
+  # validates_confirmation_of :password
+  # validates_presence_of :password, :on => :create
 
   validates :email, 
               :uniqueness => { :case_sensitive => false }, 
@@ -36,6 +36,9 @@ class User < ActiveRecord::Base
               :confirmation => true,
               :length       => { :within => 6..30 }
 
+  before_save :encrypt_password
+  after_save :clear_password              
+
   def self.create_with_form_data(args)
    # if args[:password].present?
     #  args[:password_salt] = "123"
@@ -47,21 +50,13 @@ class User < ActiveRecord::Base
       user.provider = "self"  
       user.role = Roles::User
       user.password = args[:password]
-      user.password_hash = BCrypt::Password.create(user.password, :cost => 10)
     end
 
-  end
-
-  def encrypt_password
-    if password.present?
-      self.password_salt = BCrypt::Engine.generate_salt
-      self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
-    end
   end
 
   # return the display name of the user.
   def display_name 
-  	username
+    username
   end
 
   def has_role(_role)
@@ -77,5 +72,24 @@ class User < ActiveRecord::Base
 
     # Return value based on parameter.
     return self['role'] == _role
+  end
+
+  def match_password(input_password="")
+    #remember the password from database.
+    user_password = BCrypt::Password.new(password_hash)
+    user_password == input_password
+  end
+
+private
+
+  def encrypt_password
+    if password.present?
+      # self.password_salt = BCrypt::Engine.generate_salt
+      self.password_hash = BCrypt::Password.create(password, :cost => 10)
+    end
+  end
+
+  def clear_password
+    self.password = nil
   end
 end

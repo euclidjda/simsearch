@@ -11,131 +11,128 @@
       <tr><td><i class="icon-arrow-right"></i></td></tr>
     </table>
 
-    <table class="comparable-table"><tr>
+    <table class="comparable-table">
+      <tr>
 
-	<td class="comparable-table-left-pane">
+        <td class="comparable-table-left-pane">
 
-	  <div id="comparable-carousel-left" class="carousel">
-	    <!-- Carousel items -->
+          <div id="comparable-carousel-left" class="carousel">
 
-	    <div id="carousel-inner-left" class="carousel-inner">
+            <!-- Carousel items -->
+            <div id="carousel-inner-left" class="carousel-inner">
 
-	      <div id="carousel-item-left" 
-		   class="active item comparable-detail-left"
-		   cid="<%= target_fields['cid'] %>"
-		   sid="<%= target_fields['sid'] %>"
-		   pricedate="<%= target_fields['pricedate'] %>">
+              <div id="carousel-item-left" 
+                class="active item comparable-detail-left"
+                cid="<%= target_fields['cid'] %>"
+                sid="<%= target_fields['sid'] %>"
+                pricedate="<%= target_fields['pricedate'] %>">
 
-		<div class="company-name"><%= target_fields['name'] %></div>
-		<div class="ticker"><%= target_fields['ticker'] %></div>
-		<div class="year">TODAY</div>
-		<div class="date">
-		  <% price_date = target_fields['pricedate'] %>
-		  <%= Date::MONTHNAMES[price_date.month][0..2] + 
-		      ' ' + price_date.day.to_s + ', ' + 
-		      price_date.year.to_s %>
-		</div>
-
-
-		<div class="key-stats-header">Key Statistics</div>
-
-		<div class="key-stats-body">
-
-		  <div class="key-stats mrkcap-label">Market Capitalization:</div>
-		  <div class="key-stats mrkcap-value">
-		    <%= number_with_delimiter(target_fields['mrkcap'].to_i,
-			:delimiter => ',') + "M" %>
-		  </div>
-		  
-		  <div class="key-stats price-label">Price/Share:</div>
-		  <div class="key-stats price-value">
-		    <%= sprintf("$%.2f",target_fields['price']); %>
-		  </div>
-		  
-		  <div class="key-stats dividend-label">Dividend:</div>
-		  <div class="key-stats dividend-value">
-		    <%= sprintf("%.2f (%.1f%%)",
-			target_fields['dvpsxm_ttm'],
-			target_fields['yield']*100); %>
-		  </div>
-		  
-		  <div class="key-stats eps-label">Earnings/Share:</div>
-		  <div class="key-stats eps-value">
-		    <%= sprintf("$%.2f",target_fields['epspxq_ttm']); %>
-		  </div>
-		  
-		  <div class="key-stats pe-label">Price-to-Earnings:</div>
-		  <div class="key-stats pe-value">
-		    <%= sprintf("%.2f",target_fields['pe']); %>
-		  </div>
-		  
-		  <div class="key-stats pb-label">Price-to-Book:</div>
-		  <div class="key-stats pb-value">
-		    <%= sprintf("%.2f",target_fields['pb'].to_f) %>
-		  </div>
-
-		</div> <!-- end key-stats-body -->
-
-		<div class="factors">
-		  <table class="factors-table">
-		    <header>Similarity Factors</header>
-		    <tr>
-		      <td>Earnings Yield</td>
-		      <td class="col2">
-			<%= sprintf("%.2f%%",100*target_fields[:ey]) %></td>
-		    </tr><tr>
-		      <td>Return On Capital</td> 
-		      <td class="col2">
-			<%= sprintf("%.2f%%",100*target_fields[:roc]) %></td>
-		    </tr><tr>
-		      <td>Revenue Growth</td> 
-		      <td class="col2">
-			<%= sprintf("%.2f%%",100*target_fields[:grwth]) %></td>
-		    </tr><tr>
-		      <td>EPS Consistency</td> 
-		      <td class="col2">
-			<%= sprintf("%.2f",target_fields[:epscon]); %></td>
-		    </tr><tr>
-		      <td>Liquidity</td> 
-		      <td class="col2">
-			<%= sprintf("%.2f%%",100*target_fields[:ae]) %> </td>
-		    </tr><tr>
-		      <td class="col1">Price Momentum</td> 
-		      <td class="col2">
-			<%= sprintf("%.2f%%",100*target_fields[:mom].to_f) %></td>
-		    </tr>
-		  </table>
-		</div>
+              <div class="company-name"><%= target_fields['name'] %></div>
+              <div class="ticker"><%= target_fields['ticker'] %></div>
+              <div class="year">TODAY</div>
+              <div class="date">
+                <% price_date = target_fields['pricedate'] %>
+                <%= Date::MONTHNAMES[price_date.month][0..2] + 
+                    ' ' + price_date.day.to_s + ', ' + 
+                    price_date.year.to_s %>
+              </div>
 
 
-		<div id="chart-growth-left" class="chart-growth"></div>
-		<div id="chart-price-left" class="chart-price"></div>
-		
-	      </div>
+              <div class="key-stats-header">Key Statistics</div>
 
-	    </div>
-	  </div> <!-- end of carousel-inner-left -->
+                <div class="key-stats-body">
 
-	</td> 
+                  <div class="key-stats mrkcap-label">Market Capitalization:</div>
+                  <div class="key-stats mrkcap-value">
+                    <%= number_with_delimiter(target_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
+                  </div>
+                  
+                  <div class="key-stats price-label">Price/Share:</div>
+                  <div class="key-stats price-value">
+                    <%= sprintf("$%.2f",target_fields['price']); %>
+                  </div>
+                  
+                  <div class="key-stats dividend-label">Dividend:</div>
+                  <div class="key-stats dividend-value">
+                    <%= sprintf("%.2f (%.1f%%)",
+                  target_fields['dvpsxm_ttm'],
+                  target_fields['yield']*100); %>
+                  </div>
+                  
+                  <div class="key-stats eps-label">Earnings/Share:</div>
+                  <div class="key-stats eps-value">
+                    <%= sprintf("$%.2f",target_fields['epspxq_ttm']); %>
+                  </div>
+                  
+                  <div class="key-stats pe-label">Price-to-Earnings:</div>
+                  <div class="key-stats pe-value">
+                    <%= sprintf("%.2f",target_fields['pe']); %>
+                  </div>
+                  
+                  <div class="key-stats pb-label">Price-to-Book:</div>
+                  <div class="key-stats pb-value">
+                    <%= sprintf("%.2f",target_fields['pb'].to_f) %>
+                  </div>
 
-	<td class="comparable-table-right-pane">
+                </div> <!-- end key-stats-body -->
 
-	  <div id="comparable-carousel-right" class="carousel slide">
+                <div class="factors">
+                  <table class="factors-table">
+                    <header>Similarity Factors</header>
+                    <tr>
+                      <td>Earnings Yield</td>
+                      <td class="col2"><%= sprintf("%.2f%%",100*target_fields[:ey]) if target_fields[:ey] %></td>
+                    </tr>
+                    <tr>
+                      <td>Return On Capital</td> 
+                      <td class="col2"><%= sprintf("%.2f%%",100*target_fields[:roc]) if target_fields[:roc] %></td>
+                    </tr>
+                    <tr>
+                      <td>Revenue Growth</td> 
+                      <td class="col2"><%= sprintf("%.2f%%",100*target_fields[:grwth]) if target_fields[:grwth] %></td>
+                    </tr>
+                    <tr>
+                      <td>EPS Consistency</td> 
+                      <td class="col2"><%= sprintf("%.2f",target_fields[:epscon]) if target_fields[:epscon] %></td>
+                    </tr>
+                    <tr>
+                      <td>Liquidity</td> 
+                      <td class="col2"><%= sprintf("%.2f%%",100*target_fields[:ae]) if target_fields[:ae] %> </td>
+                    </tr>
+                    <tr>
+                      <td class="col1">Price Momentum</td> 
+                      <td class="col2"><%= sprintf("%.2f%%",100*target_fields[:mom].to_f) if target_fields[:mom] %></td>
+                    </tr>
+                  </table>
+                </div>
+                <div id="chart-growth-left" class="chart-growth"></div>
+                <div id="chart-price-left" class="chart-price"></div>
+                
+              </div>
 
-	    <!-- Carousel items -->
-	    <div id="carousel-inner-right" class="carousel-inner">
-	    </div>
-	    
-	    <!-- Carousel nav -->
-	    <a class="carousel-control left" 
-	       href="#comparable-carousel-right" data-slide="prev">&lsaquo;</a>
-	    <a class="carousel-control right" 
-	       href="#comparable-carousel-right" data-slide="next">&rsaquo;</a>
-	    
-	  </div>
-	</td>
+            </div>
+          </div> <!-- end of carousel-inner-left -->
 
-    </tr></table>
+        </td> 
+
+        <td class="comparable-table-right-pane">
+
+          <div id="comparable-carousel-right" class="carousel slide">
+
+            <!-- Carousel items -->
+            <div id="carousel-inner-right" class="carousel-inner"></div>
+      
+            <!-- Carousel nav -->
+            <a class="carousel-control left" 
+               href="#comparable-carousel-right" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" 
+               href="#comparable-carousel-right" data-slide="next">&rsaquo;</a>
+            
+          </div>
+        </td>
+
+      </tr>
+    </table>
 
   </div> <!-- end of modal-body -->
 
@@ -150,21 +147,26 @@
 
     <div class="factors">
       <table class="factors-table">
-	<header>Similarity Score </header>
-	<tr>
-	  <td class="factor-ey"></td>
-	  <td class="similarity-score" rowspan="6"> </td>
-	</tr><tr>
-	  <td class="factor-roc"></td>
-	</tr><tr>
-	  <td class="factor-grwth"></td>
-	</tr><tr>
-	  <td class="factor-epscon"></td>
-	</tr><tr>
-	  <td class="factor-ae"></td>
-	</tr><tr>
-	  <td class="factor-momentum"></td>
-	</tr>
+        <header>Similarity Score </header>
+        <tr>
+          <td class="factor-ey"></td>
+          <td class="similarity-score" rowspan="6"> </td>
+        </tr>
+        <tr>
+          <td class="factor-roc"></td>
+        </tr>
+        <tr>
+          <td class="factor-grwth"></td>
+        </tr>
+        <tr>
+          <td class="factor-epscon"></td>
+        </tr>
+        <tr>
+          <td class="factor-ae"></td>
+        </tr>
+        <tr>
+          <td class="factor-momentum"></td>
+        </tr>
       </table>
     </div>
 

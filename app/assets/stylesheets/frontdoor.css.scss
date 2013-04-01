@@ -17,6 +17,18 @@ hr {
   }
 }
 
+#enjoy-the-beta {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.membership-type {
+  background-color: #f5f5f5;
+  padding:8px;
+  text-align: justify;
+}
+
 .euclid-slogan {
   width: 480px;
   margin-left: auto;
@@ -169,6 +181,17 @@ footer {
   /* Internet Explorer */
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
 
+}
+
+    
+.logo-image-container {
+  margin-top: -12px;
+  margin-right: auto;
+
+  .logo-image {
+    width: 260px;
+    min-width: 260px;
+  }
 }
 
 .search-area {

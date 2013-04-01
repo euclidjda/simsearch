@@ -1,0 +1,34 @@
+.credentials {
+
+    max-width: 440px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+
+	h3 {
+		text-align: center;
+	}	
+
+	.modal-body {
+
+		input[type="text"], input[type="email"], input[type="password"] {
+			width: 100%;
+			margin-bottom: 20px;
+			font-size: 18px;
+			height: 24px;
+			letter-spacing: 2px;
+		}
+	}
+
+	.modal-footer {
+		text-align: left;
+		background-color: white;	
+
+
+		.btn {
+			float: right;
+			margin-right: -15px;
+			margin-top: -40px;
+		}				
+	}
+}
