@@ -11,5 +11,15 @@ class CreateSearchStatuses < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    # foreign to help delete/cleanup
+    execute <<-SQL
+      ALTER TABLE search_statuses
+        ADD CONSTRAINT 
+        FOREIGN KEY (search_id)
+        REFERENCES searches (id)
+        ON DELETE CASCADE
+    SQL
+
   end
 end

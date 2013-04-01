@@ -9,5 +9,15 @@ class CreateSearchDetails < ActiveRecord::Migration
       t.float :stk_rtn
       t.float :mrk_rtn
     end
+
+    # foreign to help delete/cleanup
+    execute <<-SQL
+      ALTER TABLE search_details
+        ADD CONSTRAINT 
+        FOREIGN KEY (search_id)
+        REFERENCES searches (id)
+        ON DELETE CASCADE
+    SQL
+
   end
 end

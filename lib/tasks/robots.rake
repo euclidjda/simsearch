@@ -54,4 +54,37 @@ namespace :robots do
 
   end
 
+  # rake robots:search
+  desc "Attempt to force as much of ex_combined into cache as possible"
+  task :force_cache => :environment do
+    
+    dates = ActiveRecord::Base
+      .connection
+      .select_all("SELECT pricedate FROM ex_combined "+
+                  "GROUP BY pricedate "+
+                  "ORDER BY pricedate DESC;")
+
+    dates.each { |daterec|
+
+      pricedate = daterec['pricedate'].to_s
+
+      result = ActiveRecord::Base
+        .connection
+        .select_all("SELECT * FROM ex_combined "+
+                    "WHERE pricedate = '#{pricedate}';") 
+
+      count = 0
+
+      result.each { |record|
+
+        count += 1
+
+      }
+
+      puts "#{pricedate} #{count}"
+
+    }
+
+  end
+
 end
