@@ -44,7 +44,6 @@ namespace :cluster do
 
     end
 
-
   end
 
   def read_cvectors
