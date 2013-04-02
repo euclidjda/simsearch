@@ -4,6 +4,7 @@ namespace :robots do
   desc "Pre-run as many searches as possible!"
   task :search => :environment do
     
+    # THIS SHOULD BE 'YESTERDAY'
     date = "2013-03-01"
 
     count = 0
