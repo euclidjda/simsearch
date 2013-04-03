@@ -44,14 +44,15 @@
                         <td colspan=2>Weights</td>
                     </tr>
                     <% factors  = Factors::all %>
-                    <% defaults = Factors::defaults %>
+                    <% default_factors = Factors::defaults %>
                     <% default_weights  = Factors::default_weights %>
 
                     <% (1..6).each do |index| %>
                     <tr>
                       <td class="col1">
-                        <% fac_val = params["factor#{index}"] || defaults[index-1] %>
-                        <%= select_tag("factor#{index}", options_for_select(factors,fac_val), :class=>"factor-select") %>
+                        <% fac_val = params["factor#{index}"] || default_factors[index-1] %>
+                        <%= select_tag("factor#{index}",options_for_select(factors,fac_val), 
+			    :class=>"factor-select") %>
                       </td>
                       <td class="col2">
                         <% weight_name  = "weight#{index}" %>

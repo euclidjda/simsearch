@@ -143,24 +143,35 @@ class FrontdoorController < ApplicationController
 
         target = SecuritySnapshot::get_target(target_sec.cid,target_sec.sid)
 
-        factors = [params[:factor1],params[:factor2],params[:factor3],
-                   params[:factor4],params[:factor5],params[:factor6]]
-
+        # we need to convert param strings to sym
+        factor_strings = [params[:factor1],params[:factor2],params[:factor3],
+                           params[:factor4],params[:factor5],params[:factor6]]
+        
+        factors = factor_strings.map { |f| f.blank? ? nil : f.to_sym }
+        
         weights = [params[:weight1],params[:weight2],params[:weight3],
                    params[:weight4],params[:weight5],params[:weight6]]
 
-        factor_keys = factors.map { |f| f.to_sym }
+        default_factors = Factors::defaults
+        default_weights = Factors::default_weights
+
+        # Replace nils with defaults
+        factors.each_index { |i| factors[i] = default_factors[i] if factors[i].nil? } 
+        weights.each_index { |i| weights[i] = default_weights[i] if weights[i].nil? }
+
+        gicslevel = params[:gicslevel] || 'sec'
+        newflag   = params[:newflag]   || 1
 
         # Get the target's factor fields
-        @target_fields = target.to_hash( :factor_keys => factor_keys )
+        @target_fields = target.to_hash( :factor_keys => factors )
 
         @epochs = Epoch::default_epochs_array()
 
         search_type =
-          SearchType::find_or_create(:factors   => factor_keys        ,
-                                     :weights   => weights            ,
-                                     :gicslevel => params[:gicslevel] ,
-                                     :newflag   => params[:newflag]   )
+          SearchType::find_or_create(:factors   => factors    ,
+                                     :weights   => weights    ,
+                                     :gicslevel => gicslevel  ,
+                                     :newflag   => newflag    )
 
         @the_search = Search::exec( :target      => target      ,
                                     :epochs      => @epochs     ,
