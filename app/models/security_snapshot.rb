@@ -133,12 +133,13 @@ class SecuritySnapshot < Tableless
     vec0.each_with_index do |val0,index|
 
       val1 = vec1[index]
-      wght = Factors::intrinsic_weight(_factor_keys[index])
+      int_wght = Factors::intrinsic_weight(_factor_keys[index])
+      usr_wght = _user_weights[index]
 
       next if val0.nil?
 
       if !val1.nil?
-        dist += wght * ( val0 - val1 ) * ( val0 - val1 )
+        dist += ( usr_wght * int_wght * ( val0 - val1 ) * ( val0 - val1 ) )
         dims += 1
       else
         dist = -1

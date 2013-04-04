@@ -17,17 +17,17 @@ class Factors
     :ae     => 4.54 ,
     :mom    => 5.26
   }
-  
-  @@Defaults = [:ey,:roc,:grwth,:epscon,:ae,:mom]
 
   @@DefaultUserWeights = [5,5,5,5,5,5]
+  
+  @@DefaultFactors = [:ey,:roc,:grwth,:epscon,:ae,:mom]
 
   def self.all
     return @@FactorKeys
   end
 
   def self.defaults
-    return @@Defaults
+    return @@DefaultFactors
   end
 
   def self.default_weights
@@ -37,7 +37,5 @@ class Factors
   def self.intrinsic_weight(factor_key)
     return @@IntrinsicWeight[factor_key]
   end
-
-  @@factor_weights = [ 31.0, 6.5, 3.9, 1.8, 4.54, 5.26]
 
 end

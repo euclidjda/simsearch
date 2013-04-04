@@ -122,6 +122,8 @@ function populate_panels(row_obj,data,i) {
     // clone the invisible template and drop data into clone
     panel = $('#comparable-panel-template').clone();
     panel.attr('id','panel'+i);
+    panel.hover(function(){ $(this).addClass('comparable-hover') },
+	        function(){ $(this).removeClass('comparable-hover') } );
 
     // TODO: JDA Not sure the best way to truncate the string here
     // we really just want it to not flow over the panel
@@ -129,9 +131,16 @@ function populate_panels(row_obj,data,i) {
     panel_name.html(data[i].name);
     panel_name.tooltip({
       placement: 'bottom',
-      title: 'Click to see details for ' + data[i].name,
+      title: 'Click to see detailed factor comparison to ' + data[i].name,
       container: "body"
     }); 
+    panel_name.click(function() {
+
+        $('#comparable-modal').modal('show');
+        var idx = 10 * row + col;
+
+        $('#comparable-carousel-right').carousel(idx);
+    });
 
     var ticker = data[i].ticker;
     var exchg  = exchange_code_to_name(data[i].exchg,ticker);
@@ -168,13 +177,6 @@ function populate_panels(row_obj,data,i) {
     // was cloned was invisible)
     panel.show();
 
-    panel.click(function() {
-
-        $('#comparable-modal').modal('show');
-        var idx = 10 * row + col;
-
-        $('#comparable-carousel-right').carousel(idx);
-    });
 
     // This packs  the panel into the DOM so it can be seenn
     var theList = $(row_obj).find("ul");

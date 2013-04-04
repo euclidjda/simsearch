@@ -234,6 +234,13 @@ html>/**/body #cuatro {
 			padding-top: 60px;
 		}
 
+		.comparable-hover {
+
+		    border: 1px solid orange !important;
+		    background-color: $panelColorHover !important;
+
+		}
+
 		.comparable {
 		    background-color: $panelColor;
 		    margin-top: 14px;

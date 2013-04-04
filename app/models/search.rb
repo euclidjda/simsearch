@@ -82,6 +82,13 @@ class Search < ActiveRecord::Base
     factor_keys = search_type.factor_keys()
     weights     = search_type.weight_array()
 
+    # normalize weights
+    weight_sum = weights.inject{ |sum,n| sum + n }
+    weights.map! { |w| w / weight_sum } if (weight_sum > 0)
+
+    # weight_str = weights.join(',')
+    # logger.debug "****** normalized weights are #{weight_str}"
+
     fromdate = nil
     thrudate = _epoch.fromdate-1
 
@@ -173,6 +180,10 @@ class Search < ActiveRecord::Base
     calculate_summary()
 
     puts "*********** SEARCH IS DONE"
+
+  end
+
+  def get_candidates( )
 
   end
 

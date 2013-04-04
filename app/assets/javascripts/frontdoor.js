@@ -9,6 +9,15 @@ $(document).ready(function() {
 
 });
 
+function sliderChange(event,ui) {
+
+    var index = $(this).attr('index');
+    var value = ui.value;
+
+    $('#factor-label'+index).html(value);
+    $('#factor-hidden'+index).attr('value',value);
+}
+
 function init_frontdoor() {
 
     $('#custom-search-config').click( function() {
@@ -30,12 +39,35 @@ function init_frontdoor() {
 
     for (var i=1; i<= 6; i++) { 
 
+	var slider_value = $('#factor-hidden'+i).attr('value');
+
         $('#factor-slider'+i).slider(
-            { min: 0,
-              max: 10,
-              value: 5
+            { min:   0,
+              max:   10,
+	      step:  1,
+	      value: slider_value,
+	      slide: sliderChange
             });
     }
+
+    $('#restore-defaults').click( function() {
+
+	var weight = $('.factor-hidden').attr('default');
+
+	$('.factor-label').html(weight);
+	$('.factor-slider').slider('value',weight);
+	$('.factor-hidden').attr('value',weight);
+
+	$('#factor1').val($('#factor1').attr('default'))
+	$('#factor2').val($('#factor2').attr('default'))
+	$('#factor3').val($('#factor3').attr('default'))
+	$('#factor4').val($('#factor4').attr('default'))
+	$('#factor5').val($('#factor5').attr('default'))
+	$('#factor6').val($('#factor6').attr('default'))
+
+	$('.industry-select').val($('.industry-select').attr('default'));
+
+    });
 
 }
 
