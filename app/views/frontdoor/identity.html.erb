@@ -26,10 +26,7 @@ $(document).ready(function() {
 
 </script>
 
-<div class="logo-image-container">
-  <%= link_to( image_tag("logoV3.png", :class =>"logo-image"), "/") %>
-</div> 
-
+<%= render "frontdoor/searchbar" %>
 
 <% case @identity_path %>
 <% when "/register"%>

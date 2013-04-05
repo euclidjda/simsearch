@@ -136,6 +136,9 @@ class SecuritySnapshot < Tableless
       int_wght = Factors::intrinsic_weight(_factor_keys[index])
       usr_wght = _user_weights[index]
 
+      # assert !int_wght.nil?
+      # assert !usr_wght.nil?
+
       next if val0.nil?
 
       if !val1.nil?
@@ -272,9 +275,25 @@ class SecuritySnapshot < Tableless
 
       factor_value = equity / assets if (!equity.nil? && assets > 0)
 
-    when :mom # Momentum
+    when :mom1 # Momentum
+
+      factor_value = get_field('pch1m')
+
+    when :mom3 # Momentum
+
+      factor_value = get_field('pch3m')
+
+    when :mom6 # Momentum
 
       factor_value = get_field('pch6m')
+
+    when :mom9 # Momentum
+
+      factor_value = get_field('pch9m')
+
+    when :mom12 # Momentum
+
+      factor_value = get_field('pch12m')
 
     else
       

@@ -1,0 +1,105 @@
+<div class="search-area">
+  <div class="full-search-bar">
+    <ul>
+      <li> 
+        <span id="logo-image-span">
+          <%= link_to( image_tag("logoV3_beta.png", :class =>"logo-image"), "/") %>
+        </span> 
+      </li>
+      <li>
+        <span>
+          <form action="<%= search_path %>" 
+            method="post" 
+            class="search-bar-form" id="search-bar-form">
+
+            <div class = "search-field-and-button">
+
+              <%= text_field_tag(:ticker, params[:ticker], 
+                  :placeholder => "Enter a stock symbol, e.g. IBM",
+                  :id => "ticker",
+                  :class=>"ticker-entry")
+              %>
+
+              <button class ="btn btn-small btn-primary search-button">
+                <i class="icon-search icon-white"></i>
+              </button>              
+              
+              <a class="custom-search-config" id="custom-search-config">Custom Search</a>
+
+            </div>
+            
+            <div id="custom-search-modal" class="modal hide" tab-index="-1"
+              role="dialog" aria-hidden="true" data-backdrop="false">
+
+              <div class="modal-body">
+
+                <button type="button" class="close" 
+                  aria-hidden="true" 
+                  onclick="$('#custom-search-modal').modal('hide');">&times;</button>
+
+                <div>
+                  <table id="factor-table"> 
+                    <tr class="header">
+                        <td>Factors</td>
+                        <td colspan=2>Weights</td>
+                    </tr>
+                    <% factors  = Factors::all %>
+                    <% default_factors = Factors::defaults %>
+                    <% default_weights  = Factors::default_weights %>
+
+                    <% (1..6).each do |index| %>
+                    <tr>
+                      <td class="col1">
+                        <% fac_val = params["factor#{index}"] || default_factors[index-1] %>
+                        <%= select_tag("factor#{index}",options_for_select(factors,fac_val), 
+			    :class=>"factor-select",
+                        :default=>default_factors[index-1] ) %>
+                      </td>
+                      <td class="col2">
+                        <% weight_name  = "weight#{index}" %>
+                        <% weight_value = params[weight_name] || default_weights[index-1] %>
+                        <input type="hidden" 
+			       class="factor-hidden"
+			       id="factor-hidden<%= index %>"
+                               name="<%= weight_name %>"
+                               value="<%= weight_value %>"
+			       default="<%= default_weights[index-1] %>">
+                        <div id="factor-slider<%= index %>"  index="<%= index %>"
+                          class="factor-slider" value="<%= weight_value %>"></div>
+                      </td>
+                      <td class="col3 factor-label"
+			  id="factor-label<%= index %>"><%= weight_value %></td>
+                    </tr>
+
+                    <% end %>
+
+                  </table>
+                  <br>
+
+                  <% gicslevel = params[:gicslevel] || 'sector' %>
+
+                  <%= label_tag(:gicslevel,
+                    "GICS Industry Classification Restriction:") %>
+
+                  <%= select_tag(:gicslevel,
+                      options_for_select( [ ['Level 1: Sector', 'sec'],
+                      ['Level 2: Industry Group', 'grp'],['Level 3: Industry',
+                      'ind'],['Level 4: Sub-Industry','sub']],gicslevel),
+                      :class=>"industry-select",
+		  :default=>'sec') %>
+		  
+                  <input type="hidden" name="newflag" value="1">
+
+                </div>
+
+                <a id="restore-defaults">Restore Defaults</a>
+              </div>
+            </div>
+          </form>
+        </span> 
+      </li>
+    </ul>
+  </div><!--/.full-search-bar -->
+</div><!--/.search-area -->
+
+<hr><br>

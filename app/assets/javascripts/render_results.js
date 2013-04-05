@@ -243,7 +243,7 @@ function populate_panels(row_obj,data,i) {
         .html(EGUI.fmtAsNumber(data[i].ae*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.factor-momentum')
-        .html(EGUI.fmtAsNumber(data[i].mom*100,{fmtstr:"%.2f%%"}));
+        .html(EGUI.fmtAsNumber(data[i].mom6*100,{fmtstr:"%.2f%%"}));
 
     detail_item.find('.similarity-score')
         .html(EGUI.fmtAsNumber(sim_score,{fmtstr:"%.2f"}));

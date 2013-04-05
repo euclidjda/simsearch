@@ -29,8 +29,26 @@
 	width: auto;
 	margin-right: auto;
 	margin-left: auto;
+
+	.disclaimer {
+	
+	    margin: 10px 20px 20px 20px;
+	    padding: 5px 5px 5px 5px;
+	    border: 2px solid grey;    
+	    -webkit-border-radius: 6px 6px 6px 6px;
+	    -moz-border-radius: 6px 6px 6px 6px;
+	    border-radius: 6px 6px 6px 6px;
+	    
+	}
+
+
 }
 
 .content-inner {
 	padding: 25px 20px 25px;
 }
+
+.patent {
+    font-family: "Courier";
+}
+
