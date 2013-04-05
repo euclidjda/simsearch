@@ -1,12 +1,23 @@
 class Factors
 
+  # TODO: NEW FACTORS
+  # Current Ratio, Quick Ratio, Revenue Growth 1 Year
+
   @@FactorKeys = [
-                  ['Earnings Yield',:ey],
-                  ['Return On Capital',:roc],
+                  ['Earnings Yield (EBIT)',:ey],
+                  ['Price to Earnings',:pe],
+                  ['Price to Book',:pb],
+                  ['Dividend Yield',:divy],
+                  ['Return On Capital (EBIT)',:roc],
+                  ['Return On Equity (EBIT)',:roe],
+                  ['Return On Assets (EBIT)',:roa],
                   ['Gross Margin',:gmar],
+                  ['Operating Margin',:omar],
+                  ['Net Margin',:nmar],
                   ['Revenue Growth (4yr)',:grwth],
                   ['EPS Growth Consist. (10yr)',:epscon],
-                  ['Equity/Assets',:ae],
+                  ['Debt to Equity',:de],
+                  ['Equity to Assets',:ae],
                   ['Price Momentum (1mo)',:mom1],
                   ['Price Momentum (3mo)',:mom3],
                   ['Price Momentum (6mo)',:mom6],
@@ -16,10 +27,18 @@ class Factors
 
   @@IntrinsicWeight = {
     :ey     => 31.0 ,
+    :pe     =>  0.1 ,
+    :pb     =>  0.5 ,
+    :divy   => 50.0 ,
+    :roe    =>  6.5 ,
+    :roa    =>  6.5 ,
     :roc    =>  6.5 ,
     :gmar   =>  4.0 ,
+    :omar   =>  4.0 ,
+    :nmar   =>  4.0 ,
     :grwth  =>  3.9 ,
     :epscon =>  1.8 ,
+    :de     => 4.54 ,
     :ae     => 4.54 ,
     :mom1   => 5.26 ,
     :mom3   => 5.26 ,

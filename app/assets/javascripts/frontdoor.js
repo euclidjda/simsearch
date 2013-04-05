@@ -33,7 +33,7 @@ function init_frontdoor() {
         $('#custom-search-modal').css('top',top);
         $('#custom-search-modal').css('width',width);
 
-        $('#custom-search-modal').modal();
+        $('#custom-search-modal').modal('show');
 
     });
 
