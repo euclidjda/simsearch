@@ -1,7 +1,7 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search
+  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search, :the_ticker
 
   @target_fields = nil
   @search_ids = nil
@@ -84,6 +84,10 @@ class FrontdoorController < ApplicationController
     end
   end
 
+  def share
+
+  end
+
   def destroy_session
     session[:user_id] = nil
     redirect_to root_path, :notice => 'Signed out'
@@ -123,6 +127,8 @@ class FrontdoorController < ApplicationController
 
       target_cid = @the_search.cid()
       target_sid = @the_search.sid()
+
+      @the_search.ticker = ExSecurity.find_by_cidsid(target_cid, target_sid).ticker
 
       search_type = SearchType.where( :id => @the_search.type_id ).first;
 
@@ -173,12 +179,22 @@ class FrontdoorController < ApplicationController
                                      :gicslevel => gicslevel  ,
                                      :newflag   => newflag    )
 
-        @the_search = Search::exec( :target      => target      ,
-                                    :epochs      => @epochs     ,
-                                    :search_type => search_type ,
-                                    :limit       => 10          ,
-                                    :async       => true        )
+          @the_search = Search::exec( :target      => target      ,
+                                      :epochs      => @epochs     ,
+                                      :search_type => search_type ,
+                                      :limit       => 10          ,
+                                      :async       => true        )
 
+          @the_search.ticker = ticker_value
+      end
+
+
+      # Add the information to the session so we can share the last search
+      # across get/post requests.
+      if the_search 
+        session[:search_id] = the_search.id
+        session[:search_type] = the_search.type_id
+        session[:ticker] = the_search.ticker
       end
 
     end

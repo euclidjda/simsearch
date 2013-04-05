@@ -12,6 +12,8 @@ class CreateSearches < ActiveRecord::Migration
       t.float :mean
       t.float :max
       t.float :min
+      t.time :sharedat
+      t.time :savedat
 
       t.timestamps
     end

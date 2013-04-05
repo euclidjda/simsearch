@@ -242,6 +242,7 @@ footer {
           text-decoration: underline;
           color: rgb(0, 136, 204);   
           font-size: 13px;       
+          cursor: pointer;
         }
       }
     }
@@ -362,14 +363,14 @@ footer {
       }
 
       .col3 {
-	text-align: center;
+        text-align: center;
       }
-
     }
 
     #restore-defaults {
       float: right;
       vertical-align: bottom;
+      cursor: pointer;
     }
   }
 }

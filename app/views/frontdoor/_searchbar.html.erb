@@ -11,20 +11,30 @@
           <form action="<%= search_path %>" 
             method="post" 
             class="search-bar-form" id="search-bar-form">
-
             <div class = "search-field-and-button">
+              <input 
+                name="authenticity_token" 
+                type="hidden" 
+                value="" />
 
               <%= text_field_tag(:ticker, params[:ticker], 
                   :placeholder => "Enter a stock symbol, e.g. IBM",
                   :id => "ticker",
-                  :class=>"ticker-entry")
+                  :class => "ticker-entry",
+                  :value => session[:ticker] )
               %>
 
               <button class ="btn btn-small btn-primary search-button">
                 <i class="icon-search icon-white"></i>
               </button>              
               
-              <a class="custom-search-config" id="custom-search-config">Custom Search</a>
+              <a class="custom-search-config" id="custom-search-config">
+                <% if session[:custom_search?] %>
+                  Customized search... 
+                <% else %>
+                  Customize Search
+                <% end %>
+              </a>
 
             </div>
             
@@ -51,24 +61,25 @@
                     <tr>
                       <td class="col1">
                         <% fac_val = params["factor#{index}"] || default_factors[index-1] %>
-                        <%= select_tag("factor#{index}",options_for_select(factors,fac_val), 
-			    :class=>"factor-select",
-                        :default=>default_factors[index-1] ) %>
+                        <%= select_tag("factor#{index}",
+                                        options_for_select(factors,fac_val), :class=>"factor-select",
+                                        :default=>default_factors[index-1] ) 
+                        %>
                       </td>
                       <td class="col2">
                         <% weight_name  = "weight#{index}" %>
                         <% weight_value = params[weight_name] || default_weights[index-1] %>
                         <input type="hidden" 
-			       class="factor-hidden"
-			       id="factor-hidden<%= index %>"
+                               class="factor-hidden"
+                               id="factor-hidden<%= index %>"
                                name="<%= weight_name %>"
                                value="<%= weight_value %>"
-			       default="<%= default_weights[index-1] %>">
+                               default="<%= default_weights[index-1] %>">
                         <div id="factor-slider<%= index %>"  index="<%= index %>"
-                          class="factor-slider" value="<%= weight_value %>"></div>
+                              class="factor-slider" value="<%= weight_value %>"></div>
                       </td>
-                      <td class="col3 factor-label"
-			  id="factor-label<%= index %>"><%= weight_value %></td>
+                      <td class="col3 factor-label" 
+                          id="factor-label<%= index %>"><%= weight_value %></td>
                     </tr>
 
                     <% end %>
@@ -82,12 +93,15 @@
                     "GICS Industry Classification Restriction:") %>
 
                   <%= select_tag(:gicslevel,
-                      options_for_select( [ ['Level 1: Sector', 'sec'],
-                      ['Level 2: Industry Group', 'grp'],['Level 3: Industry',
-                      'ind'],['Level 4: Sub-Industry','sub']],gicslevel),
-                      :class=>"industry-select",
-		  :default=>'sec') %>
-		  
+                      options_for_select( 
+                        [ 
+                          ['Level 1: Sector', 'sec'],
+                          ['Level 2: Industry Group', 'grp'],
+                          ['Level 3: Industry','ind'],
+                          ['Level 4: Sub-Industry','sub']
+                        ],
+                        gicslevel), :class=>"industry-select", :default=>'sec') %>
+      
                   <input type="hidden" name="newflag" value="1">
 
                 </div>

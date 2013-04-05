@@ -1,5 +1,6 @@
 class Search < ActiveRecord::Base
   attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id, :mean, :count, :wins, :min, :max
+  attr_accessor :ticker; # non-db attribute just used for web server and client.
 
   def self.exec(_args)
 
