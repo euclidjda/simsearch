@@ -17,5 +17,5 @@
 //= require_tree .
 
 $(function() {
-
+	$('input[name=authenticity_token]').val($('meta[name=csrf-token]').attr('content'))
 });

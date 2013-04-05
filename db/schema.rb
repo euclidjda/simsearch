@@ -276,6 +276,8 @@ ActiveRecord::Schema.define(:version => 20130321030534) do
     t.float   "mrk_rtn"
   end
 
+  add_index "search_details", ["search_id"], :name => "search_id"
+
   create_table "search_statuses", :force => true do |t|
     t.integer  "search_id"
     t.date     "fromdate"
@@ -287,6 +289,8 @@ ActiveRecord::Schema.define(:version => 20130321030534) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "search_statuses", ["search_id"], :name => "search_id"
 
   create_table "search_types", :force => true do |t|
     t.string   "factors"
@@ -309,6 +313,8 @@ ActiveRecord::Schema.define(:version => 20130321030534) do
     t.float    "mean"
     t.float    "max"
     t.float    "min"
+    t.time     "sharedat"
+    t.time     "savedat"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
