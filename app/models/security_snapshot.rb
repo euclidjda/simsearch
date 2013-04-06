@@ -176,7 +176,7 @@ class SecuritySnapshot < Tableless
       if (nearest.nil? || (dist <= min_dist))
         min_dist = dist
         nearest  = factors
-      end
+       end
 
     end
 
