@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "web-mailer@euclidean.com"
+  default from: "Euclidean Fundamentals"
 
   def welcome_email(user)
     @user = user
