@@ -9,18 +9,37 @@ $(document).ready(function() {
 
 });
 
-function sliderChange(event,ui) {
+function slider_change(event,ui) {
 
     var index = $(this).attr('index');
     var value = ui.value;
+    $('#weight-hidden'+index).attr('value',value);
 
-    $('#factor-label'+index).html(value);
-    $('#factor-hidden'+index).attr('value',value);
+    update_weight_labels()
+}
+
+function update_weight_labels() {
+    var sum = 0;
+    
+    for (var i=1; i <= 6; i++) {
+	sum += parseInt( $('#weight-hidden'+i).attr('value') );
+    }
+    
+    for (var i=1; i <= 6; i++) {
+
+	var value  = parseInt( $('#weight-hidden'+i).attr('value') );
+	var weight = value / sum;
+	$('#weight-label'+i).html( sprintf("%.1f%%",100*weight) );
+	  
+    }
+	
 }
 
 function init_frontdoor() {
 
     $('#custom-search-config').click( function() {
+
+	update_weight_labels();
 
         var offset = $('#ticker').offset();
         var width  = $('#ticker').outerWidth();
@@ -39,24 +58,25 @@ function init_frontdoor() {
 
     for (var i=1; i<= 6; i++) { 
 
-	var slider_value = $('#factor-hidden'+i).attr('value');
+	var slider_value = $('#weight-hidden'+i).attr('value');
 
-        $('#factor-slider'+i).slider(
+        $('#weight-slider'+i).slider(
             { min:   0,
               max:   10,
 	      step:  1,
 	      value: slider_value,
-	      slide: sliderChange
+	      slide: slider_change
             });
     }
 
     $('#restore-defaults').click( function() {
 
-	var weight = $('.factor-hidden').attr('default');
+	var weight = $('.weight-hidden').attr('default');
 
-	$('.factor-label').html(weight);
-	$('.factor-slider').slider('value',weight);
-	$('.factor-hidden').attr('value',weight);
+	$('.weight-slider').slider('value',weight);
+	$('.weight-hidden').attr('value',weight);
+
+	update_weight_labels();
 
 	$('#factor1').val($('#factor1').attr('default'))
 	$('#factor2').val($('#factor2').attr('default'))
