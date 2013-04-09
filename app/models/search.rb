@@ -70,14 +70,7 @@ class Search < ActiveRecord::Base
 
   def create_search_details(_epochs)
 
-    cur_epoch = nil
-
-    if _epochs.is_a? Array
-      cur_epoch = _epochs.shift
-      self.delay.create_search_details(_epochs) if !_epochs.empty?
-    else
-      cur_epoch = _epochs
-    end
+    cur_epoch = (_epochs.is_a? Array) ? _epochs.shift : _epochs
 
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
@@ -190,6 +183,10 @@ class Search < ActiveRecord::Base
     status.save()
 
     calculate_summary()
+
+    if ((_epochs.is_a? Array) && !_epochs.empty?)
+      self.delay.create_search_details(_epochs) 
+    end
 
     puts "*********** SEARCH IS DONE"
 
