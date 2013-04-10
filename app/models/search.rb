@@ -72,6 +72,10 @@ class Search < ActiveRecord::Base
 
     cur_epoch = (_epochs.is_a? Array) ? _epochs.shift : _epochs
 
+    if ((_epochs.is_a? Array) && !_epochs.empty?)
+      self.delay.create_search_details(_epochs) 
+    end
+
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
     limit = 10
@@ -182,11 +186,7 @@ class Search < ActiveRecord::Base
     status.complete = true
     status.save()
 
-    calculate_summary()
-
-    if ((_epochs.is_a? Array) && !_epochs.empty?)
-      self.delay.create_search_details(_epochs) 
-    end
+    # calculate_summary()
 
     puts "*********** SEARCH IS DONE"
 
@@ -289,7 +289,7 @@ class Search < ActiveRecord::Base
 
     self.with_lock do
 
-      self.mean  = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+      self.mean  = (weight_sum > 0) ? (values_sum / weight_sum ) : nil
       self.count = tot_count
       self.wins  = win_count
       self.min   = worst
