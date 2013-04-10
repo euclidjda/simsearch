@@ -52,8 +52,9 @@ class Search < ActiveRecord::Base
       }
 
       if ( _async )
-
-          search.delay.create_search_details(_epochs)
+        
+        Delayed::Worker.max_attempts = 1
+        search.delay.create_search_details(_epochs)
 
       else
 
