@@ -103,7 +103,7 @@ class Search < ActiveRecord::Base
 
     candidates = Array::new()
 
-    batch_size = 356 # batch size is in days (not records)
+    batch_size = 365*11 # batch size is in days (not records)
 
     # create mysql connection. no need for pooling here.
     config   = Rails.configuration.database_configuration
