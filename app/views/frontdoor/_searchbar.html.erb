@@ -28,7 +28,7 @@
                 <i class="icon-search icon-white"></i>
               </button>              
               
-              <a class="custom-search-config" id="custom-search-config">
+              <a class="custom-search-config" id="custom-search-config" >
                 <% if session[:custom_search?] %>
                   Customized search... 
                 <% else %>
@@ -39,13 +39,13 @@
             </div>
             
             <div id="custom-search-modal" class="modal hide" tab-index="-1"
-              role="dialog" aria-hidden="true" data-backdrop="false">
+		 role="dialog" data-backdrop="true">
 
               <div class="modal-body">
 
                 <button type="button" class="close" 
-                  aria-hidden="true" 
-                  onclick="$('#custom-search-modal').modal('hide');">&times;</button>
+			onclick="$('#custom-search-modal').modal('hide')"
+                  aria-hidden="true">&times;</button>
 
                 <div>
                   <table id="factor-table"> 
@@ -105,8 +105,17 @@
                   <input type="hidden" name="newflag" value="1">
 
                 </div>
+		<br>
+		 <div>
+		   
+		   <button class ="btn btn-small btn-primary search-button">
+                     <i class="icon-search icon-white"></i>
+		   </button>              
 
-                <a id="restore-defaults">Restore Defaults</a>
+                   <a id="restore-defaults">Restore Defaults</a>
+
+		 </div>
+
               </div>
             </div>
           </form>

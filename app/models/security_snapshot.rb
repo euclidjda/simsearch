@@ -176,7 +176,7 @@ class SecuritySnapshot < Tableless
       if (nearest.nil? || (dist <= min_dist))
         min_dist = dist
         nearest  = factors
-      end
+       end
 
     end
 
@@ -244,6 +244,46 @@ class SecuritySnapshot < Tableless
       factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
       factor_value = 0.0 if (factor_value && factor_value < 0)
 
+    when :pe # Price to Earnings
+
+      price    = get_field('price').to_f
+      earnings = get_field('epspxq_ttm').to_f
+
+      factor_value = price / earnings if (!price.nil? && earnings != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
+    when :pb # Price to Book
+
+      price   = get_field('price').to_f * get_field('csho').to_f
+      bookval = get_field('seqq_mrq').to_f
+
+      factor_value = price / bookval if (!price.nil? && bookval != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
+     when :divy # Dividend Yield
+
+      price    = get_field('price').to_f
+      dividend = get_field('dvpsxm_ttm').to_f
+
+      factor_value = dividend  / price if (!dividend.nil? && price != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
+    when :roe # Return On Equity
+
+      oiadp  = get_field('oiadpq_ttm')
+      equity = get_field('seqq_mrq').to_f
+
+      factor_value = oiadp / equity if (!oiadp.nil? && equity != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+      
+    when :roa # Return On Assets
+
+      oiadp  = get_field('oiadpq_ttm')
+      assets = get_field('atq_mrq').to_f
+
+      factor_value = oiadp / assets if (!oiadp.nil? && assets != 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
     when :roc # Return On Capital
 
       oiadp   = get_field('oiadpq_ttm')
@@ -260,6 +300,22 @@ class SecuritySnapshot < Tableless
       factor_value = (revenue - cogs)/revenue if (revenue > 0)
       factor_value = 0.0 if (factor_value && factor_value < 0)
 
+    when :omar # Op Margin
+
+      revenue = get_field('saleq_ttm').to_f
+      ebit    = get_field('oiadpq_ttm').to_f
+      
+      factor_value = ebit/revenue if (!ebit.nil? && revenue > 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
+    when :nmar # Net Margin
+
+      revenue = get_field('saleq_ttm').to_f
+      net     = get_field('epspxq_ttm').to_f * get_field('csho')
+      
+      factor_value = net/revenue if (!net.nil? && revenue > 0)
+      factor_value = 0.0 if (factor_value && factor_value < 0)
+
     when :grwth # Revenue Growth
 
       factor_value = get_field('saleq_4yISgx')
@@ -267,6 +323,13 @@ class SecuritySnapshot < Tableless
     when :epscon # Consistency of EPS growth
 
       factor_value = get_field('epspiq_10yISr')
+
+    when :de # Debt to Equity
+
+      debt   = get_field('dlcq_mrq').to_f + get_field('dlttq_mrq').to_f
+      equity = get_field('seqq_mrq').to_f
+
+      factor_value = debt / equity if (!debt.nil? && equity > 0)
 
     when :ae # Assets to Equity (Leverage)
 
