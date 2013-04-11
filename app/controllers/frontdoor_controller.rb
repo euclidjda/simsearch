@@ -14,7 +14,10 @@ class FrontdoorController < ApplicationController
 
   def home
 
+    #reset state.
     @form_refresh = nil;
+    session[:search_id] = nil
+    session[:ticker] = nil
 
     if current_user
     end
@@ -23,7 +26,6 @@ class FrontdoorController < ApplicationController
   def identity
     @identity_path = request.fullpath
     render :identity
-    #render :text => request.fullpath
   end
 
   def register
@@ -84,8 +86,13 @@ class FrontdoorController < ApplicationController
     end
   end
 
-  def share
-
+  def searches
+    if current_user
+      @searches_path = request.fullpath
+      render :searches
+    else
+      render :text => "need to sign in. this is here to protect for random get calls."
+    end
   end
 
   def destroy_session
