@@ -1,0 +1,92 @@
+<%= render "frontdoor/searchbar" %>
+
+<div class="container-fluid">
+  
+  <div id="searches-container" class="span4">
+
+    <div class="row-fluid">
+      
+      <div class="tabbable"> 
+        <ul class="nav nav-tabs" id="tablinks">
+          <li class="active"><a href="#history">History</a></li>
+          <li><a href="#shared">Shared</a></li>
+          <li><a href="#favorites">Favorites</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="tab-pane" id="history">
+            history content
+        </div>
+        <div class="tab-pane" id="shared">
+            shared content
+        </div>
+        <div class="tab-pane" id="favorites">
+            favorites content
+        </div>                
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  String.prototype.capitalize = function() {
+      return this.charAt(0).toUpperCase() + this.slice(1);
+  }
+
+  $(document).ready(function() {
+
+    // Javascript to enable link to tab
+    var theHash = window.location.hash.substring(1);
+    var splitHash = theHash.split('?');
+    var theQuery;
+
+    if (splitHash.length > 1) {
+      theHash = splitHash[0];
+      theQuery = splitHash[1];
+    }
+
+    $('.nav-tabs a[href=#'+ theHash +']').tab('show') ;
+    $(".tab-pane").hide();
+    $('div[id="' + theHash + '"]').show();
+
+    // Show the right tab when it is clicked.
+    $('.nav-tabs a').click(function (e) {
+        // No e.preventDefault() here.
+        $(this).tab('show');
+    });
+
+    // navigate to a tab when the history changes
+    window.addEventListener("popstate", function(e) {
+      var activeTab = $('[href=' + location.hash + ']');
+      if (activeTab.length) {
+        activeTab.tab('show');
+      } else {
+        $('.nav-tabs a:first').tab('show');
+      }
+    });
+
+    // Change hash on the address bar if we navigated here through a click,
+    // so the address bar reflects where we are.
+    // This is also where we show the related div.
+    // We do this ourselves, since Twitter-Bootstrap is not working great here.
+    $('.nav-tabs a').on('shown', function (e) {
+      if (window.location.hash != e.target.hash) {
+        window.location.hash = e.target.hash;
+
+        window.history.replaceState({}, 
+          "Euclidean Fundemantals - " + e.target.hash.capitalize, 
+          window.location.href);        
+      }
+
+      // Hide all tab content and only show the selected
+      $(".tab-pane").hide();
+      var divid = this.hash.substring(1);
+      $('div[id="' + divid + '"]').show();
+    });
+
+  });
+
+</script>

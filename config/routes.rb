@@ -1,13 +1,15 @@
+
 Simsearch::Application.routes.draw do
 
   root :to => 'frontdoor#root'
   
   get "home" => "frontdoor#home"
+  
   get "signin" => "frontdoor#identity"
   get "signout" => "frontdoor#identity"
   get "register" => "frontdoor#identity"
   get "subscribe" => "frontdoor#identity"
-  get "share" => "frontdoor#share"
+  get "searches" => "frontdoor#searches"
 
   get "privacy" => "frontdoor#privacy"
   get "terms" => "frontdoor#terms"
