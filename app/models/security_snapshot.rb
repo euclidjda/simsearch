@@ -422,7 +422,7 @@ GET_TARGET_SQL
     target_cap =
       self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
 
-    idxcaph_min = [10000,target_cap*0.5].min.round()
+    idxcaph_min = [5000,target_cap*0.5].min.round()
     idxcapl_max = (5.0*target_cap).round()
 
 <<GET_MATCH_SQL

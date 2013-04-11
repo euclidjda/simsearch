@@ -21,5 +21,11 @@ class CreateSearchStatuses < ActiveRecord::Migration
         ON DELETE CASCADE
     SQL
 
+    execute <<-SQL
+      ALTER TABLE search_statuses
+      ADD UNIQUE KEY (search_id,fromdate,thrudate)
+    SQL
+
   end
 end
+

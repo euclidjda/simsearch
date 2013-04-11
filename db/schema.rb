@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
   add_index "ex_combined", ["idxind", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix04"
   add_index "ex_combined", ["idxsec", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix02"
   add_index "ex_combined", ["idxsub", "idxnew", "pricedate", "idxcapl", "idxcaph"], :name => "ex_combined_ix05"
+  add_index "ex_combined", ["pricedate"], :name => "ex_combined_ix10"
 
   create_table "ex_dists", :id => false, :force => true do |t|
     t.integer "ex_centers_id",              :null => false
@@ -298,7 +299,7 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "search_statuses", ["search_id"], :name => "search_id"
+  add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "search_id", :unique => true
 
   create_table "search_types", :force => true do |t|
     t.string   "factors"

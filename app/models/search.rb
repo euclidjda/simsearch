@@ -36,21 +36,6 @@ class Search < ActiveRecord::Base
                               :thrudate  => thrudate  ,
                               :type_id   => _type.id  )
 
-      # Create all search status records to signify that we are starting them
-      # even if delayed job doesn't pick them up immedidately
-      _epochs.each { |ep| 
-
-        status = SearchStatus.find_or_create( :search_id => search.id   ,
-                                              :fromdate  => ep.fromdate ,
-                                              :thrudate  => ep.thrudate )
-        status.comment    = "Starting "
-        status.num_steps  = nil
-        status.cur_step   = nil
-        status.complete   = false
-        status.save()
-
-      }
-
       if ( _async )
         
         search.delay.create_search_details(_epochs)
@@ -72,6 +57,17 @@ class Search < ActiveRecord::Base
 
     cur_epoch = (_epochs.is_a? Array) ? _epochs.shift : _epochs
 
+    status = SearchStatus.create( :search_id => self.id            ,  
+                                  :fromdate  => cur_epoch.fromdate ,
+                                  :thrudate  => cur_epoch.thrudate )
+    status.comment    = "Starting "
+    status.num_steps  = nil
+    status.cur_step   = nil
+    status.complete   = false
+    status.save()
+
+    # TODO: RETURN HERE IF SEARCH HAS ALREADY STARTED
+
     if ((_epochs.is_a? Array) && !_epochs.empty?)
       self.delay.create_search_details(_epochs) 
     end
@@ -79,10 +75,6 @@ class Search < ActiveRecord::Base
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
     limit = 10
-
-    status = SearchStatus.where( :search_id => self.id  ,
-                                 :fromdate  => cur_epoch.fromdate ,
-                                 :thrudate  => cur_epoch.thrudate ).first
 
     target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
 
