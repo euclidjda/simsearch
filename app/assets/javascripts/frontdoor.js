@@ -15,24 +15,20 @@ function slider_change(event,ui) {
     var value = ui.value;
     $('#weight-hidden'+index).attr('value',value);
 
-    update_weight_labels()
+    update_weight_labels();
 }
 
 function update_weight_labels() {
-    var sum = 0;
+    var e=0;
     
-    for (var i=1; i <= 6; i++) {
-	sum += parseInt( $('#weight-hidden'+i).attr('value') );
-    }
-    
-    for (var i=1; i <= 6; i++) {
+    for(var t=1;t<=6;t++)
+	e+=parseInt($("#weight-hidden"+t).attr("value"));
 
-	var value  = parseInt( $('#weight-hidden'+i).attr('value') );
-	var weight = value / sum;
-	$('#weight-label'+i).html( sprintf("%.1f%%",100*weight) );
-	  
+    for(var t=1;t<=6;t++) {
+	var n=parseInt($("#weight-hidden"+t).attr("value")),r=n/e;
+	$("#weight-label"+t).html(sprintf("%.1f%%",100*r))
     }
-	
+
 }
 
 function init_frontdoor() {

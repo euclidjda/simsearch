@@ -87,7 +87,8 @@
                   </table>
                   <br>
 
-                  <% gicslevel = params[:gicslevel] || 'sector' %>
+		  <% default_gicslevel = 'ind' %>
+                  <% gicslevel = params[:gicslevel] || default_gicslevel %>
 
                   <%= label_tag(:gicslevel,
                     "GICS Industry Classification Restriction:") %>
@@ -100,7 +101,7 @@
                           ['Level 3: Industry','ind'],
                           ['Level 4: Sub-Industry','sub']
                         ],
-                        gicslevel), :class=>"industry-select", :default=>'sec') %>
+                        gicslevel), :class=>"industry-select", :default=>default_gicslevel) %>
       
                   <input type="hidden" name="newflag" value="1">
 
