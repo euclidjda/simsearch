@@ -13,16 +13,30 @@
   max-height: 400px;
   overflow: auto;
 
+  i {
+    background-position: 14px 14px;
+  }  
+
+  .selected {
+    background-color: lightgray;
+  }
+
+  .search-list-item:hover {
+    background-color: lightgray;
+  }
+
   .search-list-item {
     border-top: solid 1px lightgray;
     width: 100%;
     height: 80px;
-    padding-right: 10px;
-
-
+    overflow-x: hidden;
+    a {
+      text-decoration: none;
+    }
 
     #security-info {
       padding: 4px 0 4px 0;
+      background-color: #f2f2f2;
 
       #security-ticker {
         display: inline-block;
@@ -63,16 +77,13 @@
     }
 
     .btn i {
-      background-position: 14px 14px;
       margin-top: 6px;
     }
 
     .checked {
       border: solid 1px lightgray;
       border-radius: 3px;
-      i {
-        background-position: 14px 14px;
-      }
+
       text-decoration: none;
       margin-right: 5px;
     }

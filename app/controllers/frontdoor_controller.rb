@@ -86,15 +86,6 @@ class FrontdoorController < ApplicationController
     end
   end
 
-  def searches
-    if current_user
-      @searches_path = request.fullpath
-      render :searches
-    else
-      render :text => "need to sign in. this is here to protect for random get calls."
-    end
-  end
-
   def destroy_session
     session[:user_id] = nil
     redirect_to root_path, :notice => 'Signed out'
