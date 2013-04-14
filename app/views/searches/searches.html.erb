@@ -81,11 +81,30 @@
 
 <script>
 
+
+  $('.refresh_btn').click(function(e) {
+    alert("refresh !!!");
+    return false;
+  });
+
+  $('.favorites_btn').click(function(e){
+    alert("add to favorites !!!");
+    return false;
+  });
+
+  $('.share_btn').click(function(e){
+    alert("share !!!");
+    return false;    
+  });  
+
   String.prototype.capitalize = function() {
       return this.charAt(0).toUpperCase() + this.slice(1);
   }
 
   $(document).ready(function() {
+
+    // Enable bootstrap tooltips for all anchors on the page.
+    $("a").tooltip();
 
     // Javascript to enable link to tab
     var theHash = window.location.hash.substring(1);
