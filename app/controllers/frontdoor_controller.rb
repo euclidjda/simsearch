@@ -291,6 +291,11 @@ class FrontdoorController < ApplicationController
         status.comment += "."
         status.save
 
+      elsif !search.nil?
+
+        result = Hash::new()
+        result[:comment] = "Initializing ..."
+
       else
 
         result = nil
@@ -410,10 +415,11 @@ private
 
     SearchStatus.uncached {
       count = SearchStatus.where( :search_id => _search_id ,
-                                  :complete  => false      ).count()
+                                  :complete  => true       ).count()
     }
 
-    (count == 0) ? true : false
+    # TODO: THIS SHOULD NOT BE HARD CODED AS "4"
+    (count == 4) ? true : false
 
   end
 

@@ -320,7 +320,7 @@ footer {
       font-size: 10pt;
     }
 
-    .factor-slider {
+    .weight-slider {
       -webkit-border-radius: 0px 0px 0px 0px;
       -moz-border-radius: 0px 0px 0px 0px; 
       border-radius: 0px 0px 0px 0px;
@@ -364,11 +364,11 @@ footer {
       }
 
       .col2 {
-        width: 30%;
+        text-align: center;
       }
 
       .col3 {
-        text-align: center;
+	  width: 30%;
       }
     }
 

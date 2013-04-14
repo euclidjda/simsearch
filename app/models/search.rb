@@ -37,29 +37,16 @@ class Search < ActiveRecord::Base
                               :thrudate  => thrudate  ,
                               :type_id   => _type.id  )
 
-      _epochs.each { |ep|
+      if ( _async )
+        
+        search.delay.create_search_details(_epochs)
 
-        status = SearchStatus.find_or_create( :search_id => search.id  ,
-                                              :fromdate  => ep.fromdate,
-                                              :thrudate  => ep.thrudate)
+      else
 
-        status.comment    = "Starting "
-        status.num_steps  = nil
-        status.cur_step   = nil
-        status.complete   = false
-        status.save()
+        _epochs.each { |ep| search.create_search_details(ep) }
 
-        # This call to delay causes create_search_detail to be run ansyncronously
-        # by the delayed_job package. For the method to execute, the program
-        # "rake jobs:work" must be running in the background.
+      end
 
-        if ( _async )
-          search.delay.create_search_details(ep)
-        else
-          search.create_search_details(ep)
-        end
-
-      }
 
     end
 
@@ -80,15 +67,28 @@ class Search < ActiveRecord::Base
 
   end
 
-  def create_search_details(_epoch)
+  def create_search_details(_epochs)
 
-    puts "********************* STARTING SEARCH DETAIL FOR #{_epoch.fromdate}"
+    cur_epoch = (_epochs.is_a? Array) ? _epochs.shift : _epochs
+
+    status = SearchStatus.create( :search_id => self.id            ,  
+                                  :fromdate  => cur_epoch.fromdate ,
+                                  :thrudate  => cur_epoch.thrudate )
+    status.comment    = "Starting "
+    status.num_steps  = nil
+    status.cur_step   = nil
+    status.complete   = false
+    status.save()
+
+    # TODO: RETURN HERE IF SEARCH HAS ALREADY STARTED
+
+    if ((_epochs.is_a? Array) && !_epochs.empty?)
+      self.delay.create_search_details(_epochs) 
+    end
+
+    puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
     limit = 10
-
-    status = SearchStatus.where( :search_id => self.id         ,
-                                 :fromdate  => _epoch.fromdate ,
-                                 :thrudate  => _epoch.thrudate ).first
 
     target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
 
@@ -105,11 +105,11 @@ class Search < ActiveRecord::Base
     # logger.debug "****** normalized weights are #{weight_str}"
 
     fromdate = nil
-    thrudate = _epoch.fromdate-1
+    thrudate = cur_epoch.fromdate-1
 
     candidates = Array::new()
 
-    batch_size = 356 # batch size is in days (not records)
+    batch_size = 365 # batch size is in days (not records)
 
     # create mysql connection. no need for pooling here.
     config   = Rails.configuration.database_configuration
@@ -131,7 +131,7 @@ class Search < ActiveRecord::Base
       fromdate = thrudate + 1
       thrudate = thrudate + batch_size
 
-      thrudate = _epoch.thrudate if ((thrudate <=> _epoch.thrudate) == 1)
+      thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
 
       logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
 
@@ -160,7 +160,7 @@ class Search < ActiveRecord::Base
 
       }
 
-      break if (thrudate == _epoch.thrudate)
+      break if (thrudate == cur_epoch.thrudate)
 
     end
 
@@ -192,13 +192,9 @@ class Search < ActiveRecord::Base
     status.complete = true
     status.save()
 
-    calculate_summary()
+    # calculate_summary()
 
     puts "*********** SEARCH IS DONE"
-
-  end
-
-  def get_candidates( )
 
   end
 
@@ -299,7 +295,7 @@ class Search < ActiveRecord::Base
 
     self.with_lock do
 
-      self.mean  = (weight_sum  > 0) ? (values_sum / weight_sum ) : nil
+      self.mean  = (weight_sum > 0) ? (values_sum / weight_sum ) : nil
       self.count = tot_count
       self.wins  = win_count
       self.min   = worst

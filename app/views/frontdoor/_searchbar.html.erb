@@ -66,20 +66,20 @@
                                         :default=>default_factors[index-1] ) 
                         %>
                       </td>
-                      <td class="col2">
+                      <td class="col2 weight-label" id="weight-label<%= index %>">
+		      </td>
+                      <td class="col3">
                         <% weight_name  = "weight#{index}" %>
                         <% weight_value = params[weight_name] || default_weights[index-1] %>
                         <input type="hidden" 
-                               class="factor-hidden"
-                               id="factor-hidden<%= index %>"
+                               class="weight-hidden"
+                               id="weight-hidden<%= index %>"
                                name="<%= weight_name %>"
                                value="<%= weight_value %>"
                                default="<%= default_weights[index-1] %>">
-                        <div id="factor-slider<%= index %>"  index="<%= index %>"
-                              class="factor-slider" value="<%= weight_value %>"></div>
+                        <div id="weight-slider<%= index %>"  index="<%= index %>"
+                              class="weight-slider" value="<%= weight_value %>"></div>
                       </td>
-                      <td class="col3 factor-label" 
-                          id="factor-label<%= index %>"><%= weight_value %></td>
                     </tr>
 
                     <% end %>
@@ -87,7 +87,8 @@
                   </table>
                   <br>
 
-                  <% gicslevel = params[:gicslevel] || 'sector' %>
+		  <% default_gicslevel = 'ind' %>
+                  <% gicslevel = params[:gicslevel] || default_gicslevel %>
 
                   <%= label_tag(:gicslevel,
                     "GICS Industry Classification Restriction:") %>
@@ -100,7 +101,7 @@
                           ['Level 3: Industry','ind'],
                           ['Level 4: Sub-Industry','sub']
                         ],
-                        gicslevel), :class=>"industry-select", :default=>'sec') %>
+                        gicslevel), :class=>"industry-select", :default=>default_gicslevel) %>
       
                   <input type="hidden" name="newflag" value="1">
 
