@@ -38,13 +38,13 @@
 
             </div>
             
-            <div id="custom-search-modal" class="modal hide" tab-index="-1"
-		 role="dialog" data-backdrop="true">
+            <div id="custom-search-modal" 
+              class="modal hide" tab-index="-1" role="dialog" data-backdrop="true">
 
               <div class="modal-body">
 
                 <button type="button" class="close" 
-			onclick="$('#custom-search-modal').modal('hide')"
+                  onclick="$('#custom-search-modal').modal('hide')"
                   aria-hidden="true">&times;</button>
 
                 <div>
@@ -67,7 +67,7 @@
                         %>
                       </td>
                       <td class="col2 weight-label" id="weight-label<%= index %>">
-		      </td>
+          </td>
                       <td class="col3">
                         <% weight_name  = "weight#{index}" %>
                         <% weight_value = params[weight_name] || default_weights[index-1] %>
@@ -87,7 +87,7 @@
                   </table>
                   <br>
 
-		  <% default_gicslevel = 'ind' %>
+      <% default_gicslevel = 'ind' %>
                   <% gicslevel = params[:gicslevel] || default_gicslevel %>
 
                   <%= label_tag(:gicslevel,
@@ -106,16 +106,16 @@
                   <input type="hidden" name="newflag" value="1">
 
                 </div>
-		<br>
-		 <div>
-		   
-		   <button class ="btn btn-small btn-primary search-button">
+    <br>
+     <div>
+       
+       <button class ="btn btn-small btn-primary search-button">
                      <i class="icon-search icon-white"></i>
-		   </button>              
+       </button>              
 
                    <a id="restore-defaults">Restore Defaults</a>
 
-		 </div>
+     </div>
 
               </div>
             </div>
