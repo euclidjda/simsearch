@@ -231,6 +231,11 @@ footer {
           height: 32px;
           width: 70px;
           margin: -12px 0px 0px 10px;
+          padding-top: 8px;
+          
+          i {
+            background-position: 14px 14px;
+          }
         } 
 
         .custom-search-config {

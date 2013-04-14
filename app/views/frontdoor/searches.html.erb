@@ -2,31 +2,80 @@
 
 <div class="container-fluid">
   
-  <div id="searches-container" class="span4">
+  <div id="searches-container">
 
     <div class="row-fluid">
-      
-      <div class="tabbable"> 
-        <ul class="nav nav-tabs" id="tablinks">
-          <li class="active"><a href="#history">History</a></li>
-          <li><a href="#shared">Shared</a></li>
-          <li><a href="#favorites">Favorites</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="tab-pane" id="history">
-            history content
+      <div class="span4">
+        <div class="tabbable"> 
+          <ul class="nav nav-tabs" id="tablinks">
+            <li class="active"><a href="#history">History</a></li>
+            <li><a href="#shared">Shared</a></li>
+            <li><a href="#favorites">Favorites</a></li>
+          </ul>
         </div>
-        <div class="tab-pane" id="shared">
-            shared content
+
+        <div>
+          <div class="tab-pane" id="history">
+            <%= render "history" %>
+          </div>
+          <div class="tab-pane" id="shared">
+            <%= render "shared" %>
+          </div>
+          <div class="tab-pane" id="favorites">
+            <%= render "favorites" %>
+          </div>                
         </div>
-        <div class="tab-pane" id="favorites">
-            favorites content
-        </div>                
+
       </div>
+
+      <div class="span8 right-container">
+        <div class="searches-info" id="history-info">
+          <p>We remember your prior searches for registered users. </p>
+          Using the search history, you can:<p><p>
+          <ul class="icons">
+            <li><i class="icon-ok"></i>See the stock and search details for this search<p></li>
+            <li><i class="icon-ok"></i>Share an earlier search you made with someone else<p></li>
+            <li><i class="icon-ok"></i>Refresh an existing search, using the exact search criteria with today's data<p></li>
+            <li><i class="icon-ok"></i>Add a search to your favorites<p></li> 
+          </ul>
+          <p>
+          <i class="icon-hand-left icon-2x pull-left"></i><div id="pointer-text-container">Click on a search to see details.</div>
+        </div>
+
+        <div class="searches-info" id="shared-info">
+          <p>These are the searches you shared with others before. </p>
+          In this view you can:<p><p>
+          <ul class="icons">
+            <li><i class="icon-ok"></i>See the stock and search details for this search<p></li>
+            <li><i class="icon-ok"></i>Share your search with more people<p></li>
+            <li><i class="icon-ok"></i>Remove an earlier shared search<p></li>
+            <li><i class="icon-ok"></i>See how many other users used this exact search.<p></li> 
+          </ul>
+          <p>
+          <i class="icon-hand-left icon-2x pull-left"></i><div id="pointer-text-container">Click on a shared search to start.</div>
+        </div>
+
+        <div class="searches-info" id="favorites-info">
+          <p>These are your favorite searches. </p>
+          In this view you can:<p><p>
+          <ul class="icons">
+            <li><i class="icon-ok"></i>See the stock and search details for this search<p></li>
+            <li><i class="icon-ok"></i>Refresh to create a more up to date result<p></li>
+            <li><i class="icon-ok"></i>Remove an earlier favorite<p></li>
+            <li><i class="icon-ok"></i>See how many times this search was used by others.<p></li> 
+          </ul>
+          <p>
+          <i class="icon-hand-left icon-2x pull-left"></i><div id="pointer-text-container">Click on a shared search to start.</div>
+        </div>
+
+      </div>
+
     </div>
 
+
   </div>
+
+
 
 </div>
 
@@ -48,19 +97,27 @@
       theQuery = splitHash[1];
     }
 
+    // show the right tab.
     $('.nav-tabs a[href=#'+ theHash +']').tab('show') ;
     $(".tab-pane").hide();
     $('div[id="' + theHash + '"]').show();
 
-    // Show the right tab when it is clicked.
+    // show the correct right side information
+    $(".searches-info").css("display", "none");
+    $("#" + theHash + "-info").css("display", "block");
+
+    // Show the right tab and right side content when a tab is clicked.
     $('.nav-tabs a').click(function (e) {
         // No e.preventDefault() here.
         $(this).tab('show');
+
+        $(".searches-info").css("display", "none");
+        $("#" + $(this).text().toLowerCase() + "-info").css("display", "block");
     });
 
     // navigate to a tab when the history changes
     window.addEventListener("popstate", function(e) {
-      var activeTab = $('[href=' + location.hash + ']');
+      var activeTab = $('[href=' + location.hash.split('?')[0] + ']');
       if (activeTab.length) {
         activeTab.tab('show');
       } else {
@@ -85,6 +142,9 @@
       $(".tab-pane").hide();
       var divid = this.hash.substring(1);
       $('div[id="' + divid + '"]').show();
+
+      // Show the right side content properly.
+
     });
 
   });

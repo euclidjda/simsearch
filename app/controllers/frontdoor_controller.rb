@@ -190,7 +190,8 @@ class FrontdoorController < ApplicationController
                                       :epochs      => @epochs     ,
                                       :search_type => search_type ,
                                       :limit       => 10          ,
-                                      :async       => true        )
+                                      :async       => true        ,
+                                      :current_user => current_user )
 
           @the_search.ticker = ticker_value
       end

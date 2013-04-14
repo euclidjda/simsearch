@@ -49,6 +49,8 @@ GEM
     eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    font-awesome-rails (3.0.2.0)
+      railties (>= 3.1)
     hike (1.2.1)
     i18n (0.6.1)
     journey (1.0.4)
@@ -123,6 +125,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   delayed_job_active_record
   eventmachine
+  font-awesome-rails
   mysql2 (~> 0.3.11)
   nifty-generators
   rack (= 1.4.1)
