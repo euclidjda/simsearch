@@ -142,7 +142,7 @@ class SecuritySnapshot < Tableless
       next if val0.nil?
 
       if !val1.nil?
-        dist += ( usr_wght * int_wght * ( val0 - val1 ) * ( val0 - val1 ) )
+        dist += ( usr_wght * int_wght * int_wght * ( val0 - val1 ) * ( val0 - val1 ) )
         dims += 1
       else
         dist = -1
@@ -151,7 +151,7 @@ class SecuritySnapshot < Tableless
         
     end
 
-    return dims > 0 ? dist/dims : -1
+    return dims > 0 ? sqrt(dist/dims) : -1
 
   end
   

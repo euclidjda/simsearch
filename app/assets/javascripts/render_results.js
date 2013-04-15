@@ -168,7 +168,7 @@ function populate_panels(row_obj,data,i) {
     }
 
     var sim_score = sprintf("%.2f",
-                            (100 * Math.exp(-(data[i].distance))));
+                            (100 * Math.exp(-(data[i].distance)*10)));
 
     panel.find('.panel-similarity')
         .html('Similarity Score: '+ sim_score);

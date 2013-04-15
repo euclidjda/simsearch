@@ -27,24 +27,24 @@ class Factors
 
   @@IntrinsicWeight = {
     :ey     => 31.0 ,
-    :pe     =>  0.1 ,
-    :pb     =>  0.5 ,
-    :divy   => 50.0 ,
-    :roe    =>  6.5 ,
-    :roa    =>  6.5 ,
+    :pe     => 0.01 ,
+    :pb     => 0.02 ,
+    :divy   => 33.3 ,
+    :roe    => 0.42 ,
+    :roa    => 10.5 ,
     :roc    =>  6.5 ,
-    :gmar   =>  4.0 ,
-    :omar   =>  4.0 ,
-    :nmar   =>  4.0 ,
+    :gmar   =>  4.3 ,
+    :omar   =>  6.8 ,
+    :nmar   =>  6.8 ,
     :grwth  =>  3.9 ,
     :epscon =>  1.8 ,
-    :de     => 4.54 ,
-    :ae     => 4.54 ,
-    :mom1   => 5.26 ,
-    :mom3   => 5.26 ,
-    :mom6   => 5.26 ,
-    :mom9   => 5.26 ,
-    :mom12  => 5.26 
+    :de     => 0.06 ,
+    :ae     =>  4.5 ,
+    :mom1   => 15.1 ,
+    :mom3   =>  8.1 ,
+    :mom6   =>  5.3 ,
+    :mom9   =>  3.7 ,
+    :mom12  =>  3.8 
   }
 
   @@DefaultUserWeights = [5,5,5,5,5,5]

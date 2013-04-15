@@ -10,7 +10,7 @@ namespace :factor_stats do
     
     snapshots = Array::new()
 
-    SecuritySnapshot.each_snapshots_on( date ) { |s|
+    SecuritySnapshot.each_snapshot_on( date ) { |s|
 
       count += 1
       snapshots.push(s)
@@ -25,7 +25,8 @@ namespace :factor_stats do
 
     }
 
-    factor_keys = [:ey,:roc,:grwth,:epscon,:ae,:mom,:gmar]
+    
+    factor_keys = Factors.all.map { |a| a[1] }
 
     row_str = factor_keys.join(",")
     puts row_str
