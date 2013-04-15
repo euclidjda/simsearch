@@ -125,8 +125,6 @@ function populate_panels(row_obj,data,i) {
     panel.hover(function(){ $(this).addClass('comparable-hover') },
 	        function(){ $(this).removeClass('comparable-hover') } );
 
-    // TODO: JDA Not sure the best way to truncate the string here
-    // we really just want it to not flow over the panel
     var panel_name = panel.find('.panel-name');
     panel_name.html(data[i].name);
     panel_name.tooltip({

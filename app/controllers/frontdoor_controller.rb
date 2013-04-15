@@ -86,15 +86,6 @@ class FrontdoorController < ApplicationController
     end
   end
 
-  def searches
-    if current_user
-      @searches_path = request.fullpath
-      render :searches
-    else
-      render :text => "need to sign in. this is here to protect for random get calls."
-    end
-  end
-
   def destroy_session
     session[:user_id] = nil
     redirect_to root_path, :notice => 'Signed out'
@@ -190,7 +181,8 @@ class FrontdoorController < ApplicationController
                                       :epochs      => @epochs     ,
                                       :search_type => search_type ,
                                       :limit       => 10          ,
-                                      :async       => true        )
+                                      :async       => true        ,
+                                      :current_user => current_user )
 
           @the_search.ticker = ticker_value
       end

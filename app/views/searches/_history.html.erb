@@ -1,0 +1,77 @@
+
+
+<% @search_action_list = SearchAction::actions_for_user(current_user.id) %>
+
+
+<% if @search_action_list.length > 0 %>
+
+<ul>
+
+<%  @search_action_list.each do |act| %>
+
+  <li> <%= act.updated_at %>, <%= act.ticker  %>  </li>
+
+<% end %>
+
+</ul>
+<% else %>
+  You have no searches yet.
+<% end %> 
+
+<!-- 
+<ul id="history" class="unstyled searches-list">
+  <li>
+    <div class="search-list-item">
+
+      <div id="security-info">
+        <div id="security-ticker">MSFT</div> - 
+        <div id="security-name">Microsoft Corporation Some other text here</div>
+        <a id="remove-link" href="#" title="Remove">
+          <i class="icon-remove"></i>
+        </a>        
+      </div>
+    
+      <div id="last-search-date">Last Update: April 4, 2013</div>
+
+      <div id="item-actions">
+        <a class = "refresh_btn" href="#" title="Update for today" data-toggle="tooltip">
+          <i class="icon-refresh"></i>
+        </a>
+        <a class ="favorites_btn" href = "#" title="Add to favorites" data-toggle="tooltip">
+          <i class="icon-star"></i>
+        </a>  
+        <a class ="share_btn" href = "#" title="Share" data-toggle="tooltip">
+          <i class="icon-share"></i>
+        </a>
+      </div>
+
+    </div>
+  </li>
+  <li>
+    <div class="search-list-item" >
+      <div id="security-info">
+        <div id="security-ticker">MSFT</div> - 
+        <div id="security-name">Microsoft Corporation</div>
+        <a id="remove-link" href="#">
+          <i class="icon-remove"></i>
+        </a>        
+      </div>
+  
+      <div id="last-search-date">Last Update: April 4, 2013</div>
+
+
+      <div id="item-actions">
+        <a class = "refresh_btn" href="#" title="Update for today" data-toggle="tooltip" onclick="return false;">
+          <i class="icon-refresh icon-white"></i>
+        </a>
+        <a class ="favorites_btn performed" href="#favorites" title="In favorites" data-toggle="tooltip">
+          <i class="icon-star icon-white"></i>
+        </a>  
+        <a class ="share_btn performed" href="#shared" title="Shared" data-toggle="tooltip">
+          <i class="icon-share icon-white"></i>
+        </a>
+      </div>
+    </div>
+  </li>
+</ul>
+ -->

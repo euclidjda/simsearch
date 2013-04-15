@@ -9,6 +9,7 @@ class Search < ActiveRecord::Base
     _type   = _args[:search_type]
     _limit  = _args[:limit]
     _async  = _args[:async]
+    _current_user = _args[:current_user]
 
     cid       = _target.cid
     sid       = _target.sid
@@ -47,6 +48,19 @@ class Search < ActiveRecord::Base
       end
 
 
+    end
+
+    # With the search at hand, create or update a search action for creation.
+
+    if _current_user
+      search_action = SearchAction.find_or_create(:user_id => _current_user.id, 
+                                                  :search_id => search.id,
+                                                  :action_id => SearchActionTypes::Create)
+
+      search_action.touch()
+
+      # Even if we found an existing one, to update the timestamp, do a save.    
+      search_action.save()
     end
 
     return search
