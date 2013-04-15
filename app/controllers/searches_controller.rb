@@ -1,5 +1,9 @@
 class SearchesController < ApplicationController
 
+  protect_from_forgery
+
+  @searches_path = nil
+  @search_action_list = nil
 
   def searches
     if current_user

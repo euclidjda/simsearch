@@ -1,4 +1,24 @@
 
+
+<% @search_action_list = SearchAction::actions_for_user(current_user.id) %>
+
+
+<% if @search_action_list.length > 0 %>
+
+<ul>
+
+<%  @search_action_list.each do |act| %>
+
+  <li> <%= act.updated_at %>, <%= act.ticker  %>  </li>
+
+<% end %>
+
+</ul>
+<% else %>
+  You have no searches yet.
+<% end %> 
+
+<!-- 
 <ul id="history" class="unstyled searches-list">
   <li>
     <div class="search-list-item">
@@ -54,3 +74,4 @@
     </div>
   </li>
 </ul>
+ -->
