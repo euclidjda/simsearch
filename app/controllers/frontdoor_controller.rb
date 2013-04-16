@@ -1,7 +1,7 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search, :the_ticker
+  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search
 
   @target_fields = nil
   @search_ids = nil
@@ -128,7 +128,7 @@ class FrontdoorController < ApplicationController
 
       @the_search.ticker = ExSecurity.find_by_cidsid(target_cid, target_sid).ticker
 
-      search_type = SearchType.where( :id => @the_search.type_id ).first;
+      search_type = SearchType.where( :id => @the_search.type_id ).first
 
       @target_fields = 
         SecuritySnapshot
@@ -147,27 +147,8 @@ class FrontdoorController < ApplicationController
 
         target = SecuritySnapshot::get_target(target_sec.cid,target_sec.sid)
 
-        # we need to convert param strings to sym
-        factor_strings = [params[:factor1],params[:factor2],params[:factor3],
-                           params[:factor4],params[:factor5],params[:factor6]]
-        
-        factors = factor_strings.map { |f| f.blank? ? nil : f.to_sym }
-        
-        weights = [params[:weight1],params[:weight2],params[:weight3],
-                   params[:weight4],params[:weight5],params[:weight6]]
-
-        default_factors = Factors::defaults
-        default_weights = Factors::default_weights
-
-        # Replace nils with defaults
-        factors.each_index { |i| factors[i] = default_factors[i] if factors[i].nil? } 
-        weights.each_index { |i| weights[i] = default_weights[i] if weights[i].nil? }
-
-        # factors with zero weights are considered not selected
-        factors.each_index { |i| factors[i] = :none if weights[i].to_f == 0 }
-
-        gicslevel = params[:gicslevel] || 'ind'
-        newflag   = params[:newflag]   || 1
+        # This crazy method returns four values!
+        factors, weights, gicslevel, newflag = process_search_form_params()
 
         # Get the target's factor fields
         @target_fields = target.to_hash( :factor_keys => factors )
@@ -188,15 +169,15 @@ class FrontdoorController < ApplicationController
                                       :current_user => current_user )
 
           @the_search.ticker = ticker_value
-      end
 
+      end
 
       # Add the information to the session so we can share the last search
       # across get/post requests.
-      if the_search 
-        session[:search_id] = the_search.id
-        session[:search_type] = the_search.type_id
-        session[:ticker] = the_search.ticker
+      if @the_search 
+        session[:search_id]   = @the_search.id
+        session[:search_type] = @the_search.type_id
+        session[:ticker]      = @the_search.ticker
       end
 
     end
@@ -414,6 +395,37 @@ private
 
     # TODO: THIS SHOULD NOT BE HARD CODED AS "4"
     (count == 4) ? true : false
+
+  end
+
+  def process_search_form_params
+
+    # we need to convert param strings to sym
+    factor_strings = [params[:factor1],params[:factor2],params[:factor3],
+                      params[:factor4],params[:factor5],params[:factor6]]
+    
+    factors = factor_strings.map { |f| f.blank? ? nil : f.to_sym }
+    
+    weights = [params[:weight1],params[:weight2],params[:weight3],
+               params[:weight4],params[:weight5],params[:weight6]]
+
+    # TODO: THESE WE SHOULD GET FROM A DEFAULTS HELPER METHOD
+    default_factors = Factors::defaults
+    default_weights = Factors::default_weights
+
+    # Replace nils with defaults
+    factors.each_index { |i| factors[i] = default_factors[i] if factors[i].nil? } 
+    weights.each_index { |i| weights[i] = default_weights[i] if weights[i].nil? }
+
+    # factors with zero weights are considered not selected
+    factors.each_index { |i| factors[i] = :none if weights[i].to_f == 0 }
+
+    # TODO: THESE DEFAULTS SHOULD NOT BE STATICALLY SET HERE.
+    # THERE SHOULD BE A HELPER THAT ALLOWS US TO FETCH DEFAULTS
+    gicslevel = params[:gicslevel] || 'ind'
+    newflag   = params[:newflag]   || 1
+
+    return factors, weights, gicslevel, newflag
 
   end
 

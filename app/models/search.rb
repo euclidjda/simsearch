@@ -88,7 +88,7 @@ class Search < ActiveRecord::Base
 
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
-    limit = 10
+    limit = 8
 
     target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
 

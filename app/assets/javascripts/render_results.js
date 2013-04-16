@@ -167,7 +167,7 @@ function populate_panels(row_obj,data,i) {
     }
 
     var sim_score = sprintf("%.2f",
-                            (100 * Math.exp(-(data[i].distance)*10)));
+                            (100 * Math.exp(-(data[i].distance))));
 
     panel.find('.panel-similarity')
         .html('Similarity Score: '+ sim_score);
@@ -175,7 +175,6 @@ function populate_panels(row_obj,data,i) {
     // show makes the panel visible (the template from which it
     // was cloned was invisible)
     panel.show();
-
 
     // This packs  the panel into the DOM so it can be seenn
     var theList = $(row_obj).find("ul");

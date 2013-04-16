@@ -151,7 +151,7 @@ class SecuritySnapshot < Tableless
         
     end
 
-    return dims > 0 ? Math::sqrt(dist/dims) : -1
+    return (dist >= 0 && dims > 0) ? Math::sqrt(dist/dims) : -1
 
   end
   
