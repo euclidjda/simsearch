@@ -53,7 +53,7 @@
                         <td>Factors</td>
                         <td colspan=2>Weights</td>
                     </tr>
-                    <% factors  = Factors::all %>
+                    <% factors = Factors::all %>
                     <% default_factors = Factors::defaults %>
                     <% default_weights  = Factors::default_weights %>
 
@@ -87,7 +87,7 @@
                   </table>
                   <br>
 
-      <% default_gicslevel = 'ind' %>
+		  <% default_gicslevel = 'ind' %>
                   <% gicslevel = params[:gicslevel] || default_gicslevel %>
 
                   <%= label_tag(:gicslevel,
@@ -106,8 +106,8 @@
                   <input type="hidden" name="newflag" value="1">
 
                 </div>
-    <br>
-     <div>
+		<br>
+	<div>
        
        <button class ="btn btn-small btn-primary search-button">
                      <i class="icon-search icon-white"></i>

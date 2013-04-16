@@ -131,7 +131,8 @@ function populate_panels(row_obj,data,i) {
       placement: 'bottom',
       title: 'Click to see detailed factor comparison to ' + data[i].name,
       container: "body"
-    }); 
+    });
+
     panel_name.click(function() {
 
         $('#comparable-modal').modal('show');

@@ -54,7 +54,7 @@
       <div id="wide-summary">
         <%= target_fields['ticker'] %>'s Historical Comparables
         <i><span class="summary-label">Outperformed</span></i>
-        by an Average of:
+        the S&P 500 by an Average of:
         <div id="median-perf">
           <span><img class="summary-image" src=""></img></span>
           <span class="summary-num"></span>
@@ -76,22 +76,7 @@
     </div>
   </div>
 
-  <div id="comparable-panel-template" style="display:none" class="span2 comparable">
-    <div class="panel-name">
-    </div>
-    <div class="panel-ticker-and-date">
-      <span class="panel-ticker"></span>  -  <span class="panel-date"></span>
-    </div>
-    <div class="panel-performance">
-        <img class="perf-image" src=""></img>
-        <span class="perf-num"></span>
-        <span class="perf-tag"></span>
-    </div>
-    <div class="panel-similarity"></div>
-  </div>
-
-  <div id="search-info" 
-    search-id="<%= the_search.id %>"></div>
+  <div id="search-info" search-id="<%= the_search.id %>"></div>
 
   <% first_row = true %>
   <% row_num = 0 %>

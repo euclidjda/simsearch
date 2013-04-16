@@ -151,7 +151,7 @@ class SecuritySnapshot < Tableless
         
     end
 
-    return dims > 0 ? sqrt(dist/dims) : -1
+    return dims > 0 ? Math::sqrt(dist/dims) : -1
 
   end
   
@@ -357,6 +357,10 @@ class SecuritySnapshot < Tableless
     when :mom12 # Momentum
 
       factor_value = get_field('pch12m')
+
+    when :none
+
+      factor_value = nil
 
     else
       

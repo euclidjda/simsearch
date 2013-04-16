@@ -163,7 +163,10 @@ class FrontdoorController < ApplicationController
         factors.each_index { |i| factors[i] = default_factors[i] if factors[i].nil? } 
         weights.each_index { |i| weights[i] = default_weights[i] if weights[i].nil? }
 
-        gicslevel = params[:gicslevel] || 'sec'
+        # factors with zero weights are considered not selected
+        factors.each_index { |i| factors[i] = :none if weights[i].to_f == 0 }
+
+        gicslevel = params[:gicslevel] || 'ind'
         newflag   = params[:newflag]   || 1
 
         # Get the target's factor fields
