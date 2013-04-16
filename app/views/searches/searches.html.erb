@@ -127,7 +127,7 @@
 
     // Show the right tab and right side content when a tab is clicked.
     $('.nav-tabs a').click(function (e) {
-        // No e.preventDefault() here.
+        e.preventDefault();
         $(this).tab('show');
 
         $(".searches-info").css("display", "none");
