@@ -5,33 +5,21 @@
 
 <% if @search_action_list.length > 0 %>
 
-<ul>
+<ul id="history" class="unstyled searches-list">
 
 <%  @search_action_list.each do |act| %>
 
-  <li> <%= act.updated_at %>, <%= act.ticker  %>  </li>
-
-<% end %>
-
-</ul>
-<% else %>
-  You have no searches yet.
-<% end %> 
-
-<!-- 
-<ul id="history" class="unstyled searches-list">
-  <li>
+  <li> 
     <div class="search-list-item">
-
       <div id="security-info">
-        <div id="security-ticker">MSFT</div> - 
-        <div id="security-name">Microsoft Corporation Some other text here</div>
+        <div id="security-ticker"><%= act.ticker  %></div> - 
+        <div id="security-name"><%= act.name %></div>        
         <a id="remove-link" href="#" title="Remove">
           <i class="icon-remove"></i>
-        </a>        
+        </a>   
       </div>
-    
-      <div id="last-search-date">Last Update: April 4, 2013</div>
+
+      <div id="last-search-date">Last Update: <%= act.updated_at.strftime("%B %d, %Y") %></div>
 
       <div id="item-actions">
         <a class = "refresh_btn" href="#" title="Update for today" data-toggle="tooltip">
@@ -44,10 +32,19 @@
           <i class="icon-share"></i>
         </a>
       </div>
-
     </div>
   </li>
-  <li>
+
+<% end %>
+
+</ul>
+<% else %>
+  You have no searches yet.
+<% end %> 
+
+<!-- 
+<ul id="history" class="unstyled searches-list">
+   <li>
     <div class="search-list-item" >
       <div id="security-info">
         <div id="security-ticker">MSFT</div> - 
