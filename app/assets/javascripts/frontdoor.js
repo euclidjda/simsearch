@@ -9,28 +9,6 @@ $(document).ready(function() {
 
 });
 
-function slider_change(event,ui) {
-
-    var index = $(this).attr('index');
-    var value = ui.value;
-    $('#weight-hidden'+index).attr('value',value);
-
-    update_weight_labels();
-}
-
-function update_weight_labels() {
-    var e=0;
-    
-    for(var t=1;t<=6;t++)
-	e+=parseInt($("#weight-hidden"+t).attr("value"));
-
-    for(var t=1;t<=6;t++) {
-	var n=parseInt($("#weight-hidden"+t).attr("value")),r=n/e;
-	$("#weight-label"+t).html(sprintf("%.1f%%",100*r))
-    }
-
-}
-
 function init_frontdoor() {
 
     $('#custom-search-config').click( function() {
@@ -84,6 +62,29 @@ function init_frontdoor() {
 	$('.industry-select').val($('.industry-select').attr('default'));
 
     });
+
+}
+
+function slider_change(event,ui) {
+
+    var index = $(this).attr('index');
+    var value = ui.value;
+    $('#weight-hidden'+index).attr('value',value);
+
+    update_weight_labels();
+}
+
+function update_weight_labels() {
+    var e=0;
+    
+    for(var t=1;t<=6;t++)
+	e+=parseInt($("#weight-hidden"+t).attr("value"));
+
+    for(var t=1;t<=6;t++) {
+	var n=parseInt($("#weight-hidden"+t).attr("value"));
+	r= e > 0 ? n/e : 0;
+	$("#weight-label"+t).html(sprintf("%.1f%%",100*r))
+    }
 
 }
 

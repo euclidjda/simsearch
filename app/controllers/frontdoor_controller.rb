@@ -1,10 +1,11 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search
+  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search, :the_search_detail
 
+  @the_search = nil
+  @the_search_detail = nil
   @target_fields = nil
-  @search_ids = nil
   @validation_error = nil
 
   def root
@@ -191,6 +192,53 @@ class FrontdoorController < ApplicationController
 
   end
 
+  def search_detail
+
+    _search_detail_id = params[:search_detail_id]
+
+    if !_search_detail_id.blank?
+
+      detail = SearchDetail.where( :id => _search_detail_id ).first
+
+      if !detail.nil?
+
+        snapshot = SecuritySnapshot::get_snapshot(detail.cid,
+                                                  detail.sid,
+                                                  detail.pricedate)
+
+        search = Search.where( :id => detail.search_id ).first
+        search_type = SearchType.where( :id => search.type_id ).first
+
+        # assert(search)
+        # assert(search_type)
+
+        @the_search_detail = snapshot.to_hash( :factor_keys => search_type.factor_keys )
+      
+        @the_search_detail[:distance] = detail.dist
+        @the_search_detail[:stk_rtn]  = detail.stk_rtn
+        @the_search_detail[:mrk_rtn]  = detail.mrk_rtn
+
+        factor_keys  = search_type.factor_keys
+        factor_names = Hash::new()
+
+        search_type.factor_keys.each { |key| 
+          
+          factor_names[key] = Factors::factor_name(key) 
+        
+        }
+
+        @the_search_detail[:factor_keys]  = factor_keys
+        @the_search_detail[:factor_names] = factor_names
+
+      end
+
+    end
+
+    render :action => :home, :stream => true    
+    # render :json => result.to_json
+
+  end
+
   #
   # Method that returns, as a json, a list of tickers that are matching the term.
   
@@ -255,6 +303,8 @@ class FrontdoorController < ApplicationController
           comp_record[:distance] = d.dist
           comp_record[:stk_rtn]  = d.stk_rtn
           comp_record[:mrk_rtn]  = d.mrk_rtn
+
+          comp_record[:search_detail_id] = d.id
 
           result.push(comp_record)
 
@@ -364,12 +414,16 @@ class FrontdoorController < ApplicationController
 
 private
 
-  def target_fields
-    @target_fields
-  end
-
   def the_search
     @the_search
+  end
+
+  def the_search_detail
+    @the_search_detail
+  end
+
+  def target_fields
+    @target_fields
   end
 
   def epochs
@@ -394,6 +448,7 @@ private
     }
 
     # TODO: THIS SHOULD NOT BE HARD CODED AS "4"
+    # IT SHOULD BE THE NUMBER OF EPOCHS
     (count == 4) ? true : false
 
   end

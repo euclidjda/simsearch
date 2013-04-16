@@ -10,9 +10,13 @@
       </div><!--/.well -->
     </div><!--/span2 sidebar -->
     
-    <% if target_fields() %>
+    <% if the_search() %>
 
         <%= render "frontdoor/results" %>
+
+    <% elsif the_search_detail() %>
+
+        <%= render "frontdoor/results_detail" %>
 
     <% else %>
 

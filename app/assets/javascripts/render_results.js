@@ -122,6 +122,7 @@ function populate_panels(row_obj,data,i) {
     // clone the invisible template and drop data into clone
     panel = $('#comparable-panel-template').clone();
     panel.attr('id','panel'+i);
+
     panel.hover(function(){ $(this).addClass('comparable-hover') },
 	        function(){ $(this).removeClass('comparable-hover') } );
 
@@ -166,17 +167,18 @@ function populate_panels(row_obj,data,i) {
         panel.find(".perf-tag").html("1 Yr. Rtn <br><u>Below</u> Mrkt");
     }
 
+    var url = 'search_detail?search_detail_id='+data[i].search_detail_id;
+    panel.find('.panel-performance').click( function() { window.location=url } );
+
     var sim_score = sprintf("%.2f",
                             (100 * Math.exp(-(data[i].distance))));
-
-    panel.find('.panel-similarity')
-        .html('Similarity Score: '+ sim_score);
+    panel.find('.panel-similarity').html('Similarity Score: '+ sim_score);
 
     // show makes the panel visible (the template from which it
     // was cloned was invisible)
     panel.show();
 
-    // This packs  the panel into the DOM so it can be seenn
+    // This packs  the panel into the DOM so it can be seen
     var theList = $(row_obj).find("ul");
     var listItem = document.createElement("li");
     $(theList).append(listItem);
