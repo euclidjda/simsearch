@@ -7,8 +7,6 @@ function render_results(search_id) {
 
     $('.result-container').each(function( index ) {
 
-        start_spinner($(this).attr('id'));
-
         var fromdate = $(this).attr('fromdate');
         var thrudate = $(this).attr('thrudate');
 
@@ -128,19 +126,23 @@ function populate_panels(row_obj,data,i) {
 
     var panel_name = panel.find('.panel-name');
     panel_name.html(data[i].name);
-    panel_name.tooltip({
-      placement: 'bottom',
+    panel.tooltip({
+      placement: 'top',
       title: 'Click to see detailed factor comparison to ' + data[i].name,
       container: "body"
     });
 
+    var url = 'search_detail?search_detail_id='+data[i].search_detail_id;
+    panel.click( function() { window.location=url } );
+
+    /*****
     panel_name.click(function() {
 
         $('#comparable-modal').modal('show');
         var idx = 10 * row + col;
 
         $('#comparable-carousel-right').carousel(idx);
-    });
+    });***/
 
     var ticker = data[i].ticker;
     var exchg  = exchange_code_to_name(data[i].exchg,ticker);
@@ -166,9 +168,6 @@ function populate_panels(row_obj,data,i) {
         panel.find(".perf-num").html(sprintf("%.2f%%",perf));
         panel.find(".perf-tag").html("1 Yr. Rtn <br><u>Below</u> Mrkt");
     }
-
-    var url = 'search_detail?search_detail_id='+data[i].search_detail_id;
-    panel.find('.panel-performance').click( function() { window.location=url } );
 
     var sim_score = data[i].sim_score;
     panel.find('.panel-similarity').html('Similarity Score: '
