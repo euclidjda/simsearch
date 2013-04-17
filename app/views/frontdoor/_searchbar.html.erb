@@ -47,36 +47,39 @@
                   onclick="$('#custom-search-modal').modal('hide')"
                   aria-hidden="true">&times;</button>
 
+		<% factor_values, weight_values, gicslevel, newflag = 
+		   load_search_form_params(the_search_type,session) %>
+		<% factor_defaults = Factors::defaults %>
+		<% weight_defaults = Factors::default_weights %>
+
                 <div>
                   <table id="factor-table"> 
                     <tr class="header">
                         <td>Factors</td>
                         <td colspan=2>Weights</td>
                     </tr>
-                    <% factors = Factors::factor_names_and_keys %>
-                    <% default_factors = Factors::defaults %>
-                    <% default_weights  = Factors::default_weights %>
+                    <% factor_names_and_keys = Factors::factor_names_and_keys %>
 
                     <% (1..6).each do |index| %>
                     <tr>
                       <td class="col1">
-                        <% fac_val = params["factor#{index}"] || default_factors[index-1] %>
                         <%= select_tag("factor#{index}",
-                                        options_for_select(factors,fac_val), :class=>"factor-select",
-                                        :default=>default_factors[index-1] ) 
+                            options_for_select(factor_names_and_keys,factor_values[index-1]), 
+			    :class=>"factor-select",
+                        :default=>factor_defaults[index-1] ) 
                         %>
                       </td>
                       <td class="col2 weight-label" id="weight-label<%= index %>">
-          </td>
+		      </td>
                       <td class="col3">
                         <% weight_name  = "weight#{index}" %>
-                        <% weight_value = params[weight_name] || default_weights[index-1] %>
+                        <% weight_value =weight_values[index-1]  %>
                         <input type="hidden" 
                                class="weight-hidden"
                                id="weight-hidden<%= index %>"
                                name="<%= weight_name %>"
                                value="<%= weight_value %>"
-                               default="<%= default_weights[index-1] %>">
+                               default="<%= weight_defaults[index-1] %>">
                         <div id="weight-slider<%= index %>"  index="<%= index %>"
                               class="weight-slider" value="<%= weight_value %>"></div>
                       </td>
@@ -86,9 +89,6 @@
 
                   </table>
                   <br>
-
-		  <% default_gicslevel = 'ind' %>
-                  <% gicslevel = params[:gicslevel] || default_gicslevel %>
 
                   <%= label_tag(:gicslevel,
                     "GICS Industry Classification Restriction:") %>
@@ -101,9 +101,9 @@
                           ['Level 3: Industry','ind'],
                           ['Level 4: Sub-Industry','sub']
                         ],
-                        gicslevel), :class=>"industry-select", :default=>default_gicslevel) %>
+                        gicslevel), :class=>"industry-select",:default=>'ind') %>
       
-                  <input type="hidden" name="newflag" value="1">
+                  <input type="hidden" name="newflag" value="<%= newflag%>">
 
                 </div>
 		<br>

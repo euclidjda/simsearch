@@ -4,9 +4,9 @@ class Factors
   # Current Ratio, Quick Ratio, Revenue Growth 1 Year
 
   @@FactorAttributes = {
-    :ey     => { :order =>   1, :iw =>   31.0, :name => "Earnings Yield"    },
-    :pe     => { :order =>  10, :iw =>   0.01, :name => "Price to Earnings" },
-    :pb     => { :order =>  20, :iw =>   0.02, :name => "Price to Book"     },
+    :ey     => { :order =>   1, :iw =>   31.0, :name => "Earnings Yield",    :fmt => "pct" },
+    :pe     => { :order =>  10, :iw =>   0.01, :name => "Price to Earnings", :fmt => "%.2f" },
+    :pb     => { :order =>  20, :iw =>   0.02, :name => "Price to Book",     :fmt => "%.2f" },
     :divy   => { :order =>  30, :iw =>   33.3, :name => "Dividend Yield"    },
     :roe    => { :order =>  40, :iw =>   0.42, :name => "Return on Equity"  },
     :roa    => { :order =>  50, :iw =>   10.5, :name => "Return on Assets"  },
@@ -16,7 +16,7 @@ class Factors
     :nmar   => { :order =>  90, :iw =>    6.8, :name => "Net Margin"        },
     :grwth  => { :order => 100, :iw =>    3.9, :name => "Revenue Growth (yr)"},
     :epscon => { :order => 110, :iw =>    1.8, :name => "EPS Growth Consist. (10yr)" },
-    :de     => { :order => 120, :iw =>   0.06, :name => "Debt to Equity"    },
+    :de     => { :order => 120, :iw =>   0.06, :name => "Debt to Equity",   :fmt => "%.2f" },
     :ae     => { :order => 130, :iw =>    4.5, :name => "Assets to Equity"  },
     :mom1   => { :order => 140, :iw =>   15.1, :name => "Price Momentum (1mo)"},
     :mom3   => { :order => 150, :iw =>    8.1, :name => "Price Momentum (3mo)"},
@@ -54,6 +54,17 @@ class Factors
   def self.factor_order(factor_key)
     attr = @@FactorAttributes[factor_key]
     return attr.nil? ? nil : attr[:order]
+  end
+
+  def self.format_factor(factor_key,value)
+    attr = @@FactorAttributes[factor_key]
+
+    if attr.nil? || attr[:fmt].nil? || attr[:fmt] == 'pct'
+      return sprintf "%.2f%%",100*value
+    else
+      return sprintf attr[:fmt],value
+    end
+
   end
 
   def self.factor_names_and_keys 

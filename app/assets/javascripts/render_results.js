@@ -170,9 +170,9 @@ function populate_panels(row_obj,data,i) {
     var url = 'search_detail?search_detail_id='+data[i].search_detail_id;
     panel.find('.panel-performance').click( function() { window.location=url } );
 
-    var sim_score = sprintf("%.2f",
-                            (100 * Math.exp(-(data[i].distance))));
-    panel.find('.panel-similarity').html('Similarity Score: '+ sim_score);
+    var sim_score = data[i].sim_score;
+    panel.find('.panel-similarity').html('Similarity Score: '
+					 + sprintf("%.2f",sim_score));
 
     // show makes the panel visible (the template from which it
     // was cloned was invisible)

@@ -21,4 +21,12 @@ class SearchType < ActiveRecord::Base
     self.weights.split(",").map { |a| a.to_f }
   end
 
+  def weight_array_as_s
+    self.weights.split(",").map { |a| a }
+  end
+
+  def factor_names
+    self.factor_keys.map { |key| Factors::factor_name(key) } 
+  end
+
 end

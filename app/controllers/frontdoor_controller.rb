@@ -1,11 +1,21 @@
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
-  helper_method :target_fields, :form_refresh?, :validation_error, :epochs, :the_search, :the_search_detail
+  helper_method \
+  :target_fields, 
+  :comp_fields, 
+  :the_search, 
+  :the_search_detail,
+  :the_search_type,
+  :epochs, 
+  :form_refresh?, 
+  :validation_error
 
+  @target_fields = nil
+  @comp_fields = nil
   @the_search = nil
   @the_search_detail = nil
-  @target_fields = nil
+  @the_search_type = nil
   @validation_error = nil
 
   def root
@@ -117,7 +127,12 @@ class FrontdoorController < ApplicationController
     _search_entry = params[:ticker]
 
     # Default to nil, which pushes the "invalid query" response.
+    @th_search = nil
+    @the_search_detail = nil
     @target_fields = nil
+    @comp_fields = nil
+    @factor_data = Hash::new()
+    @epochs = Epoch::default_epochs_array()
 
     if !_search_id.blank?
       
@@ -129,13 +144,12 @@ class FrontdoorController < ApplicationController
 
       @the_search.ticker = ExSecurity.find_by_cidsid(target_cid, target_sid).ticker
 
-      search_type = SearchType.where( :id => @the_search.type_id ).first
+      @the_search_type = SearchType.where( :id => @the_search.type_id ).first
 
       @target_fields = 
         SecuritySnapshot
-        .get_target(target_cid,target_sid).to_hash( :factor_keys => search_type.factor_keys )
-
-      @epochs = Epoch::default_epochs_array()
+        .get_target(target_cid,target_sid).to_hash( :factor_keys => 
+                                                    @the_search_type.factor_keys )
 
     elsif !_search_entry.blank?
       # We currently on support one ticker and no filters.
@@ -154,20 +168,18 @@ class FrontdoorController < ApplicationController
         # Get the target's factor fields
         @target_fields = target.to_hash( :factor_keys => factors )
 
-        @epochs = Epoch::default_epochs_array()
-
-        search_type =
+        @the_search_type =
           SearchType::find_or_create(:factors   => factors    ,
                                      :weights   => weights    ,
                                      :gicslevel => gicslevel  ,
                                      :newflag   => newflag    )
 
-          @the_search = Search::exec( :target      => target      ,
-                                      :epochs      => @epochs     ,
-                                      :search_type => search_type ,
-                                      :limit       => 10          ,
-                                      :async       => true        ,
-                                      :current_user => current_user )
+          @the_search = Search::exec( :target      => target           ,
+                                      :epochs      => @epochs          ,
+                                      :search_type => @the_search_type ,
+                                      :limit       => 10               ,
+                                      :async       => true             ,
+                                      :current_user => current_user    )
 
           @the_search.ticker = ticker_value
 
@@ -176,9 +188,9 @@ class FrontdoorController < ApplicationController
       # Add the information to the session so we can share the last search
       # across get/post requests.
       if @the_search 
-        session[:search_id]   = @the_search.id
-        session[:search_type] = @the_search.type_id
-        session[:ticker]      = @the_search.ticker
+        session[:search_id] = @the_search.id
+        session[:type_id]   = @the_search.type_id
+        session[:ticker]    = @the_search.ticker
       end
 
     end
@@ -196,46 +208,48 @@ class FrontdoorController < ApplicationController
 
     _search_detail_id = params[:search_detail_id]
 
+    @the_search = nil
+    @the_search_detail = nil
+    @the_search_type = nil
+    @target_fields = nil
+    @comp_fields = nil
+
     if !_search_detail_id.blank?
 
-      detail = SearchDetail.where( :id => _search_detail_id ).first
+      @the_search_detail = SearchDetail.where( :id => _search_detail_id ).first
 
-      if !detail.nil?
+      if !@the_search_detail.nil?
 
-        snapshot = SecuritySnapshot::get_snapshot(detail.cid,
-                                                  detail.sid,
-                                                  detail.pricedate)
+        # Get the search data itself
+        search = Search.where( :id => @the_search_detail.search_id ).first
+        @the_search_type = SearchType.where( :id => search.type_id ).first
 
-        search = Search.where( :id => detail.search_id ).first
-        search_type = SearchType.where( :id => search.type_id ).first
+        # Get the target
 
-        # assert(search)
-        # assert(search_type)
-
-        @the_search_detail = snapshot.to_hash( :factor_keys => search_type.factor_keys )
-      
-        @the_search_detail[:distance] = detail.dist
-        @the_search_detail[:stk_rtn]  = detail.stk_rtn
-        @the_search_detail[:mrk_rtn]  = detail.mrk_rtn
-
-        factor_keys  = search_type.factor_keys
-        factor_names = Hash::new()
-
-        search_type.factor_keys.each { |key| 
-          
-          factor_names[key] = Factors::factor_name(key) 
+        target_snapshot = SecuritySnapshot::get_snapshot(search.cid,
+                                                         search.sid,
+                                                         search.pricedate)
         
-        }
+        @target_fields = 
+          target_snapshot.to_hash( :factor_keys => 
+                                   @the_search_type.factor_keys )
 
-        @the_search_detail[:factor_keys]  = factor_keys
-        @the_search_detail[:factor_names] = factor_names
 
+        comp_snapshot = 
+          SecuritySnapshot::get_snapshot(@the_search_detail.cid,
+                                         @the_search_detail.sid,
+                                         @the_search_detail.pricedate)
+
+        @comp_fields = 
+          comp_snapshot.to_hash( :factor_keys => 
+                                 @the_search_type.factor_keys )
+      
       end
 
     end
 
     render :action => :home, :stream => true    
-    # render :json => result.to_json
+    # render :json => @comp_fields.to_json
 
   end
 
@@ -300,9 +314,10 @@ class FrontdoorController < ApplicationController
 
           comp_record = snapshot.to_hash( :factor_keys => search_type.factor_keys )
           
-          comp_record[:distance] = d.dist
-          comp_record[:stk_rtn]  = d.stk_rtn
-          comp_record[:mrk_rtn]  = d.mrk_rtn
+          comp_record[:sim_score] = d.sim_score
+          comp_record[:distance]  = d.dist
+          comp_record[:stk_rtn]   = d.stk_rtn
+          comp_record[:mrk_rtn]   = d.mrk_rtn
 
           comp_record[:search_detail_id] = d.id
 
@@ -422,8 +437,20 @@ private
     @the_search_detail
   end
 
+  def the_search_type
+    @the_search_type
+  end
+
   def target_fields
     @target_fields
+  end
+
+  def comp_fields
+    @comp_fields
+  end
+
+  def factor_data
+    @factor_data
   end
 
   def epochs
