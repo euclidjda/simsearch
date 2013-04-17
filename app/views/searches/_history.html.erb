@@ -1,14 +1,12 @@
 
 
-<% @search_action_list = SearchAction::actions_for_user(current_user.id) %>
 
-
-<% if @search_action_list.length > 0 %>
+<% if @search_action_list.any? { |act| act.action_id == SearchActionTypes::Create} %>
 
 <ul id="history" class="unstyled searches-list">
 
 <%  @search_action_list.each do |act| %>
-
+  <% if act.action_id == SearchActionTypes::Create %>
   <li> 
     <div class="search-list-item">
       <div id="security-info">
@@ -34,12 +32,15 @@
       </div>
     </div>
   </li>
+  <% end %>
 
 <% end %>
 
 </ul>
 <% else %>
-  You have no searches yet.
+  <div id="not-yet">
+    You have not made any searches yet.
+  </div>
 <% end %> 
 
 <!-- 

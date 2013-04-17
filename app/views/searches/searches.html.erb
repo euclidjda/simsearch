@@ -14,6 +14,8 @@
           </ul>
         </div>
 
+<% @search_action_list = SearchAction::actions_for_user(current_user.id) %>
+
         <div>
           <div class="tab-pane" id="history">
             <%= render "history" %>
