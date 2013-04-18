@@ -6,7 +6,7 @@
 <%  @search_action_list.each do |act| %>
   <% if act.action_id == SearchActionTypes::Share %>
   <li> 
-    <div class="search-list-item">
+    <div class="search-list-item" search-id="<%= act.search_id %>">
       <div id="security-info">
         <div id="security-ticker"><%= act.ticker  %></div> - 
         <div id="security-name"><%= act.name %></div>        
@@ -32,6 +32,6 @@
 
 <% else %>
   <div id="not-yet">
-    You have not shared any searches yet.
+    You did not share any searches yet.
   </div>
 <% end %> 
