@@ -1,1 +1,39 @@
-You have not selected any favorites yet. 
+<% if @search_action_list.any? { |act| act.action_id == SearchActionTypes::Favorite} %>
+
+<ul id="shared" class="unstyled searches-list">
+
+<%  @search_action_list.each do |act| %>
+  <% if act.action_id == SearchActionTypes::Favorite %>
+  <li> 
+    <div class="search-list-item" search-id="<%= act.search_id %>">
+      <div id="security-info">
+        <div id="security-ticker"><%= act.ticker  %></div> - 
+        <div id="security-name"><%= act.name %></div>        
+        <a id="remove-link" href="#" title="Remove">
+          <i class="icon-remove"></i>
+        </a>   
+      </div>
+
+      <div id="last-search-date">Last Update: <%= act.updated_at.strftime("%B %d, %Y") %></div>
+
+      <div id="item-actions">
+        <a class = "refresh_btn" href="#" title="Update for today" data-toggle="tooltip">
+          <i class="icon-refresh"></i>
+        </a> 
+        <a class ="share_btn" href = "#" title="Share" data-toggle="tooltip">
+          <i class="icon-share"></i>
+        </a>
+      </div>
+    </div>
+  </li>
+  <% end %>
+
+<% end %>
+
+</ul>
+
+<% else %>
+  <div id="not-yet">
+    You did not add any searches to favorites yet.
+  </div>
+<% end %> 

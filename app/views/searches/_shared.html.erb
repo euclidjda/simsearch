@@ -1,1 +1,37 @@
-You have not shared any searches yet.
+
+<% if @search_action_list.any? { |act| act.action_id == SearchActionTypes::Share} %>
+
+<ul id="shared" class="unstyled searches-list">
+
+<%  @search_action_list.each do |act| %>
+  <% if act.action_id == SearchActionTypes::Share %>
+  <li> 
+    <div class="search-list-item" search-id="<%= act.search_id %>">
+      <div id="security-info">
+        <div id="security-ticker"><%= act.ticker  %></div> - 
+        <div id="security-name"><%= act.name %></div>        
+        <a id="remove-link" href="#" title="Remove">
+          <i class="icon-remove"></i>
+        </a>   
+      </div>
+
+      <div id="last-search-date">Last Update: <%= act.updated_at.strftime("%B %d, %Y") %></div>
+
+      <div id="item-actions">
+        <a class ="favorites_btn" href = "#" title="Add to favorites" data-toggle="tooltip">
+          <i class="icon-star"></i>
+        </a>  
+      </div>
+    </div>
+  </li>
+  <% end %>
+
+<% end %>
+
+</ul>
+
+<% else %>
+  <div id="not-yet">
+    You did not share any searches yet.
+  </div>
+<% end %> 
