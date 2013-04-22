@@ -54,23 +54,59 @@
               <i class="icon-star"></i> Add to Favorites
             </a>  
             
-            <a class ="share_btn" href = "#shareform" title="Share" data-toggle="tooltip modal">
-              <i class="icon-share"></i> Share
-            </a>
           </div>                 
           <hr>
-          <div id="result-summary">
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
-            This is where the results are shown.<br>
+          <div class="accordion" id="accordion1">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#result-summary">
+                  <i class="icon-table"></i> Search and Security Summary
+                </a>
+              </div>
+              <div id="result-summary" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                  This is where the results are shown.<br>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class ="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#share-form">
+                  <i class="icon-share"></i> Share this search
+                </a>              
+              </div>
+              <div id="share-form" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "share-form") do %>
+                    
+                    <p id="share-message">  We will share the search summary information and a link to your full search via e-mail.</p>
+                    <%= text_field_tag(:signin_message_entry, nil, :placeholder => "You can enter a custom message here.", :maxlength => "80") %><br>
+
+                    <table>
+                      <tr>
+                        <td class="email-cell">
+                          <%= email_field_tag(:share_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %>
+                        </td>
+                        <td>
+                          <%= submit_tag("Share", :class => "btn btn-primary") %>
+                        </td>
+                      </tr>
+                    </table>
+
+                  <% end %>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -103,27 +139,6 @@
       </div>
 
     </div>
-
-    <div id="shareform" 
-          class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <h3 id="shareLabel">Share</h3>
-      </div>
-
-      <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "share-form") do %>
-        <div class="modal-body">
-            <p id="share-message">  Enter the e-mail address to share with: </p>
-            <%= email_field_tag(:share_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
-            <%= text_field_tag(:signin_message_entry, nil, :placeholder => "Message", :maxlength => "30") %><br>
-        </div>
-
-        <div class="modal-footer">
-          <%= submit_tag("Share", :class => "btn btn-large btn-primary") %>
-        </div>
-      <% end %>
-    </div>
-
-
   </div>
 
 </div>

@@ -159,3 +159,46 @@ i {
     }
   }
 }
+
+.accordion {
+  .accordion-toggle {
+    i {
+      padding-left: 0px;
+    }
+  }
+
+  .accordion-body {
+    margin-right: 14px;
+
+    .accordion-inner {
+      #signin_message_entry {
+        width: 100%;
+      }
+    }
+  }
+}
+
+table {
+  margin-right: -15px;
+
+  tr {
+    width: 100%;
+
+    td {
+    }
+    .email-cell {
+      width: 99%;
+      padding-right: 20px;
+
+      #share_email_entry {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.share-form {
+  .btn {
+    float: right;
+  }
+}
