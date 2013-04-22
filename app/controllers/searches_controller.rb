@@ -21,5 +21,9 @@ class SearchesController < ApplicationController
       render :text => "need to sign in. this is here to protect for random get calls."
     end
   end
+
+  def share 
+    render :text => params
+  end
   
 end

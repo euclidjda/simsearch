@@ -25,6 +25,8 @@ Simsearch::Application.routes.draw do
   get "search" => "frontdoor#search_with_id" # to retrieve earlier search results.
   get "search_detail" => "frontdoor#search_detail"
 
+  post "share" => "searches#share"
+
   get "get_search_results" => "frontdoor#get_search_results"
   get "get_search_summary" => "frontdoor#get_search_summary"
   get "get_price_time_series" => "frontdoor#get_price_time_series"

@@ -87,8 +87,10 @@
               </div>
               <div id="share-form" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "share-form") do %>
-                    
+                  <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "share-form", ) do %>
+
+                    <%= hidden_field_tag "source_url" %>
+
                     <p id="share-message">  We will share the search summary information and a link to your full search via e-mail.</p>
                     <%= text_field_tag(:signin_message_entry, nil, :placeholder => "You can enter a custom message here.", :maxlength => "80") %><br>
 
@@ -185,6 +187,8 @@
   }
 
   $(document).ready(function() {
+
+    $("#source_url").val(window.location.href);
 
     // Enable bootstrap tooltips for all anchors on the page.
     $("a").tooltip();
