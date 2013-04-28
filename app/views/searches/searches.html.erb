@@ -66,16 +66,9 @@
               <div id="result-summary" class="accordion-body collapse in">
                 <div class="accordion-inner">
                   This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
-                  This is where the results are shown.<br>
+                  Session ID = <%= session[:search_id] %>
+                  Ticker = <%= session[:ticker] %>
+                  Type ID = <%= session[:type_id] %>
                 </div>
               </div>
             </div>
@@ -92,7 +85,7 @@
                     <%= hidden_field_tag "source_url" %>
 
                     <p id="share-message">  We will share the search summary information and a link to your full search via e-mail.</p>
-                    <%= text_field_tag(:signin_message_entry, nil, :placeholder => "You can enter a custom message here.", :maxlength => "80") %><br>
+                    <%= text_field_tag(:share_message_entry, nil, :placeholder => "You can enter a custom message here.", :maxlength => "80") %><br>
 
                     <table>
                       <tr>
@@ -158,15 +151,7 @@
   $('.favorites_btn').click(function(e){
     handleSearchAction(e, "favorite", 
       $(this).parents(".search-list-item").attr("search-id"));    
-  });
-
-  $('.share_btn').click(function(e){
-
-    // $('#shareform').modal('show');
-
-    handleSearchAction(e, "share", 
-      $(this).parents(".search-list-item").attr("search-id"));
-  });  
+  }); 
 
   $('.search-list-item').click(function(e){
     hideSearchInfo();
@@ -174,6 +159,7 @@
   });
 
   function getHash() {
+    var retVal = new Array();
     var theHash = window.location.hash.substring(1);
     var splitHash = theHash.split('?');
     var theQuery;
@@ -183,7 +169,10 @@
       theQuery = splitHash[1];
     }
 
-    return theHash;    
+    retVal[0] = theHash;
+    retVal[1] = theQuery;
+
+    return retVal;    
   }
 
   $(document).ready(function() {
@@ -195,7 +184,9 @@
     $("button").tooltip();
 
     // Javascript to enable link to tab
-    var theHash = getHash();
+    var tmp = getHash();
+    var theHash = tmp[0];
+    var theQuery = tmp[1];
 
     // show the right tab.
     $('.nav-tabs a[href=#'+ theHash +']').tab('show') ;
@@ -250,6 +241,19 @@
       // Show the right side content properly.
 
     });
+
+    // if the link that got us here is from a share request, show the content.
+    if (theQuery == "share") {
+      hideSearchInfo();
+      showSearchDetail(getHash());
+
+      // click in the share form link to show it
+      $(".accordion-toggle")[1].click();
+
+      // focus on the email field.
+      $("#share_email_entry").focus();
+
+    }
 
   });
 

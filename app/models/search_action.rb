@@ -57,7 +57,7 @@ private
   FROM search_actions sa, users u,searches s, ex_securities e 
   where sa.user_id = u.id and sa.search_id=s.id and 
   e.cid = s.cid and e.sid = s.sid and
-  u.id = '#{_user_id}' order by sa.created_at desc;
+  u.id = '#{_user_id}' order by sa.updated_at desc;
 GET_SEARCH_ACTIONS_SQL
 
   end
