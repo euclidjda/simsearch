@@ -60,15 +60,12 @@
             <div class="accordion-group">
               <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#result-summary">
-                  <i class="icon-table"></i> Search and Security Summary
+                  <i class="icon-table"></i> Search and Security Summary - <span id="ticker-name"></span>
                 </a>
               </div>
               <div id="result-summary" class="accordion-body collapse in">
-                <div class="accordion-inner">
+                <div class="accordion-inner" id="result-summary-content">
                   This is where the results are shown.<br>
-                  Session ID = <%= session[:search_id] %>
-                  Ticker = <%= session[:ticker] %>
-                  Type ID = <%= session[:type_id] %>
                 </div>
               </div>
             </div>
@@ -78,9 +75,9 @@
                   <i class="icon-share"></i> Share this search
                 </a>              
               </div>
-              <div id="share-form" class="accordion-body collapse">
+              <div id="share-form" class="accordion-body collapse in">
                 <div class="accordion-inner">
-                  <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "share-form", ) do %>
+                  <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "the-share-form", ) do %>
 
                     <%= hidden_field_tag "source_url" %>
 
@@ -97,6 +94,18 @@
                         </td>
                       </tr>
                     </table>
+
+                    <div class="alert alert-success">
+<!--                       <a class="close" data-dismiss="alert"><i class="icon-remove"></i> Close</a>  
+ -->                      
+                      We sent an email with the search details. <br>
+                      <a href="/search?search_id=<%= session[:search_id] %>" >Click here to go back to search results </a> or stay on this page.  
+                    </div>
+                    <div class="alert alert-error">
+                      <!-- <a class="close" data-dismiss="alert"><i class="icon-remove"></i> Close</a>   -->
+                      <b>Sorry !</b> We could not send the mail to share this search at this time. <br>
+                      <a href="/search?search_id=<%= session[:search_id] %>">Click here to go back to search results</a> or stay on this page.  
+                    </div>
 
                   <% end %>
                 </div>
@@ -154,8 +163,25 @@
   }); 
 
   $('.search-list-item').click(function(e){
-    hideSearchInfo();
-    showSearchDetail(getHash());
+    handleListItemClick(e);
+  });
+
+  $('#the-share-form').submit(function(event){
+
+    $.ajax({  
+      type: "POST",  
+      url: "/share",  
+      data: $(this).serialize(),  
+      success: function(data) {  
+        $('.alert-success').css("display", "block");
+        console.log(data); 
+      },
+      error: function() {
+        alert("Error sharing the search.");
+      }  
+    }); 
+
+    return false;  
   });
 
   function getHash() {
@@ -176,6 +202,13 @@
   }
 
   $(document).ready(function() {
+
+    // set the global search id and ticker from the last search.
+    // This is only useful in the case of a direct jump here with a share link.
+    // In every other scenario the user will have clicked on a list item, which 
+    // overwrite these values based on the selection from the list.
+    updateGlobals(<%= session[:search_id] %>, "<%= session[:ticker] %>");
+    renderSearchDetails(global_search_id, global_search_ticker);
 
     $("#source_url").val(window.location.href);
 
@@ -202,6 +235,8 @@
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+
+        hideAlerts();
 
         // Hide everything and then only show the content for the tab clicked.
         hideSearchInfo();
@@ -239,7 +274,7 @@
       $('div[id="' + divid + '"]').show();
 
       // Show the right side content properly.
-
+      // ???
     });
 
     // if the link that got us here is from a share request, show the content.
@@ -247,12 +282,8 @@
       hideSearchInfo();
       showSearchDetail(getHash());
 
-      // click in the share form link to show it
-      $(".accordion-toggle")[1].click();
-
       // focus on the email field.
       $("#share_email_entry").focus();
-
     }
 
   });

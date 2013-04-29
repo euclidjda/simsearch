@@ -176,6 +176,28 @@ i {
       }
     }
   }
+
+  .alert {
+    margin-right: -14px;
+    margin-top: 10px;
+    .close {
+      top: -6px;
+      right: -32px;
+      font-size: 12px;
+    }
+
+    a {
+      cursor: pointer;
+    }
+  }
+
+  .alert-success {
+    display: none;
+  }
+
+  .alert-error {
+    display: none;
+  }
 }
 
 table {
