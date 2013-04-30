@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user
+  helper_method :current_user, :the_search_type
   helper_method :current_user_display_name
 
   before_filter :site_lockdown_authenticator
@@ -28,4 +28,9 @@ private
   def current_user_display_name
     @current_user.email
   end
+
+  def the_search_type
+    nil
+  end
+
 end
