@@ -58,7 +58,7 @@ function updateGlobals(_search_id, _search_ticker) {
   global_search_ticker = _search_ticker;
   
   $("#ticker-name").html(global_search_ticker.toUpperCase());
-
+  $("#hidden_search_id").val(global_search_id);
   renderSearchDetails(_search_id, _search_ticker);
 }
 
