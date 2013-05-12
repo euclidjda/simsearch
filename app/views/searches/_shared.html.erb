@@ -6,7 +6,8 @@
 <%  @search_action_list.each do |act| %>
   <% if act.action_id == SearchActionTypes::Share %>
   <li> 
-    <div class="search-list-item" search-id="<%= act.search_id %>">
+    <div class="search-list-item" 
+      search-id="<%= act.search_id %>" search-ticker="<%= act.ticker %>" >
       <div id="security-info">
         <div id="security-ticker"><%= act.ticker  %></div> - 
         <div id="security-name"><%= act.name %></div>        

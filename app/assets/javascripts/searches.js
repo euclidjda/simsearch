@@ -28,6 +28,18 @@ function hideAlerts() {
   $('.alert').hide();
 }
 
+function ShowOrHideShareAction(_action) {
+  
+  // for "shared" view, we hide the sharing action.
+
+  if (_action == "shared") {
+    $("#sharing-action").hide();    
+  }
+  else {
+    $("#sharing-action").show();
+  }
+}
+
 function handleSearchAction(e, _action, _search_id) {
   // alert( _action + " : " + _search_id);
 
@@ -38,7 +50,6 @@ function handleSearchAction(e, _action, _search_id) {
 
   switch (_action) {
     case "favorite":
-      alert("will add to favorites");
       break;
     
     case "refresh":
@@ -71,6 +82,7 @@ function handleListItemClick(e) {
   var target = e.currentTarget;
 
   updateGlobals($(target).attr("search-id"), $(target).attr("search-ticker"));
+  console.log($(target).attr("search-id") + " " + $(target).attr("search-ticker"));
   
   renderSearchDetails(global_search_id, global_search_ticker);
 }

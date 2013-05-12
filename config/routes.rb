@@ -26,6 +26,7 @@ Simsearch::Application.routes.draw do
   get "search_detail" => "frontdoor#search_detail"
 
   post "share" => "searches#share"
+  post "addfavorite" => "searches#addfavorite"
 
   get "get_search_results" => "frontdoor#get_search_results"
   get "get_search_summary" => "frontdoor#get_search_summary"

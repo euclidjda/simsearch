@@ -20,6 +20,10 @@ i {
   max-height: $maxSectionHeight;
   overflow: auto;
 
+  .icon-remove {
+    margin-top: 8px;
+  }
+
   .selected {
     background-color: lightgray;
   }

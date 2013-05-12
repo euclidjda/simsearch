@@ -32,7 +32,7 @@ class SearchesController < ApplicationController
       search_action.touch()
 
       #Even if we found an existing share, to update the most recent share timestamp, do a save.
-      search_action.save();
+      search_action.save()
 
       UserMailer.share_email(current_user, 
         params[:share_email_entry], 
@@ -41,6 +41,19 @@ class SearchesController < ApplicationController
     end
 
     render :text => "OK"
+  end
+
+  def addfavorite
+    render :text => params
+
+    search_action = SearchAction.find_or_create(:user_id => current_user.id,
+                                                :search_id => params[:search_id],
+                                                :action_id => SearchActionTypes::Favorite)
+
+    search_action.touch()
+
+    search_action.save()
+
   end
   
 end
