@@ -69,7 +69,7 @@
                 </div>
               </div>
             </div>
-            <div class="accordion-group">
+            <div class="accordion-group" id="sharing-action">
               <div class="accordion-heading">
                 <a class ="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#share-form">
                   <i class="icon-share"></i> Share this search
@@ -159,8 +159,26 @@
   });
 
   $('.favorites_btn').click(function(e){
+
+    var paramData = new Object();
+    paramData.search_id = $(this).parents(".search-list-item").attr("search-id");
+
+    $.ajax({  
+      type: "POST",  
+      url: "/addfavorite",  
+      data: paramData,  
+      success: function(data) {  
+        alert("favorite");
+        console.log(data); 
+      },
+      error: function() {
+        alert("Error adding a favorite.");
+        console.log("error");
+      }  
+    }); 
+
     handleSearchAction(e, "favorite", 
-      $(this).parents(".search-list-item").attr("search-id"));    
+      $(this).parents(".search-list-item").attr("search-id"));        
   }); 
 
   $('.search-list-item').click(function(e){
@@ -232,7 +250,12 @@
     hideSearchDetail();
     $("#" + theHash + "-info").show();
 
-    // Show the right tab and right side content when a tab is clicked.
+    // Hide or show the sharing action in details based on tab
+    // We don't want to show it if the hash is "shared"
+    ShowOrHideShareAction(theHash);
+
+    // Attach the event handler to show the right tab and right side 
+    // content when a tab is clicked.
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -242,8 +265,11 @@
         // Hide everything and then only show the content for the tab clicked.
         hideSearchInfo();
         hideSearchDetail();
-        theHash = $(this).text().toLowerCase();
-        $("#" + theHash + "-info").show();
+        var localHash = $(this).text().toLowerCase();
+        $("#" + localHash + "-info").show();
+
+        ShowOrHideShareAction(localHash);
+
     });
 
     // navigate to a tab when the history changes
