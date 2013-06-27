@@ -23,7 +23,7 @@ class CreateSearchStatuses < ActiveRecord::Migration
 
     execute <<-SQL
       ALTER TABLE search_statuses
-      ADD UNIQUE KEY (search_id,fromdate,thrudate)
+      ADD UNIQUE KEY search_statuses_uniq (search_id,fromdate,thrudate)
     SQL
 
   end

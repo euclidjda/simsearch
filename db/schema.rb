@@ -73,13 +73,16 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.float   "saleq_4yISgx"
     t.float   "seqq_mrq"
     t.float   "cheq_mrq"
+    t.float   "actq_mrq"
+    t.float   "ppentq_mrq"
     t.float   "atq_mrq"
-    t.float   "dlttq_mrq"
     t.float   "dlcq_mrq"
+    t.float   "lctq_mrq"
+    t.float   "dlttq_mrq"
     t.float   "pstkq_mrq"
     t.float   "mibnq_mrq"
     t.float   "mibq_mrq"
-    t.float   "fcfq_mrq"
+    t.float   "fcfq_ttm"
     t.float   "fcfq_4yISm"
   end
 
@@ -136,13 +139,16 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.float   "saleq_4yISgx"
     t.float   "seqq_mrq"
     t.float   "cheq_mrq"
+    t.float   "actq_mrq"
+    t.float   "ppentq_mrq"
     t.float   "atq_mrq"
-    t.float   "dlttq_mrq"
     t.float   "dlcq_mrq"
+    t.float   "lctq_mrq"
+    t.float   "dlttq_mrq"
     t.float   "pstkq_mrq"
     t.float   "mibnq_mrq"
     t.float   "mibq_mrq"
-    t.float   "fcfq_mrq"
+    t.float   "fcfq_ttm"
     t.float   "fcfq_4yISm"
   end
 
@@ -299,7 +305,7 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "search_id", :unique => true
+  add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "search_statuses_uniq", :unique => true
 
   create_table "search_types", :force => true do |t|
     t.string   "factors"
