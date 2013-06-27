@@ -1,8 +1,5 @@
 class Factors
 
-  # TODO: NEW FACTORS
-  # Current Ratio, Quick Ratio, Revenue Growth 1 Year
-
   @@FactorAttributes = {
     :ey     => { :order =>   1, :iw =>   31.0, :name => "Earnings Yield",    :fmt => "pct" },
     :pe     => { :order =>  10, :iw =>   0.01, :name => "Price to Earnings", :fmt => "%.2f" },
@@ -11,6 +8,7 @@ class Factors
     :roe    => { :order =>  40, :iw =>   0.42, :name => "Return on Equity"  },
     :roa    => { :order =>  50, :iw =>   10.5, :name => "Return on Assets"  },
     :roc    => { :order =>  60, :iw =>    6.5, :name => "Return on Capital" },
+    :roic   => { :order =>  65, :iw =>   0.15, :name => "Return On Invested Capital" },
     :gmar   => { :order =>  70, :iw =>    4.3, :name => "Gross Margin"      },
     :omar   => { :order =>  80, :iw =>    6.8, :name => "Operating Margin"  },
     :nmar   => { :order =>  90, :iw =>    6.8, :name => "Net Margin"        },

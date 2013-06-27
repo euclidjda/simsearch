@@ -98,13 +98,16 @@ CREATE TABLE ex_factdata (
        saleq_4yISgx  FLOAT, -- Revenue Growth 4 Years
        seqq_mrq      FLOAT, -- Shareholders' Equity
        cheq_mrq	     FLOAT, -- Cash & Cash Equiv
+       actq_mrq      FLOAT, -- Current Assets
+       ppentq_mrq    FLOAT, -- Property Plant & Equip       
        atq_mrq       FLOAT, -- Total Assets
        dlcq_mrq	     FLOAT, -- Short-Term Debt
+       lctq_mrq	     FLOAT, -- Current Liabilities
        dlttq_mrq     FLOAT, -- Long-Term Debt
        pstkq_mrq     FLOAT, -- Prefered Stock
        mibnq_mrq     FLOAT, -- Non-controlling interests non-redeamable - balance
        mibq_mrq	     FLOAT, -- Non-controlling interests redeamable - balance sheet
-       fcfq_mrq	     FLOAT, -- Free Cash Flow TTM
+       fcfq_ttm	     FLOAT, -- Free Cash Flow TTM
        fcfq_4yISm    FLOAT, -- Free Cash Flow 4 year median
        
        INDEX ex_factdata_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index

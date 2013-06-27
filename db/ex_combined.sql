@@ -39,6 +39,7 @@ CREATE TABLE ex_combined (
        -- the fields below are used to calculate factors "on the fly"
        -- see example queries at end of this file
        --
+ 
        dvpsxm_ttm    FLOAT, -- Dividends/Share TTM
        epspiq_ttm    FLOAT, -- EPS TTM
        epspxq_ttm    FLOAT, -- EPS TTM (excluding extra-ordinary items)
@@ -50,20 +51,24 @@ CREATE TABLE ex_combined (
        saleq_4yISgx  FLOAT, -- Revenue Growth 4 Years
        seqq_mrq      FLOAT, -- Shareholders' Equity
        cheq_mrq	     FLOAT, -- Cash & Cash Equiv
+       actq_mrq      FLOAT, -- Current Assets
+       ppentq_mrq    FLOAT, -- Property Plant & Equip       
        atq_mrq       FLOAT, -- Total Assets
-       dlttq_mrq     FLOAT, -- Long-Term Debt
        dlcq_mrq	     FLOAT, -- Short-Term Debt
+       lctq_mrq	     FLOAT, -- Current Liabilities
+       dlttq_mrq     FLOAT, -- Long-Term Debt
        pstkq_mrq     FLOAT, -- Prefered Stock
        mibnq_mrq     FLOAT, -- Non-controlling interests non-redeamable - balance
        mibq_mrq	     FLOAT, -- Non-controlling interests redeamable - balance sheet
-       fcfq_mrq	     FLOAT, -- Free Cash Flow TTM
+       fcfq_ttm	     FLOAT, -- Free Cash Flow TTM
        fcfq_4yISm    FLOAT, -- Free Cash Flow 4 year median
- 
+
        INDEX ex_combined_ix01 (cid,sid,fromdate,thrudate), -- point-in-time index
        INDEX ex_combined_ix02 (idxsec,idxnew,pricedate,idxcapl,idxcaph),
        INDEX ex_combined_ix03 (idxgrp,idxnew,pricedate,idxcapl,idxcaph),
        INDEX ex_combined_ix04 (idxind,idxnew,pricedate,idxcapl,idxcaph),
-       INDEX ex_combined_ix05 (idxsub,idxnew,pricedate,idxcapl,idxcaph)
+       INDEX ex_combined_ix05 (idxsub,idxnew,pricedate,idxcapl,idxcaph),
+       INDEX ex_combined_ix10 (pricedate)
 
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -88,13 +93,16 @@ INSERT INTO ex_combined
        B.saleq_4yISgx  , -- Revenue Growth 4 Years
        B.seqq_mrq      , -- Shareholders' Equity
        B.cheq_mrq      , -- Cash & Cash Equiv
+       B.actq_mrq      , -- Current Assets
+       B.ppentq_mrq    , -- Property Plant Equip
        B.atq_mrq       , -- Total Assets
        B.dlttq_mrq     , -- Long-Term Debt
+       B.lctq_mrq      , -- Current Liabilities
        B.dlcq_mrq      , -- Short-Term Debt
        B.pstkq_mrq     , -- Prefered Stock
        B.mibnq_mrq     , -- Non-controlling interests non-redeamable - balance
        B.mibq_mrq      , -- Non-controlling interests redeamable - balance sheet
-       B.fcfq_mrq      , -- Free Cash Flow TTM
+       B.fcfq_ttm      , -- Free Cash Flow TTM
        B.fcfq_4yISm      -- Free Cash Flow 4 year median
     FROM ex_prices A,  ex_factdata B
     WHERE A.cid = B.cid AND
@@ -118,8 +126,11 @@ INSERT INTO ex_combined
     B.saleq_4yISgx  IS NOT NULL AND
     B.seqq_mrq      IS NOT NULL AND
     B.cheq_mrq      IS NOT NULL AND
+    B.actq_mrq	    IS NOT NULL AND
+    B.ppentq_mrq    IS NOT NULL AND
     B.atq_mrq       IS NOT NULL AND
     B.dlttq_mrq     IS NOT NULL AND
+    B.lctq_mrq	    IS NOT NULL AND
     B.dlcq_mrq      IS NOT NULL AND
     B.pstkq_mrq     IS NOT NULL AND
     A.datadate BETWEEN B.fromdate AND B.thrudate;
