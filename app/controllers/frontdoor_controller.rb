@@ -120,6 +120,32 @@ class FrontdoorController < ApplicationController
     end
   end
 
+  def get_security_snapshot
+
+    # only work when user is registered, we don't call this anywhere but from search
+    # results, which is a registered user experience.
+    if current_user
+      _search_id = params[:search_id]
+
+      search = Search::where( :id => _search_id ).first
+
+      target_cid = search.cid()
+      target_sid = search.sid()
+
+      search.ticker = ExSecurity.find_by_cidsid(target_cid, target_sid).ticker
+
+      search_type = SearchType.where( :id => search.type_id ).first
+
+      target_fields = 
+        SecuritySnapshot
+        .get_target(target_cid,target_sid).to_hash( :factor_keys => 
+                                                    search_type.factor_keys )
+      render :text => target_fields
+
+    end
+
+  end
+
   def search
 
     # Get the parameter from the parameter array, this is coming from the browser.

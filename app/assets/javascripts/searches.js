@@ -88,5 +88,18 @@ function handleListItemClick(e) {
 }
 
 function renderSearchDetails(_search_id, _search_ticker) {
+    // get search results
+    $.getJSON('get_security_snapshot?search_id='+_search_id, function(data) {
+      // companyname = data.name;
+      // marketcap = data.mrkcap;
+      // pe = data.pe;
+      // price = data.price;
+      alert('1');
+    });
+
+    // $.getJSON('get_search_summary?search_id='+_search_id,function(data) {
+    //   alert('1');
+    // });
+
     $("#result-summary-content").html("Search ID: " + _search_id + "<br>" + "Ticker: " + _search_ticker);
 }
