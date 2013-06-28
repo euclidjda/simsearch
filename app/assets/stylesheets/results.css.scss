@@ -1,6 +1,11 @@
 
 @import "shared";
 
+.modal-backdrop, .modal-backdrop.fade.in {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
 .date-label {
 
 	background-image: url('date-box-orange.png');
@@ -100,6 +105,8 @@
 			i {
 				background-position: 14px 14px;
 			}
+			
+			color: white !important;
 		}
     }
 }

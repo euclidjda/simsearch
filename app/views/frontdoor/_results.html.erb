@@ -35,7 +35,12 @@
           <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) %>
           <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
           <a class ="btn btn-small btn-inverse share-button" 
-              href = "/searches#history?share">
+              <% if current_user %>
+                href = "/searches#history?share"
+              <% else %>
+                href = "#asktosigninmodal" data-toggle="modal"
+              <% end %>
+              >
             <i class="icon-share icon-white"></i>Share
           </a>  
       </div>
@@ -111,5 +116,7 @@
   <% end %>
 
   <%= render :partial => "comparable_modal", :object => target_fields %>
+
+  <%= render :partial => "askto_signin_modal" %>
 
 </div> <!-- end of span12-->

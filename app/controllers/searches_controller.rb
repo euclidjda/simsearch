@@ -18,7 +18,8 @@ class SearchesController < ApplicationController
       @searches_path = request.fullpath
       render :searches
     else
-      render :text => "need to sign in. this is here to protect for random get calls."
+      # render UI that tells user that they need to sign in to share.
+      render "askto_signin_modal"
     end
   end
 
