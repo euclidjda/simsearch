@@ -8,12 +8,12 @@ class UserMailer < ActionMailer::Base
           :subject => "Welcome to Euclidean Fundamentals")
   end
 
-  def share_email(_user, _target, _message, _search_id)
+  def share_email(_user, _target, _search_id, _message, _summary_text)
     @user = _user
     @url = "http://www.euclidean.com/fundamentals?search=" + _search_id
+    @content = _summary_text
     mail( :to => _target, 
           :subject => "Shared search results")
-
   end
 
 end

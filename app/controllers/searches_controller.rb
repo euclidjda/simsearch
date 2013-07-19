@@ -4,7 +4,6 @@ class SearchesController < ApplicationController
 
   helper_method :the_search_type
 
-  @searches_path = nil
   @search_action_list = nil
 
   @the_search_type = nil
@@ -15,11 +14,11 @@ class SearchesController < ApplicationController
 
   def searches
     if current_user
-      @searches_path = request.fullpath
       render :searches
     else
-      # render UI that tells user that they need to sign in to share.
-      render "askto_signin_modal"
+      # Our UI renders a dialog that tells users that they need to sign in to share.
+      # In case someone is trying to get to this URL directly however, protect ourselves.
+      redirect_to "/signin"
     end
   end
 
@@ -35,10 +34,12 @@ class SearchesController < ApplicationController
       #Even if we found an existing share, to update the most recent share timestamp, do a save.
       search_action.save()
 
-      UserMailer.share_email(current_user, 
-        params[:share_email_entry], 
+      UserMailer.share_email(
+        current_user, 
+        params[:share_email_entry],
+        params[:hidden_search_id], 
         params[:share_message_entry],
-        params[:hidden_search_id]).deliver
+        params[:hidden_summary_text]).deliver
     end
 
     render :text => "OK"

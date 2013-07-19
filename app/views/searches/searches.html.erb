@@ -59,51 +59,28 @@
           <div class="accordion" id="accordion1">
             <div class="accordion-group">
               <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#result-summary">
+                <a class="accordion-toggle" data-parent="#accordion1">
                   <i class="icon-table"></i> Search and Security Summary - <span id="ticker-name"></span>
                 </a>
               </div>
-              <div id="result-summary" class="accordion-body collapse in">
+              <div id="result-summary" class="accordion-body in">
                 <div class="accordion-inner" id="result-summary-content">
-                  <div class="target-name">
-                    THE FULL NAME OF THE COMPANY HERE
-                  </div>
-                  <div id="target-info">
-                      <b>Market Cap</b>:<br>
-                      <b>P/E</b>: <br>
-                      <b>Price</b>:  <br>
-                  </div>
-      <div id="short-summary">
-        Comparable Average  
-        <div id="median-perf">
-          <span><img class="summary-image" src=""></img></span>
-          <span class="summary-num"></span>
-        </div>
-      </div>
-      <div id="wide-summary">
-        's Historical Comparables
-        <i><span class="summary-label">Outperformed</span></i>
-        the S&P 500 by an Average of:
-        <div id="median-perf">
-          <span><img class="summary-image" src=""></img></span>
-          <span class="summary-num"></span>
-        </div>
-      </div>
                 </div>
               </div>
             </div>
             <div class="accordion-group" id="sharing-action">
               <div class="accordion-heading">
-                <a class ="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#share-form">
+                <a class ="accordion-toggle" data-parent="#accordion1">
                   <i class="icon-share"></i> Share this search
                 </a>              
               </div>
-              <div id="share-form" class="accordion-body collapse in">
+              <div id="share-form" class="accordion-body in">
                 <div class="accordion-inner">
                   <%= form_tag("/share", :method => "post", :class => "navbar-form", :id => "the-share-form", ) do %>
 
                     <%= hidden_field_tag "source_url" %>
                     <%= hidden_field_tag "hidden_search_id" %>
+                    <%= hidden_field_tag "hidden_summary_text" %>
 
                     <p id="share-message">  We will share the search summary information and a link to your full search via e-mail.</p>
                     <%= text_field_tag(:share_message_entry, nil, :placeholder => "You can enter a custom message here.", :maxlength => "80") %><br>
@@ -236,6 +213,10 @@
       theHash = splitHash[0];
       theQuery = splitHash[1];
     }
+    else {
+      theHash = "history";
+      theQuery = "";
+    }
 
     retVal[0] = theHash;
     retVal[1] = theQuery;
@@ -249,7 +230,7 @@
     // This is only useful in the case of a direct jump here with a share link.
     // In every other scenario the user will have clicked on a list item, which 
     // overwrite these values based on the selection from the list.
-    updateGlobals(<%= session[:search_id] %>, "<%= session[:ticker] %>");
+    updateGlobals("<%= session[:search_id] %>", "<%= session[:ticker] %>");
     renderSearchDetails(global_search_id, global_search_ticker);
 
     $("#source_url").val(window.location.href);

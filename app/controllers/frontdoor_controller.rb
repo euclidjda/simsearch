@@ -140,8 +140,7 @@ class FrontdoorController < ApplicationController
         SecuritySnapshot
         .get_target(target_cid,target_sid).to_hash( :factor_keys => 
                                                     search_type.factor_keys )
-      render :text => target_fields
-
+      render :json => target_fields.to_json
     end
 
   end
