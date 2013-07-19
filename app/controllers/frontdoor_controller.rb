@@ -46,8 +46,6 @@ class FrontdoorController < ApplicationController
 
     if !_email.blank? && !_username.blank? && !_password.blank?
 
-      logger.debug "****** we have all fields"
-
       # create the user
       user = User.create_with_form_data(
           :email => _email,
@@ -210,15 +208,14 @@ class FrontdoorController < ApplicationController
           @the_search.ticker = ticker_value
 
       end
+    end
 
-      # Add the information to the session so we can share the last search
-      # across get/post requests.
-      if @the_search 
-        session[:search_id] = @the_search.id
-        session[:type_id]   = @the_search.type_id
-        session[:ticker]    = @the_search.ticker
-      end
-
+    # Add the information to the session so we can share the last search
+    # across get/post requests.
+    if @the_search 
+      session[:search_id] = @the_search.id
+      session[:type_id]   = @the_search.type_id
+      session[:ticker]    = @the_search.ticker
     end
 
     # streaming ...

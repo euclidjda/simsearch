@@ -34,7 +34,7 @@
           <br>
           <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) %>
           <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
-          <a class ="btn btn-small btn-inverse share-button" 
+          <a class ="btn btn-large btn-success share-button" 
               <% if current_user %>
                 href = "/searches#history?share"
               <% else %>

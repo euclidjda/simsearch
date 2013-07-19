@@ -79,7 +79,7 @@
 		    white-space: nowrap;
 		    text-overflow: ellipsis;
 		    overflow: hidden; 
-		    padding-left: 3px;
+		    padding-left: 8px;
 		}
 
 		.target-info {
@@ -96,17 +96,20 @@
 
 		.share-button {
 			position: absolute;
-			margin-right: -72px;
-			top: 0;
+			margin-right: -136px;
+
+			top: 10px;
 			right: 0px;
 
-			padding-top: 4px;
+			font-size: 14pt;
+
+			padding-top: 14px;
 
 			i {
-				background-position: 14px 14px;
+				background-position: 32px 32px !important;
+				padding-right: 10pt;
+				font-size: 24pt;
 			}
-			
-			color: white !important;
 		}
     }
 }

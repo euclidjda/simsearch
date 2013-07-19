@@ -97,13 +97,10 @@
                     </table>
 
                     <div class="alert alert-success">
-                      <!-- <a class="close" data-dismiss="alert"><i class="icon-remove"></i> Close</a>   -->
-                      
                       We sent an email with the search details. <br>
                       <a href="/search?search_id=<%= session[:search_id] %>" >Click here to go back to search results </a> or stay on this page.  
                     </div>
                     <div class="alert alert-error">
-                      <!-- <a class="close" data-dismiss="alert"><i class="icon-remove"></i> Close</a>   -->
                       <b>Sorry !</b> We could not send the mail to share this search at this time. <br>
                       <a href="/search?search_id=<%= session[:search_id] %>">Click here to go back to search results</a> or stay on this page.  
                     </div>
@@ -148,6 +145,17 @@
 
 </div>
 
+<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header">
+        <h3>Sending mail with shared search...</h3>
+    </div>
+    <div class="modal-body">
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 100%;"></div>
+        </div>
+    </div>
+</div>
+
 <script>
 
   // When a search action button is clicked, we first show the 
@@ -187,15 +195,19 @@
 
   $('#the-share-form').submit(function(event){
 
+    $("#pleaseWaitDialog").modal();
+
     $.ajax({  
       type: "POST",  
       url: "/share",  
       data: $(this).serialize(),  
       success: function(data) {  
+        $("#pleaseWaitDialog").modal('hide');
         $('.alert-success').css("display", "block");
         console.log(data); 
       },
       error: function() {
+        $("#pleaseWaitDialog").modal('hide');
         alert("Error sharing the search.");
       }  
     }); 
