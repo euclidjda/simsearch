@@ -305,7 +305,11 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.datetime "updated_at", :null => false
   end
 
+<<<<<<< HEAD
   add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "search_statuses_uniq", :unique => true
+=======
+  add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "idx_search_id", :unique => true
+>>>>>>> 86ff9c5d065ee5d6c2e128a846ba883d5e5bc0c9
 
   create_table "search_types", :force => true do |t|
     t.string   "factors"

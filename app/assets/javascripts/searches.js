@@ -70,7 +70,7 @@ function updateGlobals(_search_id, _search_ticker) {
   
   $("#ticker-name").html(global_search_ticker.toUpperCase());
   $("#hidden_search_id").val(global_search_id);
-  renderSearchDetails(_search_id, _search_ticker);
+
 }
 
 function handleListItemClick(e) {
@@ -82,24 +82,80 @@ function handleListItemClick(e) {
   var target = e.currentTarget;
 
   updateGlobals($(target).attr("search-id"), $(target).attr("search-ticker"));
-  console.log($(target).attr("search-id") + " " + $(target).attr("search-ticker"));
-  
-  renderSearchDetails(global_search_id, global_search_ticker);
+  // console.log($(target).attr("search-id") + " " + $(target).attr("search-ticker"));
+
+  renderSearchDetails($(target).attr("search-id"), $(target).attr("search-ticker"));
+}
+
+function getSummaryText (_secdata, _sumdata, _search_id) {
+    var performanceSign, performanceNumber;
+    var content;
+
+    var styleTemplate = "<span style='color:%s'>%s</span>";
+    var sign;
+    if (_sumdata.mean > 0) {
+      sign = "green";
+      overunder = "overperformed";
+    }
+    else {
+      sign = "red";
+      overunder = "underperformed"
+    }
+
+    performanceSign = sprintf(styleTemplate, sign, overunder); 
+    performanceNumber = sprintf(styleTemplate, sign, "%.2f%%");
+
+    sign = (_sumdata.min > 0) ? "green" : "red";
+    var minComparable = sprintf("<span style='color:%s'>%s</span>", sign, "%.2f%%");
+
+    sign = (_sumdata.max > 0) ? "green" : "red";
+    var maxComparable = sprintf("<span style='color:%s'>%s</span>", sign, "%.2f%%");
+
+    var template = 
+    "<div id='result-summary-companyname'>%s</div>" + 
+    "<div id='result-summary-companydetails'><b>Market Cap:</b> %.2fM <b>P/E:</b> %.2f <b>Price:</b> $%.2f </div>" + 
+    "<div id='result-summary-searchsummary'>Historical Comparables %s S&P 500 by an average of " + performanceNumber + 
+    ". It outperformed <b>%d out of %d</b> comparables, where worst performing comparable returned " + minComparable + " and best performing returned " + maxComparable + ".</div>" + 
+    "<br><div><a href = '/search?search_id=%s'>Click to see full search results.</a></div>";
+
+    content = sprintf(template, _secdata.name, _secdata.mrkcap, _secdata.pe, _secdata.price, 
+      performanceSign, _sumdata.mean,
+      _sumdata.wins, _sumdata.count, _sumdata.min, _sumdata.max, _search_id);  
+
+    return content;
 }
 
 function renderSearchDetails(_search_id, _search_ticker) {
+    var template, content, securityData, summaryData;
+
     // get search results
-    $.getJSON('get_security_snapshot?search_id='+_search_id, function(data) {
-      // companyname = data.name;
-      // marketcap = data.mrkcap;
-      // pe = data.pe;
-      // price = data.price;
-      alert('1');
+    var security_snapshot = $.getJSON('get_security_snapshot?search_id='+_search_id)
+    .done(function(secdata) {
+
+          securityData = secdata;
+
+          $.getJSON('get_search_summary?search_id='+_search_id)
+
+          .done(function(sumdata) {
+            summaryData = sumdata;
+
+            content = getSummaryText(securityData, summaryData, _search_id);
+
+            $("#hidden_summary_text").val(content);
+
+            $("#result-summary-content").html(content);               
+          })
+          .fail(function(sumdata){
+            // console.log("failed - searchsummary");
+          })
+          .always(function(sumdata){
+            // console.log("always - searchsummary");
+          });     
+    })
+    .fail(function(secdata) { 
+        // console.log("failed - securitysnapshot")
+    })
+    .always(function(secdata) { 
+        // console.log("always - securitysnapshot")
     });
-
-    // $.getJSON('get_search_summary?search_id='+_search_id,function(data) {
-    //   alert('1');
-    // });
-
-    $("#result-summary-content").html("Search ID: " + _search_id + "<br>" + "Ticker: " + _search_ticker);
 }

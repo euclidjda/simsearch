@@ -1,27 +1,26 @@
-<div class="results-detail span12">
+<div class="results-detail" cid="<%= comp_fields['cid']%>"
+     sid="<%= comp_fields['sid']%>" 
+     pricedate="<%= comp_fields['pricedate']%>" >
 
 <a onclick='window.location="search?search_id=<%= the_search_detail.search_id %>"'>
 << Back to Search </a><br>
 
-<table border=1 class="results-table-detail center">
+   <div class="row-fluid">
+     <div class="span12 detail-title">
 
-<thead>
-<tr>
-<th colspan=2> 
+       <%= target_fields['name'] +" (" + target_fields['ticker']+ ")" %> TODAY
+       compared to <br>
+       <%= comp_fields['name'] +" (" + comp_fields['ticker']+ ")" %> on
+       <%= display_date_v1( comp_fields['pricedate']) %>
+       
+     </div>
+   </div>
 
-  <%= target_fields['name'] +" (" + target_fields['ticker']+ ")" %> TODAY
-  compared to<br>
-  <%= comp_fields['name'] +" (" + comp_fields['ticker']+ ")" %> on
-  <%= display_date_v1( comp_fields['pricedate']) %>
-</th>
-</tr>  
-</thead>
-
-<tbody>
-  <tr>
-    <td class="col1">
+<div class="row-fluid">
       
-      <!-- FACTORS PANEL -->
+  <div class="span6 detail-panel">
+
+    <!-- FACTORS PANEL -->
       <table class="factor-table" border=1>
 	<thead>
 	  <th class="col1-factors">Factors</th>
@@ -60,20 +59,22 @@
 	    <%= sprintf("%.2f",the_search_detail.sim_score) %>
 	  </td>
 	</tr>
-	</table>
+      </table>
 
-    </td>
-    <td class="col2">
+  </div>
+  <div class="span6 detail-panel">
 
       <!-- PERFORMANCE PANEL -->
-      Performance Chart Goes Here
+      <div id="price-chart" class="chart-price"></div>
 
-    </td>
-  </tr>    
 
-  <tr>
-    <td class="col1">
-      
+  </div>
+
+</div>
+
+<div class="row-fluid">
+ 
+  <div class="span6 detail-panel">
 
       <table border=1 class="key-stats-table">
 	<thead>
@@ -135,16 +136,14 @@
 	</tbody>
       </table>
 
-    </td>
-    <td class="col2">
+</div>
+<div class="span6">
 
       <!-- GROWTH PANEL -->
-      Growth Chart Goes Here
+      <div id="growth-chart" class="chart-growth"></div>
+      
+</div> <!-- closing span6 -->
 
-    </td>
-  </tr>  
-</tbody>  
+</div> <!-- closing row-fluid -->
 
-</table>
-
-</div> <!-- end of span12-->
+</div> <!-- closing whole doc -->

@@ -8,40 +8,19 @@
 	margin-right:auto;
     }
 
-   table.results-table-detail {
+    .detail-title {
 
-	width: 90%;
-	background-color: white;
-	border-left: solid orange 2px;
-	border-right: solid orange 2px;
-	border-top: solid gray 1px;
-	border-bottom: solid gray 1px;
+	font-size: 14pt;
+	text-align: center;
+	padding: 20px 20px 20px 20px;
 
-	thead {
-	    font-size: 12pt;
-	    th {
-		padding: 10px 10px 10px 10px;
-	    }
-	}
-
-	.col1 {
-
-	    width: 50%;
-
-	    padding: 10px 10px 5px 5px;
-
-	}
-
-	.col2 {
-
-	    width: 50%;
-	    background-color: grey;
-
-	    padding: 5px 5px 5px 5px;
-
-	}
     }
 
+    .detail-panel {
+	padding: 10px 10px 10px 10px;
+	min-width: 480px;
+    }
+    
     table.factor-table {
 	
 	width: 100%;

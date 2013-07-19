@@ -1,4 +1,4 @@
-$maxSectionHeight: 400px;
+$maxSectionHeight: 500px;
 
 .tab-pane {
   height: $maxSectionHeight;  // until we determine the actual size.
@@ -177,6 +177,23 @@ i {
     .accordion-inner {
       #share_message_entry {
         width: 100%;
+      }
+
+      #result-summary-companyname {
+        font-size: 14pt;
+        font-weight: bold;
+        font-color: rgb(23, 23, 23);
+        padding-bottom: 6px;
+      }
+
+      #result-summary-companydetails: {
+        font-size: 10pt;
+        padding-bottom: 6px;
+      }
+
+      #result-summary-searchsummary {
+        font-size: 12pt;
+        height: 40pt;
       }
     }
   }
