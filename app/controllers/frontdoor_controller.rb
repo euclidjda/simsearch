@@ -124,6 +124,7 @@ class FrontdoorController < ApplicationController
 
     # only work when user is registered, we don't call this anywhere but from search
     # results, which is a registered user experience.
+    #
     if current_user
       _search_id = params[:search_id]
 
