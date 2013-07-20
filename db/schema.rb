@@ -277,8 +277,9 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.integer  "user_id"
     t.integer  "search_id"
     t.integer  "action_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "action_count"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "search_details", :force => true do |t|
@@ -328,8 +329,6 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.float    "mean"
     t.float    "max"
     t.float    "min"
-    t.time     "sharedat"
-    t.time     "savedat"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

@@ -56,7 +56,12 @@ class Search < ActiveRecord::Base
       search_action = SearchAction.find_or_create(:user_id => _current_user.id, 
                                                   :search_id => search.id,
                                                   :action_id => SearchActionTypes::Create)
-
+      if search_action.action_count
+        search_action.action_count += 1;
+      else
+        search_action.action_count = 1;
+      end
+      
       search_action.touch()
 
       # Even if we found an existing one, to update the timestamp, do a save.    

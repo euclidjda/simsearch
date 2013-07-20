@@ -29,6 +29,12 @@ class SearchesController < ApplicationController
       search_action = SearchAction.find_or_create(:user_id => current_user.id,
                                                   :search_id => params[:hidden_search_id],
                                                   :action_id => SearchActionTypes::Share)
+      if search_action.action_count
+        search_action.action_count += 1;
+      else
+        search_action.action_count = 1;
+      end
+
       search_action.touch()
 
       #Even if we found an existing share, to update the most recent share timestamp, do a save.

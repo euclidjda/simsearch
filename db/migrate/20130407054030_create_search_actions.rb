@@ -5,6 +5,7 @@ class CreateSearchActions < ActiveRecord::Migration
       t.integer :user_id
       t.integer :search_id
       t.integer :action_id
+      t.integer :action_count
 
       t.timestamps
     end

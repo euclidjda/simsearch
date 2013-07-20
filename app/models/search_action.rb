@@ -12,7 +12,7 @@ class SearchAction < ActiveRecord::Base
 
   # Action => SearchActionTypes::Create/Share/Favorite
 
-  attr_accessible :user_id, :search_id, :action_id
+  attr_accessible :user_id, :search_id, :action_id, :action_count
   attr_accessor :ticker, :name
 
   def self.find_or_create(attributes)
@@ -34,6 +34,7 @@ class SearchAction < ActiveRecord::Base
             :user_id => record['user_id'],
             :search_id => record['search_id'],
             :action_id => record['action_id'],
+            :action_count => record['action_count']
             )
         obj.created_at = record['created_at']
         obj.updated_at = record['updated_at']
