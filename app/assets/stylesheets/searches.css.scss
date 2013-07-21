@@ -169,6 +169,8 @@ i {
     i {
       padding-left: 0px;
     }
+
+    cursor: default;
   }
 
   .accordion-body {
@@ -194,6 +196,10 @@ i {
       #result-summary-searchsummary {
         font-size: 12pt;
         height: 40pt;
+      }
+
+      #result-summary-lastsearch {
+        float: right;
       }
     }
   }

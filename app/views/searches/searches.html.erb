@@ -49,7 +49,6 @@
             <a class = "refresh_btn" href="#" title="Update for today" data-toggle="tooltip">
               <i class="icon-refresh"></i> Refresh
             </a>
-
             <a class ="favorites_btn" href = "#" title="Add to favorites" data-toggle="tooltip">
               <i class="icon-star"></i> Add to Favorites
             </a>  
@@ -243,7 +242,8 @@
     // In every other scenario the user will have clicked on a list item, which 
     // overwrite these values based on the selection from the list.
     updateGlobals("<%= session[:search_id] %>", "<%= session[:ticker] %>");
-    renderSearchDetails(global_search_id, global_search_ticker);
+    renderSearchDetails(global_search_id, 
+      global_search_ticker, $(document).find("#last-search-date").html());
 
     $("#source_url").val(window.location.href);
 

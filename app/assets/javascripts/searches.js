@@ -82,12 +82,14 @@ function handleListItemClick(e) {
   var target = e.currentTarget;
 
   updateGlobals($(target).attr("search-id"), $(target).attr("search-ticker"));
-  // console.log($(target).attr("search-id") + " " + $(target).attr("search-ticker"));
 
-  renderSearchDetails($(target).attr("search-id"), $(target).attr("search-ticker"));
+  // console.log($(target).find("#last-search-date").html());
+
+  renderSearchDetails($(target).attr("search-id"), 
+    $(target).attr("search-ticker"), $(target).find("#last-search-date").html());
 }
 
-function getSummaryText (_secdata, _sumdata, _search_id) {
+function getSummaryText (_secdata, _sumdata, _search_id, _created_date) {
     var performanceSign, performanceNumber;
     var content;
 
@@ -113,7 +115,8 @@ function getSummaryText (_secdata, _sumdata, _search_id) {
 
     var template = 
     "<div id='result-summary-companyname'>%s</div>" + 
-    "<div id='result-summary-companydetails'><b>Market Cap:</b> %.2fM <b>P/E:</b> %.2f <b>Price:</b> $%.2f </div>" + 
+    "<div id='result-summary-companydetails'><b>Market Cap:</b> %.2fM <b>P/E:</b> %.2f <b>Price:</b> $%.2f "+ 
+    "<div id='result-summary-lastsearch'>" + _created_date + "</div></div><p>" + 
     "<div id='result-summary-searchsummary'>Historical Comparables %s S&P 500 by an average of " + performanceNumber + 
     ". It outperformed <b>%d out of %d</b> comparables, where worst performing comparable returned " + minComparable + " and best performing returned " + maxComparable + ".</div>" + 
     "<br><div><a href = '/search?search_id=%s'>Click to see full search results.</a></div>";
@@ -125,8 +128,10 @@ function getSummaryText (_secdata, _sumdata, _search_id) {
     return content;
 }
 
-function renderSearchDetails(_search_id, _search_ticker) {
+function renderSearchDetails(_search_id, _search_ticker, _creted_date) {
     var template, content, securityData, summaryData;
+
+//     console.log("run security snapshot for " + _search_id);
 
     // get search results
     var security_snapshot = $.getJSON('get_security_snapshot?search_id='+_search_id)
@@ -139,7 +144,7 @@ function renderSearchDetails(_search_id, _search_ticker) {
           .done(function(sumdata) {
             summaryData = sumdata;
 
-            content = getSummaryText(securityData, summaryData, _search_id);
+            content = getSummaryText(securityData, summaryData, _search_id, _creted_date);
 
             $("#hidden_summary_text").val(content);
 
@@ -147,13 +152,15 @@ function renderSearchDetails(_search_id, _search_ticker) {
           })
           .fail(function(sumdata){
             // console.log("failed - searchsummary");
+            // console.log(sumdata);
           })
           .always(function(sumdata){
             // console.log("always - searchsummary");
           });     
     })
-    .fail(function(secdata) { 
-        // console.log("failed - securitysnapshot")
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        // console.log("error " + textStatus);
+        // console.log("incoming Text " + jqXHR.responseText);
     })
     .always(function(secdata) { 
         // console.log("always - securitysnapshot")
