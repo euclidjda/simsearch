@@ -13,8 +13,20 @@
         <div class="nav-collapse collapse">
           <ul class="nav pull-right navbar-text">
             <% if current_user %>
+              <li><a href="/searches">History</a></li>
               <li><a href="/subscribe">Upgrade</a></li>
-              <li><%= link_to "Sign Out", '#', :id => 'banner-signout-btn' %></li>
+
+              <li class="dropdown banner-link">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Hello, <b><%= current_user_display_name %></b>
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Profile</a></li>
+                  <li class="divider"></li>
+                  <li><%= link_to "Sign Out", '#', :id => 'banner-signout-btn' %></li>
+                </ul>
+              </li>  
             <% else %>
               <li><a href="/register">Register</a></li>
               <li><a href="/signin">Sign In</a></li>                                        

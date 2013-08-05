@@ -26,7 +26,7 @@ private
   end
 
   def current_user_display_name
-    @current_user.email
+    @current_user.username
   end
 
   def the_search_type
