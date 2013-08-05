@@ -168,19 +168,15 @@
   $('.favorites_btn').click(function(e){
 
     var paramData = new Object();
-    paramData.search_id = $(this).parents(".search-list-item").attr("search-id");
+    paramData.search_id = global_search_id;
 
     $.ajax({  
       type: "POST",  
       url: "/addfavorite",  
       data: paramData,  
       success: function(data) {  
-        alert("favorite");
-        console.log(data); 
       },
       error: function() {
-        alert("Error adding a favorite.");
-        console.log("error");
       }  
     }); 
 

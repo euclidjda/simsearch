@@ -58,6 +58,12 @@ class SearchesController < ApplicationController
                                                 :search_id => params[:search_id],
                                                 :action_id => SearchActionTypes::Favorite)
 
+    if search_action.action_count
+      search_action.action_count += 1;
+    else
+      search_action.action_count = 1;
+    end
+
     search_action.touch()
 
     search_action.save()
