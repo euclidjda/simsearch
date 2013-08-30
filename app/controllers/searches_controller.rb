@@ -40,12 +40,21 @@ class SearchesController < ApplicationController
       #Even if we found an existing share, to update the most recent share timestamp, do a save.
       search_action.save()
 
+      # send the mail
       UserMailer.share_email(
         current_user, 
         params[:share_email_entry],
         params[:hidden_search_id], 
         params[:share_message_entry],
         params[:hidden_summary_text]).deliver
+
+      # Update share activities table
+      ShareActivity.create(
+        :user_id => current_user.id, 
+        :search_id => params[:hidden_search_id],
+        :share_email => params[:share_email_entry],
+        :share_message => params[:share_message_entry])
+
     end
 
     render :text => "OK"
@@ -68,6 +77,13 @@ class SearchesController < ApplicationController
 
     search_action.save()
 
+  end
+
+  def get_share_history
+    #only perform if there is a signed in user, otherwise stay silent.
+    if current_user
+      render :json => ShareActivity.share_history(current_user.id, params[:search_id])
+    end
   end
   
 end

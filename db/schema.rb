@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130407054030) do
+ActiveRecord::Schema.define(:version => 20130830165114) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -277,9 +277,9 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.integer  "user_id"
     t.integer  "search_id"
     t.integer  "action_id"
-    t.integer  "action_count"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "action_count"
   end
 
   create_table "search_details", :force => true do |t|
@@ -331,6 +331,15 @@ ActiveRecord::Schema.define(:version => 20130407054030) do
     t.float    "min"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "share_activities", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "search_id"
+    t.string   "share_email"
+    t.string   "share_message"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "users", :force => true do |t|

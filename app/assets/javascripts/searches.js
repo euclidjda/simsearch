@@ -33,10 +33,12 @@ function ShowOrHideShareAction(_action) {
   // for "shared" view, we hide the sharing action.
 
   if (_action == "shared") {
-    $("#sharing-action").hide();    
+    $("#sharing-action").hide(); 
+    $("#share-activities").show();   
   }
   else {
     $("#sharing-action").show();
+    $("#share-activities").hide();
   }
 }
 
@@ -70,7 +72,6 @@ function updateGlobals(_search_id, _search_ticker) {
   
   $("#ticker-name").html(global_search_ticker.toUpperCase());
   $("#hidden_search_id").val(global_search_id);
-
 }
 
 function handleListItemClick(e) {
@@ -82,8 +83,6 @@ function handleListItemClick(e) {
   var target = e.currentTarget;
 
   updateGlobals($(target).attr("search-id"), $(target).attr("search-ticker"));
-
-  // console.log($(target).find("#last-search-date").html());
 
   renderSearchDetails($(target).attr("search-id"), 
     $(target).attr("search-ticker"), $(target).find("#last-search-date").html());
@@ -128,10 +127,12 @@ function getSummaryText (_secdata, _sumdata, _search_id, _created_date) {
     return content;
 }
 
-function renderSearchDetails(_search_id, _search_ticker, _creted_date) {
-    var template, content, securityData, summaryData;
+function renderSearchDetails(_search_id, _search_ticker, _created_date) {
+    var template, content, securityData, summaryData, shareData;
 
-//     console.log("run security snapshot for " + _search_id);
+    // don't do anything on first load if search id is not given.
+    if (!_search_id)
+      return;
 
     // get search results
     var security_snapshot = $.getJSON('get_security_snapshot?search_id='+_search_id)
@@ -144,7 +145,7 @@ function renderSearchDetails(_search_id, _search_ticker, _creted_date) {
           .done(function(sumdata) {
             summaryData = sumdata;
 
-            content = getSummaryText(securityData, summaryData, _search_id, _creted_date);
+            content = getSummaryText(securityData, summaryData, _search_id, _created_date);
 
             $("#hidden_summary_text").val(content);
 
@@ -165,4 +166,22 @@ function renderSearchDetails(_search_id, _search_ticker, _creted_date) {
     .always(function(secdata) { 
         // console.log("always - securitysnapshot")
     });
+
+    // get share history
+    var share_history_query = $.getJSON('get_share_history?search_id=' + _search_id)
+    .done(function(sdata) {
+      shareData = sdata;
+      console.log(shareData);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        // console.log("error " + textStatus);
+        // console.log("incoming Text " + jqXHR.responseText);
+    })
+    .always(function(secdata) { 
+        // console.log("always - sharedata")
+    });
+
+    $.each(shareData, function(index, item) {
+      console.log(item.share_email);
+    }); 
 }

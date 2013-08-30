@@ -34,4 +34,5 @@ Simsearch::Application.routes.draw do
   get "get_price_time_series" => "frontdoor#get_price_time_series"
   get "get_growth_time_series" => "frontdoor#get_growth_time_series"
   get "get_security_snapshot" => "frontdoor#get_security_snapshot"
+  get "get_share_history" => "searches#get_share_history"
 end

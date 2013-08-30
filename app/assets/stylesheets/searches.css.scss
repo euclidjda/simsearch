@@ -35,7 +35,6 @@ i {
   .search-list-item {
     border-top: solid 1px lightgray;
     width: 100%;
-    // height: 64px;
     overflow-x: hidden;
     cursor: pointer;
     a {
@@ -200,6 +199,25 @@ i {
 
       #result-summary-lastsearch {
         float: right;
+      }
+
+      #share-activity-container {
+        padding-bottom: 0px;
+      }
+
+      #share-activity-list {
+        background-color: yellow;
+        max-height: 200px;
+        overflow: auto;
+      }
+
+      .share-activity-listitem {
+        border-top: solid 1px lightgray;
+        width: 100%;
+        overflow-x: hidden;
+        hover {
+          background-color: lightgray;
+        }
       }
     }
   }
