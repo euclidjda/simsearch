@@ -19,11 +19,9 @@
       </div>
 
       <div id="last-search-date">Created: <%= act.created_at.strftime("%B %d, %Y") %></div>
+      <div id="last-search-date">Last Searched: <%= act.updated_at.strftime("%B %d, %Y") %></div>
 
       <div id="item-actions">
-        <a class = "refresh_btn" href="#" title="Update for today" data-toggle="tooltip">
-          <i class="icon-refresh"></i>
-        </a>
         <a class ="favorites_btn" href = "#" title="Add to favorites" data-toggle="tooltip">
           <i class="icon-star"></i>
         </a>  
