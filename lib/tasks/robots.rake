@@ -5,7 +5,9 @@ namespace :robots do
   task :search => :environment do
     
     # THIS SHOULD BE 'YESTERDAY'
-    date = "2013-03-01"
+    date = ENV['search_date']
+
+    puts ("Running searches for date " + date)
 
     count = 0
     
