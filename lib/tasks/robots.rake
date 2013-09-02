@@ -30,8 +30,8 @@ namespace :robots do
     
     factor_keys = Factors::defaults
     weights     = Factors::default_weights
+    gicslevel   = 'sub'
     epochs      = Epoch::default_epochs_array()
-    gicslevel   = 'sec'
 
     search_type =
       SearchType::find_or_create(:factors   => factor_keys ,
