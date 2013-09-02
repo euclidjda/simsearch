@@ -5,7 +5,8 @@ namespace :robots do
   task :search => :environment do
     
     # THIS SHOULD BE 'YESTERDAY'
-    date = "2013-03-01"
+    # date = "2013-03-01"
+    date = ExPrice.where("cid != 'SP0500'").maximum("datadate")
 
     count = 0
     
@@ -41,7 +42,7 @@ namespace :robots do
 
       name   = target.get_field('name')
       ticker = target.get_field('ticket')
-      print "Executing search for on #{name} #{ticker} ..."
+      print "Executing search for #{name} #{ticker} ..."
      
       Search::exec( :target      => target      ,
                     :epochs      => epochs      ,
