@@ -1,6 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
+
+#using this gem gets us closer to rails 4.0 implementation of not putting logs
+#into a file but to stdout, and it also removes Heroku deprecation warnings about
+#deprecated plugins, which Heroku inserts if this is not there... not us.
+gem 'rails_12factor', group: :production
+
 #adding this to remove the rack warning for security. supposedly next rack update will fix it.
 gem 'rack', '1.4.1'
 
