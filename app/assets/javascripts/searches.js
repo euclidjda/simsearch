@@ -181,7 +181,7 @@ function renderSearchDetails(_search_id, _search_ticker, _created_date) {
         // console.log("always - sharedata")
     });
 
-    $.each(shareData, function(index, item) {
-      console.log(item.share_email);
-    }); 
+    // $.each(shareData, function(index, item) {
+    //   console.log(item.share_email);
+    // }); 
 }
