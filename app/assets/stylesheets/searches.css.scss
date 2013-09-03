@@ -203,21 +203,28 @@ i {
 
       #share-activity-container {
         padding-bottom: 0px;
+        padding-top: 0px;
       }
 
       #share-activity-list {
-        background-color: yellow;
+
         max-height: 200px;
         overflow: auto;
       }
 
       .share-activity-listitem {
-        border-top: solid 1px lightgray;
+        border-bottom: solid 1px lightgray;
         width: 100%;
         overflow-x: hidden;
         hover {
           background-color: lightgray;
         }
+
+        .share-activity-entry {
+          margin-top: 2px;
+          margin-bottom: 2px;
+        }
+
       }
     }
   }

@@ -171,7 +171,20 @@ function renderSearchDetails(_search_id, _search_ticker, _created_date) {
     var share_history_query = $.getJSON('get_share_history?search_id=' + _search_id)
     .done(function(sdata) {
       shareData = sdata;
-      console.log(shareData);
+
+      var theList = $("#share-activity-list");
+      $(theList).html("");
+
+      $.each(shareData, function(index, item) { 
+
+        var listentry = document.createElement("li");
+        $(listentry).addClass("share-activity-listitem")
+                    .html("<div class='share-activity-entry'><b>E-mail:</b> " + 
+                      item.share_email + 
+                      "</div><div class='share-activity-entry'><b>Message:</b> " + 
+                      item.share_message + "</div>");
+        theList.append(listentry);
+      });
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         // console.log("error " + textStatus);
@@ -180,8 +193,4 @@ function renderSearchDetails(_search_id, _search_ticker, _created_date) {
     .always(function(secdata) { 
         // console.log("always - sharedata")
     });
-
-    $.each(shareData, function(index, item) {
-      console.log(item.share_email);
-    }); 
 }
