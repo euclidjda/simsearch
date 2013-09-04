@@ -95,7 +95,8 @@ namespace :robots do
 
     class GreenblattEntry
       attr_accessor :cid, :sid, :date, :ticker, :ey, :roic, 
-                      :ey_rank, :roic_rank, :combined_rank
+                      :ey_rank, :roic_rank, :combined_rank,
+                      :mrkcap
 
       def initialize(args)
         @date = args[:date]
@@ -104,6 +105,7 @@ namespace :robots do
         @ticker = args[:ticker]
         @ey = args[:ey]
         @roic = args[:roic]
+        @mrkcap = args[:mrkcap]
       end
 
     end
@@ -125,7 +127,8 @@ namespace :robots do
         :sid => s.sid, 
         :ticker => s.get_field('ticker'),
         :ey => s.get_factor(:ey),
-        :roic => s.get_factor(:roic))
+        :roic => s.get_factor(:roic),
+        :mrkcap => s.get_field('mrkcap'))
 
 
       entries.push(entry)
@@ -168,9 +171,9 @@ namespace :robots do
     entries.reverse!
 
     entries.each { |entry|
-
-      puts "#{date}, #{entry.combined_rank}, #{entry.ticker}, #{entry.cid}, #{entry.sid}, #{entry.ey}, #{entry.roic}, #{entry.ey_rank}, #{entry.roic_rank}"
-
+      if !entry.mrkcap.nil? && entry.mrkcap > 500 
+        puts "#{date}, #{entry.combined_rank}, #{entry.ticker}, #{entry.mrkcap}, #{entry.cid}, #{entry.sid}, #{entry.ey}, #{entry.roic}, #{entry.ey_rank}, #{entry.roic_rank}"
+      end
     }
   end
 
