@@ -94,7 +94,8 @@ namespace :robots do
   task :greenblatt_daily => :environment do
 
     class GreenblattEntry
-      attr_accessor :cid, :sid, :date, :ticker, :ey, :roic, :ey_rank, :roic_rank, :combined_rank
+      attr_accessor :cid, :sid, :date, :ticker, :ey, :roic, 
+                      :ey_rank, :roic_rank, :combined_rank
 
       def initialize(args)
         @date = args[:date]
@@ -129,12 +130,48 @@ namespace :robots do
 
       entries.push(entry)
     
-      puts "#{entry.ticker} -- #{entry.ey} , #{entry.roic}"   
+      #puts "#{entry.ticker} -- #{entry.ey} , #{entry.roic}"   
 
     }
 
+    #clean empty ey and roic value records.
+    entries.delete_if { |a| a.ey.nil? }
+    entries.delete_if { |a| a.roic.nil? }
 
+    puts "***************** sort the array on :ey ****************"
 
+    entries.sort! { |a, b|  a.ey <=> b.ey }
+
+    count = 0;
+    entries.each { |entry|
+      count += 1
+      entry.ey_rank = count
+      entry.combined_rank = entry.ey_rank
+
+      #puts "#{entry.ticker} -- #{entry.ey_rank} : #{entry.ey}"
+    }
+
+    puts "***************** sort the array on :roic ****************"
+
+    entries.sort! { |a, b| a.roic <=> b.roic }
+
+    count = 0;
+    entries.each { |entry|
+      count += 1
+      entry.roic_rank = count
+      entry.combined_rank += entry.roic_rank
+
+      #puts "#{entry.ticker} -- #{entry.roic_rank} : #{entry.roic}"
+    }  
+
+    entries.sort! {|a,b| a.combined_rank <=> b.combined_rank }
+    entries.reverse!
+
+    entries.each { |entry|
+
+      puts "#{date}, #{entry.combined_rank}, #{entry.ticker}, #{entry.cid}, #{entry.sid}, #{entry.ey}, #{entry.roic}, #{entry.ey_rank}, #{entry.roic_rank}"
+
+    }
   end
 
 end
