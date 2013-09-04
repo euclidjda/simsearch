@@ -12,4 +12,8 @@ class Defaults
     return 'sub'
   end
 
+  def self.newflag
+    return 1 
+  end
+
 end

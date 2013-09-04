@@ -39,7 +39,7 @@ module FrontdoorHelper
       
     else
       
-      factors   = Defaults::factor
+      factors   = Defaults::factors
       weights   = Defaults::weights
       gicslevel = Defaults::gicslevel
       newflag   = 1

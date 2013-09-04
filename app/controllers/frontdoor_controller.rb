@@ -515,8 +515,8 @@ private
                params[:weight4],params[:weight5],params[:weight6]]
 
     # TODO: THESE WE SHOULD GET FROM A DEFAULTS HELPER METHOD
-    default_factors = Factors::defaults
-    default_weights = Factors::default_weights
+    default_factors = Defaults::factors
+    default_weights = Defaults::weights
 
     # Replace nils with defaults
     factors.each_index { |i| factors[i] = default_factors[i] if factors[i].nil? } 
@@ -527,8 +527,8 @@ private
 
     # TODO: THESE DEFAULTS SHOULD NOT BE STATICALLY SET HERE.
     # THERE SHOULD BE A HELPER THAT ALLOWS US TO FETCH DEFAULTS
-    gicslevel = params[:gicslevel] || 'ind'
-    newflag   = params[:newflag]   || 1
+    gicslevel = params[:gicslevel] || Defaults::giclevel
+    newflag   = params[:newflag]   || Defaults::newflag
 
     return factors, weights, gicslevel, newflag
 
