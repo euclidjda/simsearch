@@ -179,9 +179,9 @@ function renderSearchDetails(_search_id, _search_ticker, _created_date) {
 
         var listentry = document.createElement("li");
         $(listentry).addClass("share-activity-listitem")
-                    .html("<div class='share-activity-entry'><b>E-mail:</b> " + 
+                    .html("<div class='share-activity-entry'><b>" + 
                       item.share_email + 
-                      "</div><div class='share-activity-entry'><b>Message:</b> " + 
+                      "</b></div><div class='share-activity-entry'>" + 
                       item.share_message + "</div>");
         theList.append(listentry);
       });

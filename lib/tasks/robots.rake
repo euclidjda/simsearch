@@ -57,7 +57,7 @@ namespace :robots do
 
   end
 
-  # rake robots:search
+  # rake robots:force_cache
   desc "Attempt to force as much of ex_combined into cache as possible"
   task :force_cache => :environment do
     
@@ -87,6 +87,53 @@ namespace :robots do
       puts "#{pricedate} #{count}"
 
     }
+
+  end
+
+  # rake robots:greenblatt_daily
+  task :greenblatt_daily => :environment do
+
+    class GreenblattEntry
+      attr_accessor :cid, :sid, :date, :ticker, :ey, :roic, :ey_rank, :roic_rank, :combined_rank
+
+      def initialize(args)
+        @date = args[:date]
+        @cid = args[:cid]
+        @sid = args[:sid]
+        @ticker = args[:ticker]
+        @ey = args[:ey]
+        @roic = args[:roic]
+      end
+
+    end
+
+    date = ExPrice.where("cid != 'SP0500'").maximum("datadate")
+
+    puts date
+
+    count = 0
+    
+    entries = Array::new()
+
+    SecuritySnapshot.each_snapshot_on( date ) { |s|
+
+      count += 1
+
+      entry = GreenblattEntry.new(:date => date,
+        :cid => s.cid, 
+        :sid => s.sid, 
+        :ticker => s.get_field('ticker'),
+        :ey => s.get_factor(:ey),
+        :roic => s.get_factor(:roic))
+
+
+      entries.push(entry)
+    
+      puts "#{entry.ticker} -- #{entry.ey} , #{entry.roic}"   
+
+    }
+
+
 
   end
 
