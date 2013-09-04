@@ -23,20 +23,8 @@ class Factors
     :mom12  => { :order => 180, :iw =>    3.8, :name => "Price Momentum (12mo)"} 
   }
 
-  @@DefaultUserWeights = [5,5,5,5,5,5]
-  
-  @@DefaultFactors = [:ey,:roc,:grwth,:epscon,:ae,:mom6]
-
   def self.all
     return @@FactorKeys
-  end
-
-  def self.defaults
-    return @@DefaultFactors
-  end
-
-  def self.default_weights
-    return @@DefaultUserWeights
   end
 
   def self.intrinsic_weight(factor_key)

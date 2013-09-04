@@ -49,8 +49,9 @@
 
 		<% factor_values, weight_values, gicslevel, newflag = 
 		   load_search_form_params(the_search_type,session) %>
-		<% factor_defaults = Factors::defaults %>
-		<% weight_defaults = Factors::default_weights %>
+		<% default_factors = Defaults::factors %>
+		<% default_weights = Defaults::weights %>
+		<% default_gicslevel = Defaults::gicslevel %>
 
                 <div>
                   <table id="factor-table"> 
@@ -66,7 +67,7 @@
                         <%= select_tag("factor#{index}",
                             options_for_select(factor_names_and_keys,factor_values[index-1]), 
 			    :class=>"factor-select",
-                        :default=>factor_defaults[index-1] ) 
+                        :default=>default_factors[index-1] ) 
                         %>
                       </td>
                       <td class="col2 weight-label" id="weight-label<%= index %>">
@@ -79,7 +80,7 @@
                                id="weight-hidden<%= index %>"
                                name="<%= weight_name %>"
                                value="<%= weight_value %>"
-                               default="<%= weight_defaults[index-1] %>">
+                               default="<%= default_weights[index-1] %>">
                         <div id="weight-slider<%= index %>"  index="<%= index %>"
                               class="weight-slider" value="<%= weight_value %>"></div>
                       </td>
@@ -101,7 +102,7 @@
                           ['Level 3: Industry','ind'],
                           ['Level 4: Sub-Industry','sub']
                         ],
-                        gicslevel), :class=>"industry-select",:default=>'sub') %>
+                        gicslevel), :class=>"industry-select", :default=>default_gicslevel) %>
       
                   <input type="hidden" name="newflag" value="<%= newflag%>">
 
