@@ -144,48 +144,47 @@ namespace :robots do
     }
 
     #clean empty ey and roic value records.
-    entries.keep_if { |a| a.ey.nil? || a.roic.nil? || a.mrkcap.nil?}
-    puts "ticker, cid, sid, mrkcap, ey, roic" 
-    entries.each { |e| 
-      puts "#{e.ticker}, #{e.cid}, #{e.sid}, #{e.mrkcap}, #{e.ey}, #{e.roic}"
+
+    entries.delete_if { |a| a.roic.nil? || a.ey.nil? || a.mrkcap.nil? }
+
+    puts "*** Sorting the array on :ey to get rankings"
+
+    entries.sort! { |a, b|  a.ey <=> b.ey }
+
+    count = 0;
+    entries.each { |entry|
+      count += 1
+      entry.ey_rank = count
+      entry.combined_rank = entry.ey_rank
+
+      #puts "#{entry.ticker} -- #{entry.ey_rank} : #{entry.ey}"
     }
 
-    # entries.delete_if { |a| a.roic.nil? }
+    puts "*** Sorting the array on :roic to add combined rank"
 
-    # puts "***************** sort the array on :ey ****************"
+    entries.sort! { |a, b| a.roic <=> b.roic }
 
-    # entries.sort! { |a, b|  a.ey <=> b.ey }
+    count = 0;
+    entries.each { |entry|
+      count += 1
+      entry.roic_rank = count
+      entry.combined_rank += entry.roic_rank
 
-    # count = 0;
-    # entries.each { |entry|
-    #   count += 1
-    #   entry.ey_rank = count
-    #   entry.combined_rank = entry.ey_rank
+      #puts "#{entry.ticker} -- #{entry.roic_rank} : #{entry.roic}"
+    }  
 
-    #   #puts "#{entry.ticker} -- #{entry.ey_rank} : #{entry.ey}"
-    # }
+    puts "*** Sorting based on combined rank."
+    entries.sort! {|a,b| a.combined_rank <=> b.combined_rank }
+    entries.reverse!
 
-    # puts "***************** sort the array on :roic ****************"
+    # Print the .CSV file header line first.
+    puts "date, combined_rank, ticker, mrkcap, cid, sid, ey, roic, ey_rank, roic_rank"
 
-    # entries.sort! { |a, b| a.roic <=> b.roic }
-
-    # count = 0;
-    # entries.each { |entry|
-    #   count += 1
-    #   entry.roic_rank = count
-    #   entry.combined_rank += entry.roic_rank
-
-    #   #puts "#{entry.ticker} -- #{entry.roic_rank} : #{entry.roic}"
-    # }  
-
-    # entries.sort! {|a,b| a.combined_rank <=> b.combined_rank }
-    # entries.reverse!
-
-    # entries.each { |entry|
-    #   if !entry.mrkcap.nil? && entry.mrkcap > 500 
-    #     puts "#{date}, #{entry.combined_rank}, #{entry.ticker}, #{entry.mrkcap}, #{entry.cid}, #{entry.sid}, #{entry.ey}, #{entry.roic}, #{entry.ey_rank}, #{entry.roic_rank}"
-    #   end
-    # }
+    entries.each { |entry|
+      if entry.mrkcap > 500 
+        puts "#{date}, #{entry.combined_rank}, #{entry.ticker}, #{entry.mrkcap}, #{entry.cid}, #{entry.sid}, #{entry.ey}, #{entry.roic}, #{entry.ey_rank}, #{entry.roic_rank}"
+      end
+    }
   end
 
 end
