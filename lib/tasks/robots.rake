@@ -28,9 +28,9 @@ namespace :robots do
 
     }
     
-    factor_keys = Factors::defaults
-    weights     = Factors::default_weights
-    gicslevel   = 'sub'
+    factor_keys = Defaults::factors
+    weights     = Defaults::weights
+    gicslevel   = Defaults::gicslevel
     epochs      = Epoch::default_epochs_array()
 
     search_type =
