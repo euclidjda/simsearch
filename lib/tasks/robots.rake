@@ -144,7 +144,7 @@ namespace :robots do
     }
 
     #clean empty ey and roic value records.
-    entries.keep_if { |a| a.ey.nil? }
+    entries.keep_if { |a| a.ey.nil? || a.roic.nil? || a.mrkcap.nil?}
     puts "ticker, cid, sid, mrkcap, ey, roic" 
     entries.each { |e| 
       puts "#{e.ticker}, #{e.cid}, #{e.sid}, #{e.mrkcap}, #{e.ey}, #{e.roic}"
