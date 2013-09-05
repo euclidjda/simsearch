@@ -241,7 +241,7 @@ class SecuritySnapshot < Tableless
 
       denom  = mrkcap+debt+cash+pstk+mii
 
-      factor_value = oiadp/denom if (!oiadp.nil? && denom != 0)
+      factor_value = oiadp/denom if (!oiadp.nil? && denom > 0)
       factor_value = 0.0 if (factor_value && factor_value < 0)
 
     when :pe # Price to Earnings
