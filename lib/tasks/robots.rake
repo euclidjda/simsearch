@@ -120,28 +120,34 @@ namespace :robots do
 
     SecuritySnapshot.each_snapshot_on( date ) { |s|
 
-      count += 1
+      # Exclude financials and utilities.
+      gics_sector = s.get_field('idxsec')
 
-      entry = GreenblattEntry.new(:date => date,
-        :cid => s.cid, 
-        :sid => s.sid, 
-        :ticker => s.get_field('ticker'),
-        :ey => s.get_factor(:ey),
-        :roic => s.get_factor(:roic),
-        :mrkcap => s.get_field('mrkcap'))
+      if !(%w(40 55).include? gics_sector) 
+
+        count += 1
+
+        entry = GreenblattEntry.new(:date => date,
+          :cid => s.cid, 
+          :sid => s.sid, 
+          :ticker => s.get_field('ticker'),
+          :ey => s.get_factor(:ey),
+          :roic => s.get_factor(:roic),
+          :mrkcap => s.get_field('mrkcap'))
 
 
-      entries.push(entry)
-    
-      #puts "#{entry.ticker} -- #{entry.ey} , #{entry.roic}"   
+        entries.push(entry)
+      
+        #puts "#{entry.ticker}, #{s.get_field('idxsec')}, #{s.get_field('idxind')} -- #{entry.ey} , #{entry.roic}"   
+      end
 
     }
 
     #clean empty ey and roic value records.
-    entries.delete_if { |a| a.ey.nil? }
-    entries.delete_if { |a| a.roic.nil? }
 
-    puts "***************** sort the array on :ey ****************"
+    entries.delete_if { |a| a.roic.nil? || a.ey.nil? || a.mrkcap.nil? }
+
+    puts "*** Sorting the array on :ey to get rankings"
 
     entries.sort! { |a, b|  a.ey <=> b.ey }
 
@@ -154,7 +160,7 @@ namespace :robots do
       #puts "#{entry.ticker} -- #{entry.ey_rank} : #{entry.ey}"
     }
 
-    puts "***************** sort the array on :roic ****************"
+    puts "*** Sorting the array on :roic to add combined rank"
 
     entries.sort! { |a, b| a.roic <=> b.roic }
 
@@ -167,11 +173,15 @@ namespace :robots do
       #puts "#{entry.ticker} -- #{entry.roic_rank} : #{entry.roic}"
     }  
 
+    puts "*** Sorting based on combined rank."
     entries.sort! {|a,b| a.combined_rank <=> b.combined_rank }
     entries.reverse!
 
+    # Print the .CSV file header line first.
+    puts "date, combined_rank, ticker, mrkcap, cid, sid, ey, roic, ey_rank, roic_rank"
+
     entries.each { |entry|
-      if !entry.mrkcap.nil? && entry.mrkcap > 500 
+      if entry.mrkcap > 500 
         puts "#{date}, #{entry.combined_rank}, #{entry.ticker}, #{entry.mrkcap}, #{entry.cid}, #{entry.sid}, #{entry.ey}, #{entry.roic}, #{entry.ey_rank}, #{entry.roic_rank}"
       end
     }
