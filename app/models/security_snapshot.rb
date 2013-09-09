@@ -268,6 +268,15 @@ class SecuritySnapshot < Tableless
       factor_value = dividend  / price if (!dividend.nil? && price != 0)
       factor_value = 0.0 if (factor_value && factor_value < 0)
 
+    when :inv_cap # Invested Capital
+
+      act    = get_field('actq_mrq').to_f
+      lct    = get_field('lctq_mrq').to_f
+      ppent  = get_field('ppent_mrq').to_f
+      dlc    = get_field('dlcq_mrq').to_f
+
+      factor_value = (act-lct) + ppent + dlc
+
     when :roic # Return on Invested capital
 
       oiadp  = get_field('oiadpq_ttm')
