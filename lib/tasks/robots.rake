@@ -201,7 +201,8 @@ namespace :robots do
     printf "%8s | %-8s | %24s | %24s | %24s | %24s\n", 
             "Rank", "TICKER", "ROIC", "INV_CAP", "EY", "MRKCAP"
     entries.each { |entry| 
-      if (entry.mrkcap > 500 ) 
+
+      if (entry.mrkcap.to_i > 500 ) 
         printf "%8s | %-8s | %24s | %24s | %24s | %24s\n", 
             entry.combined_rank, entry.ticker, entry.roic, entry.inv_cap, entry.ey, entry.mrkcap
       end
