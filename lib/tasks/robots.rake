@@ -145,11 +145,6 @@ namespace :robots do
           err_count += 1
           # puts "Alarm ==> #{entry.ticker} : EBIT is nil #{err_count}"
         end
-
-        if entry.ticker == "BFAM"
-          puts "BFAM: EBIT = #{s.get_field('oiadpq_ttm')}"
-        end
-
       end
 
     }
@@ -165,7 +160,7 @@ namespace :robots do
       end
     }
 
-    # remove records without any ROIC on them.
+    # remove records still without any ROIC on them.
     entries.delete_if { |e| e.roic.nil? }
 
     # sort based on ROIC (sorts small to large, so 1s are at the bottom, this is reverse order)
@@ -184,50 +179,33 @@ namespace :robots do
       entry.combined_rank = entry.roic_rank
     }
 
+    # Are there any empty EY values ? remove them...
+    entries.delete_if { |e| e.ey.nil? }
+
+    # puts "*** Sorting the array on :ey to get rankings"
+    entries.sort! { |a, b|  a.ey <=> b.ey }
+
+    count = 0;
+    entries.reverse_each { |entry|
+      count += 1
+      entry.ey_rank = count
+      entry.combined_rank += entry.ey_rank
+
+    }
+
+    # sort on combined rank
+
+    entries.sort! { |a, b| a.combined_rank <=> b.combined_rank }
+    entries.reverse!
 
     printf "%8s | %-8s | %24s | %24s | %24s | %24s\n", 
             "Rank", "TICKER", "ROIC", "INV_CAP", "EY", "MRKCAP"
-
-    # Are there any empty EY values ?
-    entries.each { |entry|
-
-      if entry.ey.nil? 
+    entries.each { |entry| 
+      if (entry.mrkcap > 500 ) 
         printf "%8s | %-8s | %24s | %24s | %24s | %24s\n", 
             entry.combined_rank, entry.ticker, entry.roic, entry.inv_cap, entry.ey, entry.mrkcap
       end
     }
-
-    # entries.delete_if { |a| a.roic.nil? || a.ey.nil? || a.mrkcap.nil? }
-
-    # puts "*** Sorting the array on :ey to get rankings"
-
-    # entries.sort! { |a, b|  a.ey <=> b.ey }
-
-    # count = 0;
-    # entries.each { |entry|
-    #   count += 1
-    #   entry.ey_rank = count
-    #   entry.combined_rank = entry.ey_rank
-
-    #   #puts "#{entry.ticker} -- #{entry.ey_rank} : #{entry.ey}"
-    # }
-
-    # puts "*** Sorting the array on :roic to add combined rank"
-
-    # entries.sort! { |a, b| a.roic <=> b.roic }
-
-    # count = 0;
-    # entries.each { |entry|
-    #   count += 1
-    #   entry.roic_rank = count
-    #   entry.combined_rank += entry.roic_rank
-
-    #   #puts "#{entry.ticker} -- #{entry.roic_rank} : #{entry.roic}"
-    # }  
-
-    # puts "*** Sorting based on combined rank."
-    # entries.sort! {|a,b| a.combined_rank <=> b.combined_rank }
-    # entries.reverse!
 
     # # Print the .CSV file header line first.
     # puts "date, combined_rank, ticker, mrkcap, cid, sid, ey, roic, ey_rank, roic_rank"
