@@ -160,8 +160,12 @@ namespace :robots do
       end
     }
 
+    puts "Length before removing ROIC=nil: #{entries.length}"
+
     # remove records still without any ROIC on them.
     entries.delete_if { |e| e.roic.nil? }
+
+    puts "Length after removing ROIC=nil: #{entries.length}"
 
     # sort based on ROIC (sorts small to large, so 1s are at the bottom, this is reverse order)
     entries.sort! { |a, b| a.roic <=> b.roic }
@@ -181,6 +185,8 @@ namespace :robots do
 
     # Are there any empty EY values ? remove them...
     entries.delete_if { |e| e.ey.nil? }
+
+    puts "Length after removing EY=nil: #{entries.length}"
 
     # puts "*** Sorting the array on :ey to get rankings"
     entries.sort! { |a, b|  a.ey <=> b.ey }
