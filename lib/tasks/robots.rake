@@ -202,7 +202,7 @@ namespace :robots do
     # sort on combined rank
 
     entries.sort! { |a, b| a.combined_rank <=> b.combined_rank }
-    entries.reverse!
+    # entries.reverse!
 
     printf "%8s | %-8s | %24s | %24s | %24s | %24s\n", 
             "Rank", "TICKER", "ROIC", "INV_CAP", "EY", "MRKCAP"
