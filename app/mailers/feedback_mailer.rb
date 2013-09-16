@@ -1,8 +1,8 @@
 class FeedbackMailer < ActionMailer::Base
-  default :from => 'noreply@yoursite.com'
+  default :from => 'web-mailer@euclidean.com'
 
   def feedback(feedback)
     @feedback = feedback
-    mail(:to => 'webmaster@yoursite.com', :subject => '[Feedback for YourSite] #{feedback.subject}')
+    mail(:to => 'info@euclidean.com', :subject => '[Feedback for Euclidean Fundamentals] #{feedback.subject}')
   end
 end
