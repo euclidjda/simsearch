@@ -1,3 +1,6 @@
+require 'uri'
+require 'net/http'
+
 class FrontdoorController < ApplicationController
   protect_from_forgery
 
@@ -43,29 +46,53 @@ class FrontdoorController < ApplicationController
     _email = params[:register_email_entry]
     _username = params[:register_username_entry]
     _password = params[:register_password_entry]
+    _captcha_challenge = params[:recaptcha_challenge_field]
+    _captcha_response = params[:recaptcha_response_field]
 
-    if !_email.blank? && !_username.blank? && !_password.blank?
+    captcha_uri = URI.parse("https://www.google.com/recaptcha/api/verify")
+    http = Net::HTTP.new(captcha_uri.host, captcha_uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    req = Net::HTTP::Post.new(captcha_uri.path)
+    req.set_form_data(
+      'privatekey' => '6LfZiucSAAAAALSKd3ZGzeUeQAoAo6nmXWVPFdRo',
+      'remoteip' => request.remote_ip,
+      'challenge' => _captcha_challenge,
+      'response' => _captcha_response
+      )
 
-      # create the user
-      user = User.create_with_form_data(
-          :email => _email,
-          :username => _username,
-          :password => _password
-          )
+    res = http.request(req)
 
-      if user.errors.size > 0
+    if res.body.index("true").nil?
+      @form_refresh = :register 
+      @validation_error = "Wrong captcha value entered"
+      @identity_path = "/register"
+      render :identity, :notice => "Register failed. Wrong captcha"
+    else
 
-        @form_refresh = :register
-        @validation_error = user.errors.full_messages[0]
-        @identity_path = "/register"
-        render :identity, :notice => "Register failed."
-      else
-        create_session(user)
-        UserMailer.welcome_email(user).deliver
-        redirect_to root_path, :notice => "Register succeeded. Signed in."
+      if !_email.blank? && !_username.blank? && !_password.blank?
+
+        # create the user
+        user = User.create_with_form_data(
+            :email => _email,
+            :username => _username,
+            :password => _password
+            )
+
+        if user.errors.size > 0
+
+          @form_refresh = :register
+          @validation_error = user.errors.full_messages[0]
+          @identity_path = "/register"
+          render :identity, :notice => "Register failed."
+        else
+          create_session(user)
+          UserMailer.welcome_email(user).deliver
+          redirect_to root_path, :notice => "Register succeeded. Signed in."
+        end
       end
-
     end
+
   end
 
   def signin
