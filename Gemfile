@@ -24,6 +24,8 @@ gem 'nifty-generators'
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
 
+gem 'kmts', "~> 2.0.0"
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :the_search_type
   helper_method :current_user_display_name
-
   before_filter :site_lockdown_authenticator
 
 protected

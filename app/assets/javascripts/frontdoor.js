@@ -1,6 +1,8 @@
 
 $(document).ready(function() {
 
+    init_kissmetrics();
+
     init_frontdoor();
 
     handle_teaser();
@@ -10,6 +12,23 @@ $(document).ready(function() {
     handle_search_detail();
 
 });
+
+function init_kissmetrics() {
+
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '323c91cff253a60d0decffd3ee862ac251bae26d';
+    function _kms(u){
+	setTimeout(function(){
+	    var d = document, f = d.getElementsByTagName('script')[0],
+	    s = d.createElement('script');
+	    s.type = 'text/javascript'; s.async = true; s.src = u;
+	    f.parentNode.insertBefore(s, f);
+	}, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+
+}
 
 function init_frontdoor() {
 
