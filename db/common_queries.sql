@@ -11,7 +11,7 @@ B.min min_rtn,
 B.max max_rtn
 FROM ex_securities A, searches B 
 WHERE A.cid=B.cid AND A.sid=B.sid
-AND B.pricedate='2013-09-16') C
+AND B.pricedate='2013-05-31') C
 WHERE C.comps >= 20
 ORDER BY C.pcnt DESC limit 50;
 
