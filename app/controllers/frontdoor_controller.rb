@@ -430,6 +430,38 @@ class FrontdoorController < ApplicationController
 
   end
 
+  # API method that gets all info about a search
+
+  def get_search_info
+
+    result = Hash::new()
+
+    _search_id = params[:search_id]
+
+    search = Search.where( :id => _search_id ).first()
+
+    if !search.nil? 
+
+      search_type = SearchType.where( :id => search.type_id ).first()
+      security = ExSecurity.where( :cid => search.cid, :sid => search.sid ).first()
+
+      # Set results for json
+      result[:ticker] = security.ticker
+      result[:conm] = security.name
+      result[:factors] = search_type.factors
+      result[:weights] = search_type.weights
+      result[:type_id] = search_type.id
+
+    else
+
+      result[:message] = "Bad search id"
+
+    end
+
+    render :json => result.to_json
+
+  end
+
   def get_price_time_series
 
     _cid = params[:cid]

@@ -5,6 +5,8 @@ var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id) {
 
+    
+
     $('.result-container').each(function( index ) {
 
         var fromdate = $(this).attr('fromdate');

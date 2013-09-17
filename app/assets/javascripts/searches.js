@@ -131,8 +131,7 @@ function renderSearchDetails(_search_id, _search_ticker, _created_date) {
     var template, content, securityData, summaryData, shareData;
 
     // don't do anything on first load if search id is not given.
-    if (!_search_id)
-      return;
+    if (!_search_id) return;
 
     // get search results
     var security_snapshot = $.getJSON('get_security_snapshot?search_id='+_search_id)

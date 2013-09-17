@@ -35,6 +35,7 @@ Simsearch::Application.routes.draw do
   # API calls that return JSON only, no rendering of HTML templates.
   get "get_search_results" => "frontdoor#get_search_results"
   get "get_search_summary" => "frontdoor#get_search_summary"
+  get "get_search_info" => "frontdoor#get_search_info"
   get "get_price_time_series" => "frontdoor#get_price_time_series"
   get "get_growth_time_series" => "frontdoor#get_growth_time_series"
   get "get_security_snapshot" => "frontdoor#get_security_snapshot"
