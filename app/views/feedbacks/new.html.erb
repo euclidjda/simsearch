@@ -1,22 +1,32 @@
-<h1>Feedback</h1>
 
-<p>Please leave us feedback.</p>
-
-<%= form_for @feedback, :as => :feedback, :url => feedback_path, :html => {:id => "feedback_form"} do |f| %>
-  <%= f.hidden_field 'page' %>
-  <% unless @error_message.blank? %>
-    <p class="error">
-      <%=h @error_message %>
-    </p>
+<div class="modal-header">
+<h3>Feedback</h3>
+</div>
+  <% if current_user %>
+  <p>Hi <b><%= current_user.username %></b>, thank you for giving us feedback. </p>
+  <% else %>
+  <p>Thank you for taking the time to leave us feedback.</p>
   <% end %>
 
-  <p>
-    <%= f.label 'Your Email Address' %>
-    <%= f.text_field 'email' %>
-  </p>
-  <p>
-    <%= f.label 'comment' %><br />
-    <%= f.text_area 'comment', :rows => 5, :cols => 30 %>
-  </p>
-  <p><%= f.submit 'Send' %></p>
-<% end %>
+  <%= form_for @feedback, :as => :feedback, :url => feedback_path, :html => {:id => "feedback_form"} do |f| %>
+    <%= f.hidden_field 'page' %>
+    <% unless @error_message.blank? %>
+      <p class="error">
+        <%=h @error_message %>
+      </p>
+    <% end %>
+
+    <p>
+      <% if current_user %>
+        <%= f.text_field 'email', :maxlength => 128, :value => current_user.email, :style => "display:none" %>      
+      <% else %>
+        <%= f.label 'Please enter your e-mail address below:' %>
+        <%= f.text_field 'email', :maxlength => 128 %>
+      <% end %>
+    </p>
+    <p>
+      <%= f.label 'Please enter your comments below. (max 1024 characters)' %>
+      <%= f.text_area 'comment', :rows => 5, :cols => 30, :maxlength => 1024, :style => "resize:none" %>
+    </p>
+    <%= f.submit 'Send', :class => "btn btn-primary btn-large", :style => "margin-right:10%;margin-left:auto;display:block" %>
+  <% end %>
