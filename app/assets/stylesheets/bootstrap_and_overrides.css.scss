@@ -54,6 +54,11 @@ Any media size specific and resize related rules should be here.
         min-width: $targetinfoWidth;
         margin-left: -5px;
       }
+
+      .share-button {
+        margin-right: -136px;
+      }
+
     }
   }
 
@@ -238,6 +243,10 @@ Any media size specific and resize related rules should be here.
         padding-top: 5px; 
         width: 100%;
         border-right: solid gray 2px;
+      }
+
+      .share-button {
+        margin-right: 0px;
       }
     } 
   }
