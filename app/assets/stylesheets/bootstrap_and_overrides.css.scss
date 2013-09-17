@@ -241,12 +241,13 @@ Any media size specific and resize related rules should be here.
         margin-left: -2px;
         padding-left: 0px;
         padding-top: 5px; 
+        padding-right: 5px;
         width: 100%;
         border-right: solid gray 2px;
       }
 
       .share-button {
-        margin-right: 0px;
+        margin-right: 10px;
       }
     } 
   }
