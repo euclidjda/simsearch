@@ -34,6 +34,28 @@ $(document).ready(function() {
     $(messageElement).text(message);
     $(messageElement).css("color", "red");
   }
+
+  $("#username-info").popover({
+     trigger: 'hover',
+     html: true,
+     placement: 'left',
+     title: 'User Name',
+     content: 
+     ' This is the name that represents you on this site.<br>' +
+     ' It\'s included in e-mails we send on your behalf, you share searches with others.<br>',
+     container: 'body'
+   });
+
+  $("#email-info").popover({
+     trigger: 'hover',
+     html: true,
+     placement: 'left',
+     title: 'E-mail Address',
+     content: 
+     ' This is the e-mail address we will use to communicate with you.',
+     container: 'body'
+   });
+
 });
 
 </script>
@@ -42,7 +64,10 @@ $(document).ready(function() {
 
 <% case @identity_path %>
 <% when "/register"%>
-
+<a href="#" id="example" class="btn btn-success" 
+  rel="popover" 
+  data-content="It's so simple to create a tooltop for my website!" 
+  data-original-title="Twitter Bootstrap Popover">hover for popover</a>
     <div id="register" class="credentials ">
       <div class="modal-header">
         <h3 id="registerLabel">Register</h3>
@@ -50,10 +75,13 @@ $(document).ready(function() {
 
       <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-form") do %>
         <div class="modal-body">
-          <p id="register-message">  Join with your email address. </p>
-          <%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %><br>
-          <%= email_field_tag(:register_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
-          <%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+          <p id="register-message">  Join with your e-mail address. </p>
+          <table>
+            <tr><td><%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %></td><td><i id="username-info" class="icon-question-sign" rel="popover" data-content="It's so simple to create a tooltop for my website!"></i></td></tr>
+            <tr><td><%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %></td><td><i id="email-info"class="icon-question-sign"></i></td></tr>
+            <tr><td><%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %></td><td></td></tr>
+          </table>
+        <br><br>
         </div>
 
         <div id="captcha-container">
@@ -77,8 +105,8 @@ $(document).ready(function() {
 
       <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
         <div class="modal-body">
-            <p id="signin-message">  Sign in with your email address. </p>
-            <%= email_field_tag(:signin_email_entry, nil, :placeholder => "Email address", :maxlength => "30") %><br>
+            <p id="signin-message">  Sign in with your e-mail address. </p>
+            <%= email_field_tag(:signin_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %><br>
             <%= password_field_tag(:signin_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
         </div>
 

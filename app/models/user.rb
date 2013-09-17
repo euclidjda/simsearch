@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
               :presence => true
 
   validates :username, 
-              :uniqueness => { :case_sensitive => false },
               :presence => true
+              
   validates :password,
               :presence => true,
               :confirmation => true,
