@@ -142,11 +142,9 @@ class SecuritySnapshot < Tableless
       if !val0.nil? && !val1.nil?
         dist += ( usr_wght * int_wght * int_wght * ( val0 - val1 ) * ( val0 - val1 ) )
         dims += 1
-        logger.debug("dims are: " + dims.to_s + "************************")
       elsif val0.nil? && val1.nil?
         # do nothing in this case
       else
-        logger.debug("one or the other is NUL ************************")
         dist = -1
         break
       end
@@ -234,7 +232,7 @@ class SecuritySnapshot < Tableless
 
     when :ey # Earnings Yield
 
-      oiadp  = get_field('oiadpq_ttm')
+      oiadp  = get_field('oiadpq_ttm').to_f
       mrkcap = get_field('price').to_f * get_field('csho').to_f
       debt   = get_field('dlttq_mrq').to_f + get_field('dlcq_mrq').to_f
       cash   = get_field('cheq_mrq').to_f
@@ -243,7 +241,7 @@ class SecuritySnapshot < Tableless
 
       denom  = mrkcap+debt+cash+pstk+mii
 
-      factor_value = oiadp/denom if (oiadp >=0 && denom > 0)
+      factor_value = oiadp/denom if (oiadp > 0 && denom > 0)
 
     when :pe # Price to Earnings
 
@@ -264,7 +262,7 @@ class SecuritySnapshot < Tableless
       price    = get_field('price').to_f
       dividend = get_field('dvpsxm_ttm').to_f
 
-      factor_value = dividend  / price if (!dividend.nil? && price > 0)
+      factor_value = dividend  / price if (dividend > 0 && price > 0)
 
     when :inv_cap # Invested Capital
 
@@ -277,7 +275,7 @@ class SecuritySnapshot < Tableless
 
     when :roic # Return on Invested capital
 
-      oiadp  = get_field('oiadpq_ttm')
+      oiadp  = get_field('oiadpq_ttm').to_f
       act    = get_field('actq_mrq').to_f
       lct    = get_field('lctq_mrq').to_f
       ppent  = get_field('ppent_mrq').to_f
@@ -289,21 +287,21 @@ class SecuritySnapshot < Tableless
       
     when :roe # Return On Equity
 
-      oiadp  = get_field('oiadpq_ttm')
+      oiadp  = get_field('oiadpq_ttm').to_f
       equity = get_field('seqq_mrq').to_f
 
       factor_value = oiadp / equity if (oiadp > 0 && equity > 0)
       
     when :roa # Return On Assets
 
-      oiadp  = get_field('oiadpq_ttm')
+      oiadp  = get_field('oiadpq_ttm').to_f
       assets = get_field('atq_mrq').to_f
 
       factor_value = oiadp / assets if (oiadp > 0 && assets > 0)
 
     when :roc # Return On Capital
 
-      oiadp   = get_field('oiadpq_ttm')
+      oiadp   = get_field('oiadpq_ttm').to_f
       capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
 
       factor_value = oiadp / capital if (oiadp > 0 && capital > 0)
@@ -439,7 +437,7 @@ GET_TARGET_SQL
     target_cap =
       self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
 
-    idxcaph_min = [1000,target_cap*0.1].min.round()
+    idxcaph_min = [1000,target_cap*0.5].min.round()
     idxcapl_max = (5.0*target_cap).round()
 
 <<GET_MATCH_SQL
@@ -457,7 +455,7 @@ GET_MATCH_SQL
   def self.get_match_sql_SLOWLY(_cid, _target_ind, _target_new, _target_cap,
                                 _begin_date, _end_date)
     
-    idxcaph_min = [10000,_target_cap*0.5].min.round()
+    idxcaph_min = [1000,_target_cap*0.5].min.round()
     idxcapl_max = (5.0*_target_cap).round()
 
 <<GET_MATCH_SQL
