@@ -32,8 +32,9 @@
           <%= number_with_delimiter(target_fields['mrkcap'].to_i,
               :delimiter => ',') + "M" %>
           <br>
-          <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) %>
-          <b>Price</b>: <%= sprintf("$%.2f",target_fields['price']) %>
+          <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) if target_fields['pe'] %>
+          <b>Price</b>: 
+	  <%= sprintf("$%.2f",target_fields['price']) if target_fields['price']  %>
           <a class ="btn btn-large btn-success share-button" 
               <% if current_user %>
                 href = "/searches#history?share"
@@ -114,8 +115,6 @@
           <%= render :partial => "row", :object => row %>
 
   <% end %>
-
-  <%= render :partial => "comparable_modal", :object => target_fields %>
 
   <%= render :partial => "askto_signin_modal" %>
 
