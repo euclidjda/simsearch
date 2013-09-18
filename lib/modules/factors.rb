@@ -42,13 +42,15 @@ class Factors
     return attr.nil? ? nil : attr[:order]
   end
 
-  def self.format_factor(factor_key,value)
+  def self.format_factor(factor_key,factor_value)
     attr = @@FactorAttributes[factor_key]
-
-    if attr.nil? || attr[:fmt].nil? || attr[:fmt] == 'pct'
-      return sprintf "%.2f%%",100*value
+    
+    if factor_value.nil?
+      return "N/A"
+    elsif attr.nil? || attr[:fmt].nil? || attr[:fmt] == 'pct'
+      return sprintf "%.2f%%",100*factor_value
     else
-      return sprintf attr[:fmt],value
+      return sprintf attr[:fmt],factor_value
     end
 
   end

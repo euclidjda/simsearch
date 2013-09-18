@@ -139,12 +139,14 @@ class SecuritySnapshot < Tableless
       # assert !int_wght.nil?
       # assert !usr_wght.nil?
 
-      next if val0.nil?
-
-      if !val1.nil?
+      if !val0.nil? && !val1.nil?
         dist += ( usr_wght * int_wght * int_wght * ( val0 - val1 ) * ( val0 - val1 ) )
         dims += 1
+        logger.debug("dims are: " + dims.to_s + "************************")
+      elsif val0.nil? && val1.nil?
+        # do nothing in this case
       else
+        logger.debug("one or the other is NUL ************************")
         dist = -1
         break
       end
@@ -241,32 +243,28 @@ class SecuritySnapshot < Tableless
 
       denom  = mrkcap+debt+cash+pstk+mii
 
-      factor_value = oiadp/denom if (!oiadp.nil? && denom > 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = oiadp/denom if (oiadp >=0 && denom > 0)
 
     when :pe # Price to Earnings
 
       price    = get_field('price').to_f
       earnings = get_field('epspxq_ttm').to_f
 
-      factor_value = price / earnings if (!price.nil? && earnings != 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = price / earnings if (price > 0 && earnings > 0)
 
     when :pb # Price to Book
 
       price   = get_field('price').to_f * get_field('csho').to_f
       bookval = get_field('seqq_mrq').to_f
 
-      factor_value = price / bookval if (!price.nil? && bookval != 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = price / bookval if (price > 0 && bookval > 0)
 
      when :divy # Dividend Yield
 
       price    = get_field('price').to_f
       dividend = get_field('dvpsxm_ttm').to_f
 
-      factor_value = dividend  / price if (!dividend.nil? && price != 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = dividend  / price if (!dividend.nil? && price > 0)
 
     when :inv_cap # Invested Capital
 
@@ -287,31 +285,28 @@ class SecuritySnapshot < Tableless
       
       inv_cap = (act-lct) + ppent + dlc
 
-      factor_value = oiadp / inv_cap if (!oiadp.nil? && inv_cap > 0)
+      factor_value = oiadp / inv_cap if (oiadp > 0 && inv_cap > 0)
       
     when :roe # Return On Equity
 
       oiadp  = get_field('oiadpq_ttm')
       equity = get_field('seqq_mrq').to_f
 
-      factor_value = oiadp / equity if (!oiadp.nil? && equity > 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = oiadp / equity if (oiadp > 0 && equity > 0)
       
     when :roa # Return On Assets
 
       oiadp  = get_field('oiadpq_ttm')
       assets = get_field('atq_mrq').to_f
 
-      factor_value = oiadp / assets if (!oiadp.nil? && assets != 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = oiadp / assets if (oiadp > 0 && assets > 0)
 
     when :roc # Return On Capital
 
       oiadp   = get_field('oiadpq_ttm')
       capital = get_field('seqq_mrq').to_f + get_field('dlttq_mrq').to_f
 
-      factor_value = oiadp / capital if (!oiadp.nil? && capital != 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = oiadp / capital if (oiadp > 0 && capital > 0)
 
     when :gmar # Gross Margin
 
@@ -319,23 +314,20 @@ class SecuritySnapshot < Tableless
       cogs    = get_field('cogsq_ttm').to_f
       
       factor_value = (revenue - cogs)/revenue if (revenue > 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
 
     when :omar # Op Margin
 
       revenue = get_field('saleq_ttm').to_f
       ebit    = get_field('oiadpq_ttm').to_f
       
-      factor_value = ebit/revenue if (!ebit.nil? && revenue > 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = ebit/revenue if (ebit > 0 && revenue > 0)
 
     when :nmar # Net Margin
 
       revenue = get_field('saleq_ttm').to_f
       net     = get_field('epspxq_ttm').to_f * get_field('csho')
       
-      factor_value = net/revenue if (!net.nil? && revenue > 0)
-      factor_value = 0.0 if (factor_value && factor_value < 0)
+      factor_value = net/revenue if (net > 0 && revenue > 0)
 
     when :grwth # Revenue Growth
 
