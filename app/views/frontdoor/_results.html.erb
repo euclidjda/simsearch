@@ -58,27 +58,27 @@
         </div>
       </div>
       <div id="wide-summary">
-        <%= target_fields['ticker'] %>'s Historical Comparables
-        <i><span class="summary-label">Outperformed</span></i>
-        the S&P 500 by an Average of:
-        <div id="median-perf">
-          <span><img class="summary-image" src=""></img></span>
-          <span class="summary-num"></span>
-        </div>
+	<i>
+	Below are the historical comps that look most like <%= target_fields['ticker'] %>, 
+	the date they were most similar to <%= target_fields['ticker'] %>, 
+	and their subsequent price performance over one year.
+	</i>
       </div>
+      <!--
       <div>
         <ul id="summary-stats">
           <li class="sum-stat">
             <div class="sum-val"> Num Outperformed: <span id="summary-count"></span></div>
           </li>
           <li class="sum-stat">
-            <div class="sum-val" id="sum-middle-row"> Worst Performing: <span id="summary-worst"></span></div>
+            <div class="sum-val" id="sum-middle-row"> 
+	      Worst Performing  Comp: <span id="summary-worst"></span></div>
           </li>
           <li class="sum-stat">
-            <div class="sum-val"> Best Performing: <span id="summary-best"></span></div>
+            <div class="sum-val"> Best Performing Comp: <span id="summary-best"></span></div>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 
