@@ -20,8 +20,16 @@ Any media size specific and resize related rules should be here.
   Somehow there is a border/outline left when the focus leaves the <a> tag after
   clicking a link that is in the nav bar. This is to prevent that ghost effect.
 */
-.nav a {
-  outline: 0px none !important;
+.nav-mine {
+  a {
+    outline: 0px none !important;
+    color: white !important;
+    font-size: 14pt;
+  }
+
+  a:hover {
+    color: red !important;
+  }
 }
 
 @media (min-width: 768px) {

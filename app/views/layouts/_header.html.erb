@@ -13,7 +13,7 @@
         <!-- <a class="brand" href="/">Patent Pending</a> -->
 
         <div class="nav-collapse collapse">
-          <ul class="nav pull-right navbar-text">
+          <ul class="nav nav-mine pull-right navbar-text">
             <% if current_user %>
               <li><a href="/searches">History</a></li>
               <li><a href="/subscribe">Upgrade</a></li>
@@ -24,9 +24,9 @@
                 <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Profile</a></li>
+                  <li><a style="color:black !important" href="#">Profile</a></li>
                   <li class="divider"></li>
-                  <li><%= link_to "Sign Out", '#', :id => 'banner-signout-btn' %></li>
+                  <li><%= link_to "Sign Out", '#', :style => "color:black !important", :id => 'banner-signout-btn' %></li>
                 </ul>
               </li>  
             <% else %>
