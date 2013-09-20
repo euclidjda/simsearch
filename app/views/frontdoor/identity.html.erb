@@ -5,13 +5,17 @@
 
 $(document).ready(function() {
   
+  // FE TODO: This should only run when we load a register path.
+
   // show captcha fields.
-  Recaptcha.create("6LfZiucSAAAAADSaJp7qiHQqkBkwFgilmJrRiJbS", "captcha-container",
-    {
-      theme: "clean",
-      callback: Recaptcha.focus_response_field
-    }
-  );
+  if (document.location.href.indexOf("register") > 0) {
+    Recaptcha.create("6LfZiucSAAAAADSaJp7qiHQqkBkwFgilmJrRiJbS", "captcha-container",
+      {
+        theme: "clean",
+        callback: Recaptcha.focus_response_field
+      }
+    );
+  }
 
   var form_refresh = "<%= form_refresh?() %>";
   var message = "<%= validation_error %>";
@@ -61,66 +65,17 @@ $(document).ready(function() {
 </script>
 
 <%= render "frontdoor/searchbar" %>
+<h2>You must be <b>signed in</b> to share results with others</h2>
 
-<% case @identity_path %>
-<% when "/register"%>
-    <div id="register" class="credentials ">
-      <div class="modal-header">
-        <h3 id="registerLabel">Register</h3>
-      </div>
-
-      <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-form") do %>
-        <div class="modal-body">
-          <p id="register-message">  Join with your e-mail address. </p>
-          <table>
-            <tr><td><%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %></td><td><i id="username-info" class="icon-question-sign" rel="popover" data-content="It's so simple to create a tooltop for my website!"></i></td></tr>
-            <tr><td><%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %></td><td><i id="email-info"class="icon-question-sign"></i></td></tr>
-            <tr><td><%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %></td><td></td></tr>
-          </table>
-        <br><br>
-        </div>
-
-        <div id="captcha-container">
-        </div>        
-        <p></p>
-        <div class="modal-footer">
-          <p>  Already have an account ? <a href="/signin">Sign in</a></p>
-          <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
-        </div>
-
-      <% end %>
-    </div>
-
-
-<% when "/signin" %>
-
-    <div id="signin" class="credentials">
-      <div class="modal-header">
-        <h3 id="signinLabel">Sign In</h3>
-      </div>
-
-      <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
-        <div class="modal-body">
-            <p id="signin-message">  Sign in with your e-mail address. </p>
-            <%= email_field_tag(:signin_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %><br>
-            <%= password_field_tag(:signin_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
-        </div>
-
-        <div class="modal-footer">
-          <p>  Don't have an account yet ? <a href="/register">Register</a></p>
-          <%= submit_tag("Sign in", :class => "btn btn-large btn-primary") %>
-        </div>
-      <% end %>
-    </div>
-
-<% when "/subscribe" %>
-    <div id="enjoy-the-beta">
-    <p>
-      Fundamentals is still in the Beta period and we are either not charging for, or not exposing paid features. 
-      <a href="/">Enjoy the Beta !!! </a> and thank you for trying it out.
-    </p>
-     -- The Fundamentals Team </div>
-    </div>
-<% end %>
-<p>
-
+<div class="row-fluid"> 
+  <div class="span4 identity-left">
+    <p> Participate in a growing community of users who are looking at 
+      historical comparables when making investments in public companies.</p>
+    <p> As a registered user, you can save your favorite searches and share your results. We remember
+      the specific searches you share with others and allow them to come back to see them at any time 
+      without being registered users. </p>
+  </div>
+  <div class="span8 identity-right">
+    <%= render "frontdoor/identityform" %>
+  </div>
+</div>
