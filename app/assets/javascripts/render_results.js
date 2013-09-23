@@ -158,16 +158,26 @@ function populate_panels(row_obj,data,i) {
     panel.find('.panel-date').html(datestr);
 
     // calc outperformance
-    var perf = data[i].stk_rtn - data[i].mrk_rtn;
+    var perf_stk = data[i].stk_rtn;
+    var perf_mrk = data[i].mrk_rtn;
+    var perf_net = perf_stk - perf_mrk;
 
-    if (perf >= 0) {
-        panel.find(".perf-image").attr("src",pos_small_icon);
-        panel.find(".perf-num").html(sprintf("%.2f%%",perf));
-        panel.find(".perf-tag").html("1 Yr Rtn <br><u>Above</u> Mrkt");
+    if (perf_stk >= 0) {
+	panel.find(".perf-stk").html(sprintf("%.2f%%",perf_stk)).css('color','green');
     } else {
-        panel.find(".perf-image").attr("src",neg_small_icon);
-        panel.find(".perf-num").html(sprintf("%.2f%%",perf));
-        panel.find(".perf-tag").html("1 Yr. Rtn <br><u>Below</u> Mrkt");
+	panel.find(".perf-stk").html(sprintf("%.2f%%",perf_stk)).css('color','red');
+    }
+
+    if (perf_mrk >= 0) {
+	panel.find(".perf-mrk").html(sprintf("%.2f%%",perf_mrk)).css('color','green');
+    } else {
+	panel.find(".perf-mrk").html(sprintf("%.2f%%",perf_mrk)).css('color','red');
+    }
+
+    if (perf_net >= 0) {
+	panel.find(".perf-net").html(sprintf("%.2f%%",perf_net)).css('color','green');
+    } else {
+	panel.find(".perf-net").html(sprintf("%.2f%%",perf_net)).css('color','red');
     }
 
     var sim_score = data[i].sim_score;

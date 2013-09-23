@@ -149,7 +149,13 @@ html>/**/body #cuatro {
 .summary-row {
 
     margin: 10px 0px 0px 0px;
-    font-family:"Helvetica", Helvetica, serif;
+    font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    color: #444444;
+    font-style: italic;
+    font-size: 32px;
+
+    text-align: center;
 
 	#result-summary {
 		/*font size coming in from override file, don't set it here */ 
@@ -158,10 +164,12 @@ html>/**/body #cuatro {
 		/*padding left comes from override file. */ 
 		padding-top: 12px;
 		padding-bottom: 16px;
+		padding-right: 50px;
 
+		/**
 		#median-perf {
 			display: inline-block;
-		}
+		} **/
 	}
 
 	#result-summary-short {
@@ -277,7 +285,7 @@ html>/**/body #cuatro {
 				font-weight: bold;
 				font-size: 12pt;
 				color: rgb(23,23,23);
-				padding: 6px 4px 4px 4px;
+				padding: 4px 4px 4px 4px;
 				overflow: hidden;
 				white-space: nowrap;
 
@@ -287,7 +295,7 @@ html>/**/body #cuatro {
 		    }
 
 		    .panel-ticker-and-date {
-		    	padding-top: 4px;
+		    	padding-top: 2px;
 		    }
 
 		    .panel-ticker {
@@ -306,8 +314,38 @@ html>/**/body #cuatro {
 		    }
 
 		    .panel-performance {
+
 		    	text-align: right;
-		    	padding: 8px 8px 10px 0px;
+		    	padding: 2px 8px 4px 8px;
+
+			table {
+
+			    border-spacing: 1px !important;
+			    width: 50%;
+			    font-size: 10px;
+			    line-height: 14px;
+
+			    
+
+			    td {
+				padding: 0 4px 0 4px;
+				margin: 0 0 0 0;
+			    }
+			    
+			    .col1 {
+				text-align: right;
+			    }
+
+			    .row2 {
+
+			    }
+
+			    .row3 {
+				font-weight: bold;
+				font-size: 12px;
+			    }
+
+			}
 
 		    	.perf-image {
 			    float: left;
@@ -354,7 +392,7 @@ html>/**/body #cuatro {
 }
 
 .bx-wrapper {
-	padding-top: 10px !important;
+	padding-top: 8px !important;
 	padding-right: 10px !important;
 
 	.bx-controls-direction a {
@@ -379,6 +417,11 @@ html>/**/body #cuatro {
 
 .bxslider {
 	margin: -14px 0 0 2px;
+
+	li {
+	    margin-right: 5px !important;
+	    width: 225px !important;
+	}
 }
 
 .bx-pager {

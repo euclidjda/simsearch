@@ -51,20 +51,19 @@
 
   <div class="row-fluid summary-row light-row">
     <div id = "result-summary">
+
       <div id="short-summary">
-        Comparable Average  
-        <div id="median-perf">
-          <span><img class="summary-image" src=""></img></span>
-          <span class="summary-num"></span>
-        </div>
+
+	Below are the historical comps that look most like <%= target_fields['ticker'] %>
+
       </div>
+
       <div id="wide-summary">
-	<i>
 	Below are the historical comps that look most like <%= target_fields['ticker'] %>, 
 	the date they were most similar to <%= target_fields['ticker'] %>, 
 	and their subsequent price performance over one year.
-	</i>
       </div>
+
       <!--
       <div>
         <ul id="summary-stats">
@@ -79,7 +78,9 @@
             <div class="sum-val"> Best Performing Comp: <span id="summary-best"></span></div>
           </li>
         </ul>
-      </div> -->
+      </div>
+      -->
+
     </div>
   </div>
 
@@ -90,9 +91,27 @@
       <span class="panel-ticker"></span>  -  <span class="panel-date"></span>
     </div>
     <div class="panel-performance">
+
+      <table class='table-bordered'>
+	<tr class='row1'>
+	  <td class='col1'>One Year Stock Return:</td>
+	  <td class='perf-stk'></td>
+	</tr>
+	<tr class='row2'>
+	  <td class='col1'>- Market Return:</td>
+	  <td class='perf-mrk'></td>
+	</tr>
+	<tr class='row3'>
+	  <td class='col1'>Net Return (1 Yr):</td>
+	  <td class='perf-net'></td>
+	</tr>
+      </table>
+
+      <!--
         <img class="perf-image" src=""></img>
         <span class="perf-num"></span>
         <span class="perf-tag"></span>
+	-->
     </div>
     <div class="panel-similarity"></div>
   </div>
