@@ -325,8 +325,6 @@ html>/**/body #cuatro {
 			    font-size: 10px;
 			    line-height: 14px;
 
-			    
-
 			    td {
 				padding: 0 4px 0 4px;
 				margin: 0 0 0 0;
@@ -353,21 +351,21 @@ html>/**/body #cuatro {
 			    vertical-align: top;
 		    	}
 
-				.perf-num {
-					height: 30px;
-					vertical-align: top;
-					font-size: 11pt;
-					font-weight: bold;
-				}
+			.perf-num {
+			    height: 30px;
+			    vertical-align: top;
+			    font-size: 11pt;
+			    font-weight: bold;
+			}
 
-				.perf-tag {
-		    		height: 30px;
-					vertical-align: top;
-					display: inline-block;
-					font-size: 8pt;
-					line-height: 10pt;
-					width: 80px;
-				}
+			.perf-tag {
+		    	    height: 30px;
+			    vertical-align: top;
+			    display: inline-block;
+			    font-size: 8pt;
+			    line-height: 10pt;
+			    width: 80px;
+			}
 		    }
 
 		    .panel-similarity {
