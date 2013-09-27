@@ -23,12 +23,12 @@ Any media size specific and resize related rules should be here.
 .nav-mine {
   a {
     outline: 0px none !important;
-    color: white !important;
-    font-size: 14pt;
+    color: white;
+    font-size: 12pt;
   }
 
   a:hover {
-    color: red !important;
+    color: orange !important;
   }
 }
 
