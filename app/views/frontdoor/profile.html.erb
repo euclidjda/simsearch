@@ -1,0 +1,42 @@
+<%= render "frontdoor/searchbar" %>
+
+<% if current_user %>
+
+<div id="profile-container">
+	<h3>Profile</h3>	
+
+	<table>
+		<%= form_tag("/update_username", :method => "post", :class=> "navbar-form", :id => "username-form") do %>
+		<tr>
+			<td><div id="username-label">User Name:</div></td>
+			<td class="profile-data-cell">
+				<%= text_field_tag(:profile_username_entry, nil, :class => "entry-field", :placeholder => current_user.username, :maxlength => "30") %>
+				<%= submit_tag("Update Username", :class => "btn btn-primary") %>
+			</td>
+		</tr>
+		<% end %>
+
+		<tr>
+			<td>E-mail:</td>
+			<td class="profile-data-cell">
+				<%= text_field_tag(:profile_email_entry, nil, :class => "entry-field", :placeholder => current_user.email) %>
+			</td>
+		</tr>
+
+		<tr>
+			<td><div id="password-label">Password:</div></td>
+			<td class="profile-data-cell">
+				<%= text_field_tag(:profile_password_entry1, nil, :class => "entry-field", :placeholder => "current password") %>
+				<%= text_field_tag(:profile_password_entry2, nil, :class => "entry-field", :placeholder => "new password") %>
+				<%= text_field_tag(:profile_password_entry3, nil, :class => "entry-field", :placeholder => "new password") %>
+				<%= submit_tag("Update Password", :class => "btn btn-primary") %>
+			</td>
+		</tr>		
+	</table>
+
+</div>
+<% else %>
+
+<h4>You need to sign in to see your profile information.</h4>
+
+<% end %>

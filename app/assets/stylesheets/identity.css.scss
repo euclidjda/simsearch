@@ -1,9 +1,35 @@
+
+.identity-left {
+  padding:8px;
+  background-color: #e0e0e0;
+  margin-top: 0px;
+  border-radius: 5px;
+}
+
+.identity-right {
+  margin-left: 0px;
+  h3 {
+    text-align: left !important;
+  }
+
+  .alternate-message {
+    text-align: right;
+    margin-right: 0px;
+    margin-left: auto;
+    margin-bottom: -20px;
+    position: relative;
+    top: -20px;
+  }
+
+  border-left: 1px solid darkgray;
+}
+
 .credentials {
 
     max-width: 440px;
     text-align: center;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: 80px;
 
 	h3 {
 		text-align: center;

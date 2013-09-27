@@ -7,31 +7,6 @@
     </p>
      -- The Fundamentals Team </div>
     </div>
-<% when "/register"%>
-    <div id="register" class="credentials ">
-      <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-form") do %>
-        <div class="modal-header">
-          <h3 id="registerLabel">Register</h3><div class="alternate-message"><a href="/signin">Member Sign In</a>
-        </div>
-
-        <div class="modal-body">
-          <p id="register-message">  Join with your e-mail address. </p>
-          <table>
-            <tr><td><%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %></td><td><i id="username-info" class="icon-question-sign" rel="popover" data-content="It's so simple to create a tooltop for my website!"></i></td></tr>
-            <tr><td><%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %></td><td><i id="email-info"class="icon-question-sign"></i></td></tr>
-            <tr><td><%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %></td><td></td></tr>
-          </table>
-        </div>
-
-        <div id="captcha-container">
-        </div>        
-        <p></p>
-        <div class="modal-footer">
-          <br><br>
-          <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
-        </div>
-      <% end %>
-    </div>
 <% when "/signin" %>
     <div id="signin" class="credentials">
       <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
@@ -51,5 +26,31 @@
         </div>
       <% end %>
     </div>
+<% when "/register"%>
+    <div id="register" class="credentials ">
+      <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-form") do %>
+        <div class="modal-header">
+          <h3 id="registerLabel">Register</h3><div class="alternate-message"><a href="/signin">Member Sign In</a>
+        </div>
+
+        <div class="modal-body">
+          <p id="register-message">  Join with your e-mail address. </p>
+          <table>
+            <tr><td><%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %></td><td><i id="username-info" class="icon-question-sign" rel="popover" data-content="It's so simple to create a tooltop for my website!"></i></td></tr>
+            <tr><td><%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %></td><td><i id="email-info"class="icon-question-sign"></i></td></tr>
+            <tr><td><%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %></td><td></td></tr>
+          </table>
+
+          <div id="captcha-container">
+          </div>    
+
+        </div>    
+        <p></p>
+        <div class="modal-footer">
+          <br><br>
+          <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
+        </div>
+      <% end %>
+    </div>       
 <% end %>
 <p>
