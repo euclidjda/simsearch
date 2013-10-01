@@ -65,16 +65,7 @@ $(document).ready(function() {
 <%= render "frontdoor/searchbar" %>
 <h2>You must be <b>signed in</b> to share results with others</h2>
 
-<div class="container-fluid">
-  <div class="row-fluid"> 
-    <div class="span4 identity-left">
-      <p> Participate in a growing community of users who are looking at 
-        historical comparables when making investments in public companies.</p>
-      <p> As a registered user, you can save your favorite searches and share your results. We remember
-        the specific searches you share with others and allow them to come back to see them at any time 
-        without being registered users. </p>
-    </div>
-    <div class="span8 identity-right">
+    <div class="identity-container">
       <%= render "frontdoor/identityform" %>
     </div>
   </div>
