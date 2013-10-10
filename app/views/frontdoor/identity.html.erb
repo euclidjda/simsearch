@@ -10,7 +10,10 @@ $(document).ready(function() {
     Recaptcha.create("6LfZiucSAAAAADSaJp7qiHQqkBkwFgilmJrRiJbS", "captcha-container",
       {
         theme: "clean",
-        callback: Recaptcha.focus_response_field
+        callback: function () { 
+          $(".recaptcha_image_cell").parent().children()[1].style.padding = "";
+          Recaptcha.focus_response_field 
+        }
       }
     );
   }
@@ -63,7 +66,6 @@ $(document).ready(function() {
 </script>
 
 <%= render "frontdoor/searchbar" %>
-<h2>You must be <b>signed in</b> to share results with others</h2>
 
     <div class="identity-container">
       <%= render "frontdoor/identityform" %>

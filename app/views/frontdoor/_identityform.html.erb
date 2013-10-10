@@ -8,7 +8,9 @@
      -- The Fundamentals Team </div>
     </div>
 <% when "/signin" %>
-    <div id="signin" class="credentials">
+<h2>You must be <b>signed in</b> to share results with others</h2>
+
+    <div id="signin" class="credentials signin">
       <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
         <div class="modal-header">
           <h3 id="signinLabel">Sign In</h3><div class="alternate-message"><a href="/register">Join now (It's free)</a></div>
@@ -27,36 +29,45 @@
       <% end %>
     </div>
 <% when "/register"%>
-    <div id="register" class="credentials ">
-      <%= form_tag("/register", :method => "post", :class => "navbar-form", :id => "register-form") do %>
-        <div class="modal-header">
-          <h3 id="registerLabel">Register</h3><div class="alternate-message"><a href="/signin">Member Sign In</a>
-        </div>
-        </div>
-          <div id='register-info'>
-            <p> Participate in a growing community of users who are looking at historical comparables when making investments in public companies.</p>
-<p> As a registered user, you can save your favorite searches and share your results. We remember the specific searches you share with others and allow them to come back to see them at any time without being registered users. </p>
+  <div id="marketing-section">
+    <div id="register-container">
+      <%=form_tag("/register", :method => "post", :id => "register-form", :autocomplete => "off", ) do %>
+      <dl class="form">
+        <dd>
+          <%= text_field_tag(:register_username_entry, nil, :placeholder => "Pick a username", :maxlength => "30") %>
+        </dd>
+        <p class="text-muted">Your username is shown as your identity when you share searches.</p>
 
-          </div>        
-        <div class="modal-body">
+      </dl>
+      <dl class="form">
+        <dd>
+          <%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %>
+        </dd>
+      </dl>
+      <dl class="form">
+        <dd>
+          <%= password_field_tag(:register_password_entry, nil, :placeholder => "Create a password", :maxlength => "30") %>
+        </dd>        
+      </dl>
+    
+      <div id="captcha-container">
+      </div>    
 
-          <p id="register-message">  Join with your e-mail address. </p>
-          <table>
-            <tr><td><%= text_field_tag(:register_username_entry, nil, :placeholder => "Username", :maxlength => "30") %></td><td><i id="username-info" class="icon-question-sign" rel="popover" data-content="It's so simple to create a tooltop for my website!"></i></td></tr>
-            <tr><td><%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %></td><td><i id="email-info"class="icon-question-sign"></i></td></tr>
-            <tr><td><%= password_field_tag(:register_password_entry, nil, :placeholder => "Password", :maxlength => "30") %></td><td></td></tr>
-          </table>
+      <p></p>
 
-          <div id="captcha-container">
-          </div>    
+      <%= submit_tag("Sign up for Fundamentals", :class => "btn btn-large btn-primary") %>
 
-        </div>    
-        <p></p>
-        <div class="modal-footer">
-          <br><br>
-          <%= submit_tag("Register", :class => "btn btn-large btn-primary") %>
-        </div>
       <% end %>
-    </div>       
+      <div id="register-content">
+
+        <h1 class="heading">Become a registered fundamentalist.</h1>      
+        <p class="subheading">
+        Participate in a growing community of users who are looking at 
+        historical comparables when making investments in public companies.
+      </div>
+    </div>
+
+    </div>
+  </div>       
 <% end %>
-<p>
+<p> 
