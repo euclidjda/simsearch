@@ -2,148 +2,139 @@
      sid="<%= comp_fields['sid']%>" 
      pricedate="<%= comp_fields['pricedate']%>" >
 
-<a onclick='window.location="search?search_id=<%= the_search_detail.search_id %>"'>
-<< Back to Search </a><br>
+	<a onclick='window.location="search?search_id=<%= the_search_detail.search_id %>"'><< Back to Search </a><br>
 
-   <div class="row-fluid">
-     <div class="span12 detail-title">
+	<div class="detail-title">
 
-       <%= target_fields['name'] +" (" + target_fields['ticker']+ ")" %> TODAY
-       compared to <br>
-       <%= comp_fields['name'] +" (" + comp_fields['ticker']+ ")" %> on
-       <%= display_date_v1( comp_fields['pricedate']) %>
-       
-     </div>
-   </div>
+		<%= target_fields['name'] +" (" + target_fields['ticker']+ ")" %> TODAY
+		compared to <br>
+		<%= comp_fields['name'] +" (" + comp_fields['ticker']+ ")" %> on
+		<%= display_date_v1( comp_fields['pricedate']) %>
 
-<div class="row-fluid">
-      
-  <div class="span6 detail-panel">
+	</div>
 
-    <!-- FACTORS PANEL -->
-      <table class="factor-table" border=1>
-	<thead>
-	  <th class="col1-factors">Factors</th>
-	  <th>Weight</th>
-	  <th><%= target_fields['ticker'] %></th>
-	  <th><%= comp_fields['ticker'] %></th>
-	</thead>
+	<div class="row-fluid">
+	      
+		<div class="span6 detail-panel">
 
-	<% weights = normalized_weights( the_search_type.weight_array )%>
-	<%  the_search_type.factor_keys.each do |factor_key| %>
-	<% if factor_key != :none %>
-	<tr>
-	<td class="col1-factors">
-	  <%= Factors::factor_name(factor_key) %>
-	</td>
-	<td class="col2-factors">
-	  <%= sprintf("%.1f%%",weights.shift*100) %>
-	</td>
-	<td class="col3-factors">
-	  <%= Factors::format_factor(factor_key,target_fields[factor_key]) %>
-	</td>
-	<td class="col4-factors">
-	  <%= Factors::format_factor(factor_key,comp_fields[factor_key]) %>
-	</td>
+		    <!-- FACTORS PANEL -->
+		    <table class="factor-table" border=1>
+				<thead>
+				  <th class="col1-factors">Factors</th>
+				  <th>Weight</th>
+				  <th><%= target_fields['ticker'] %></th>
+				  <th><%= comp_fields['ticker'] %></th>
+				</thead>
 
-	</tr>
-	<% else %>
-	<tr><td colspan=4 style="text-align: center">-</td></tr>
-	<% end %>
-	<% end %>
+				<% weights = normalized_weights( the_search_type.weight_array )%>
+				<%  the_search_type.factor_keys.each do |factor_key| %>
+					<% if factor_key != :none %>
+						<tr>
+							<td class="col1-factors">
+							  <%= Factors::factor_name(factor_key) %>
+							</td>
+							<td class="col2-factors">
+							  <%= sprintf("%.1f%%",weights.shift*100) %>
+							</td>
+							<td class="col3-factors">
+							  <%= Factors::format_factor(factor_key,target_fields[factor_key]) %>
+							</td>
+							<td class="col4-factors">
+							  <%= Factors::format_factor(factor_key,comp_fields[factor_key]) %>
+							</td>
+						</tr>
+					<% else %>
+						<tr><td colspan=4 style="text-align: center">-</td></tr>
+					<% end %>
+				<% end %>
 
-	<tr><td colspan=4><hr></td><tr>
-	<tr class="similarity-score">
-	  <td colspan=2 style="text-align: right">Similarity Score:</td>
-	  <td colspan=2 style="text-align: center">
-	    <%= sprintf("%.2f",the_search_detail.sim_score) %>
-	  </td>
-	</tr>
-      </table>
+				<tr><td colspan=4><hr></td><tr>
+				<tr class="similarity-score">
+				  <td colspan=2 style="text-align: right">Similarity Score:</td>
+				  <td colspan=2 style="text-align: center">
+				    <%= sprintf("%.2f",the_search_detail.sim_score) %>
+				  </td>
+				</tr>
+		    </table>
 
-  </div>
-  <div class="span6 detail-panel">
+		</div>
 
-      <!-- PERFORMANCE PANEL -->
-      <div id="price-chart" class="chart-price"></div>
+	  	<div class="span6 detail-panel">
+	      <!-- PERFORMANCE PANEL -->
+	      <div id="price-chart" class="chart-price"></div>
+		 </div>
+	</div>
 
+	<div class="row-fluid">
+	 
+		<div class="span6 detail-panel">
 
-  </div>
+			<table border=1 class="key-stats-table">
+				<thead>
+				  <tr>
+				    <th>Key Statistics</th>
+				    <th><%= target_fields['ticker'] %></th>
+				    <th><%= comp_fields['ticker'] %></th>
+				  </tr>
+				</thead>
+				
+				<tbody>
 
-</div>
+					<tr>
+						<td class="col1-key-stats">Market Capitalization</td>
+						<td class="col2-key-stats">
+						      <%= number_with_delimiter(target_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
+						</td>
+						<td class="col3-key-stats"> 
+						  <%= number_with_delimiter(comp_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
+						</td>
+					</tr>
 
-<div class="row-fluid">
- 
-  <div class="span6 detail-panel">
+					<tr>
+						<td class="col1-key-stats">Price/Share</td>
+						<td class="col2-key-stats"><%= sprintf("$%.2f",target_fields['price']); %> </td>
+						<td class="col3-key-stats"><%= sprintf("$%.2f",comp_fields['price']); %> </td>
+					</tr>
 
-      <table border=1 class="key-stats-table">
-	<thead>
-	  <tr>
-	    <th>Key Statistics</th>
-	    <th><%= target_fields['ticker'] %></th>
-	    <th><%= comp_fields['ticker'] %></th>
-	  </tr>
+					<tr>
+						<td class="col1-key-stats">Dividend</td>
+						<td class="col2-key-stats"><%= sprintf("%.2f (%.1f%%)",
+						            target_fields['dvpsxm_ttm'],
+						            target_fields['yield']*100); %>
+						</td>
+						<td class="col3-key-stats"><%= sprintf("%.2f (%.1f%%)",
+						            comp_fields['dvpsxm_ttm'],
+						            comp_fields['yield']*100); %>
+						</td>
+					</tr>
 
-	</thead>
-	<tbody>
+			  		<tr>
+			    		<td class="col1-key-stats">Earnings/Share</td>
+			    		<td class="col2-key-stats"><%= sprintf("$%.2f",target_fields['epspxq_ttm']); %></td>
+						<td class="col3-key-stats"><%= sprintf("$%.2f",comp_fields['epspxq_ttm']); %> </td>
+					</tr>
 
-	  <tr>
-	    <td class="col1-key-stats">Market Capitalization</td>
-	    <td class="col2-key-stats">
-              <%= number_with_delimiter(target_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
-	    </td>
-	    <td class="col3-key-stats"> 
-	      <%= number_with_delimiter(comp_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
-	    </td>
-	  </tr>
+					<tr>
+						<td class="col1-key-stats">Price-to-Earnings</td>
+						<td class="col2-key-stats"><%= sprintf("%.2f",target_fields['pe']); %> </td>
+						<td class="col3-key-stats"><%= sprintf("%.2f",comp_fields['pe']); %></td>
+					</tr>
 
-	  <tr>
-	    <td class="col1-key-stats">Price/Share</td>
-	    <td class="col2-key-stats"><%= sprintf("$%.2f",target_fields['price']); %> </td>
-	    <td class="col3-key-stats"><%= sprintf("$%.2f",comp_fields['price']); %> </td>
-	  </tr>
+					<tr>
+						<td class="col1-key-stats">Price-to-Book</td>
+						<td class="col2-key-stats"><%= sprintf("%.2f",target_fields['pb'].to_f) %></td>
+						<td class="col3-key-stats"><%= sprintf("%.2f",comp_fields['pb'].to_f) %></td>
+					</tr>
 
-	  <tr>
-	    <td class="col1-key-stats">Dividend</td>
-	    <td class="col2-key-stats"><%= sprintf("%.2f (%.1f%%)",
-                    target_fields['dvpsxm_ttm'],
-                    target_fields['yield']*100); %>
-	    </td>
-	    <td class="col3-key-stats"><%= sprintf("%.2f (%.1f%%)",
-                    comp_fields['dvpsxm_ttm'],
-                    comp_fields['yield']*100); %>
-	    </td>
-	  </tr>
+				</tbody>
+			</table>
+		</div>
 
-	  <tr>
-	    <td class="col1-key-stats">Earnings/Share</td>
-	    <td class="col2-key-stats"><%= sprintf("$%.2f",target_fields['epspxq_ttm']); %></td>
-	    <td class="col3-key-stats"><%= sprintf("$%.2f",comp_fields['epspxq_ttm']); %> </td>
-	  </tr>
+		<div class="span6">
+			<!-- GROWTH PANEL -->
+			<div id="growth-chart" class="chart-growth"></div>
+		</div> <!-- closing span6 -->
 
-	  <tr>
-	    <td class="col1-key-stats">Price-to-Earnings</td>
-	    <td class="col2-key-stats"><%= sprintf("%.2f",target_fields['pe']); %> </td>
-	    <td class="col3-key-stats"><%= sprintf("%.2f",comp_fields['pe']); %></td>
-	  </tr>
-
-	  <tr>
-	    <td class="col1-key-stats">Price-to-Book</td>
-	    <td class="col2-key-stats"><%= sprintf("%.2f",target_fields['pb'].to_f) %></td>
-	    <td class="col3-key-stats"><%= sprintf("%.2f",comp_fields['pb'].to_f) %></td>
-	  </tr>
-
-	</tbody>
-      </table>
-
-</div>
-<div class="span6">
-
-      <!-- GROWTH PANEL -->
-      <div id="growth-chart" class="chart-growth"></div>
-      
-</div> <!-- closing span6 -->
-
-</div> <!-- closing row-fluid -->
+	</div> <!-- closing row-fluid -->
 
 </div> <!-- closing whole doc -->
