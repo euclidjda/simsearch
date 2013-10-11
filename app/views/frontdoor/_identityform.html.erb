@@ -1,73 +1,77 @@
 <% case @identity_path %>
 <% when "/subscribe" %>
-    <div id="enjoy-the-beta">
-    <p>
-      Fundamentals is still in the Beta period and we are either not charging for, or not exposing paid features. 
-      <a href="/">Enjoy the Beta !!! </a> and thank you for trying it out.
-    </p>
-     -- The Fundamentals Team </div>
-    </div>
+  <div id="enjoy-the-beta">
+  <p>
+    Fundamentals is still in the Beta period and we are either not charging for, or not exposing paid features. 
+    <a href="/">Enjoy the Beta !!! </a> and thank you for trying it out.
+  </p>
+   -- The Fundamentals Team </div>
+  </div>
 <% when "/signin" %>
-<h2>You must be <b>signed in</b> to share results with others</h2>
+  <h2>You must be <b>signed in</b> to share results with others</h2>
 
-    <div id="signin" class="credentials signin">
-      <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
-        <div class="modal-header">
-          <h3 id="signinLabel">Sign In</h3><div class="alternate-message"><a href="/register">Join now (It's free)</a></div>
-        </div>
+  <div id="signin" class="credentials signin">
+    <%= form_tag("/signin", :method => "post", :class => "navbar-form", :id => "signin-form") do %>
+      <div class="modal-header">
+        <h3 id="signinLabel">Sign In</h3><div class="alternate-message"><a href="/register">Join now (It's free)</a></div>
+      </div>
 
-        <div class="modal-body">
-            <p id="signin-message">  Sign in with your e-mail address. </p>
-            <%= email_field_tag(:signin_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %><br>
-            <%= password_field_tag(:signin_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
-        </div>
+      <div class="modal-body">
+          <p id="signin-message">  Sign in with your e-mail address. </p>
+          <%= email_field_tag(:signin_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %><br>
+          <%= password_field_tag(:signin_password_entry, nil, :placeholder => "Password", :maxlength => "30") %><br>
+      </div>
 
-        <div class="modal-footer">
-          <br><br>
-          <%= submit_tag("Sign in", :class => "btn btn-large btn-primary") %>
-        </div>
-      <% end %>
-    </div>
+      <div class="modal-footer">
+        <br><br>
+        <%= submit_tag("Sign in", :class => "btn btn-large btn-primary") %>
+      </div>
+    <% end %>
+  </div>
 <% when "/register"%>
-  <div id="marketing-section">
-    <div id="register-container">
-      <%=form_tag("/register", :method => "post", :id => "register-form", :autocomplete => "off", ) do %>
-      <dl class="form">
-        <dd>
-          <%= text_field_tag(:register_username_entry, nil, :placeholder => "Pick a username", :maxlength => "30") %>
-        </dd>
-        <p class="text-muted">Your username is shown as your identity when you share searches.</p>
-
-      </dl>
-      <dl class="form">
-        <dd>
-          <%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %>
-        </dd>
-      </dl>
-      <dl class="form">
-        <dd>
-          <%= password_field_tag(:register_password_entry, nil, :placeholder => "Create a password", :maxlength => "30") %>
-        </dd>        
-      </dl>
-    
-      <div id="captcha-container">
-      </div>    
-
-      <p></p>
-
-      <%= submit_tag("Sign up for Fundamentals", :class => "btn btn-large btn-primary") %>
-
-      <% end %>
-      <div id="register-content">
-
-        <h1 class="heading">Become a registered fundamentalist.</h1>      
+  <div class="container-fluid" id="marketing-section">
+    <div class="row-fluid" id="register-container">
+      
+      <div class="span7" id="register-content">
+        <h1 class="heading">Become a fundamentalist investor.</h1>      
         <p class="subheading">
         Participate in a growing community of users who are looking at 
-        historical comparables when making investments in public companies.
+        historical comparables when making investments in public companies.        
+      </div>
+      
+      <div class="span5">
+        <div id="register-container">
+          <%=form_tag("/register", :method => "post", :id => "register-form", :autocomplete => "off", ) do %>
+          <dl class="form">
+            <dd>
+              <%= text_field_tag(:register_username_entry, nil, :placeholder => "Pick a username", :maxlength => "30") %>
+            </dd>
+            <p class="text-muted">Your username is shown as your identity when you share searches.</p>
+
+          </dl>
+          <dl class="form">
+            <dd>
+              <%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %>
+            </dd>
+          </dl>
+          <dl class="form">
+            <dd>
+              <%= password_field_tag(:register_password_entry, nil, :placeholder => "Create a password", :maxlength => "30") %>
+            </dd>        
+          </dl>
+        
+          <div id="captcha-container">
+          </div>    
+
+          <p></p>
+
+          <%= submit_tag("Sign up for Fundamentals", :class => "btn btn-large btn-primary") %>
+
+          <% end %>
+        </div>
+
       </div>
     </div>
-
-    </div>
-  </div>       
+  </div>
 <% end %>
 <p> 

@@ -334,4 +334,14 @@ Any media size specific and resize related rules should be here.
       height: 18px;
     }
   }
+
+  #register-content {
+    display: none;
+  }
+
+  #marketing-section {
+    form {
+      float: left !important;
+    }
+  }
 }

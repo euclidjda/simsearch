@@ -18,34 +18,19 @@
 
 #marketing-section {
 
-	margin-left: -1000px;
-	margin-right: -1000px;
-	padding-right: 1000px;
-	padding-left: 1040px;
-	padding-top: 40px;
-	padding-bottom: 160px;
-
-	position: relative;
-	border-bottom: 1px solid #e5e5e5;
-
 	#register-container {
-		width: 720px;
-		margin-left: auto;
-		margin-right: auto;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;	
 
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 		form {
 			float: right;
-			width: 320px;
-			margin-left: 40px;			
+			width: 340px;
+			margin-right: 30px;			
 		}	
 
 		.heading {
 			margin-top: 0;
-			margin-left: -60px;
+			margin-left: -10px;
 			padding-top: 10px;
 			font-size: 48px;
 			font-weight: normal;
@@ -56,7 +41,7 @@
 		}
 
 		.subheading {
-			margin: 10px 0 0 -60px;
+			margin: 10px 0 0 -10px;
 			font-size: 21px;
 			line-height: 1.5;
 		}
@@ -103,19 +88,12 @@
 	border: 1px solid darkgray;
 	border-radius: 8px;
 
-
 	h3 {
 		text-align: center;
 	}	
 
 	.modal-header {
 		background-color: lightgray;
-	}
-
-	#register-info {
-		text-align: left;
-		padding-left: 10px;
-		padding-right: 10px;
 	}
 
 	.modal-body {
@@ -156,18 +134,4 @@
 			margin-top: -40px;
 		}				
 	}
-
-	#recaptcha_table {
-		td {
-			padding: 0px 0px 0px 0px !important;
-		}
-	}
-}
-
-.signin {
-	margin-right: auto;
-}
-
-.register {
-	margin-right: 0px;
 }
