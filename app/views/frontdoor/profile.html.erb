@@ -5,34 +5,44 @@
 <div id="profile-container">
 	<h3>Profile</h3>	
 
-	<table>
+	<dl>
+		<dt><label>E-Mail</label>
+		</dt>
+		<dd>
+			<%= text_field_tag(:profile_email_entry, nil, :class => "entry-field identifier", :placeholder => current_user.email) %>			
+		</dd>
+	</dl>
+	<div class="separator"></div>
+	<dl>
+		<dt><label>User Name</label></dt>
 		<%= form_tag("/update_username", :method => "post", :class=> "navbar-form", :id => "username-form") do %>
-		<tr>
-			<td><div id="username-label">User Name:</div></td>
-			<td class="profile-data-cell">
-				<%= text_field_tag(:profile_username_entry, nil, :class => "entry-field", :placeholder => current_user.username, :maxlength => "30") %>
-				<%= submit_tag("Update Username", :class => "btn btn-primary") %>
-			</td>
-		</tr>
+		<dd>
+			<%= text_field_tag(:profile_username_entry, nil, :class => "entry-field", :placeholder => current_user.username, :maxlength => "30") %>
+		</dd>
+		<dd>
+			<%= submit_tag("Update Username", :class => "btn btn-primary") %>			
+		</dd>
+
 		<% end %>
-
-		<tr>
-			<td>E-mail:</td>
-			<td class="profile-data-cell">
-				<%= text_field_tag(:profile_email_entry, nil, :class => "entry-field", :placeholder => current_user.email) %>
-			</td>
-		</tr>
-
-		<tr>
-			<td><div id="password-label">Password:</div></td>
-			<td class="profile-data-cell">
-				<%= text_field_tag(:profile_password_entry1, nil, :class => "entry-field", :placeholder => "current password") %>
-				<%= text_field_tag(:profile_password_entry2, nil, :class => "entry-field", :placeholder => "new password") %>
-				<%= text_field_tag(:profile_password_entry3, nil, :class => "entry-field", :placeholder => "new password") %>
-				<%= submit_tag("Update Password", :class => "btn btn-primary") %>
-			</td>
-		</tr>		
-	</table>
+	</dl>
+	<div class="separator"></div>
+	<dl>
+		<dt><label>Password</label></dt>
+		<%= form_tag("/update_password", :method => "post", :class=> "navbar-form", :id => "password-form") do %>
+		<dd>			
+			<%= password_field_tag(:profile_password_current, nil, :class => "entry-field", :placeholder => "current password", :maxlength => "30") %>
+		</dd>
+		<dd>				
+			<%= password_field_tag(:profile_password_new1, nil, :class => "entry-field", :placeholder => "new password", :maxlength => "30") %>
+		</dd>		
+		<dd>				
+			<%= password_field_tag(:profile_password_new2, nil, :class => "entry-field", :placeholder => "new password", :maxlength => "30") %>
+		</dd>
+		<dd>				
+			<%= submit_tag("Update Password", :class => "btn btn-primary") %>
+		</dd>				
+		<% end %>
+	</dl>
 
 </div>
 <% else %>

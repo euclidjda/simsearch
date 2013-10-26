@@ -2,36 +2,34 @@
 #profile-container {
 	padding: 12px;
 	font-size: 12pt;
+	
+	label {
+		color: #666;
+		font-size: 12pt;
+	}
 
 	.entry-field {
-		width: 95%;
 		font-size: 14pt;
 		height: 24px;
 		letter-spacing: 2px;
-		margin-top: 10px;
-		float: right;
+		min-width: 320px;
 	}
 
-	table {
-		max-width: 500px;
+	.identifier {
+		background-color: lightgray;
+		color: black;
 	}
 
 	.btn {
 		font-size: 12pt;
-		float: right;
-		margin-bottom: 8px;
+		margin-left: 170px;
+		min-width: 120px;
 	}
 
-	#username-label {
-		margin-top: -24px;
-	}
-
-	#password-label {
-		margin-top: -64px;
-	}
-
-	tr {
-		border-bottom: 1px solid gray;
+	.separator {
+		min-width: 360px;
+		border-bottom: 1px solid #ddd;
+		width: 360px;
 	}
 }
 
