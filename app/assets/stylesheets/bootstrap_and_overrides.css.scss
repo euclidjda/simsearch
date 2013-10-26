@@ -316,6 +316,11 @@ Any media size specific and resize related rules should be here.
 
 @media  (max-width:979px) { 
 
+  body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
   .navbar-fixed-top { 
     position: absolute;
   } 
