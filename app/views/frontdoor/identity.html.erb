@@ -9,13 +9,15 @@ $(document).ready(function() {
   if (document.location.href.indexOf("register") > 0) {
     Recaptcha.create("6LfZiucSAAAAADSaJp7qiHQqkBkwFgilmJrRiJbS", "captcha-container",
       {
-        theme: "clean",
+        theme: "white",
         callback: function () { 
           $(".recaptcha_image_cell").parent().children()[1].style.padding = "";
           Recaptcha.focus_response_field 
         }
       }
     );
+
+    $("body").css("max-width", "4096px");
   }
 
   var form_refresh = "<%= form_refresh?() %>";

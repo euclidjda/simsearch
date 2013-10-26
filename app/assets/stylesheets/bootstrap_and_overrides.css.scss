@@ -339,6 +339,13 @@ Any media size specific and resize related rules should be here.
     display: none;
   }
 
+  #register-container {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 10px !important;
+    min-height: 200px !important;
+  }
+
   #marketing-section {
     form {
       float: left !important;
