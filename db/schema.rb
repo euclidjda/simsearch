@@ -277,10 +277,12 @@ ActiveRecord::Schema.define(:version => 20130830165114) do
     t.integer  "user_id"
     t.integer  "search_id"
     t.integer  "action_id"
+    t.integer  "action_count"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.integer  "action_count"
   end
+
+  add_index "search_actions", ["search_id"], :name => "search_id"
 
   create_table "search_details", :force => true do |t|
     t.integer "search_id"
