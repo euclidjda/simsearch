@@ -30,17 +30,32 @@
 		<dt><label>Password</label></dt>
 		<%= form_tag("/update_password", :method => "post", :class=> "navbar-form", :id => "password-form") do %>
 		<dd>			
-			<%= password_field_tag(:profile_password_current, nil, :class => "entry-field", :placeholder => "current password", :maxlength => "30") %>
+			<%= password_field_tag(:profile_password_current, nil, 
+			:class => "entry-field", :placeholder => "current password", :maxlength => "30") %>
+		</dd>
+		<dd id="current-password-error" class="password-error">
+			<%= @current_password_error %>			
 		</dd>
 		<dd>				
-			<%= password_field_tag(:profile_password_new1, nil, :class => "entry-field", :placeholder => "new password", :maxlength => "30") %>
+			<%= password_field_tag(:profile_password_new1, nil, 
+			:class => "entry-field", :placeholder => "new password", :maxlength => "30", 
+			:pattern => ".{6,30}", :title => "Password is minimum 6 characters")  %>
 		</dd>		
 		<dd>				
-			<%= password_field_tag(:profile_password_new2, nil, :class => "entry-field", :placeholder => "new password", :maxlength => "30") %>
+			<%= password_field_tag(:profile_password_new2, nil, 
+			:class => "entry-field", :placeholder => "new password", :maxlength => "30",
+			:pattern => ".{6,30}", :title => "Password is minimum 6 characters")  %>
 		</dd>
+		<dd id="new-password-error" class="password-error">
+			<%= @new_password_error %>			
+		</dd>		
 		<dd>				
 			<%= submit_tag("Update Password", :class => "btn btn-primary") %>
-		</dd>				
+		</dd>		
+		<dd id="password-change-success" class="password-success">
+			<br>
+			<%= @password_change_success %>
+		</dd>		
 		<% end %>
 	</dl>
 

@@ -137,13 +137,8 @@ class FrontdoorController < ApplicationController
 
       if !newusername.blank?
 
-        theUser = User.find(session[:user_id])
-
-        theUser.username = newusername
-        theUser.save!
-
-        # change the visible user name
         current_user.username = newusername
+        current_user.save!
 
         render :profile
 
@@ -158,7 +153,45 @@ class FrontdoorController < ApplicationController
   def update_password
     if current_user
 
-      render :text => params.inspect
+      _current_password = params[:profile_password_current]
+      _new_password1 = params[:profile_password_new1]
+      _new_password2 = params[:profile_password_new2]
+
+      if _current_password.blank? || _new_password1.blank? || _new_password2.blank? 
+
+        @current_password_error = "Please enter current password" if _current_password.blank?
+        @new_password_error = "Please enter new password twice" if _new_password1.blank? || _new_password2.blank?
+ 
+      else 
+
+        #get the current password and check against the saved
+        if current_user.match_password(_current_password)
+          
+          @current_password_error = ""
+
+          if _new_password1 == _new_password2
+            @new_password_error = ""
+
+            # Original password is a match and we have the new one entered properly.
+            # Let's update the password.
+
+            current_user.password = _new_password1
+            current_user.save!
+
+            # Show the success message.
+            @password_change_success = "Password was changed successfully."
+
+          else
+            @new_password_error = "New passwords do not match."
+          end
+
+        else
+          @current_password_error = "Current password invalid."
+        end
+
+      end
+
+      render :profile
 
     else
       render :text => "Method requires signing in."

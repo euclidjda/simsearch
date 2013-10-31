@@ -15,6 +15,16 @@
 		min-width: 320px;
 	}
 
+	.password-error {
+		color: red;
+		font-size: 11pt;
+	}
+
+	.password-success {
+		color: green;
+		font-size: 11pt;
+	}
+
 	.identifier {
 		background-color: lightgray;
 		color: black;
