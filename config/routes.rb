@@ -24,6 +24,7 @@ Simsearch::Application.routes.draw do
   post "register" => "frontdoor#register"
   post "signout" => "frontdoor#destroy_session"
   post "update_username" => "frontdoor#update_username"
+  post "update_password" => "frontdoor#update_password"
 
   get "autocomplete_security_ticker" => "frontdoor#autocomplete_security_ticker" # to autocomplete
 

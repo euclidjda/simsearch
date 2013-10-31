@@ -155,6 +155,16 @@ class FrontdoorController < ApplicationController
     end
   end
 
+  def update_password
+    if current_user
+
+      render :text => params.inspect
+
+    else
+      render :text => "Method requires signing in."
+    end
+  end
+
   #redirect to search if we get a search with a ticker or search id on the 
   #address bar. This is to support sharing.
   def search_with_id
