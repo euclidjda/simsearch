@@ -1,4 +1,5 @@
 class ExSecurity < ActiveRecord::Base
+
   def to_s
     "cid:#{cid}, sid:#{sid}, ticker:#{ticker}, name:#{name}"
   end
