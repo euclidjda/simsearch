@@ -123,6 +123,7 @@ function handle_teaser() {
 
 function handle_search() {
 
+
     var search_id = $('#search-info').attr('search-id');
 
     // Only handle the output if we are on the results page. This script

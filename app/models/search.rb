@@ -106,16 +106,6 @@ class Search < ActiveRecord::Base
     weight_sum = weights.inject{ |sum,n| sum + n }
     weights.map! { |w| w / weight_sum } if (weight_sum > 0)
 
-    # weight_str = weights.join(',')
-    # logger.debug "****** normalized weights are #{weight_str}"
-
-    fromdate = nil
-    thrudate = cur_epoch.fromdate-1
-
-    candidates = Array::new()
-
-    batch_size = 365 # batch size is in days (not records)
-
     # create mysql connection. no need for pooling here.
     config   = Rails.configuration.database_configuration
     host     = config[Rails.env]["host"]
@@ -131,6 +121,38 @@ class Search < ActiveRecord::Base
                                 :username => username ,
                                 :password => password )
 
+    fromdate = nil
+    thrudate = cur_epoch.fromdate-1
+
+    candidates = Array::new()
+
+    batch_size = 365 # batch size is in days (not records)
+
+    # determine gicslevel
+    gics_types = ['sub','ind','grp','sec']
+    gicstype_index = gics_types.index( search_type.gicslevel )
+company_count = 0
+
+    while ( gicstype_index < gics_types.length-1 ) do
+
+      status.comment = sprintf("Check candidate space at level %s",
+                               gics_types[gicstype_index])
+      status.save()
+
+      logger.debug status.comment
+
+      sqlstr = target.get_match_count_sql(search_type,cur_epoch.fromdate,cur_epoch.thrudate)
+      logger.debug sqlstr
+      results_count = client.query(sqlstr)
+      company_count = results_count.first["company_count"]
+      
+      break if (company_count > 20) 
+      
+      gicstype_index += 1
+      search_type.gicslevel = gics_types[gicstype_index]
+      
+    end
+
     while (1) do
 
       fromdate = thrudate + 1
@@ -144,10 +166,10 @@ class Search < ActiveRecord::Base
 
       logger.debug sqlstr
 
-      results = client.query(sqlstr, :stream=>true, :cache_rows=>false)
+      results = client.query(sqlstr, :cache_rows=>false)
 
-      status.comment = sprintf("Processing year %d (%d records)",
-                               fromdate.year,results.count)
+      status.comment = sprintf("Processing year %d (%d records) level=%s count=%d",
+                               fromdate.year,results.count,search_type.gicslevel,company_count)
       status.save()
 
       results.each { |row|
