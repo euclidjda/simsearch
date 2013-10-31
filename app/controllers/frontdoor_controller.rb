@@ -131,6 +131,30 @@ class FrontdoorController < ApplicationController
       session[:user_id] = _user_arg.id
   end
 
+  def update_username 
+    if current_user
+      newusername = params[:profile_username_entry]
+
+      if !newusername.blank?
+
+        theUser = User.find(session[:user_id])
+
+        theUser.username = newusername
+        theUser.save!
+
+        # change the visible user name
+        current_user.username = newusername
+
+        render :profile
+
+      else
+        redirect_to profile_path
+      end
+    else
+      render :text => "Method requires signing in."
+    end
+  end
+
   #redirect to search if we get a search with a ticker or search id on the 
   #address bar. This is to support sharing.
   def search_with_id

@@ -26,7 +26,8 @@ class User < ActiveRecord::Base
 
   validates :email, 
               :uniqueness => { :case_sensitive => false }, 
-              :presence => true
+              :presence => true,
+              :on => :create
 
   validates :username, 
               :presence => true
@@ -34,7 +35,14 @@ class User < ActiveRecord::Base
   validates :password,
               :presence => true,
               :confirmation => true,
-              :length       => { :within => 6..30 }
+              :length => { :within => 6..30 },
+              :on => :create
+
+  validates :password, 
+              :confirmation => true,
+              :length => {:within => 6..30},
+              :allow_blank => true,
+              :on => :update
 
   before_save :encrypt_password
   after_save :clear_password              
