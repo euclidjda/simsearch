@@ -11,6 +11,4 @@ class ExSecurity < ActiveRecord::Base
     ExSecurity.where(:cid => _c, :sid => _s).first
   end
 
-
-
 end # class ExSecurity
