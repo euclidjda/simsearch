@@ -385,11 +385,20 @@ class FrontdoorController < ApplicationController
                 _term.downcase + '%').
           limit(10).order(:shortname)
       else
-        items = ExSecurity.
+        items1 = ExSecurity.
           select("distinct cid, sid, ticker as shortname, name as longname").
-          where("dldtei IS NULL AND LOWER(CONCAT(ticker, name)) like ?", '%' +
-                _term.downcase + '%').
-          limit(10).order(:shortname)
+          where("dldtei IS NULL AND LOWER(ticker) like '#{_term.downcase}%'" ).
+          limit(3).order(:shortname)
+
+        items2 = ExSecurity.
+          select("distinct cid, sid, ticker as shortname, name as longname").
+          where("dldtei IS NULL AND LOWER(name) like '%#{_term.downcase}%'" ).
+          limit(7).order(:shortname)
+
+        items = items1.concat(items2)
+
+        items.uniq! { |z| z.cid.concat(z.sid) }
+
       end
 
     else
@@ -662,3 +671,13 @@ private
 
 end
 
+def get_autocomplete_sql(_term)
+
+<<GET_AUTOCOMPLETE_SQL
+  SELECT distinct cid, sid, ticker as shortname, name as longname
+  FROM ex_securities
+  WHERE dldtei IS NULL AND LOWER(ticker) like '#{_term}%'
+  ORDER BY shortname 
+  LIMIT 3 
+GET_AUTOCOMPLETE_SQL
+end
