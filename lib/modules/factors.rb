@@ -13,15 +13,14 @@ class Factors
     :omar   => { :order =>  80, :iw =>    6.8, :name => "Operating Margin"  },
     :nmar   => { :order =>  90, :iw =>    6.8, :name => "Net Margin"        },
     :grwth  => { :order => 100, :iw =>    3.9, :name => "Revenue Growth (yr)"},
-    :epscon => { :order => 110, :iw =>    1.8, :name => "EPS Growth Consist. (10yr)", 
-                 :fmt => "%.2f" },
+    :epscon => { :order => 110, :iw =>    1.8, :name => "EPS Growth Consist. (10yr)", :fmt => "%.2f" },
     :de     => { :order => 120, :iw =>   0.06, :name => "Debt to Equity", :fmt => "%.2f" },
     :ae     => { :order => 130, :iw =>    4.5, :name => "Assets to Equity", :fmt => "%.2f" },
     :mom1   => { :order => 140, :iw =>   15.1, :name => "Price Momentum (1mo)"},
     :mom3   => { :order => 150, :iw =>    8.1, :name => "Price Momentum (3mo)"},
     :mom6   => { :order => 160, :iw =>    5.3, :name => "Price Momentum (6mo)"},
     :mom9   => { :order => 170, :iw =>    3.7, :name => "Price Momentum (9mo)"},
-    :mom12  => { :order => 180, :iw =>    3.8, :name => "Price Momentum (12mo)"} 
+    :mom12  => { :order => 180, :iw =>    3.8, :name => "Price Momentum (12mo)"}
   }
 
   def self.all
@@ -45,7 +44,7 @@ class Factors
 
   def self.format_factor(factor_key,factor_value)
     attr = @@FactorAttributes[factor_key]
-    
+
     if factor_value.nil?
       return "N/A"
     elsif attr.nil? || attr[:fmt].nil? || attr[:fmt] == 'pct'
@@ -56,7 +55,7 @@ class Factors
 
   end
 
-  def self.factor_names_and_keys 
+  def self.factor_names_and_keys
 
     result = Array::new
 
@@ -64,13 +63,21 @@ class Factors
     factor_keys.sort! { |a,b| factor_order(a) <=> factor_order(b) }
 
     factor_keys.each { |key|
-      
-      row = [factor_name(key),key] 
+
+      row = [factor_name(key),key]
       result.push(row)
 
     }
 
     return result
+
+  end
+
+  def self.calc_factor(_snapshot,_factor_key)
+
+    s = _snapshot
+
+
 
   end
 

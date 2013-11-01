@@ -3,11 +3,11 @@ namespace :factor_stats do
   # rake factor_stats:sample date='2013-03-01'
   desc "Sample all factor values on specific date"
   task :sample => :environment  do
-    
+
     date = ENV['date']
 
     count = 0
-    
+
     snapshots = Array::new()
 
     SecuritySnapshot.each_snapshot_on( date ) { |s|
@@ -17,7 +17,7 @@ namespace :factor_stats do
 
     }
 
-    snapshots.sort! { |a,b| 
+    snapshots.sort! { |a,b|
 
       acap = a.get_field('mrkcap') || 0
       bcap = b.get_field('mrkcap') || 0
@@ -48,7 +48,7 @@ namespace :factor_stats do
         end
 
       }
-      
+
       row_str = values.join(",")
       puts row_str
 

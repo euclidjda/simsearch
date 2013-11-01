@@ -20,7 +20,7 @@ class SecuritySnapshot < Tableless
     dvpsxm = @fields['dvpsxm_ttm'] ? Float(@fields['dvpsxm_ttm']) : nil
 
     if (price && csho)
-      @fields['mrkcap'] = (csho * price) 
+      @fields['mrkcap'] = (csho * price)
     else
       @fields['mrkcap'] = nil
     end
@@ -30,7 +30,7 @@ class SecuritySnapshot < Tableless
     else
       @fields['pe'] = nil
     end
-    
+
     if (csho && price && seqq && seqq > 0)
       @fields['pb'] = ((csho * price) / seqq)
     else
@@ -52,11 +52,11 @@ class SecuritySnapshot < Tableless
     if !_cid.blank? && !_sid.blank?
 
       sqlstr = SecuritySnapshot::get_snapshot_sql(_cid,_sid,_pricedate)
-      
-      result = ActiveRecord::Base.connection.select_one(sqlstr) 
+
+      result = ActiveRecord::Base.connection.select_one(sqlstr)
 
       obj = new( result ) if !result.nil?
-    
+
     end
 
     return obj
@@ -67,7 +67,7 @@ class SecuritySnapshot < Tableless
 
     sqlstr = SecuritySnapshot::get_snapshots_on_sql(_pricedate)
 
-    result = ActiveRecord::Base.connection.select_all(sqlstr) 
+    result = ActiveRecord::Base.connection.select_all(sqlstr)
 
     result.each { |record|
 
@@ -84,11 +84,11 @@ class SecuritySnapshot < Tableless
     if !_cid.blank? && !_sid.blank?
 
       sqlstr = SecuritySnapshot::get_target_sql(_cid,_sid)
-      
-      result = ActiveRecord::Base.connection.select_one(sqlstr) 
+
+      result = ActiveRecord::Base.connection.select_one(sqlstr)
 
       obj = new( result ) if !result.nil?
-    
+
     end
 
     return obj
@@ -110,7 +110,7 @@ class SecuritySnapshot < Tableless
       result = ActiveRecord::Base
         .connection
         .select_all("SELECT * FROM ex_combined "+
-                    "WHERE pricedate = '#{pricedate}';") 
+                    "WHERE pricedate = '#{pricedate}';")
 
       result.each { |record|
 
@@ -124,8 +124,8 @@ class SecuritySnapshot < Tableless
 
   def self.distance(_obj0,_obj1,_factor_keys,_user_weights)
 
-    vec0 = _obj0.factor_array(_factor_keys)
-    vec1 = _obj1.factor_array(_factor_keys)
+    vec0 = _obj0.get_factor_array(_factor_keys)
+    vec1 = _obj1.get_factor_array(_factor_keys)
 
     dist = 0
     dims = 0
@@ -148,31 +148,31 @@ class SecuritySnapshot < Tableless
         dist = -1
         break
       end
-        
+
     end
 
     return (dist >= 0 && dims > 0) ? Math::sqrt(dist/dims) : -1
 
   end
-  
-  def distance(_obj,_factor_keys,_user_weights) 
-    
+
+  def distance(_obj,_factor_keys,_user_weights)
+
     SecuritySnapshot::distance(self,_obj,_factor_keys,_user_weights)
-    
+
   end
 
   def self.nearest_neighbor( _obj )
 
-    vec0 = _obj.class == SecuritySnapshot ? _obj.factor_array : _obj
+    vec0 = _obj.class == SecuritySnapshot ? _obj.get_factor_array : _obj
 
     min_dist = nil
     nearest  = nil
 
     SecuritySnapshot.each do | factors |
 
-      veci = factors.factor_array
+      veci = factors.get_factor_array
       dist = SecuritySnapshot::distance(vec0,veci)
-      
+
       if (nearest.nil? || (dist <= min_dist))
         min_dist = dist
         nearest  = factors
@@ -205,7 +205,7 @@ class SecuritySnapshot < Tableless
     @fields.keys.each do |key|
       result[key] = get_field(key)
     end
-    
+
     _factor_keys = args[:factor_keys].nil? ? Factors::defaults : args[:factor_keys]
 
     _factor_keys.each do |key|
@@ -216,7 +216,7 @@ class SecuritySnapshot < Tableless
 
   end
 
-  def factor_array(_factor_keys)
+  def get_factor_array(_factor_keys)
 
     _factor_keys.map { |key| get_factor(key) }
 
@@ -280,18 +280,18 @@ class SecuritySnapshot < Tableless
       lct    = get_field('lctq_mrq').to_f
       ppent  = get_field('ppent_mrq').to_f
       dlc    = get_field('dlcq_mrq').to_f
-      
+
       inv_cap = (act-lct) + ppent + dlc
 
       factor_value = oiadp / inv_cap if (oiadp > 0 && inv_cap > 0)
-      
+
     when :roe # Return On Equity
 
       oiadp  = get_field('oiadpq_ttm').to_f
       equity = get_field('seqq_mrq').to_f
 
       factor_value = oiadp / equity if (oiadp > 0 && equity > 0)
-      
+
     when :roa # Return On Assets
 
       oiadp  = get_field('oiadpq_ttm').to_f
@@ -310,21 +310,21 @@ class SecuritySnapshot < Tableless
 
       revenue = get_field('saleq_ttm').to_f
       cogs    = get_field('cogsq_ttm').to_f
-      
+
       factor_value = (revenue - cogs)/revenue if (revenue > 0)
 
     when :omar # Op Margin
 
       revenue = get_field('saleq_ttm').to_f
       ebit    = get_field('oiadpq_ttm').to_f
-      
+
       factor_value = ebit/revenue if (ebit > 0 && revenue > 0)
 
     when :nmar # Net Margin
 
       revenue = get_field('saleq_ttm').to_f
       net     = get_field('epspxq_ttm').to_f * get_field('csho')
-      
+
       factor_value = net/revenue if (net > 0 && revenue > 0)
 
     when :grwth # Revenue Growth
@@ -374,16 +374,11 @@ class SecuritySnapshot < Tableless
       factor_value = nil
 
     else
-      
+
       logger.debug "Error: unknown factor #{_factor_key}!"
       return nil
 
     end
-
-    # if !factor_value.nil?
-    #  factor_value = 1.0 if factor_value > 1.0
-    #  factor_value = -1.0 if factor_value < -1.0
-    # end
 
     @factors[_factor_key] = factor_value
 
@@ -393,11 +388,11 @@ class SecuritySnapshot < Tableless
 
   def self.get_snapshot_sql(_cid,_sid,_pricedate)
 <<GET_SNAPSHOT_SQL
-  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
-  FROM ex_prices A, ex_factdata B, ex_securities C 
-  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}' 
-  AND B.cid = '#{_cid}' AND B.sid = '#{_sid}' 
-  AND C.cid = '#{_cid}' AND C.sid = '#{_sid}' 
+  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.*
+  FROM ex_prices A, ex_factdata B, ex_securities C
+  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}'
+  AND B.cid = '#{_cid}' AND B.sid = '#{_sid}'
+  AND C.cid = '#{_cid}' AND C.sid = '#{_sid}'
   AND A.datadate = '#{_pricedate}'
   AND '#{_pricedate}' BETWEEN B.fromdate AND B.thrudate
 GET_SNAPSHOT_SQL
@@ -405,23 +400,23 @@ GET_SNAPSHOT_SQL
 
   def self.get_snapshots_on_sql(_pricedate)
 <<GET_SNAPSHOTS_ON_SQL
-  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
-  FROM ex_prices A, ex_factdata B, ex_securities C 
-  WHERE A.cid = B.cid AND A.sid = B.sid 
+  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.*
+  FROM ex_prices A, ex_factdata B, ex_securities C
+  WHERE A.cid = B.cid AND A.sid = B.sid
   AND A.cid = C.cid AND A.sid = C.sid
   AND A.datadate = '#{_pricedate}'
   AND '#{_pricedate}' BETWEEN B.fromdate AND B.thrudate
 GET_SNAPSHOTS_ON_SQL
   end
-  
+
   def self.get_target_sql(_cid,_sid)
 <<GET_TARGET_SQL
-  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.* 
-  FROM ex_prices A, ex_factdata B, ex_securities C 
-  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}' 
-  AND B.cid = '#{_cid}' AND B.sid = '#{_sid}' 
-  AND C.cid = '#{_cid}' AND C.sid = '#{_sid}' 
-  AND A.datadate BETWEEN B.fromdate AND B.thrudate 
+  SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.*
+  FROM ex_prices A, ex_factdata B, ex_securities C
+  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}'
+  AND B.cid = '#{_cid}' AND B.sid = '#{_sid}'
+  AND C.cid = '#{_cid}' AND C.sid = '#{_sid}'
+  AND A.datadate BETWEEN B.fromdate AND B.thrudate
   ORDER BY A.datadate DESC LIMIT 1
 GET_TARGET_SQL
   end
@@ -448,7 +443,7 @@ GET_TARGET_SQL
     AND A.pricedate BETWEEN '#{_fromdate}' AND '#{_thrudate}'
     AND A.idxcapl <= #{idxcapl_max}
     AND A.idxcaph >= #{idxcaph_min}
-    AND A.cid != '#{self.cid}' 
+    AND A.cid != '#{self.cid}'
 GET_MATCH_SQL
     end
 
@@ -474,29 +469,29 @@ GET_MATCH_SQL
     AND A.pricedate BETWEEN '#{_fromdate}' AND '#{_thrudate}'
     AND A.idxcapl <= #{idxcapl_max}
     AND A.idxcaph >= #{idxcaph_min}
-    AND A.cid != '#{self.cid}' 
+    AND A.cid != '#{self.cid}'
 GET_MATCH_SQL
   end
 
   def self.get_match_sql_SLOWLY(_cid, _target_ind, _target_new, _target_cap,
                                 _begin_date, _end_date)
-    
+
     idxcaph_min = [1000,_target_cap*0.5].min.round()
     idxcapl_max = (5.0*_target_cap).round()
 
 <<GET_MATCH_SQL
-    SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.* 
+    SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.*
     FROM ex_prices A,  ex_factdata B,
-    ex_securities C 
-    WHERE A.cid = B.cid 
-    AND A.sid = B.sid 
-    AND A.cid = C.cid 
-    AND A.sid = C.sid 
-    AND A.price IS NOT NULL 
-    AND A.csho IS NOT NULL 
-    AND A.cid != '#{_cid}' 
+    ex_securities C
+    WHERE A.cid = B.cid
+    AND A.sid = B.sid
+    AND A.cid = C.cid
+    AND A.sid = C.sid
+    AND A.price IS NOT NULL
+    AND A.csho IS NOT NULL
+    AND A.cid != '#{_cid}'
     AND B.idxind = #{_target_ind}
-    AND B.idxnew = #{_target_new} 
+    AND B.idxnew = #{_target_new}
     AND B.idxcaph >= #{idxcaph_min}
     AND B.idxcapl <= #{idxcapl_max}
     AND A.datadate BETWEEN B.fromdate AND B.thrudate
