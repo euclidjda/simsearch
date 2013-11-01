@@ -1,31 +1,35 @@
 class Factors
 
   @@FactorAttributes = {
-    :ey     => { :order =>   1, :iw =>   31.0, :name => "Earnings Yield",    :fmt => "pct" },
-    :pe     => { :order =>  10, :iw =>   0.01, :name => "Price to Earnings", :fmt => "%.2f" },
-    :pb     => { :order =>  20, :iw =>   0.02, :name => "Price to Book",     :fmt => "%.2f" },
-    :divy   => { :order =>  30, :iw =>   33.3, :name => "Dividend Yield"    },
-    :roe    => { :order =>  40, :iw =>   0.42, :name => "Return on Equity"  },
-    :roa    => { :order =>  50, :iw =>   10.5, :name => "Return on Assets"  },
-    :roc    => { :order =>  60, :iw =>    6.5, :name => "Return on Capital" },
-    :roic   => { :order =>  65, :iw =>   0.15, :name => "Return On Invested Capital" },
-    :gmar   => { :order =>  70, :iw =>    4.3, :name => "Gross Margin"      },
-    :omar   => { :order =>  80, :iw =>    6.8, :name => "Operating Margin"  },
-    :nmar   => { :order =>  90, :iw =>    6.8, :name => "Net Margin"        },
-    :grwth  => { :order => 100, :iw =>    3.9, :name => "Revenue Growth (yr)"},
-    :epscon => { :order => 110, :iw =>    1.8, :name => "EPS Growth Consist. (10yr)", :fmt => "%.2f" },
-    :de     => { :order => 120, :iw =>   0.06, :name => "Debt to Equity", :fmt => "%.2f" },
-    :ae     => { :order => 130, :iw =>    4.5, :name => "Assets to Equity", :fmt => "%.2f" },
-    :mom1   => { :order => 140, :iw =>   15.1, :name => "Price Momentum (1mo)"},
-    :mom3   => { :order => 150, :iw =>    8.1, :name => "Price Momentum (3mo)"},
-    :mom6   => { :order => 160, :iw =>    5.3, :name => "Price Momentum (6mo)"},
-    :mom9   => { :order => 170, :iw =>    3.7, :name => "Price Momentum (9mo)"},
-    :mom12  => { :order => 180, :iw =>    3.8, :name => "Price Momentum (12mo)"}
+    :ey     => { :order =>   1, :mean => 0.0557, :stdev => 0.0214438782692542, :iw =>   31.0, :name => "Earnings Yield",    :fmt => "pct" },
+    :pe     => { :order =>  10, :mean => 20.8045, :stdev => 13.975225597946, :iw =>   0.01, :name => "Price to Earnings", :fmt => "%.2f" },
+    :pb     => { :order =>  20, :mean => 2.8528, :stdev => 2.59227008614405, :iw =>   0.02, :name => "Price to Book",     :fmt => "%.2f" },
+    :divy   => { :order =>  30, :mean => 0.0188, :stdev => 0.0134990785161442, :iw =>   33.3, :name => "Dividend Yield"    },
+    :roe    => { :order =>  40, :mean => 0.2233, :stdev => 0.147826546013839, :iw =>   0.42, :name => "Return on Equity"  },
+    :roa    => { :order =>  50, :mean => 0.0819, :stdev => 0.0557970254743573, :iw =>   10.5, :name => "Return on Assets"  },
+    :roc    => { :order =>  60, :mean => 0.1379, :stdev => 0.0851770312397678, :iw =>    6.5, :name => "Return on Capital" },
+    :roic   => { :order =>  65, :mean => 0.6739, :stdev => 1.69300251380807, :iw =>   0.15, :name => "Return On Invested Capital" },
+    :gmar   => { :order =>  70, :mean => 0.37905, :stdev => 0.495761842908608, :iw =>    4.3, :name => "Gross Margin"      },
+    :omar   => { :order =>  80, :mean => 0.1599, :stdev => 0.103123661828404, :iw =>    6.8, :name => "Operating Margin"  },
+    :nmar   => { :order =>  90, :mean => 0.0946, :stdev => 0.0692244745886793, :iw =>    6.8, :name => "Net Margin"        },
+    :grwth  => { :order => 100, :mean => 0.0694, :stdev => 0.0951013131859556, :iw =>    3.9, :name => "Revenue Growth (yr)"},
+    :epscon => { :order => 110, :mean => 0.2317, :stdev => 0.523325667110766, :iw =>    1.8, :name => "EPS Growth Consist. (10yr)", :fmt => "%.2f" },
+    :de     => { :order => 120, :mean => 0.6259, :stdev => 0.792259593068915, :iw =>   0.06, :name => "Debt to Equity", :fmt => "%.2f" },
+    :ae     => { :order => 130, :mean => 0.3712, :stdev => 0.230472108707713, :iw =>    4.5, :name => "Assets to Equity", :fmt => "%.2f" },
+    :mom1   => { :order => 140, :mean => 0.03905, :stdev => 0.0505822909596408, :iw =>   15.1, :name => "Price Momentum (1mo)"},
+    :mom3   => { :order => 150, :mean => 0.05485, :stdev => 0.0906983996154175, :iw =>    8.1, :name => "Price Momentum (3mo)"},
+    :mom6   => { :order => 160, :mean => 0.12285, :stdev => 0.156255589961772, :iw =>    5.3, :name => "Price Momentum (6mo)"},
+    :mom9   => { :order => 170, :mean => 0.18645, :stdev => 0.198813680649187, :iw =>    3.7, :name => "Price Momentum (9mo)"},
+    :mom12  => { :order => 180, :mean => 0.30115, :stdev => 0.266923374490296, :iw =>    3.8, :name => "Price Momentum (12mo)"}
   }
 
   def self.all
     return @@FactorKeys
   end
+
+  def self.attributes(_factor_key)
+    @@FactorAttributes[_factor_key]
+end
 
   def self.intrinsic_weight(factor_key)
     attr = @@FactorAttributes[factor_key]
@@ -90,7 +94,7 @@ class Factors
 
       denom  = mrkcap+debt+cash+pstk+mii
 
-      factor_value = oiadp/denom if (oiadp > 0 && denom > 0)
+      factor_value = oiadp/denom if (denom > 0)
 
     when :pe # Price to Earnings
 
@@ -111,7 +115,7 @@ class Factors
       price    = _snapshot.get_field('price').to_f
       dividend = _snapshot.get_field('dvpsxm_ttm').to_f
 
-      factor_value = dividend  / price if (dividend > 0 && price > 0)
+      factor_value = dividend  / price if (price > 0)
 
     when :inv_cap # Invested Capital
 
@@ -132,28 +136,28 @@ class Factors
 
       inv_cap = (act-lct) + ppent + dlc
 
-      factor_value = oiadp / inv_cap if (oiadp > 0 && inv_cap > 0)
+      factor_value = oiadp / inv_cap if (inv_cap > 0)
 
     when :roe # Return On Equity
 
       oiadp  = _snapshot.get_field('oiadpq_ttm').to_f
       equity = _snapshot.get_field('seqq_mrq').to_f
 
-      factor_value = oiadp / equity if (oiadp > 0 && equity > 0)
+      factor_value = oiadp / equity if (equity > 0)
 
     when :roa # Return On Assets
 
       oiadp  = _snapshot.get_field('oiadpq_ttm').to_f
       assets = _snapshot.get_field('atq_mrq').to_f
 
-      factor_value = oiadp / assets if (oiadp > 0 && assets > 0)
+      factor_value = oiadp / assets if (assets > 0)
 
     when :roc # Return On Capital
 
       oiadp   = _snapshot.get_field('oiadpq_ttm').to_f
       capital = _snapshot.get_field('seqq_mrq').to_f + _snapshot.get_field('dlttq_mrq').to_f
 
-      factor_value = oiadp / capital if (oiadp > 0 && capital > 0)
+      factor_value = oiadp / capital if (capital > 0)
 
     when :gmar # Gross Margin
 
@@ -167,14 +171,14 @@ class Factors
       revenue = _snapshot.get_field('saleq_ttm').to_f
       ebit    = _snapshot.get_field('oiadpq_ttm').to_f
 
-      factor_value = ebit/revenue if (ebit > 0 && revenue > 0)
+      factor_value = ebit/revenue if (revenue > 0)
 
     when :nmar # Net Margin
 
       revenue = _snapshot.get_field('saleq_ttm').to_f
       net     = _snapshot.get_field('epspxq_ttm').to_f * _snapshot.get_field('csho')
 
-      factor_value = net/revenue if (net > 0 && revenue > 0)
+      factor_value = net/revenue if (revenue > 0)
 
     when :grwth # Revenue Growth
 

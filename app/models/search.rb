@@ -38,7 +38,7 @@ class Search < ActiveRecord::Base
                               :type_id   => _type.id  )
 
       if ( _async )
-        
+
         search.delay.create_search_details(_epochs)
 
       else
@@ -53,7 +53,7 @@ class Search < ActiveRecord::Base
     # With the search at hand, create or update a search action for creation.
 
     if _current_user
-      search_action = SearchAction.find_or_create(:user_id => _current_user.id, 
+      search_action = SearchAction.find_or_create(:user_id => _current_user.id,
                                                   :search_id => search.id,
                                                   :action_id => SearchActionTypes::Create)
       if search_action.action_count
@@ -61,10 +61,10 @@ class Search < ActiveRecord::Base
       else
         search_action.action_count = 1;
       end
-      
+
       search_action.touch()
 
-      # Even if we found an existing one, to update the timestamp, do a save.    
+      # Even if we found an existing one, to update the timestamp, do a save.
       search_action.save()
     end
 
@@ -76,7 +76,7 @@ class Search < ActiveRecord::Base
 
     cur_epoch = (_epochs.is_a? Array) ? _epochs.shift : _epochs
 
-    status = SearchStatus.create( :search_id => self.id            ,  
+    status = SearchStatus.create( :search_id => self.id            ,
                                   :fromdate  => cur_epoch.fromdate ,
                                   :thrudate  => cur_epoch.thrudate )
     status.comment    = "Starting "
@@ -88,7 +88,7 @@ class Search < ActiveRecord::Base
     # TODO: RETURN HERE IF SEARCH HAS ALREADY STARTED
 
     if ((_epochs.is_a? Array) && !_epochs.empty?)
-      self.delay.create_search_details(_epochs) 
+      self.delay.create_search_details(_epochs)
     end
 
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
@@ -131,7 +131,7 @@ class Search < ActiveRecord::Base
     # determine gicslevel
     gics_types = ['sub','ind','grp','sec']
     gicstype_index = gics_types.index( search_type.gicslevel )
-company_count = 0
+    company_count = 0
 
     while ( gicstype_index < gics_types.length-1 ) do
 
@@ -145,12 +145,12 @@ company_count = 0
       logger.debug sqlstr
       results_count = client.query(sqlstr)
       company_count = results_count.first["company_count"]
-      
-      break if (company_count > 20) 
-      
+
+      break if (company_count > 20)
+
       gicstype_index += 1
       search_type.gicslevel = gics_types[gicstype_index]
-      
+
     end
 
     while (1) do

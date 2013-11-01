@@ -122,36 +122,52 @@ class SecuritySnapshot < Tableless
 
   end
 
+  def self.normalize_factor( _value, _key )
+
+    return nil if _value.nil?
+
+    attrs = Factors::attributes(_key)
+
+    Math.tanh( (_value - attrs[:mean]) / (2*attrs[:stdev]) )
+
+  end
+
+
   def self.distance(_obj0,_obj1,_factor_keys,_user_weights)
 
     vec0 = _obj0.get_factor_array(_factor_keys)
     vec1 = _obj1.get_factor_array(_factor_keys)
 
     dist = 0
-    dims = 0
 
-    vec0.each_with_index do |val0,index|
+    user_weight_sum = 0
 
-      val1 = vec1[index]
-      int_wght = Factors::intrinsic_weight(_factor_keys[index])
-      usr_wght = _user_weights[index]
+    (0 .. _factor_keys.length-1 ).each do |index|
 
-      # assert !int_wght.nil?
-      # assert !usr_wght.nil?
+      val0 = normalize_factor( vec0[index], _factor_keys[index] )
+      val1 = normalize_factor( vec1[index], _factor_keys[index] )
+
+      user_weight = _user_weights[index]
 
       if !val0.nil? && !val1.nil?
-        dist += ( usr_wght * int_wght * int_wght * ( val0 - val1 ) * ( val0 - val1 ) )
-        dims += 1
+
+        dist += ( user_weight * ( val0 - val1 ) * ( val0 - val1 ) )
+        user_weight_sum += user_weight
+
       elsif val0.nil? && val1.nil?
+
         # do nothing in this case
+
       else
+
         dist = -1
         break
+
       end
 
     end
 
-    return (dist >= 0 && dims > 0) ? Math::sqrt(dist/dims) : -1
+    return (dist >= 0 && user_weight_sum > 0) ? dist/(2*Math.sqrt(user_weight_sum)) : 1
 
   end
 
