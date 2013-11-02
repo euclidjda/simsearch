@@ -271,31 +271,20 @@ footer {
   -moz-border-radius: 0px 0px 0px 0px; 
   border-radius: 0px 0px 0px 0px;
 
-  .modal-header {
-
-    font-size: 16px;
-    margin: 0px 0px 0px 0px;
-    padding: 8px 8px 8px 8px;
-
-    .close {
-        line-height: 14px;
-        font-size: 14px;
-    }
-  }
-
   .modal-body {
 
     margin: 0px 0px 0px 0px;
-    padding: 8px 8px 8px 8px;
+    padding: 20px 8px 8px 8px;
     max-height: 600px;
+
+    .close {
+      margin-top: -16px;
+      font-size: 20pt;
+    }
 
     form {
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-    }
-
-    label {
-
     }
 
     input {
@@ -338,6 +327,10 @@ footer {
 
       width: 95%;
 
+      .header-text {
+        font-size: 11pt;
+      }
+
       td {
         padding: 4px 4px 4px 4px;
       }
@@ -358,12 +351,27 @@ footer {
 	  width: 30%;
       }
     }
+  }
+
+  .modal-footer {
+    background-color: white;
+    
+    #modal-search-button {
+      float: right;
+      width: 70px;
+      height: 36px;  
+      margin-right: 16px;
+    }     
 
     #restore-defaults {
-      float: right;
-      vertical-align: bottom;
+      float: left;
       cursor: pointer;
+
+      font-size: 11pt;
+      display: inline-block;
+      padding-top: 10px;
     }
   }
+
 }
 
