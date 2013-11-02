@@ -128,10 +128,9 @@ class SecuritySnapshot < Tableless
 
     attrs = Factors::attributes(_key)
 
-    Math.tanh( (_value - attrs[:mean]) / (2*attrs[:stdev]) )
+    Math.tanh( (_value - attrs[:mean]) / (3*attrs[:stdev]) )
 
   end
-
 
   def self.distance(_obj0,_obj1,_factor_keys,_user_weights)
 
@@ -296,7 +295,7 @@ GET_TARGET_SQL
     target_cap =
       self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
 
-    idxcaph_min = [1000,target_cap*0.5].min.round()
+    idxcaph_min = [1000,target_cap*0.1].min.round()
     idxcapl_max = (5.0*target_cap).round()
 
 <<GET_MATCH_SQL
@@ -322,7 +321,7 @@ GET_MATCH_SQL
     target_cap =
       self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
 
-    idxcaph_min = [1000,target_cap*0.5].min.round()
+    idxcaph_min = [1000,target_cap*0.1].min.round()
     idxcapl_max = (5.0*target_cap).round()
 
 <<GET_MATCH_SQL
@@ -340,7 +339,7 @@ GET_MATCH_SQL
   def self.get_match_sql_SLOWLY(_cid, _target_ind, _target_new, _target_cap,
                                 _begin_date, _end_date)
 
-    idxcaph_min = [1000,_target_cap*0.5].min.round()
+    idxcaph_min = [1000,_target_cap*0.1].min.round()
     idxcapl_max = (5.0*_target_cap).round()
 
 <<GET_MATCH_SQL
