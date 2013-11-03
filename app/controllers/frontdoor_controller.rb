@@ -660,9 +660,8 @@ private
     # factors with zero weights are considered not selected
     factors.each_index { |i| factors[i] = :none if weights[i].to_f == 0 }
 
-    # TODO: THESE DEFAULTS SHOULD NOT BE STATICALLY SET HERE.
-    # THERE SHOULD BE A HELPER THAT ALLOWS US TO FETCH DEFAULTS
-    gicslevel = params[:gicslevel] || Defaults::giclevel
+    # get defaults
+    gicslevel = params[:gicslevel] || Defaults::gicslevel
     newflag   = params[:newflag]   || Defaults::newflag
 
     return factors, weights, gicslevel, newflag
