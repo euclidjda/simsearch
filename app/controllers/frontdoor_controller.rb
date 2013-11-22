@@ -34,6 +34,8 @@ class FrontdoorController < ApplicationController
     session[:ticker] = nil
 
     if current_user
+    else
+      redirect_to "/register"
     end
   end
 
