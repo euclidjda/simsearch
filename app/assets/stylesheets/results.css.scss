@@ -108,14 +108,21 @@
 
 			font-size: 14pt;
 
-/*			padding-top: 26px;
+			padding-top: 20px;
+/*
 			margin-top: -9px;
 			height: 28px;
 */
 			i {
-				background-position: 32px 32px !important;
+				background-position: 36px 36px !important;
 				padding-right: 10pt;
 				font-size: 24pt;
+			}
+
+			#share-button-text {
+				position: relative;
+				top: -5px;
+				display: inline-block;				
 			}
 		}
     }
