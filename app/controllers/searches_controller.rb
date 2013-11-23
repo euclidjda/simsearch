@@ -45,6 +45,7 @@ class SearchesController < ApplicationController
         current_user, 
         params[:share_email_entry],
         params[:hidden_search_id], 
+        params[:hidden_company_name],
         params[:share_message_entry],
         params[:hidden_summary_text]).deliver
 

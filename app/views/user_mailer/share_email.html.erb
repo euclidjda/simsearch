@@ -4,9 +4,30 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <h1><%= @user.username %> has shared a fundamentals search with you</h1>
+    <%= @user.username %> has shared his analysis of <%=@company_name%> with you. 
+    <% if !@message.blank? %><%= @user.username %> added this note to share with you: <br><%=@message%>
+    <% end %>
+    <p>
 
-	<%= raw @content %>.
+    This analysis examines <%=@company_name%> in context of how historically similar companies actually performed
+    as investments. In general, <%=@company_name%>'s historical comparables 
+
+    <% if @overunder=="underperformed" %>
+    	<% @color = "red" %>
+    <% else %>
+    	<%@color = "green" %>
+    <% end %>
+
+	<span style="color:<%=@color%>"><%= @overunder %></span> the S&P500 over the subsequent year.
+    <p>
+
+    <% @link = "http://fundamentals.euclidean.com/search?search_id=" + @search_id %>
+
+    <a href="<%= @link %>" > Click here </a> to see detailed results of this analysis.
+
+    <hr>
+
+    Euclidean Fundamentals seeks to inform today’s investment decisions with the best lessons from the past. To learn more about Euclidean Fundamentals, please visit us <a href="www.euclidean.com">here</a>.
 
   </body>
 </html>

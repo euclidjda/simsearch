@@ -146,7 +146,16 @@ function renderSearchDetails(_search_id, _search_ticker, _created_date) {
 
             content = getSummaryText(securityData, summaryData, _search_id, _created_date);
 
-            $("#hidden_summary_text").val(content);
+            var overunder;
+            if (summaryData.mean > 0) {
+              overunder = "overperformed";
+            }
+            else {
+              overunder = "underperformed"
+            }
+
+            $("#hidden_summary_text").val(overunder);
+            $('#hidden_company_name').val(securityData.name)
 
             $("#result-summary-content").html(content);               
           })
