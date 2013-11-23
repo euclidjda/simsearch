@@ -26,7 +26,9 @@ namespace :factor_stats do
     }
 
 
-    factor_keys = Factors.all.map { |a| a[1] }
+    # factor_keys = Factors.attributes.map { |a| a[1] }
+
+    factor_keys = Factors.keys
 
     row_str = factor_keys.join(",")
     puts row_str
