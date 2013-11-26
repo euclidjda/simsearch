@@ -244,14 +244,7 @@ $(function() {
         return validateIdentityForm("signin");
     });
 
-    // Search bar and autocomplete is only used on home page or search page.
-    // Attempting to run this code on other pages will cause script errors since some elements
-    // that are looked for by jquery statements won't be found. Only call this on home and search pages.
-    var isHomeorSearch = (window.location.href.indexOf("/search") > 0);
-    isHomeorSearch = isHomeorSearch || (window.location.href.indexOf("/home") > 0);
-    if (isHomeorSearch) {
-        Prepare_and_Handle_Search_Form();
-    }    
+    Prepare_and_Handle_Search_Form();
 
     function Prepare_and_Handle_Search_Form() {
         //
