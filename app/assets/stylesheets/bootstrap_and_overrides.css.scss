@@ -298,7 +298,7 @@ Any media size specific and resize related rules should be here.
         border-bottom: solid lightgray 1px;
       }
 
-      #summary-count, #summary-best, #summary-worst {
+      #summary-count, #summary-avg-under, #summary-avg-over {
         float: right;
         margin-right: 50px;
       }

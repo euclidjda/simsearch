@@ -89,19 +89,40 @@ function render_results(search_id) {
                 $(".summary-label").html("Underperformed");
             }
 
-            $("#summary-worst")
-                .html(EGUI.fmtAsNumber(data.min,{fmtstr:"%.2f%%"}));
+            var undercount = 0;
+            var overcount = 0;
+            var overtotal = 0;
+            var undertotal = 0;
+            var overaverage = 0;
+            var underaverage = 0;
 
-            $("#summary-best")
-                .html(EGUI.fmtAsNumber(data.max,{fmtstr:"%.2f%%"}));
+            $.each(data, function( index, value ) {
+                if (value < 0) {
+                    undercount ++;
+                    undertotal += value;
+                }
+                else {
+                    overcount ++;
+                    overtotal += value;
+                }
+            });
 
-            if( data.min < 0) $("#summary-worst").css('color','red');
-            if( data.max  < 0) $("#summary-best").css('color','red');
+            overaverage = overtotal / overcount;
+            underaverage = undertotal / undercount;
+
+            $("#summary-avg-under")
+                .html(EGUI.fmtAsNumber(underaverage,{fmtstr:"%.2f%%"}));
+
+            $("#summary-avg-over")
+                .html(EGUI.fmtAsNumber(overaverage,{fmtstr:"%.2f%%"}));
+
+            if( underaverage < 0) $("#summary-avg-under").css('color','red');
+            if( overaverage  < 0) $("#summary-avg-over").css('color','red');
 
             if ((data.count != null) && (data.wins != null)) {
             
-            $('#summary-count')
-                .html(data.wins + ' of ' + data.count);
+            $('#summary-count-all').html(data.wins + ' of ' + data.count);
+            $('#summary-count').html(data.wins + ' of ' + data.count);
         }
 
         if (!data.complete)
