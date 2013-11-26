@@ -277,9 +277,12 @@ ActiveRecord::Schema.define(:version => 20130830165114) do
     t.integer  "user_id"
     t.integer  "search_id"
     t.integer  "action_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "action_count"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
+
+  add_index "search_actions", ["search_id"], :name => "search_id"
 
   create_table "search_details", :force => true do |t|
     t.integer "search_id"
@@ -305,7 +308,7 @@ ActiveRecord::Schema.define(:version => 20130830165114) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "search_statuses_uniq", :unique => true
+  add_index "search_statuses", ["search_id", "fromdate", "thrudate"], :name => "idx_search_id", :unique => true
 
   create_table "search_types", :force => true do |t|
     t.string   "factors"
@@ -328,8 +331,6 @@ ActiveRecord::Schema.define(:version => 20130830165114) do
     t.float    "mean"
     t.float    "max"
     t.float    "min"
-    t.time     "sharedat"
-    t.time     "savedat"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
