@@ -32,7 +32,8 @@
 					<% if factor_key != :none %>
 						<tr>
 							<td class="col1-factors">
-							  <%= Factors::factor_name(factor_key) %>
+							  <a href="factor_definitions#<%=factor_key%>">
+							    <%= Factors::factor_name(factor_key) %></a>
 							</td>
 							<td class="col2-factors">
 							  <%= sprintf("%.1f%%",weights.shift*100) %>
