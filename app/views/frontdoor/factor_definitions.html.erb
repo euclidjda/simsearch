@@ -6,9 +6,9 @@
 
 <% factor_attr = Factors.attributes(key) %>
 
+ <%= content_tag(:a, '', :id => key) %>
 <div>
 
- <%= content_tag(:a, '', :name => key) %>
 <b><big><%= factor_attr[:name] %></big></b><br>
 <p>
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
