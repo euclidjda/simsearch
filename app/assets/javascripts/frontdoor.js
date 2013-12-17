@@ -3,7 +3,7 @@ var _kmq;
 
 $(document).ready(function() {
 
-    init_kissmetrics();
+    init_analytics();
 
     init_frontdoor();
 
@@ -15,8 +15,21 @@ $(document).ready(function() {
 
 });
 
-function init_kissmetrics() {
+function init_analytics() {
 
+    // GOOGLE
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-45438212-2']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 
+	    '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    // KISS METRICS
     _kmq = _kmq || [];
     var _kmk = _kmk || '323c91cff253a60d0decffd3ee862ac251bae26d';
     function _kms(u){
