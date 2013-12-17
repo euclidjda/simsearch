@@ -5,8 +5,6 @@ var neg_big_icon   = "assets/red-outperformance-small.png";
 
 function render_results(search_id) {
 
-    
-
     $('.result-container').each(function( index ) {
 
         var fromdate = $(this).attr('fromdate');
@@ -36,7 +34,8 @@ function render_results(search_id) {
                     
                     if (json_data.comment != null) {
                         start_spinner(this_obj.attr('id'));
-                        $(search_status).css("display","inline-block");
+                        //$(search_status).css("display","inline-block");
+                        //$(search_status).css("margin","30px 0px 0px 0px");
                         $(search_status).text(json_data.comment);
                         setTimeout(poll_for_result,1000);
 

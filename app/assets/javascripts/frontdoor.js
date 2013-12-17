@@ -7,8 +7,6 @@ $(document).ready(function() {
 
     init_frontdoor();
 
-    handle_teaser();
-
     handle_search();
 
     handle_search_detail();
@@ -132,16 +130,6 @@ function update_weight_labels() {
 	var n=parseInt($("#weight-hidden"+t).attr("value"));
 	r= e > 0 ? n/e : 0;
 	$("#weight-label"+t).html(sprintf("%.1f%%",100*r))
-    }
-
-}
-
-function handle_teaser() {
-
-    var teaser = $('#teaser-carousel');
-
-    if (teaser) {
-        $('#teaser-carousel').carousel( { interval: 15000 } );
     }
 
 }
