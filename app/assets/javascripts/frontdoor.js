@@ -18,6 +18,17 @@ $(document).ready(function() {
 function init_analytics() {
 
     // GOOGLE
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			     m=s.getElementsByTagName(o)[0];
+			     a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			    })(window,document,
+			       'script','//www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-45438212-2', 'euclidean.com');
+    ga('send', 'pageview');
+
+    /*****************
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-45438212-2']);
     _gaq.push(['_trackPageview']);
@@ -28,6 +39,7 @@ function init_analytics() {
 	    '.google-analytics.com/ga.js';
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
+    ***********************/
 
     // KISS METRICS
     _kmq = _kmq || [];
