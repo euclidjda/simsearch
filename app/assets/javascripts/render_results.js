@@ -96,6 +96,7 @@ function render_results(search_id) {
             var underaverage = 0;
 
             $.each(data, function( index, value ) {
+                console.log(value);
                 if (value < 0) {
                     undercount ++;
                     undertotal += value;

@@ -105,9 +105,13 @@ a:hover {
 		margin-right: auto;
 
 		border-radius: 3px;
-		border-width: 2px;
-		border-color: steelblue;
-		color: red;
+		border: 1px solid lightsteelblue;
+
+		svg {
+			margin-right: auto;
+			margin-left: auto;
+			display: block;
+		}
 
 		/* tell the SVG path to be a thin blue line without any area fill */
 		path {
@@ -158,7 +162,7 @@ a:hover {
 
 		.y.axis line, .y.axis path {
 		  fill: none;
-		  stroke: #000;
+		  stroke: lightgrey;
 		}
 
 		.y.axis text {

@@ -16,6 +16,14 @@
 //= require bootstrap
 //= require_tree .
 
+// Extend the array class with min/max methods that can operate on the array.
+Array.max = function( array ){
+    return Math.max.apply( Math, array );
+};
+Array.min = function( array ){
+    return Math.min.apply( Math, array );
+};
+
 $(function() {
 	$('input[name=authenticity_token]').val($('meta[name=csrf-token]').attr('content'))
 });

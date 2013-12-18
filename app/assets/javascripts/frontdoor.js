@@ -143,14 +143,13 @@ function handle_search() {
     // loads for all pages, so we need to make sure.
     if (search_id) {
         // This function is implemented in render_results.
-          $.getJSON('get_search_info?search_id='+search_id)
-          .done(function(search_info) {
-	      //console.log('search is '+search_info['ticker']);
-	      _kmq.push(['record', 'Executed Search',search_info]);
-	  });
+        $.getJSON('get_search_info?search_id='+search_id)
+        .done(function(search_info) {
+            //console.log('search is '+search_info['ticker']);
+            _kmq.push(['record', 'Executed Search',search_info]);
+        });
 
         render_results(search_id);
-
     }
 
 }
