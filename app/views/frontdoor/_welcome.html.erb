@@ -7,7 +7,8 @@
 <table class="table table-hover">
 
 <tr>
-<th style="text-align: left">Name</th>
+<th style="text-align: left;">
+Name</th>
 <th>Ticker</th>
 <th>Search Type</th>
 <th>Num  Outperformed</th>
@@ -23,7 +24,8 @@
 <% type_name = (search_type.id == 1) ? "Standard" : "Custom #{search_type.id}" %>
 <% color =  (search_type.id == 1) ? "green" : "orange" %>
 <tr>
-<td style="text-align: left"><%= target.get_field('name') %></td>
+<td style="text-align: left;">
+<%= target.get_field('name') %></td>
 <td><%= target.get_field('ticker') %></td>
 <td style="color: <%=color%>"><%= type_name %></td>
 <td><%= "#{search.wins} / #{search.count}" %></td>
