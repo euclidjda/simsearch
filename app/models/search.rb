@@ -79,7 +79,7 @@ class Search < ActiveRecord::Base
     status = SearchStatus.create( :search_id => self.id            ,
                                   :fromdate  => cur_epoch.fromdate ,
                                   :thrudate  => cur_epoch.thrudate )
-    status.comment    = "Starting "
+    status.comment    = "Starting deep historical search for similar companies ..."
     status.num_steps  = nil
     status.cur_step   = nil
     status.complete   = false
@@ -135,7 +135,7 @@ class Search < ActiveRecord::Base
 
     while ( gicstype_index < gics_types.length-1 ) do
 
-      status.comment = sprintf("Check candidate space at level %s",
+      status.comment = sprintf("Narrowing search to likely candidates ...",
                                gics_types[gicstype_index])
       status.save()
 
@@ -168,7 +168,7 @@ class Search < ActiveRecord::Base
 
       results = client.query(sqlstr, :cache_rows=>false)
 
-      status.comment = sprintf("Processing year %d (%d records) level=%s count=%d",
+      status.comment = sprintf("Searching in year %d and evaluating %d point-in-time records ...",
                                fromdate.year,results.count,search_type.gicslevel,company_count)
       status.save()
 
@@ -197,7 +197,7 @@ class Search < ActiveRecord::Base
     # debug info line here to make sure we are rendering the right number on screen.
     puts "********** sql_result_size = #{candidates.length}   ***********"
 
-    status.comment = "Processing #{candidates.length} candidate comps."
+    status.comment = "Processing #{candidates.length} candidate comparables ..."
     status.save()
 
     comps = consolidate_results( candidates, limit )

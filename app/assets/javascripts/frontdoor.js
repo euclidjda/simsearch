@@ -3,11 +3,9 @@ var _kmq;
 
 $(document).ready(function() {
 
-    init_kissmetrics();
+    init_analytics();
 
     init_frontdoor();
-
-    handle_teaser();
 
     handle_search();
 
@@ -15,8 +13,33 @@ $(document).ready(function() {
 
 });
 
-function init_kissmetrics() {
+function init_analytics() {
 
+    // GOOGLE
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			     m=s.getElementsByTagName(o)[0];
+			     a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			    })(window,document,
+			       'script','//www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-45438212-2', 'euclidean.com');
+    ga('send', 'pageview');
+
+    /*****************
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-45438212-2']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + 
+	    '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    ***********************/
+
+    // KISS METRICS
     _kmq = _kmq || [];
     var _kmk = _kmk || '323c91cff253a60d0decffd3ee862ac251bae26d';
     function _kms(u){
@@ -107,16 +130,6 @@ function update_weight_labels() {
 	var n=parseInt($("#weight-hidden"+t).attr("value"));
 	r= e > 0 ? n/e : 0;
 	$("#weight-label"+t).html(sprintf("%.1f%%",100*r))
-    }
-
-}
-
-function handle_teaser() {
-
-    var teaser = $('#teaser-carousel');
-
-    if (teaser) {
-        $('#teaser-carousel').carousel( { interval: 15000 } );
     }
 
 }

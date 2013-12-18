@@ -18,6 +18,7 @@ Simsearch::Application.routes.draw do
 
   get "privacy" => "frontdoor#privacy"
   get "terms" => "frontdoor#terms"
+  get "capitaliq" => "frontdoor#capitaliq"
   get "about" => "frontdoor#about"
   get "factor_definitions" => "frontdoor#factor_definitions"
 
