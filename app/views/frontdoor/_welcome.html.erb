@@ -1,17 +1,38 @@
+
+
 <div id="welcome" class="table-responsive">
 
-<table border=1 class="table table-hover">
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
-<tr><td>IBM</td><td>22/32</td><td>35%</td><td>-22%</td></tr>
+
+
+<table border=1 class="table table-hover" style="width: 60%;">
+
+<tr>
+<td>Ticker</td>
+<td>Search Type</td>
+<td>Num  Outperformed</td>
+<td>Avg. Outperformance</td>
+<td>Avg Underperformance</td>
+</tr>
+
+<% searches = Search.all( :order => "pricedate DESC, wins DESC", :limit => 20 ); %>
+
+<% searches.each { |search|  %>
+
+<% target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate) %>
+<% search_type = SearchType.where( :id => search.type_id ).first %>
+<% type_name = (search_type.id == 1) ? "Standard" : "Custom #{search_type.id}" %>
+
+<tr>
+<td><%= target.get_field('ticker') %></td>
+<td><%= type_name %></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+
+<% } %>
+
 </table>
 
 </div><!--/div-->
+
