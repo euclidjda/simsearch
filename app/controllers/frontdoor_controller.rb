@@ -498,6 +498,8 @@ class FrontdoorController < ApplicationController
     # Set results for json
 
     result[:mean]  = search.mean
+    result[:mean_under] = search.mean_under;
+    result[:mean_over] = search.mean_over;
     result[:count] = search.count
     result[:wins]  = search.wins
     result[:min]   = search.min

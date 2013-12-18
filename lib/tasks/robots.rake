@@ -11,21 +11,73 @@ namespace :robots do
     
     snapshots = Array::new()
 
-    SecuritySnapshot.each_snapshot_on( date ) { |s|
+    if (!ENV['priority'].nil?)
 
-      count += 1
-      snapshots.push(s)
+      PrioritySearch.order("priority").each do |ps|
+        sec = ExSecurity.find_by_ticker( ps.ticker );
+        snapshots.push( SecuritySnapshot.get_snapshot( sec.cid, sec.sid, date ) );
+        count += 1
+      end
 
-    }
+    else
 
-    snapshots.sort! { |a,b| 
+      SecuritySnapshot.each_snapshot_on( date ) do |s|
+        snapshots.push(s)
+        count += 1
+      end
 
-      acap = a.get_field('mrkcap') || 0
-      bcap = b.get_field('mrkcap') || 0
-      bcap <=> acap
+      snapshots.sort! do |a,b| 
+        acap = a.get_field('mrkcap') || 0
+        bcap = b.get_field('mrkcap') || 0
+        bcap <=> acap
+      end
 
-    }
+    end
+
+ 
     
+    factor_keys = Defaults::factors
+    weights     = Defaults::weights
+    gicslevel   = Defaults::gicslevel
+    epochs      = Epoch::default_epochs_array()
+
+    search_type =
+      SearchType::find_or_create(:factors   => factor_keys ,
+                                 :weights   => weights     ,
+                                 :gicslevel => gicslevel   ,
+                                 :newflag   => 1           )
+ 
+    snapshots.each { |target|
+
+      name   = target.get_field('name')
+      ticker = target.get_field('ticket')
+      print "Executing search for #{name} #{ticker} ..."
+     
+      Search::exec( :target      => target      ,
+                    :epochs      => epochs      ,
+                    :search_type => search_type ,
+                    :limit       => 10          ,
+                    :async       => false       )
+
+      puts " done."
+
+    }
+
+  end
+
+  # rake robots:prioritysearch
+  desc "Pre-run searches of tickers that are in the table prerun."
+  task :prioritysearch => :environment do
+    
+    # THIS SHOULD BE 'YESTERDAY'
+    date = ExPrice.where("cid != 'SP0500'").maximum("datadate")
+
+    count = 0
+    
+    snapshots = Array::new()
+
+ 
+
     factor_keys = Defaults::factors
     weights     = Defaults::weights
     gicslevel   = Defaults::gicslevel

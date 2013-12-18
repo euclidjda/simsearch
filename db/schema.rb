@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830165114) do
+ActiveRecord::Schema.define(:version => 20131218234817) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -273,6 +273,13 @@ ActiveRecord::Schema.define(:version => 20130830165114) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "priority_searches", :force => true do |t|
+    t.string   "ticker"
+    t.integer  "priority"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "search_actions", :force => true do |t|
     t.integer  "user_id"
     t.integer  "search_id"
@@ -329,6 +336,8 @@ ActiveRecord::Schema.define(:version => 20130830165114) do
     t.integer  "count"
     t.integer  "wins"
     t.float    "mean"
+    t.float    "mean_under"
+    t.float    "mean_over"
     t.float    "max"
     t.float    "min"
     t.datetime "created_at", :null => false

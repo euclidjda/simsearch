@@ -294,8 +294,8 @@ class Search < ActiveRecord::Base
    search_details = SearchDetail.where( :search_id => self.id )
 
     perfs = Array::new()
-    weight_sum = 0.0
-    values_sum = 0.0
+    under_sum = 0.0
+    over_sum  = 0.0
 
     win_count = 0
     tot_count = 0
@@ -305,29 +305,33 @@ class Search < ActiveRecord::Base
 
     search_details.each { |detail|
 
-      next unless detail.dist > 0
-
-      weight = Math.exp( -detail.dist )
-
       outperformance = detail.stk_rtn - detail.mrk_rtn
 
       tot_count += 1
-      win_count += 1 if outperformance >= 0
 
-      values_sum += weight * outperformance
-      weight_sum += weight
+      if (outperformance >= 0)
+        over_sum  += outperformance
+        win_count += 1
+      else
+        under_sum += outperformance
+      end
 
       best  = outperformance if (best.nil?  || outperformance >= best)
       worst = outperformance if (worst.nil? || outperformance <= worst)
+
     }
 
     self.with_lock do
 
-      self.mean  = (weight_sum > 0) ? (values_sum / weight_sum ) : nil
       self.count = tot_count
       self.wins  = win_count
       self.min   = worst
       self.max   = best
+
+      self.mean       = tot_count > 0 ? (over_sum + under_sum) / tot_count : nil;
+      self.mean_over  = win_count > 0 ? over_sum / win_count : nil
+      self.mean_under = tot_count > 0 ? under_sum / ( tot_count - win_count ) : nil
+
       self.save
 
     end
