@@ -149,10 +149,8 @@ function handle_search_detail() {
     var pricedate = $('.results-detail').attr('pricedate');
 
     if (cid && sid && pricedate) {
-	
-	draw_price_chart( cid, sid, pricedate, 'price-chart' );
-	draw_growth_chart( cid, sid, pricedate, 'growth-chart' );
-
+        
+        draw_detail_chart( cid, sid, pricedate);
     }
 
 }

@@ -99,10 +99,74 @@ a:hover {
 
     }
 
-	.detail-graph {
-		/*background-color: #F2F2F2;*/
-		@media (max-width: 979px) {
-			display:none;
+	#detail-graph {
+
+		margin-left: auto;
+		margin-right: auto;
+
+		border-radius: 3px;
+		border-width: 2px;
+		border-color: steelblue;
+		color: red;
+
+		/* tell the SVG path to be a thin blue line without any area fill */
+		path {
+			stroke-width: 1;
+			fill: none;
+		}
+
+		.area {
+		    fill: lightsteelblue;
+		    fill-opacity:0.2;
+		    stroke-width: 0;
+		}			
+		
+		.data1 {
+			stroke: steelblue;
+			stroke-width:3;
+		}
+
+		.data2 {
+			stroke: green;
+			stroke-width:1;
+		}
+
+		.data3 {
+			stroke: red;
+			stroke-width:1;
+		}
+
+		.axis {
+		  shape-rendering: crispEdges;
+		}
+
+		.x.axis line {
+		  stroke: lightgrey;
+		}
+
+		.x.axis .minor {
+		  stroke-opacity: .5;
+		}
+
+		.x.axis path {
+		  display: none;
+		}
+		
+		.x.axis text {
+			font-size: 14;
+		}
+
+		.y.axis line, .y.axis path {
+		  fill: none;
+		  stroke: #000;
+		}
+
+		.y.axis text {
+			font-size: 14;
+		}
+
+		.y.axisLeft text {
+			fill: orange;
 		}
 	}
 }

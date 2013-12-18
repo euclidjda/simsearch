@@ -1,3 +1,4 @@
+
 <div class="results-detail" cid="<%= comp_fields['cid']%>"
      sid="<%= comp_fields['sid']%>" 
      pricedate="<%= comp_fields['pricedate']%>" >
@@ -13,7 +14,11 @@
 
 	</div>
 
-	<div class="row-fluid">
+	<div id="detail-graph">
+		
+	</div>
+
+	<div class="row-fluid" id="detail-content">
 	      
 		<div class="span6 detail-panel">
 
@@ -126,19 +131,4 @@
 		</div>
 
 	</div>
-
-	<div class="row-fluid">
-
-	  	<div class="span6 detail-graph">
-	      <!-- PERFORMANCE PANEL -->
-	      <div id="price-chart" class="chart-price"></div>
-		</div>
-
-		<div class="span6 detail-graph">
-			<!-- GROWTH PANEL -->
-			<div id="growth-chart" class="chart-growth"></div>
-		</div> <!-- closing span6 -->
-
-	</div> <!-- closing row-fluid -->
-
 </div> <!-- closing whole doc -->
