@@ -1,18 +1,21 @@
 
-
 <div class="welcome table-responsive">
-
-
 
 <table class="table table-hover">
 
 <tr>
-<th style="text-align: left;">
-Name</th>
+<th colspan="6" style="font-size: 16pt; padding: 8px 25px 20px 20px; border-top: none;">
+Community Searches
+</th>
+</tr>
+
+<tr>
+<th style="text-align: left;">Name</th>
 <th>Ticker</th>
+<th>Market Cap</th>
 <th>Search Type</th>
-<th>Num  Outperformed</th>
-<th>Avg Outperformance</th>
+<th># of  Wins</th>
+<th>Avg Rel Return</th>
 </tr>
 
 <% searches = Search.all( :order => "pricedate DESC, wins DESC", :limit => 20 ); %>
@@ -23,13 +26,16 @@ Name</th>
 <% search_type = SearchType.where( :id => search.type_id ).first %>
 <% type_name = (search_type.id == 1) ? "Standard" : "Custom #{search_type.id}" %>
 <% color =  (search_type.id == 1) ? "green" : "orange" %>
-<tr>
+<% number_of_wins = "#{search.wins} of #{search.count}" %>
+<% market_cap = pretty_print_mrkcap(  target.get_field('mrkcap').to_i ) %>
+<tr onclick="location.href='/search?search_id=<%=search.id%>'">
 <td style="text-align: left;">
 <%= target.get_field('name') %></td>
 <td><%= target.get_field('ticker') %></td>
+<td><%= market_cap %></td>
 <td style="color: <%=color%>"><%= type_name %></td>
-<td><%= "#{search.wins} / #{search.count}" %></td>
-<td><%= "#{search.mean}" %></td>
+<td><%= number_of_wins %></td>
+<td><%= number_to_percentage("#{search.mean}",precision: 1) %></td>
 </tr>
 
 <% } %>
