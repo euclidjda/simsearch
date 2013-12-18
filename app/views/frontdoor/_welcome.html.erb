@@ -18,24 +18,30 @@ Community Searches
 <th>Avg Rel Return</th>
 </tr>
 
-<% searches = Search.all( :order => "pricedate DESC, wins DESC", :limit => 20 ); %>
+<% searches = Search.where(:count => 32).order("pricedate DESC, wins DESC").limit(10); %>
+
+<% searches += Search.where(:count => 32).order("pricedate DESC, wins ASC").limit(10).reverse;  %>
 
 <% searches.each { |search|  %>
 
 <% target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate) %>
 <% search_type = SearchType.where( :id => search.type_id ).first %>
 <% type_name = (search_type.id == 1) ? "Standard" : "Custom #{search_type.id}" %>
-<% color =  (search_type.id == 1) ? "green" : "orange" %>
 <% number_of_wins = "#{search.wins} of #{search.count}" %>
 <% market_cap = pretty_print_mrkcap(  target.get_field('mrkcap').to_i ) %>
+
+<% type_color =  (search_type.id == 1) ? "green" : "orange" %>
+<% mean_color =  (search.mean > 0) ? "green" : "red" %>
+
+
 <tr onclick="location.href='/search?search_id=<%=search.id%>'">
 <td style="text-align: left;">
 <%= target.get_field('name') %></td>
 <td><%= target.get_field('ticker') %></td>
 <td><%= market_cap %></td>
-<td style="color: <%=color%>"><%= type_name %></td>
+<td style="color: <%=type_color%>"><%= type_name %></td>
 <td><%= number_of_wins %></td>
-<td><%= number_to_percentage("#{search.mean}",precision: 1) %></td>
+<td style="color: <%=mean_color%>"><%= number_to_percentage("#{search.mean}",precision: 1) %></td>
 </tr>
 
 <% } %>
