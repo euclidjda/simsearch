@@ -1,5 +1,11 @@
 module FrontdoorHelper
 
+  @@units = { unit: 'USD', ten: 'T', hundred: 'H', thousand: 'T', million: 'M', billion: 'B', trillion: 'T', quadrillion: 'Q'}
+
+  def pretty_print_mrkcap( value )
+    number_to_human(1_000_000*value.to_i, units: @@units, format: "%n%u" ) 
+  end
+
   def display_date_v1( date )
     monthname = Date::MONTHNAMES[date.month][0..2]
     sprintf("%s %02d, %04d",monthname,date.day,date.year)

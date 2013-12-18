@@ -29,8 +29,7 @@
                              " - " + monthname + " " +
                              pricedate.day.to_s %><br>
           <b>Market Cap</b>:
-          <%= number_with_delimiter(target_fields['mrkcap'].to_i,
-              :delimiter => ',') + "M" %>
+          <%= pretty_print_mrkcap(target_fields['mrkcap']) %>
           <br>
           <b>P/E</b>: <%= sprintf("%.2f",target_fields['pe']) if target_fields['pe'] %>
           <b>Price</b>: 

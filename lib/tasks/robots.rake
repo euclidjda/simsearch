@@ -5,8 +5,6 @@ namespace :robots do
   task :search => :environment do
     
     # THIS SHOULD BE 'YESTERDAY'
-
-    # date = "2013-03-01"
     date = ExPrice.where("cid != 'SP0500'").maximum("datadate")
 
     count = 0

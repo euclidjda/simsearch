@@ -79,17 +79,13 @@ class Search < ActiveRecord::Base
     status = SearchStatus.create( :search_id => self.id            ,
                                   :fromdate  => cur_epoch.fromdate ,
                                   :thrudate  => cur_epoch.thrudate )
-    status.comment    = "Starting deep historical search for similar companies ..."
+    status.comment    = "Starting deep historical search for similar companies.."
     status.num_steps  = nil
     status.cur_step   = nil
     status.complete   = false
     status.save()
 
     # TODO: RETURN HERE IF SEARCH HAS ALREADY STARTED
-
-    if ((_epochs.is_a? Array) && !_epochs.empty?)
-      self.delay.create_search_details(_epochs)
-    end
 
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
@@ -135,7 +131,7 @@ class Search < ActiveRecord::Base
 
     while ( gicstype_index < gics_types.length-1 ) do
 
-      status.comment = sprintf("Narrowing search to likely candidates ...",
+      status.comment = sprintf("Narrowing search to likely candidates..",
                                gics_types[gicstype_index])
       status.save()
 
@@ -168,7 +164,7 @@ class Search < ActiveRecord::Base
 
       results = client.query(sqlstr, :cache_rows=>false)
 
-      status.comment = sprintf("Searching in year %d and evaluating %d point-in-time records ...",
+      status.comment = sprintf("Searching year %d and evaluating %d point-in-time records..",
                                fromdate.year,results.count,search_type.gicslevel,company_count)
       status.save()
 
@@ -197,7 +193,7 @@ class Search < ActiveRecord::Base
     # debug info line here to make sure we are rendering the right number on screen.
     puts "********** sql_result_size = #{candidates.length}   ***********"
 
-    status.comment = "Processing #{candidates.length} candidate comparables ..."
+    status.comment = "Processing #{candidates.length} candidate comparables.."
     status.save()
 
     comps = consolidate_results( candidates, limit )
@@ -222,6 +218,11 @@ class Search < ActiveRecord::Base
     calculate_summary()
 
     puts "*********** SEARCH IS DONE"
+
+    # QUEUE UP NEXT EPOCH
+    if ((_epochs.is_a? Array) && !_epochs.empty?)
+      self.delay.create_search_details(_epochs)
+    end
 
   end
 

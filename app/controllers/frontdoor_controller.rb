@@ -462,7 +462,7 @@ class FrontdoorController < ApplicationController
       elsif !search.nil?
 
         result = Hash::new()
-        result[:comment] = "Starting deep historical search for similar companies ..."
+        result[:comment] = "Starting deep historical search for similar companies.."
 
       else
 
