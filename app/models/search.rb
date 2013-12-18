@@ -87,10 +87,6 @@ class Search < ActiveRecord::Base
 
     # TODO: RETURN HERE IF SEARCH HAS ALREADY STARTED
 
-    if ((_epochs.is_a? Array) && !_epochs.empty?)
-      self.delay.create_search_details(_epochs)
-    end
-
     puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
 
     limit = 8
@@ -222,6 +218,11 @@ class Search < ActiveRecord::Base
     calculate_summary()
 
     puts "*********** SEARCH IS DONE"
+
+    # QUEUE UP NEXT EPOCH
+    if ((_epochs.is_a? Array) && !_epochs.empty?)
+      self.delay.create_search_details(_epochs)
+    end
 
   end
 
