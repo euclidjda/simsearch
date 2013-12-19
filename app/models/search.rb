@@ -278,23 +278,35 @@ class Search < ActiveRecord::Base
                                       comp[:pricedate].to_s,
                                       (comp[:pricedate]+365).to_s)
 
-      first = prices.first
-      last  = prices.last
+      if (prices.length > 0)
 
-      stk_price0 = first.price / first.ajex #adjust for splits
-      stk_price1 = last.price / last.ajex # adjust for splits
-      mrk_price0 = first.mrk_price
-      mrk_price1 = last.mrk_price
+          first = prices.first
+          last  = prices.last
+          
+          stk_price0 = first.price / first.ajex #adjust for splits
+          stk_price1 = last.price / last.ajex # adjust for splits
+          mrk_price0 = first.mrk_price
+          mrk_price1 = last.mrk_price
+          
+          comp[:stk_rtn] = 100 * (stk_price1/stk_price0 - 1)
+          
+          # TODO: JDA: Need to fix this so that market price never
+          # returns nil. We need to make market prices daily in ex_update
+          if !mrk_price0.nil? && !mrk_price1.nil?
+            comp[:mrk_rtn] = 100 * (mrk_price1/mrk_price0 - 1)
+          else
+            comp[:mrk_rtn] = 0
+          end
 
-      comp[:stk_rtn] = 100 * (stk_price1/stk_price0 - 1)
+        else
 
-      # TODO: JDA: Need to fix this so that market price never
-      # returns nil. We need to make market prices daily in ex_update
-      if !mrk_price0.nil? && !mrk_price1.nil?
-        comp[:mrk_rtn] = 100 * (mrk_price1/mrk_price0 - 1)
-      else
-        comp[:mrk_rtn] = 0
-      end
+        logger.debug "Bad price data for #{cid} #{sid} #{pricedate}"
+
+          # This should never really happen
+          comp[:stk_rtn] = 0
+          comp[:mrk_rtn] = 0
+
+        end
 
     }
 
