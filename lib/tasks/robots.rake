@@ -7,23 +7,19 @@ namespace :robots do
     # THIS SHOULD BE 'YESTERDAY'
     date = ExPrice.where("cid != 'SP0500'").maximum("datadate")
 
-    count = 0
-    
     snapshots = Array::new()
 
     if (!ENV['priority'].nil?)
 
       PrioritySearch.order("priority").each do |ps|
         sec = ExSecurity.find_by_ticker( ps.ticker );
-        snapshots.push( SecuritySnapshot.get_snapshot( sec.cid, sec.sid, date ) );
-        count += 1
+        snapshots.push( SecuritySnapshot.get_snapshot( sec.cid, sec.sid, date ) ) unless sec.nil?
       end
 
     else
 
       SecuritySnapshot.each_snapshot_on( date ) do |s|
         snapshots.push(s)
-        count += 1
       end
 
       snapshots.sort! do |a,b| 
