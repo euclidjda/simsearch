@@ -36,6 +36,9 @@ Simsearch::Application.configure do
   logger = Logger.new(STDOUT)
   logger.level = 0
   Rails.logger = Rails.application.config.logger = logger
+  config.logger.level = Logger.const_get(
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
+    )
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
