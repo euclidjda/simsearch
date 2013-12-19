@@ -302,7 +302,7 @@ class Search < ActiveRecord::Base
 
         logger.debug "Bad price data for #{cid} #{sid} #{pricedate}"
 
-          # This should never really happen
+        # This should never really happen
           comp[:stk_rtn] = 0
           comp[:mrk_rtn] = 0
 
