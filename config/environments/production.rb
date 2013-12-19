@@ -31,7 +31,11 @@ Simsearch::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :debug
+
+  logger = Logger.new(STDOUT)
+  logger.level = 0
+  Rails.logger = Rails.application.config.logger = logger
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
