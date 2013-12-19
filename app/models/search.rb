@@ -342,9 +342,11 @@ class Search < ActiveRecord::Base
       self.min   = worst
       self.max   = best
 
+      los_count = tot_count - win_count
+
       self.mean       = tot_count > 0 ? (over_sum + under_sum) / tot_count : nil;
       self.mean_over  = win_count > 0 ? over_sum / win_count : nil
-      self.mean_under = tot_count > 0 ? under_sum / ( tot_count - win_count ) : nil
+      self.mean_under = los_count > 0 ? under_sum / los_count : nil
 
       self.save
 
