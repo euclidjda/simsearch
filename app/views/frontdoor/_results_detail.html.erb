@@ -9,27 +9,141 @@
 
 	<div class="detail-title">
 
-		<%= target_fields['name'] +" (" + target_fields['ticker']+ ")" %> TODAY
-		compared to <br>
-		<%= comp_fields['name'] +" (" + comp_fields['ticker']+ ")" %> on
-		<%= display_date_v1( comp_fields['pricedate']) %>
-
 	</div>
 
-	<div id="detail-graph">
-		
+	<div class="row-fluid" id="company-stats-container">
+		<div class="span6 company-stats" id="target-company-stats">
+			<table class="stats-table" id="target-company-stats-table">
+				<tr>
+					<div class="company-stats-name">
+						<%= target_fields['name'] %>
+					</div>
+				</tr>
+				<tr>
+					<td class="left-cell">
+						<div class="ticker-cell">
+							<%= target_fields['ticker'] %>
+						</div>
+						<div class="date-cell">
+							<%= display_date_v1( target_fields['pricedate']) %>
+						</div>
+					</td>
+					<td class="right-cell">
+						<table>
+							<tr>
+								<td class="stat-label">Market Capitalization</td>
+								<td class="stat-value"><%= pretty_print_mrkcap(target_fields['mrkcap']) %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Price / Share</td>
+								<td class="stat-value"><%= sprintf("$%.2f",target_fields['price']); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Dividend</td>
+								<td class="stat-value"><%= sprintf("%.2f (%.1f%%)",
+						            target_fields['dvpsxm_ttm'],
+						            target_fields['yield']*100); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Earnings / Share</td>
+								<td class="stat-value"><%= sprintf("$%.2f",target_fields['epspxq_ttm']); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Price to Earnings</td>
+								<td class="stat-value"><%= sprintf("%.2f",target_fields['pe']); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Price-to-Book</td>
+								<td class="stat-value"><%= sprintf("%.2f",target_fields['pb'].to_f) %></td>
+							</tr>																												
+						</table>
+					</td>
+				</tr>
+			</table>
+			<div class="company-stats-footer"></div>
+		</div>
+		<div class="span6 company-stats" id="comparable-company-stats">
+			<table class="stats-table" id="comparable-company-stats-table">
+				<tr>
+					<div class="company-stats-name">
+						<%= comp_fields['name'] %>
+					</div>
+				</tr>
+				<tr>
+					<td class="left-cell">
+						<div class="ticker-cell">
+							<%= comp_fields['ticker'] %>
+						</div>
+						<div class="date-cell">
+							<%= display_date_v1( comp_fields['pricedate']) %>
+						</div>
+					</td>
+					<td class="right-cell">
+						<table>
+							<tr>
+								<td class="stat-label">Market Capitalization</td>
+								<td class="stat-value"><%= pretty_print_mrkcap(comp_fields['mrkcap']) %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Price / Share</td>
+								<td class="stat-value"><%= sprintf("$%.2f",comp_fields['price']); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Dividend</td>
+								<td class="stat-value"><%= sprintf("%.2f (%.1f%%)",
+						            comp_fields['dvpsxm_ttm'],
+						            comp_fields['yield']*100); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Earnings / Share</td>
+								<td class="stat-value"><%= sprintf("$%.2f",comp_fields['epspxq_ttm']); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Price to Earnings</td>
+								<td class="stat-value"><%= sprintf("%.2f",comp_fields['pe']); %></td>
+							</tr>
+							<tr>
+								<td class="stat-label">Price-to-Book</td>
+								<td class="stat-value"><%= sprintf("%.2f",comp_fields['pb'].to_f) %></td>
+							</tr>																												
+						</table>						
+					</td>					
+				</tr>			
+			</table>
+			<div class="company-stats-footer"></div>
+		</div>
 	</div>
 
-	<div class="row-fluid" id="detail-content">
+	<div class="row-fluid" id="factors-container">
+		<div class="span6" id="factors-summary">
+			<div id="title-container">
+				<div class="versus">
+					<table>
+						<tr><td><%= target_fields['ticker'] %></td></tr>
+						<tr><td><span class="versus-date"><%= target_fields['pricedate'] %></span></td></tr>
+					</table>
+				</div>
+				<div id="exception-span"> vs. </div>
+				<div class="versus">
+					<table>
+						<tr><td><%= comp_fields['ticker'] %></td></tr>
+						<tr><td><span class="versus-date"><%= comp_fields['pricedate'] %></span></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="score-container">
+				<div id="score-title">FACTOR SIMILARITY</div>
+				<div id="similarity-score"><%= sprintf("%.1f", the_search_detail.sim_score) %></div>
+			</div>
+		</div>
 	      
-		<div class="span6 detail-panel">
+		<div class="span6" id="factors-details">
 
 		    <!-- FACTORS PANEL -->
-		    <table class="factor-table table-bordered table-striped" border=1>
+		    <table class="factor-table table-striped">
 				<thead>
-				  <th class="col1-factors">Factors
+				  <th class="col1-factors">FACTOR
 				  (<a href="/factor_definitions">?</a>)</th>
-				  <th>Weight</th>
 				  <th><%= target_fields['ticker'] %></th>
 				  <th><%= comp_fields['ticker'] %></th>
 				</thead>
@@ -43,12 +157,9 @@
 							    <%= Factors::factor_name(factor_key) %></a>
 							</td>
 							<td class="col2-factors">
-							  <%= sprintf("%.1f%%",weights.shift*100) %>
-							</td>
-							<td class="col3-factors">
 							  <%= Factors::format_factor(factor_key,target_fields[factor_key]) %>
 							</td>
-							<td class="col4-factors">
+							<td class="col3-factors">
 							  <%= Factors::format_factor(factor_key,comp_fields[factor_key]) %>
 							</td>
 						</tr>
@@ -56,81 +167,15 @@
 						<tr><td colspan=4 style="text-align: center">-</td></tr>
 					<% end %>
 				<% end %>
-
-				<tr><td colspan=4><hr></td><tr>
-				<tr class="similarity-score">
-				  <td colspan=2 style="text-align: right">Similarity Score:</td>
-				  <td colspan=2 style="text-align: center">
-				    <%= sprintf("%.2f",the_search_detail.sim_score) %>
-				  </td>
-				</tr>
-		    </table>
-
-		</div>
-
-	 
-		<div class="span6 detail-panel">
-
-			<table border=1 class="key-stats-table table-bordered table-striped">
-				<thead>
-				  <tr>
-				    <th>Key Statistics</th>
-				    <th><%= target_fields['ticker'] %></th>
-				    <th><%= comp_fields['ticker'] %></th>
-				  </tr>
-				</thead>
-				
-				<tbody>
-
-					<tr>
-						<td class="col1-key-stats">Market Capitalization</td>
-						<td class="col2-key-stats">
-						      <%= number_with_delimiter(target_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
-						</td>
-						<td class="col3-key-stats"> 
-						  <%= number_with_delimiter(comp_fields['mrkcap'].to_i, :delimiter => ',') + "M" %>
-						</td>
-					</tr>
-
-					<tr>
-						<td class="col1-key-stats">Price/Share</td>
-						<td class="col2-key-stats"><%= sprintf("$%.2f",target_fields['price']); %> </td>
-						<td class="col3-key-stats"><%= sprintf("$%.2f",comp_fields['price']); %> </td>
-					</tr>
-
-					<tr>
-						<td class="col1-key-stats">Dividend</td>
-						<td class="col2-key-stats"><%= sprintf("%.2f (%.1f%%)",
-						            target_fields['dvpsxm_ttm'],
-						            target_fields['yield']*100); %>
-						</td>
-						<td class="col3-key-stats"><%= sprintf("%.2f (%.1f%%)",
-						            comp_fields['dvpsxm_ttm'],
-						            comp_fields['yield']*100); %>
-						</td>
-					</tr>
-
-			  		<tr>
-			    		<td class="col1-key-stats">Earnings/Share</td>
-			    		<td class="col2-key-stats"><%= sprintf("$%.2f",target_fields['epspxq_ttm']); %></td>
-						<td class="col3-key-stats"><%= sprintf("$%.2f",comp_fields['epspxq_ttm']); %> </td>
-					</tr>
-
-					<tr>
-						<td class="col1-key-stats">Price-to-Earnings</td>
-						<td class="col2-key-stats"><%= sprintf("%.2f",target_fields['pe']); %> </td>
-						<td class="col3-key-stats"><%= sprintf("%.2f",comp_fields['pe']); %></td>
-					</tr>
-
-					<tr>
-						<td class="col1-key-stats">Price-to-Book</td>
-						<td class="col2-key-stats"><%= sprintf("%.2f",target_fields['pb'].to_f) %></td>
-						<td class="col3-key-stats"><%= sprintf("%.2f",comp_fields['pb'].to_f) %></td>
-					</tr>
-
-				</tbody>
 			</table>
+			<div class="factors-container-footer"></div>
 		</div>
+	</div>
+	<div id="detail-graph">
+		
+	</div>
+
+	<div class="row-fluid" id="detail-content">
 
 	</div>
 </div> <!-- closing whole doc -->

@@ -36,9 +36,6 @@ function draw_detail_chart( cid, sid, pricedate) {
             }
         }
 
-        console.log(nSeries);
-        console.log(dateSeries);
-
         // Get comparable set values.
         var search_id = $("#search_id_cache").text();
         var summary_data = get_search_summary_data(search_id);
@@ -55,8 +52,8 @@ function draw_detail_chart( cid, sid, pricedate) {
 
         // define dimensions of graph
         var m = [40, 90, 80, 80]; // margins
-        var w = 980 - m[1] - m[3];  // width
-        var h = 436 - m[0] - m[2]; // height
+        var w = 900 - m[1] - m[3];  // width
+        var h = 400 - m[0] - m[2]; // height
         
         // create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
         // data2 and data3 are the linear lines that are derived based      
@@ -129,10 +126,9 @@ function draw_detail_chart( cid, sid, pricedate) {
         var formatter = new Intl.DateTimeFormat("en-us", { month: "short" });
         var xAxisLabels = new Array();
 
-        // months = ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
-        // var formatMonth = function(d) {
-        //     return months[d];
-        // }
+        var startDate = new Date(dateSeries[0]);
+        var startDateText = formatter.format(startDate) + " " + startDate.getDate() + "," + (startDate.getYear() + 1900)        
+
         var currentMonth = "";
         var newMonth = "";
 
@@ -147,7 +143,7 @@ function draw_detail_chart( cid, sid, pricedate) {
             else {
                 if (currentMonth == "") {
                     currentMonth = newMonth;
-                    return dateSeries[0].substring(0,4);
+                    return startDateText;
                 }
                 else {
                     currentMonth = newMonth;
@@ -173,11 +169,11 @@ function draw_detail_chart( cid, sid, pricedate) {
         // Add the x-axis.
         graph.append("svg:g")
               .attr("class", "x axis")
-              .attr("transform", "translate(0," + h + ")")
+              .attr("transform", "translate(0," + (h) + ")")
               .call(xAxis)
               .selectAll("text")  
                     .style("text-anchor", "end")
-                    .attr("dx", "-.8em")
+                    .attr("dx", "-.18em")
                     .attr("dy", ".15em")
                     .attr("transform", function(d) {
                     return "rotate(-65)" 
@@ -229,9 +225,21 @@ function draw_detail_chart( cid, sid, pricedate) {
 
         graph.append("text")
             .attr("x", w + 5)
+            .attr("y", yScale(data2[nSeries.length -1]) + 14)
+            .style("text/anchor", "right")
+            .text(sprintf("%.2f%%",100*setMax))            
+
+        graph.append("text")
+            .attr("x", w + 5)
             .attr("y", yScale(data3[nSeries.length -1]) + 14)
             .style("text/anchor", "right")
             .text("Worst Comp")
+
+        graph.append("text")
+            .attr("x", w + 5)
+            .attr("y", yScale(data3[nSeries.length -1]) + 28)
+            .style("text/anchor", "right")
+            .text(sprintf("%.2f%%",100*setMin))                
 
         // add the actual ticker legend
         graph.append("text")
@@ -239,6 +247,14 @@ function draw_detail_chart( cid, sid, pricedate) {
             .attr("y", yScale(nSeries[nSeries.length - 1]))
             .style("text/anchor", "right")
             .text($("#comp_ticker").text())
+
+        // Add graph title
+        graph.append("text")
+            .attr("x", 80)
+            .attr("y", -15)
+            .style("text/anchor", "right")
+            .attr("font-size", "14pt")
+            .text("1 Year Relative Performance of " + $("#comp_ticker").text() + " Starting on " + startDateText);
 }
 
 function get_price_data( cid, sid, pricedate ) {

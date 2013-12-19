@@ -2,104 +2,162 @@
 a:hover {
 	cursor: pointer;
 }
-
 .results-detail {
 
     font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    
-    table.center {
-		margin-left:auto; 
-		margin-right:auto;
-    }
 
-    .detail-title {
+    .company-stats {
+    	min-width: 120px;
+    	min-height: 120px;
+    	border: 1px solid lightsteelblue;
+    	margin-bottom: 10px;
 
-		font-size: 14pt;
-		text-align: center;
-		padding: 20px 20px 20px 20px;
-
-    }
-
-    .detail-panel {
-		padding: 10px 10px 10px 10px;
-		max-width: 480px;
-    }
-    
-    table.factor-table {
-		
-		width: 100%;
-		background-color: white;
-		table-layout: fixed;
-		white-space: nowrap;
-
-		thead {
-		    font-size: 12pt;
-		    font-weight: normal;
-
-		    th {
-				padding: 4px 4px 4px 4px;
-		    }
-		}
-		
-		.col1-factors {
-		    width: 150px;
-		    overflow: hidden; 
-		    text-overflow: ellipsis;
+		.company-stats-name {
+			font-size: 14pt;
+			padding-left: 10px;
+			padding-top: 4px;
+			font-weight: bold;
+			padding-bottom: 10px;
 		}
 
-		.col2-factors {
-		    text-align: center;
+		.company-stats-footer {
+			min-height: 10px;
 		}
 
-		.col3-factors {
-		    text-align: right;
+    	table {
+
+    		.left-cell {
+    			border-right: 1px solid lightsteelblue;
+    			padding-right: 32px;
+    		}
+
+    		.right-cell {
+    			padding-left: 20px;
+    		}
+
+    		.stat-label {
+    			color: darkgray;
+    			width: 160px;
+    		}
+
+    		.stat-value {
+    			color: black;
+    			width: 180px;
+    		}
+
+    		.ticker-cell {
+    			font-size: 18pt;
+    			padding-left: 10px;
+    			padding-top: 8px;
+    		}
+
+    		.date-cell {
+    			font-size: 14pt;
+    			padding-left: 10px;
+    			padding-top: 10px;
+    		}
+    	}
+    }    
+
+    #factors-container {
+
+    	#versus-table {
+    		margin-right: auto;
+    		margin-left: auto;
+    		width: 100%;
+    		border: 1px solid black;
+    	}
+    	#title-container {
+    		text-align: center;
+    	}
+    	.versus {
+    		font-size: 22pt;
+    		font-weight: bold;
+    		text-align: center;
+    		padding-top: 10px;
+    		display: inline-block;
+    	}
+    	.versus-date {
+    		font-size: 12pt;
+    		font-weight: normal;
+    		min-width: 140px;
+    		display: inline-block;
+    	}
+
+		#exception-span {
+			font-size: 14pt;
+			display: inline-block;
+			padding-left: 20px;
+			position: relative;
+			bottom: 10px;	
+		}    	
+
+		#score-title {
+			text-align: center;
+			font-size: 14pt;
+			border-top: 1px solid lightsteelblue;
+			padding-top: 8px;
+			padding-bottom: 24px; 
+			margin-right: 60px;
+			margin-left: 60px;
 		}
 
-		.col4-factors {
-		    text-align: right;
+		#similarity-score {
+			text-align: center;
+			font-size: 64pt;
+			font-weight: bold;
+			color: steelblue;
+			padding-top: 8px;
 		}
 
-		.col5-factors {
-		    text-align: right;
-		}
-	
-		.similarity-score {
-		    font-size: 14pt;
-		    td {
-				padding: 4px 4px 4px 4px;
-		    }
-		}
-    }
+	    table.factor-table {
+			
+			width: 100%;
+			background-color: white;
+			white-space: nowrap;
+			font-size: 12pt;
 
-    table.key-stats-table {
-		width: 100%;
+			thead {
+			    font-weight: normal;
 
-		thead {
-		    font-size: 12pt;
-		    font-weight: normal;
+			    th {
+			    	font-weight: normal;
+					padding: 4px 4px 8px 8px;
+					font-size: 14pt;
+			    }
+			    text-align: left;
+			}
+			
+			.col1-factors {
+			    width: 200px;
+			    overflow: hidden; 
+			    text-overflow: ellipsis;
+				padding-left: 4px;
+				padding-bottom: 4px;
 
-		    th {
-				padding: 4px 4px 4px 4px;
-		    }
-		}
+			}
 
-		.co1-key-stats {
-		    width: 40%;
-		}
+			.col2-factors {
+				text-align: left;
+				padding-left: 6px;
+			}
 
-		.col2-key-stats {
-		    width: 30%;
-		    text-align: right;
-		}
+			.col3-factors {
+				text-align: left;
+				padding-left: 6px;
+			}
 
-		.col3-key-stats {
-		    width: 30%;
-		    text-align: right;
-		}
+	    }
 
-    }
+	    .factors-container-footer {
+	    	min-height: 10px;
+	    }
+	}
 
 	#detail-graph {
+
+		max-width: 900px;
+		max-height: 400px;
 
 		margin-left: auto;
 		margin-right: auto;
