@@ -60,11 +60,13 @@ function draw_detail_chart( cid, sid, pricedate) {
 
         var data2 = [];
         var data3 = [];
+        var data4 = [];
         var setRange = setMax - setMin;
 
         for (i=0; i < nSeries.length; i++) {
             data2[i] = i * (setMax / nSeries.length);
             data3[i] = i * (setMin / nSeries.length);
+            data4[i] = 0;   // S&P 500  is the base.
         }
 
         // X scale will fit all values from data[] within pixels 0-w
@@ -255,6 +257,18 @@ function draw_detail_chart( cid, sid, pricedate) {
             .style("text/anchor", "right")
             .attr("font-size", "14pt")
             .text("1 Year Relative Performance of " + $("#comp_ticker").text() + " Starting on " + startDateText);
+
+        // S&P 500 line and marker
+        graph.append("svg:path")
+            .attr("class", "data4")
+            .style("stroke-dasharray", ("5, 5"))            
+            .attr("d", line1(data4));            
+
+        graph.append("text")
+            .attr("x", w - 55)
+            .attr("y", yScale(nSeries[0]) - 4)
+            .style("text/anchor", "right")
+            .text("S&P 500");
 }
 
 function get_price_data( cid, sid, pricedate ) {
