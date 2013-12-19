@@ -4,7 +4,6 @@ class CreatePrioritySearches < ActiveRecord::Migration
       t.string :ticker
       t.integer :priority
 
-      t.timestamps
     end
   end
 end

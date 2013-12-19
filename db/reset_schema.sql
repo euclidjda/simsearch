@@ -8,3 +8,4 @@ drop table if exists search_types;
 drop table if exists search_statuses; 
 drop table if exists searches; 
 drop table if exists share_activities;
+drop table if exists priority_searches;

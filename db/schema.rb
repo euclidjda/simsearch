@@ -274,10 +274,8 @@ ActiveRecord::Schema.define(:version => 20131218234817) do
   end
 
   create_table "priority_searches", :force => true do |t|
-    t.string   "ticker"
-    t.integer  "priority"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string  "ticker"
+    t.integer "priority"
   end
 
   create_table "search_actions", :force => true do |t|
