@@ -36,6 +36,9 @@ function draw_detail_chart( cid, sid, pricedate) {
             }
         }
 
+        console.log(nSeries);
+        console.log(dateSeries);
+
         // Get comparable set values.
         var search_id = $("#search_id_cache").text();
         var summary_data = get_search_summary_data(search_id);
@@ -44,16 +47,11 @@ function draw_detail_chart( cid, sid, pricedate) {
         var setMax = summary_data.max / 100;
         var setMin = summary_data.min / 100;
 
-        console.log("set results: min: " + setMin + " " + "max: " + setMax);
-        console.log("max-min Gain: min: " + minGain + " " + "max: " + maxGain);
-
         // Find the all-inclusive range.
         var rangeMax = Math.max(maxGain, setMax);   // pick the maximum of the comparable data set and the specific comparable
         var rangeMin = Math.min(minGain, setMin);   // same as max, for the min this time.
         rangeMax += rangeMax / 5;
         rangeMin += rangeMin / 5;
-
-        console.log("Range: min: " + rangeMin + " " + "max: " + rangeMax);
 
         // define dimensions of graph
         var m = [40, 90, 80, 80]; // margins
@@ -66,8 +64,6 @@ function draw_detail_chart( cid, sid, pricedate) {
         var data2 = [];
         var data3 = [];
         var setRange = setMax - setMin;
-
-        console.log("setrange: " + setRange);
 
         for (i=0; i < nSeries.length; i++) {
             data2[i] = i * (setMax / nSeries.length);
@@ -91,14 +87,10 @@ function draw_detail_chart( cid, sid, pricedate) {
         var line1 = d3.svg.line()
             // assign the X function to plot our line as we wish
             .x(function(d,i) { 
-                // verbose logging to show what's actually being done
-                // console.log('Plotting X1 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
                 // return the X coordinate where we want to plot this datapoint
                 return x(i); 
             })
             .y(function(d) { 
-                // verbose logging to show what's actually being done
-                // console.log('Plotting Y value for data point: ' + d + ' to be at: ' + yScale(d) + " using our yScale.");
                 // return the Y coordinate where we want to plot this datapoint
                 return yScale(d); 
             })
@@ -137,33 +129,34 @@ function draw_detail_chart( cid, sid, pricedate) {
         var formatter = new Intl.DateTimeFormat("en-us", { month: "short" });
         var xAxisLabels = new Array();
 
-        var t = new Date(dateSeries[0]);
-        console.log(formatter.format(t));
-
         // months = ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
         // var formatMonth = function(d) {
         //     return months[d];
         // }
         var currentMonth = "";
+        var newMonth = "";
 
         var formatXTick = function(d) {
-            console.log(d);
+            d = Math.ceil(d);
             dt = new Date(dateSeries[d]);
+            newMonth = formatter.format(dt);
 
-            if (currentMonth == "") {
-                currentMonth = formatter.format(dt);
-                return dateSeries[0].substring(0,4);
+            if (newMonth == currentMonth) {
+                return "";
             }
             else {
-                var newMonth = formatter.format(dt);
-
-                if (newMonth == "Jan") {
-                    newMonth = dateSeries[d].substring (0,4);
-                }
-
-                if (currentMonth != newMonth) {
+                if (currentMonth == "") {
                     currentMonth = newMonth;
-                    return currentMonth;
+                    return dateSeries[0].substring(0,4);
+                }
+                else {
+                    currentMonth = newMonth;
+                    if (currentMonth == "Jan") {
+                        return dateSeries[d].substring(0,4);
+                    }
+                    else {
+                        return currentMonth;
+                    }
                 }
             }
 
