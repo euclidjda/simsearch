@@ -45,17 +45,21 @@ namespace :robots do
  
     snapshots.each { |target|
 
-      name   = target.get_field('name')
-      ticker = target.get_field('ticket')
-      print "Executing search for #{name} #{ticker} ..."
-     
-      Search::exec( :target      => target      ,
-                    :epochs      => epochs      ,
-                    :search_type => search_type ,
-                    :limit       => 10          ,
-                    :async       => false       )
+      if !target.nil?
 
-      puts " done."
+        name   = target.get_field('name')
+        ticker = target.get_field('ticket')
+        print "Executing search for #{name} #{ticker} ..."
+     
+        Search::exec( :target      => target      ,
+                      :epochs      => epochs      ,
+                      :search_type => search_type ,
+                      :limit       => 10          ,
+                      :async       => false       )
+
+        puts " done."
+
+      end
 
     }
 
