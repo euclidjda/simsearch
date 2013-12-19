@@ -11,7 +11,7 @@ namespace :robots do
 
     if (!ENV['priority'].nil?)
 
-      PrioritySearch.order("priority").each do |ps|
+      PrioritySearch.order("priority, ticker").each do |ps|
         sec = ExSecurity.find_by_ticker( ps.ticker );
         snapshots.push( SecuritySnapshot.get_snapshot( sec.cid, sec.sid, date ) ) unless sec.nil?
       end

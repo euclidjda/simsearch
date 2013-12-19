@@ -78,8 +78,9 @@ function render_results(search_id) {
 
             $("#summary-avg-over")
                 .html(EGUI.fmtAsNumber(data.mean_over,{fmtstr:"%.2f%%"}));
-
-            $("#summary-avg-under").css('color','red');
+	    
+	    if ((data.mean_under != null) && (data.mean_under < 0))
+		$("#summary-avg-under").css('color','red');
 
             if ((data.count != null) && (data.wins != null)) {
             
@@ -164,8 +165,8 @@ function populate_panels(row_obj,data,i) {
     }
 
     var sim_score = data[i].sim_score;
-    panel.find('.panel-similarity').html('Similarity Score: '
-					 + sprintf("%.2f",sim_score));
+    var score_str = (sim_score != null) ? sprintf("%.2f",sim_score) : "N/A";
+    panel.find('.panel-similarity').html('Similarity Score: ' + score_str);
 
     // show makes the panel visible (the template from which it
     // was cloned was invisible)
@@ -194,7 +195,7 @@ function start_spinner( obj ) {
 
     var status_div = obj.find('.search-status');
 
-    spinner.spin( document.getElementById(status_div.attr('id')) );
+    spinner.spin( document.getElementById(obj.attr('id')) );
 
 }
 

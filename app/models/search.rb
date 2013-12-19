@@ -95,8 +95,22 @@ class Search < ActiveRecord::Base
 
     search_type = SearchType.where( :id => self.type_id ).first
 
-    factor_keys = search_type.factor_keys()
-    weights     = search_type.weight_array()
+    # factor_keys = search_type.factor_keys()
+    # weights     = search_type.weight_array()
+
+    factor_keys = Array::new()
+    weights     = Array::new()
+
+    search_type.factor_keys().each_with_index do |factor_key,index|
+
+      if (!target.get_factor(factor_key).nil?) 
+
+        factor_keys.push( factor_key );
+        weights.push( search_type.weight_array()[index] );
+
+      end
+      
+    end
 
     # normalize weights
     weight_sum = weights.inject{ |sum,n| sum + n }
@@ -174,7 +188,7 @@ class Search < ActiveRecord::Base
 
         dist = target.distance( match, factor_keys, weights )
 
-        next if (dist < 0)
+        next if (dist.nil? || dist < 0)
 
         candidates.push( { :cid       => match.get_field('cid'),
                            :sid       => match.get_field('sid'),
