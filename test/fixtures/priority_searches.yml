@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  ticker: MyString
+  priority: 1
+
+two:
+  ticker: MyString
+  priority: 1

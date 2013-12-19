@@ -33,7 +33,8 @@ function render_results(search_id) {
                 if (json_data != null) {
                     
                     if (json_data.comment != null) {
-                        start_spinner(this_obj.attr('id'));
+                        //start_spinner(this_obj.attr('id'));
+			start_spinner(this_obj);
                         //$(search_status).css("display","inline-block");
                         //$(search_status).css("margin","30px 0px 0px 0px");
                         $(search_status).text(json_data.comment);
@@ -72,61 +73,22 @@ function render_results(search_id) {
 
         $.getJSON('get_search_summary?search_id='+search_id,function(data) {
 
-            var perf  = data.mean;
-
-            if (perf == null) {
-                $(".summary-num").html("N/A");
-            } else if (perf >= 0) {
-                $(".summary-image").attr("src",pos_big_icon);
-                $(".summary-num").html(sprintf("%.2f%%",perf));
-                $(".summary-num").css('color','black');
-                $(".summary-label").html("Outperformed");
-            } else {
-                $(".summary-image").attr("src",neg_big_icon);
-                $(".summary-num").html(sprintf("%.2f%%",perf));
-                $(".summary-num").css('color','red');
-                $(".summary-label").html("Underperformed");
-            }
-
-            var undercount = 0;
-            var overcount = 0;
-            var overtotal = 0;
-            var undertotal = 0;
-            var overaverage = 0;
-            var underaverage = 0;
-
-            $.each(data, function( index, value ) {
-                console.log(value);
-                if (value < 0) {
-                    undercount ++;
-                    undertotal += value;
-                }
-                else {
-                    overcount ++;
-                    overtotal += value;
-                }
-            });
-
-            overaverage = overtotal / overcount;
-            underaverage = undertotal / undercount;
-
             $("#summary-avg-under")
-                .html(EGUI.fmtAsNumber(underaverage,{fmtstr:"%.2f%%"}));
+                .html(EGUI.fmtAsNumber(data.mean_under,{fmtstr:"%.2f%%"}));
 
             $("#summary-avg-over")
-                .html(EGUI.fmtAsNumber(overaverage,{fmtstr:"%.2f%%"}));
+                .html(EGUI.fmtAsNumber(data.mean_over,{fmtstr:"%.2f%%"}));
 
-            if( underaverage < 0) $("#summary-avg-under").css('color','red');
-            if( overaverage  < 0) $("#summary-avg-over").css('color','red');
+            $("#summary-avg-under").css('color','red');
 
             if ((data.count != null) && (data.wins != null)) {
             
-            $('#summary-count-all').html(data.wins + ' of ' + data.count);
-            $('#summary-count').html(data.wins + ' of ' + data.count);
-        }
+		$('#summary-count-all').html(data.wins + ' of ' + data.count);
+		$('#summary-count').html(data.wins + ' of ' + data.count);
+            }
 
-        if (!data.complete)
-            setTimeout(poll_for_summary,3000);
+            if (!data.complete) setTimeout(poll_for_summary,3000);
+
         });
 
     })();
@@ -216,21 +178,23 @@ function populate_panels(row_obj,data,i) {
     $(listItem).append(panel);
 }
 
-function start_spinner(id) {
+function start_spinner( obj ) {
 
     // Create the Spinner with options
     var spinner = new Spinner({
         lines: 12, // The number of lines to draw
-        length: 7, // The length of each line
+        length: 6, // The length of each line
         width: 4, // The line thickness
-        radius: 10, // The radius of the inner circle
+        radius: 8, // The radius of the inner circle
         color: '#000', // #rbg or #rrggbb
         speed: 1, // Rounds per second
         trail: 100, // Afterglow percentage
         shadow: false // Whether to render a shadow
     });
 
-    spinner.spin(document.getElementById(id));
+    var status_div = obj.find('.search-status');
+
+    spinner.spin( document.getElementById(status_div.attr('id')) );
 
 }
 
