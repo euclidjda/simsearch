@@ -153,10 +153,6 @@ class SecuritySnapshot < Tableless
         dist += ( user_weight * ( val0 - val1 ) * ( val0 - val1 ) )
         user_weight_sum += user_weight
 
-      elsif val0.nil? && val1.nil?
-
-        # do nothing in this case
-
       else
 
         dist = -1
