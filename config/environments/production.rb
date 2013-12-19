@@ -35,7 +35,7 @@ Simsearch::Application.configure do
 
   logger = Logger.new(STDOUT)
   logger.level = 0
-  Rails.logger = Rails.application.config.logger = logger
+  Rails.logger = Rails.application.config.logger = ActiveRecord::Base.logger = logger
   config.logger.level = Logger.const_get(
     ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
     )
