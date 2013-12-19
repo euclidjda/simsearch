@@ -40,6 +40,8 @@ Simsearch::Application.configure do
     ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
     )
 
+  ActiveRecord::Base.logger.level = Logger::DEBUG
+
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
 
