@@ -243,12 +243,12 @@ function draw_detail_chart( cid, sid, pricedate) {
             .style("text/anchor", "right")
             .text(sprintf("%.2f%%",100*setMin))                
 
-        // add the actual ticker legend
+        // add the actual ticker legend and return.
         graph.append("text")
-            .attr("x", w + 5)
+            .attr("x", w + 3)
             .attr("y", yScale(nSeries[nSeries.length - 1]))
             .style("text/anchor", "right")
-            .text($("#comp_ticker").text())
+            .text($("#comp_ticker").text() + " " + sprintf("%.2f%%", nSeries[nSeries.length - 1]*100));       
 
         // Add graph title
         graph.append("text")
