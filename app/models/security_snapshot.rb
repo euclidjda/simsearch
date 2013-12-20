@@ -128,7 +128,7 @@ class SecuritySnapshot < Tableless
 
     attrs = Factors::attributes(_key)
 
-    Math.tanh( (_value - attrs[:mean]) / (3*attrs[:stdev]) )
+    Math.tanh( (_value - attrs[:mean]) / (4*attrs[:stdev]) )
 
   end
 
@@ -162,7 +162,8 @@ class SecuritySnapshot < Tableless
 
     end
 
-    return (dist >= 0 && user_weight_sum > 0) ? dist/(2*Math.sqrt(user_weight_sum)) : 1
+    return (dist >= 0 && user_weight_sum > 0) ? dist/(4*user_weight_sum) : 1
+    # return (dist >= 0 && user_weight_sum > 0) ? dist/(2*Math.sqrt(user_weight_sum)) : 1
 
   end
 

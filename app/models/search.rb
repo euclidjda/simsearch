@@ -2,6 +2,10 @@ class Search < ActiveRecord::Base
   attr_accessible :cid, :fromdate, :pricedate, :sid, :thrudate, :type_id, :mean, :count, :wins, :min, :max
   attr_accessor :ticker; # non-db attribute just used for web server and client.
 
+  def helpers
+    ActionController::Base.helpers
+  end
+
   def self.exec(_args)
 
     _target = _args[:target]
@@ -18,7 +22,12 @@ class Search < ActiveRecord::Base
     fromdate  = _epochs[-1].fromdate
     thrudate  = _epochs[ 0].thrudate
 
-    puts "******** search: fromdate = #{fromdate} thrudate = #{thrudate}"
+    logger.debug "****"
+    logstr = sprintf("**** Executing search: %s %s %s %s %s %s",
+                     _target.get_field('name'),
+                     _target.get_field('ticker'),
+                     cid,sid,fromdate,thrudate);
+    logger.debug logstr
 
     search = Search.where( :cid       => cid       ,
                            :sid       => sid       ,
@@ -87,16 +96,13 @@ class Search < ActiveRecord::Base
 
     # TODO: RETURN HERE IF SEARCH HAS ALREADY STARTED
 
-    puts "********************* STARTING SEARCH DETAIL FOR #{cur_epoch.fromdate}"
+    logger.debug "**** Executing search detail for epoch #{cur_epoch.fromdate} to #{cur_epoch.thrudate}"
 
     limit = 8
 
     target = SecuritySnapshot::get_snapshot(self.cid,self.sid,self.pricedate)
 
     search_type = SearchType.where( :id => self.type_id ).first
-
-    # factor_keys = search_type.factor_keys()
-    # weights     = search_type.weight_array()
 
     factor_keys = Array::new()
     weights     = Array::new()
@@ -123,7 +129,7 @@ class Search < ActiveRecord::Base
     username = config[Rails.env]["username"]
     password = config[Rails.env]["password"]
 
-    # puts "********** host=#{host} database=#{database} " +
+    # logger.debug "********** host=#{host} database=#{database} " +
     #  "username=#{username} password=#{password}"
 
     client = Mysql2::Client.new(:host     => host     ,
@@ -145,8 +151,7 @@ class Search < ActiveRecord::Base
 
     while ( gicstype_index < gics_types.length-1 ) do
 
-      status.comment = sprintf("Narrowing search to likely candidates..",
-                               gics_types[gicstype_index])
+      status.comment = "Narrowing search to likely candidates.."
       status.save()
 
       logger.debug status.comment
@@ -170,16 +175,14 @@ class Search < ActiveRecord::Base
 
       thrudate = cur_epoch.thrudate if ((thrudate <=> cur_epoch.thrudate) == 1)
 
-      logger.debug "***** fromdate=#{fromdate} thrudate=#{thrudate}"
-
       sqlstr = target.get_match_sql(search_type, fromdate, thrudate)
 
       logger.debug sqlstr
 
       results = client.query(sqlstr, :cache_rows=>false)
 
-      status.comment = sprintf("Searching year %d and evaluating %d point-in-time records..",
-                               fromdate.year,results.count,search_type.gicslevel,company_count)
+      status.comment = "Searching year #{fromdate.year} and evaluating 
+                        #{helpers.number_with_delimiter(results.count)} point-in-time records..";
       status.save()
 
       results.each { |row|
@@ -204,10 +207,8 @@ class Search < ActiveRecord::Base
     # we can close client here
     client.close()
 
-    # debug info line here to make sure we are rendering the right number on screen.
-    puts "********** sql_result_size = #{candidates.length}   ***********"
-
-    status.comment = "Processing #{candidates.length} candidate comparables.."
+    status.comment = "Processing #{helpers.number_with_delimiter(candidates.length)} 
+                      candidate comparables.."
     status.save()
 
     comps = consolidate_results( candidates, limit )
@@ -231,11 +232,11 @@ class Search < ActiveRecord::Base
 
     calculate_summary()
 
-    puts "*********** SEARCH IS DONE"
-
     # QUEUE UP NEXT EPOCH
     if ((_epochs.is_a? Array) && !_epochs.empty?)
       self.delay.create_search_details(_epochs)
+    else
+      logger.debug "**** Search is done."
     end
 
   end
@@ -300,7 +301,7 @@ class Search < ActiveRecord::Base
 
         else
 
-        logger.debug "Bad price data for #{cid} #{sid} #{pricedate}"
+        logger.debug "**** Bad price data for #{cid} #{sid} #{pricedate}"
 
         # This should never really happen
           comp[:stk_rtn] = 0
