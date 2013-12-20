@@ -123,13 +123,13 @@ function draw_detail_chart( cid, sid, pricedate) {
                 theGraph.attr("height", targetWidth / aspect);
             };            
 
-
+        // have to do this ugliness to make this work across browsers...
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         // Create month
-        var formatter = new Intl.DateTimeFormat("en-us", { month: "short" });
         var xAxisLabels = new Array();
 
         var startDate = new Date(dateSeries[0]);
-        var startDateText = formatter.format(startDate) + " " + startDate.getDate() + "," + (startDate.getYear() + 1900)        
+        var startDateText = months[startDate.getMonth()] + " " + startDate.getDate() + "," + (startDate.getYear() + 1900)        
 
         var currentMonth = "";
         var newMonth = "";
@@ -137,7 +137,7 @@ function draw_detail_chart( cid, sid, pricedate) {
         var formatXTick = function(d) {
             d = Math.ceil(d);
             dt = new Date(dateSeries[d]);
-            newMonth = formatter.format(dt);
+            newMonth = months[dt.getMonth()];
 
             if (newMonth == currentMonth) {
                 return "";

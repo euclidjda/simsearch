@@ -120,14 +120,14 @@
 				<div class="versus">
 					<table>
 						<tr><td><%= target_fields['ticker'] %></td></tr>
-						<tr><td><span class="versus-date"><%= target_fields['pricedate'] %></span></td></tr>
+						<tr><td><span class="versus-date"><%= display_date_v1(target_fields['pricedate']) %></span></td></tr>
 					</table>
 				</div>
 				<div id="exception-span"> vs. </div>
 				<div class="versus">
 					<table>
 						<tr><td><%= comp_fields['ticker'] %></td></tr>
-						<tr><td><span class="versus-date"><%= comp_fields['pricedate'] %></span></td></tr>
+						<tr><td><span class="versus-date"><%= display_date_v1(comp_fields['pricedate']) %></span></td></tr>
 					</table>
 				</div>
 			</div>
