@@ -128,7 +128,7 @@ class SecuritySnapshot < Tableless
 
     attrs = Factors::attributes(_key)
 
-    Math.tanh( (_value - attrs[:mean]) / (4*attrs[:stdev]) )
+    Math.tanh( (_value - attrs[:mean]) / attrs[:stdev] )
 
   end
 
