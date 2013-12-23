@@ -132,26 +132,25 @@ class SecuritySnapshot < Tableless
 
   end
 
-  def self.distance(_obj0,_obj1,_factor_keys,_user_weights)
+  def self.distance(_obj0,_obj1,_factor_keys,_weights)
 
     vec0 = _obj0.get_factor_array(_factor_keys)
     vec1 = _obj1.get_factor_array(_factor_keys)
 
     dist = 0
-
-    user_weight_sum = 0
+    sum = 0
 
     (0 .. _factor_keys.length-1 ).each do |index|
 
       val0 = normalize_factor( vec0[index], _factor_keys[index] )
       val1 = normalize_factor( vec1[index], _factor_keys[index] )
 
-      user_weight = _user_weights[index]
+      weight = _weights[index]
 
       if !val0.nil? && !val1.nil?
 
-        dist += ( user_weight * ( val0 - val1 ) * ( val0 - val1 ) )
-        user_weight_sum += user_weight
+        dist += ( weight * ( val0 - val1 ) * ( val0 - val1 ) )
+        sum += weight
 
       else
 
@@ -162,14 +161,13 @@ class SecuritySnapshot < Tableless
 
     end
 
-    return (dist >= 0 && user_weight_sum > 0) ? dist/(4*user_weight_sum) : 1
-    # return (dist >= 0 && user_weight_sum > 0) ? dist/(2*Math.sqrt(user_weight_sum)) : 1
+    return (dist >= 0 && sum > 0) ? Math.sqrt(dist/(4*sum)) : 1
 
   end
 
-  def distance(_obj,_factor_keys,_user_weights)
+  def distance(_obj,_factor_keys,_weights)
 
-    SecuritySnapshot::distance(self,_obj,_factor_keys,_user_weights)
+    SecuritySnapshot::distance(self,_obj,_factor_keys,_weights)
 
   end
 

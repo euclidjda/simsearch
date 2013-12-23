@@ -8,8 +8,8 @@ class ExSecurity < ActiveRecord::Base
     ExSecurity.where(" ticker = '#{_t}' AND dldtei IS NULL").first
   end 
 
-  def self.find_by_cidsid(_c, _s)
-    ExSecurity.where(:cid => _c, :sid => _s).first
+  def self.find_by_cidsid(_cid, _sid)
+    ExSecurity.where(:cid => _cid, :sid => _sid).first
   end
 
 end # class ExSecurity
