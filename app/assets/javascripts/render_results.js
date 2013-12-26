@@ -3,6 +3,39 @@ var neg_small_icon = "assets/red-outperformance-small.png";
 var pos_big_icon   = "assets/green-outperformance-small.png";
 var neg_big_icon   = "assets/red-outperformance-small.png";
 
+
+function update_positions() {
+    console.log(navigator.userAgent);
+    agent = navigator.userAgent;
+
+    // if there is "WebKit" it is either Safari or Chrome
+    if (agent.indexOf("WebKit") != -1) {
+
+        // If it says Chrome, it is chrome.
+        if (agent.indexOf("Chrome") != -1) {
+            // console.log("Browser is Chrome");
+            $(".target-info").css("top", "-7px");
+        }   
+        else {
+            // it must be Safari
+            // console.log("Browser is Safari");
+            $(".date-label").css("top", "-5px");
+            $(".target-name").css("top", "0px");
+            $(".target-info").css("top", "9px");
+        }
+    }
+    else if (agent.indexOf("Firefox") != -1) {
+        // console.log("Browser is Firefox");
+    }
+    else {
+        // console.log("Browser is IE or unknown");
+    }    
+}
+
+$( window ).load(function() {
+    update_positions();
+});
+
 function render_results(search_id) {
 
     $('.result-container').each(function( index ) {
@@ -34,7 +67,7 @@ function render_results(search_id) {
                     
                     if (json_data.comment != null) {
                         //start_spinner(this_obj.attr('id'));
-			start_spinner(this_obj);
+                        start_spinner(this_obj);
                         //$(search_status).css("display","inline-block");
                         //$(search_status).css("margin","30px 0px 0px 0px");
                         $(search_status).text(json_data.comment);
