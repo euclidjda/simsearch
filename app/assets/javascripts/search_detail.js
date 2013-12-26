@@ -25,7 +25,8 @@ function draw_detail_chart( cid, sid, pricedate) {
             if (seriesBegin > 0) {
 
                 var seriesEntry;
-                seriesEntry = (json_data[i].price * json_data[seriesBegin].ajex) / (json_data[seriesBegin].price * json_data[i].ajex);
+                seriesEntry = (json_data[i].price * json_data[seriesBegin].ajex) / 
+                                        (json_data[seriesBegin].price * json_data[i].ajex);
                 seriesEntry -= json_data[i].mrk_price / json_data[seriesBegin].mrk_price;
 
                 maxGain = Math.max(maxGain, seriesEntry);
@@ -51,7 +52,7 @@ function draw_detail_chart( cid, sid, pricedate) {
         rangeMin += rangeMin / 5;
 
         // define dimensions of graph
-        var m = [40, 90, 80, 80]; // margins
+        var m = [40, 70, 80, 80]; // margins
         var w = 900 - m[1] - m[3];  // width
         var h = 400 - m[0] - m[2]; // height
         
@@ -73,10 +74,7 @@ function draw_detail_chart( cid, sid, pricedate) {
         var x = d3.scale.linear().domain([0, nSeries.length - 1]).range([0, w]);
 
         // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
-        var yScale = d3.scale.linear().domain([rangeMin, rangeMax]).range([h, 0]); // in real world the domain would be dynamically calculated from the data
-        // automatically determining max range can work something like this
-        // var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);   
-
+        var yScale = d3.scale.linear().domain([rangeMin + rangeMin * 0.3, rangeMax + rangeMax * 0.1]).range([h, 0]);
 
         // create a single object for the background fill.
         var fillData = data2.map(function(d, i) { 
@@ -220,42 +218,63 @@ function draw_detail_chart( cid, sid, pricedate) {
 
         // add best/worst comparable legend markers
         graph.append("text")
-            .attr("x", w + 5)
-            .attr("y", yScale(data2[nSeries.length -1]))
+            .attr("x", w - 120)
+            .attr("y", yScale(data2[nSeries.length -1]) - 6)
             .style("text/anchor", "right")
             .text("Best Comp")
+            .attr("font-size", "12px");
 
         graph.append("text")
-            .attr("x", w + 5)
-            .attr("y", yScale(data2[nSeries.length -1]) + 14)
+            .attr("x", w - 50)
+            .attr("y", yScale(data2[nSeries.length -1]) -6)
             .style("text/anchor", "right")
-            .text(sprintf("%.2f%%",100*setMax))            
+            .text(sprintf("%.2f%%",100*setMax))
+            .attr("font-weight", "bold")
+            .attr("font-size", "12px");
 
         graph.append("text")
-            .attr("x", w + 5)
+            .attr("x", w - 125)
             .attr("y", yScale(data3[nSeries.length -1]) + 14)
             .style("text/anchor", "right")
             .text("Worst Comp")
+            .attr("font-size", "12px");
 
         graph.append("text")
-            .attr("x", w + 5)
-            .attr("y", yScale(data3[nSeries.length -1]) + 28)
+            .attr("x", w - 50)
+            .attr("y", yScale(data3[nSeries.length -1]) + 14)
             .style("text/anchor", "right")
             .text(sprintf("%.2f%%",100*setMin))                
+            .attr("font-weight", "bold")                        
+            .attr("font-size", "12px");
 
         // add the actual ticker legend and return.
         graph.append("text")
-            .attr("x", w + 3)
+            .attr("x", w + 8)
             .attr("y", yScale(nSeries[nSeries.length - 1]))
             .style("text/anchor", "right")
-            .text($("#comp_ticker").text() + " " + sprintf("%.2f%%", nSeries[nSeries.length - 1]*100));       
+            .attr("font-weight", "bold")
+            .attr("font-size", "16px")
+            .text($("#comp_ticker").text());       
+
+        // determine color
+        var returnPercentage = nSeries[nSeries.length - 1]*100;
+        var fontColor = returnPercentage >= 0 ? "green" : "red";
+
+        graph.append("text")
+            .attr("x", w + 6)
+            .attr("y", yScale(nSeries[nSeries.length - 1]) + 16)
+            .style("text/anchor", "right")
+            .attr("fill", fontColor)
+            .attr("font-weight", "bold")
+            .attr("font-size", "16px")
+            .text(sprintf("%.2f%%", nSeries[nSeries.length - 1]*100)); 
 
         // Add graph title
         graph.append("text")
             .attr("x", 80)
             .attr("y", -15)
             .style("text/anchor", "right")
-            .attr("font-size", "14pt")
+            .attr("font-size", "16pt")
             .text("1 Year Relative Performance of " + $("#comp_ticker").text() + " Starting on " + startDateText);
 
         // S&P 500 line and marker
@@ -266,8 +285,10 @@ function draw_detail_chart( cid, sid, pricedate) {
 
         graph.append("text")
             .attr("x", w - 55)
-            .attr("y", yScale(nSeries[0]) - 4)
+            .attr("y", yScale(nSeries[0]) + 16)
             .style("text/anchor", "right")
+            .attr("font-size", "12px")            
+            .attr("font-weight", "bold")
             .text("S&P 500");
 }
 
