@@ -29,6 +29,8 @@ function update_positions() {
     }
     else {
         // console.log("Browser is IE or unknown");
+        $(".target-info").css("top", "-7px");
+
     }    
 }
 
