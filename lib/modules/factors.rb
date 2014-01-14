@@ -1,26 +1,26 @@
 class Factors
 
   @@FactorAttributes = {
-    :ey     => { :order =>   1, :mean => 0.0557, :stdev => 0.0214438782692542, :iw =>   31.0, :name => "Earnings Yield",    :fmt => "pct" },
-    :pe     => { :order =>  10, :mean => 20.8045, :stdev => 13.975225597946, :iw =>   0.01, :name => "Price to Earnings", :fmt => "%.2f" },
-    :pb     => { :order =>  20, :mean => 2.8528, :stdev => 2.59227008614405, :iw =>   0.02, :name => "Price to Book",     :fmt => "%.2f" },
-    :divy   => { :order =>  30, :mean => 0.0188, :stdev => 0.0134990785161442, :iw =>   33.3, :name => "Dividend Yield"    },
-    :roe    => { :order =>  40, :mean => 0.2233, :stdev => 0.147826546013839, :iw =>   0.42, :name => "Return on Equity"  },
-    :roa    => { :order =>  50, :mean => 0.0819, :stdev => 0.0557970254743573, :iw =>   10.5, :name => "Return on Assets"  },
-    :roc    => { :order =>  60, :mean => 0.1379, :stdev => 0.0851770312397678, :iw =>    6.5, :name => "Return on Capital" },
-    :roic   => { :order =>  65, :mean => 0.6739, :stdev => 1.69300251380807, :iw =>   0.15, :name => "Return On Invested Capital" },
-    :gmar   => { :order =>  70, :mean => 0.37905, :stdev => 0.495761842908608, :iw =>    4.3, :name => "Gross Margin"      },
-    :omar   => { :order =>  80, :mean => 0.1599, :stdev => 0.103123661828404, :iw =>    6.8, :name => "Operating Margin"  },
-    :nmar   => { :order =>  90, :mean => 0.0946, :stdev => 0.0692244745886793, :iw =>    6.8, :name => "Net Margin"        },
-    :grwth  => { :order => 100, :mean => 0.0694, :stdev => 0.0951013131859556, :iw =>    3.9, :name => "Revenue Growth (yr)"},
-    :epscon => { :order => 110, :mean => 0.2317, :stdev => 0.523325667110766, :iw =>    1.8, :name => "EPS Growth Consist. (10yr)", :fmt => "%.2f" },
-    :de     => { :order => 120, :mean => 0.6259, :stdev => 0.792259593068915, :iw =>   0.06, :name => "Debt to Equity", :fmt => "%.2f" },
-    :ae     => { :order => 130, :mean => 0.3712, :stdev => 0.230472108707713, :iw =>    4.5, :name => "Assets to Equity", :fmt => "%.2f" },
-    :mom1   => { :order => 140, :mean => 0.03905, :stdev => 0.0505822909596408, :iw =>   15.1, :name => "Price Momentum (1mo)"},
-    :mom3   => { :order => 150, :mean => 0.05485, :stdev => 0.0906983996154175, :iw =>    8.1, :name => "Price Momentum (3mo)"},
-    :mom6   => { :order => 160, :mean => 0.12285, :stdev => 0.156255589961772, :iw =>    5.3, :name => "Price Momentum (6mo)"},
-    :mom9   => { :order => 170, :mean => 0.18645, :stdev => 0.198813680649187, :iw =>    3.7, :name => "Price Momentum (9mo)"},
-    :mom12  => { :order => 180, :mean => 0.30115, :stdev => 0.266923374490296, :iw =>    3.8, :name => "Price Momentum (12mo)"}
+    :ey     => { :order =>   1, :mean => 0.0557, :stdev => 0.0214438782692542, :name => "Earnings Yield",    :fmt => "pct" },
+    :pe     => { :order =>  10, :mean => 20.8045, :stdev => 13.975225597946,   :name => "Price to Earnings", :fmt => "%.2f" },
+    :pb     => { :order =>  20, :mean => 2.8528, :stdev => 2.59227008614405,   :name => "Price to Book",     :fmt => "%.2f" },
+    :divy   => { :order =>  30, :mean => 0.0188, :stdev => 0.0134990785161442, :name => "Dividend Yield"    },
+    :roe    => { :order =>  40, :mean => 0.2233, :stdev => 0.147826546013839,  :name => "Return on Equity"  },
+    :roa    => { :order =>  50, :mean => 0.0819, :stdev => 0.0557970254743573, :name => "Return on Assets"  },
+    :roc    => { :order =>  60, :mean => 0.1379, :stdev => 0.0851770312397678, :name => "Return on Capital" },
+    :roic   => { :order =>  65, :mean => 0.6739, :stdev => 1.69300251380807,   :name => "Return On Invested Capital" },
+    :gmar   => { :order =>  70, :mean => 0.37905, :stdev => 0.495761842908608, :name => "Gross Margin"      },
+    :omar   => { :order =>  80, :mean => 0.1599, :stdev => 0.103123661828404,  :name => "Operating Margin"  },
+    :nmar   => { :order =>  90, :mean => 0.0946, :stdev => 0.0692244745886793, :name => "Net Margin"        },
+    :grwth  => { :order => 100, :mean => 0.0694, :stdev => 0.0951013131859556, :name => "Revenue Growth (yr)"},
+    :epscon => { :order => 110, :mean => 0.2317, :stdev => 0.523325667110766,  :name => "EPS Growth Consist. (10yr)", :fmt => "%.2f" },
+    :de     => { :order => 120, :mean => 0.6259, :stdev => 0.792259593068915,  :name => "Debt to Equity", :fmt => "%.2f" },
+    :ae     => { :order => 130, :mean => 0.3712, :stdev => 0.230472108707713,  :name => "Assets to Equity", :fmt => "%.2f" },
+    :mom1   => { :order => 140, :mean => 0.03905, :stdev => 0.0505822909596408,:name => "Price Momentum (1mo)"},
+    :mom3   => { :order => 150, :mean => 0.05485, :stdev => 0.0906983996154175,:name => "Price Momentum (3mo)"},
+    :mom6   => { :order => 160, :mean => 0.12285, :stdev => 0.156255589961772, :name => "Price Momentum (6mo)"},
+    :mom9   => { :order => 170, :mean => 0.18645, :stdev => 0.198813680649187, :name => "Price Momentum (9mo)"},
+    :mom12  => { :order => 180, :mean => 0.30115, :stdev => 0.266923374490296, :name => "Price Momentum (12mo)"}
   }
 
   def self.keys

@@ -440,16 +440,24 @@ class FrontdoorController < ApplicationController
 
           snapshot = SecuritySnapshot::get_snapshot(d.cid,d.sid,d.pricedate)
 
-          comp_record = snapshot.to_hash( :factor_keys => search_type.factor_keys )
+          if !snapshot.nil?
+
+            comp_record = snapshot.to_hash( :factor_keys => search_type.factor_keys )
           
-          comp_record[:sim_score] = d.sim_score
-          comp_record[:distance]  = d.dist
-          comp_record[:stk_rtn]   = d.stk_rtn
-          comp_record[:mrk_rtn]   = d.mrk_rtn
+            comp_record[:sim_score] = d.sim_score
+            comp_record[:distance]  = d.dist
+            comp_record[:stk_rtn]   = d.stk_rtn
+            comp_record[:mrk_rtn]   = d.mrk_rtn
+            
+            comp_record[:search_detail_id] = d.id
 
-          comp_record[:search_detail_id] = d.id
+            result.push(comp_record)
 
-          result.push(comp_record)
+          else
+
+            logger.debug "Error: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
+
+          end
 
         }
 
