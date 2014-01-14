@@ -453,9 +453,13 @@ class FrontdoorController < ApplicationController
 
             result.push(comp_record)
 
+            logger.debug "*****: LOGGER VERSION: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
+            puts "+++++: PUTS VERSION: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
+
           else
 
             logger.debug "Error: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
+            puts "Error: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
 
           end
 
