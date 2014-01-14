@@ -128,6 +128,15 @@
     }
 }
 
+/*This will work for firefox*/
+
+/* saf3+, chrome1+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.target-info {
+		top: -7px;
+	} 
+}
+
 /* IE8, FF, Saf, Opera (Everything but IE 6,7) */
 html>/**/body #cuatro { 
 	.target-info {
