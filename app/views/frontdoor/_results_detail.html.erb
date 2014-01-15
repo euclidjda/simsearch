@@ -175,9 +175,94 @@
 	</div>
 
 	<% if ( params.has_key?(:debug) ) %>
-	<div class="row-fluid" id="detail-content">
-	  <br>
-	  <big>This is where we are going to put a table that breaksdown the sim score clac</big>
+	<div id="factors-debug">
+
+
+		    <!-- FACTORS PANEL -->
+		    <table border=1 class="factor-table table-striped">
+
+				<thead>
+				  <th class="col1-factors">Factor</th>
+				  <th>Mean</th>
+				  <th>StdDev</th>
+				  <th>Raw: <%= target_fields['ticker'] %></th>
+				  <th>Raw: <%= comp_fields['ticker'] %></th>
+				  <th>Norm: <%= target_fields['ticker'] %></th>
+				  <th>Norm: <%= comp_fields['ticker'] %></th>
+				  <th>Diff Sqrd</th>
+				  <th>Weight</th>
+				  <th>Accum</th>
+
+				</thead>
+
+				<% weights = normalized_weights( the_search_type.weight_array )%>
+				<% sum = 0 %>
+				<% dist = 0 %>
+				<% (0 .. the_search_type.factor_keys.length-1 ).each do |index|%>
+				<% factor_key =the_search_type.factor_keys[index] %>
+					<% if factor_key != :none %>
+					<% factor_attr = Factors::attributes(factor_key)%>
+					<% weight = weights[index]%>
+					<% target_factor = target_fields[factor_key] %>
+					<% comp_factor = comp_fields[factor_key] %>
+					<% target_norm = SecuritySnapshot::normalize_factor(target_factor,factor_key) %>
+					<% comp_norm = SecuritySnapshot::normalize_factor(comp_factor,factor_key)%>
+					<% norm_diff=(target_norm-comp_norm)*(target_norm-comp_norm)%>
+
+					<% dist += weight*norm_diff %>
+					<% sum += weight %>
+
+						<tr>
+							<td class="col1-factors">
+							  <a href="factor_definitions#<%=factor_key%>">
+							    <%= Factors::factor_name(factor_key) %></a>
+							</td>
+							<td>
+							  <%= Factors::format_factor(factor_key,factor_attr[:mean]) %>
+							  </td>
+							<td>
+							  <%= Factors::format_factor(factor_key,factor_attr[:stdev]) %>
+							  </td>
+							<td>
+							  <%= Factors::format_factor(factor_key,target_factor) %>
+							</td>
+							<td>
+							  <%= Factors::format_factor(factor_key,comp_factor) %>
+							</td>
+
+							<td>
+							  <%=  sprintf("%.2f",target_norm)  %>
+							</td>
+
+							<td>
+							  <%= sprintf("%.2f",comp_norm)  %>
+							</td>
+
+							<td>
+							  <%= sprintf("%.4f",norm_diff)  %>
+							</td>
+
+							<td>
+							  <%=  sprintf("%.2f",weight)  %>
+							</td>
+
+							<td>
+							  <%= sprintf("%.4f",dist)  %>
+							</td>
+
+						</tr>
+					<% else %>
+						<tr><td colspan=6 style="text-align: center">-</td></tr>
+					<% end %>
+				<% end %>
+
+			</table>
+
+		    Accum = <%= sprintf("%.4f",dist) %><br>
+		    WeightedSum = <%= sprintf("%.4f",sum) %><br>
+		    Distance = 0.5 x SQRT( Accum / WeightedSum ) =<%= 0.5*Math.sqrt(dist/sum)%><br>
+		    Score = 100 * (1 - Distance) = <%= 100 * ( 1 -
+		    Math.sqrt(dist/(4*sum) )) %>
 	</div>
 	<% end %>
 </div> <!-- closing whole doc -->

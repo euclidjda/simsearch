@@ -23,7 +23,7 @@ class Factors
     :mom12  => { :order => 180, :mean => 0.30115, :stdev => 0.266923374490296, :name => "Price Momentum (12mo)"}
   }
 
-  def self.keys
+      def self.keys
     return @@FactorAttributes.keys
   end
 

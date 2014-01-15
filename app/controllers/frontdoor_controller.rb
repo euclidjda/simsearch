@@ -434,7 +434,7 @@ class FrontdoorController < ApplicationController
 
         details = SearchDetail
           .where( "search_id = #{_search_id} AND "+
-                  "pricedate BETWEEN '#{_fromdate}' AND '#{_thrudate}'")
+                  "pricedate BETWEEN '#{_fromdate}' AND '#{_thrudate}'" )
 
         details.each { |d|
 
@@ -453,13 +453,10 @@ class FrontdoorController < ApplicationController
 
             result.push(comp_record)
 
-            logger.debug "*****: LOGGER VERSION: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
-            puts "+++++: PUTS VERSION: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
-
           else
 
-            logger.debug "Error: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
             puts "Error: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
+            logger.debug "Error: Could not get snapshot for cid=#{d.cid} sid=#{d.sid} pricedate=#{d.pricedate}"
 
           end
 
