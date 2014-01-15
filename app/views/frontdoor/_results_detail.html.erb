@@ -189,9 +189,7 @@
 				  <th>Raw: <%= comp_fields['ticker'] %></th>
 				  <th>Norm: <%= target_fields['ticker'] %></th>
 				  <th>Norm: <%= comp_fields['ticker'] %></th>
-				  <th>Diff Sqrd</th>
-				  <th>Weight</th>
-				  <th>Accum</th>
+				  <th>Diff Squared</th>
 
 				</thead>
 
@@ -242,27 +240,17 @@
 							  <%= sprintf("%.4f",norm_diff)  %>
 							</td>
 
-							<td>
-							  <%=  sprintf("%.2f",weight)  %>
-							</td>
-
-							<td>
-							  <%= sprintf("%.4f",dist)  %>
-							</td>
-
 						</tr>
 					<% else %>
-						<tr><td colspan=6 style="text-align: center">-</td></tr>
+						<tr><td colspan=8 style="text-align: center">-</td></tr>
 					<% end %>
 				<% end %>
 
 			</table>
 
-		    Accum = <%= sprintf("%.4f",dist) %><br>
-		    WeightedSum = <%= sprintf("%.4f",sum) %><br>
-		    Distance = 0.5 x SQRT( Accum / WeightedSum ) =<%= 0.5*Math.sqrt(dist/sum)%><br>
-		    Score = 100 * (1 - Distance) = <%= 100 * ( 1 -
-		    Math.sqrt(dist/(4*sum) )) %>
+		    AvgDiffSquared = <%= sprintf("%.4f",dist) %><br>
+		    Distance = SQRT( AvgDiffSquared/4 ) =<%= Math.sqrt(dist/(4*sum))%><br>
+		    Score = 100 * (1 - Distance) = <%= 100 * ( 1 - Math.sqrt(dist/(4*sum) )) %>
 	</div>
 	<% end %>
 </div> <!-- closing whole doc -->
