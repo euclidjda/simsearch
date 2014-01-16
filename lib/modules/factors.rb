@@ -15,7 +15,7 @@ class Factors
       :mean => 20.8045,
       :stdev => 13.975225597946,
       :name => "Price to Earnings",
-      :desc => "Price per Share divided by Net-Income per Share.",
+      :desc => "Price per share divided by Net-Income per share.",
       :fmt => "%.2f" },
 
     :pb => { 
@@ -23,11 +23,25 @@ class Factors
       :mean  => 2.8528,
       :stdev => 2.59227008614405,
       :name  => "Price to Book",
-      :desc  => "Price per Share divided by Book Value per Share.",
+      :desc  => "Price per share divided by Book Value per share.",
       :fmt   => "%.2f" },
 
-    :divy   => { :order =>  30, :mean => 0.0188, :stdev => 0.0134990785161442, :name => "Dividend Yield"    },
-    :roe    => { :order =>  40, :mean => 0.2233, :stdev => 0.147826546013839,  :name => "Return on Equity"  },
+    :divy => { 
+      :order => 30, 
+      :mean  => 0.0188, 
+      :stdev => 0.0134990785161442, 
+      :name  => "Dividend Yield",
+      :desc  => "Trailing twelve months dividends per share divides by price per share." 
+    },
+
+    :roe    => {
+      :order => 40, 
+      :mean  => 0.2233, 
+      :stdev => 0.147826546013839,
+      :name  => "Return on Equity",
+      :desc  => "Earnings before Interest and Taxes (EBIT) divided by Shareholders' Equity."
+    },
+
     :roa    => { :order =>  50, :mean => 0.0819, :stdev => 0.0557970254743573, :name => "Return on Assets"  },
     :roc    => { :order =>  60, :mean => 0.1379, :stdev => 0.0851770312397678, :name => "Return on Capital" },
     :roic   => { :order =>  65, :mean => 0.6739, :stdev => 1.69300251380807,   :name => "Return On Invested Capital" },
