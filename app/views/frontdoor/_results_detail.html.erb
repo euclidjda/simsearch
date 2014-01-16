@@ -147,7 +147,7 @@
 				  <th><%= comp_fields['ticker'] %></th>
 				</thead>
 
-				<% weights = normalized_weights( the_search_type.weight_array )%>
+				<% weights = the_search_type.weight_array %>
 				<%  the_search_type.factor_keys.each do |factor_key| %>
 					<% if factor_key != :none %>
 						<tr>
@@ -193,9 +193,9 @@
 
 				</thead>
 
-				<% weights = normalized_weights( the_search_type.weight_array )%>
+				<% weights = the_search_type.weight_array %>
 				<% sum = 0 %>
-				<% dist = 0 %>
+				<% accum = 0 %>
 				<% (0 .. the_search_type.factor_keys.length-1 ).each do |index|%>
 				<% factor_key =the_search_type.factor_keys[index] %>
 					<% if factor_key != :none %>
@@ -203,11 +203,11 @@
 					<% weight = weights[index]%>
 					<% target_factor = target_fields[factor_key] %>
 					<% comp_factor = comp_fields[factor_key] %>
-					<% target_norm = SecuritySnapshot::normalize_factor(target_factor,factor_key) %>
+					<% target_norm = SecuritySnapshot::normalize_factor(target_factor,factor_key)%>
 					<% comp_norm = SecuritySnapshot::normalize_factor(comp_factor,factor_key)%>
-					<% norm_diff=(target_norm-comp_norm)*(target_norm-comp_norm)%>
+					<% norm_diff = (target_norm-comp_norm)*(target_norm-comp_norm) %>
 
-					<% dist += weight*norm_diff %>
+					<% accum += weight*norm_diff %>
 					<% sum += weight %>
 
 						<tr>
@@ -247,10 +247,11 @@
 				<% end %>
 
 			</table>
-
-		    AvgDiffSquared = <%= sprintf("%.4f",dist) %><br>
-		    Distance = SQRT( AvgDiffSquared/4 ) =<%= Math.sqrt(dist/(4*sum))%><br>
-		    Score = 100 * (1 - Distance) = <%= 100 * ( 1 - Math.sqrt(dist/(4*sum) )) %>
+		    <% avg= accum/sum %>
+		    Avg = <%= avg %><br>
+		    <% dist = Math.sqrt(avg/4) %>
+		    Distance =  sqrt(avg/4) = <%= dist %><br>
+		    Score = 100 * (1 - Distance) = <%= 100 * ( 1 - dist ) %>
 	</div>
 	<% end %>
 </div> <!-- closing whole doc -->
