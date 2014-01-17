@@ -30,17 +30,21 @@ Simsearch::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
+
   # See everything in the log (default is :info)
-  config.log_level = :debug
+  config.log_level = :info
 
   logger = Logger.new(STDOUT)
   logger.level = 0
   Rails.logger = Rails.application.config.logger = ActiveRecord::Base.logger = logger
+
   config.logger.level = Logger.const_get(
-    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO'
     )
 
-  ActiveRecord::Base.logger.level = Logger::DEBUG
+  ActiveRecord::Base.logger.level = Logger::INFO
+
+  Rails.logger.auto_flushing = true
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
