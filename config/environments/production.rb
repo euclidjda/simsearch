@@ -44,8 +44,6 @@ Simsearch::Application.configure do
 
   ActiveRecord::Base.logger.level = Logger::INFO
 
-  Rails.logger.auto_flushing = true
-
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
 
