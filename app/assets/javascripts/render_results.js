@@ -31,6 +31,10 @@ function update_positions() {
         // console.log("Browser is IE or unknown");
         $(".target-info").css("top", "-7px");
 
+        // Share button position correction for IE.
+        $("#share-button-text").css("top", "0px");
+        $(".icon-share").css("position", "relative");
+        $(".icon-share").css("top", "-5px");        
     }    
 }
 

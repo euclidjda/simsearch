@@ -1,6 +1,6 @@
 <%= render "frontdoor/searchbar" %>
 
-<div>
+<div id="factor-definitions-page">
 <h1>Factor Definitions</h1>
 <% Factors.keys.each { |key| %>
 
@@ -8,7 +8,7 @@
 
  <%= content_tag(:a, '', :id => key) %>
 <div>
-
+<hr>
 <b><big><%= factor_attr[:name] %></big></b><br>
 <p>
 <%= factor_attr[:desc].blank? ? "TBD" :  factor_attr[:desc] %> 
