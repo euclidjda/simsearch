@@ -1,5 +1,4 @@
-
-// Analytics Queues
+// Analytics Queues: need to be global
 
 var _kmq;
 var _gaq;
@@ -96,7 +95,8 @@ function init_frontdoor() {
 	$('#factor5').val($('#factor5').attr('default'))
 	$('#factor6').val($('#factor6').attr('default'))
 
-	$('.industry-select').val($('.industry-select').attr('default'));
+	// Depricated JDA Jan 2014
+	// $('.industry-select').val($('.industry-select').attr('default'));
 
     });
 
@@ -109,6 +109,17 @@ function slider_change(event,ui) {
     $('#weight-hidden'+index).attr('value',value);
 
     update_weight_labels();
+    //change_customize_label();
+
+    if (!value) {
+	$('#factor'+index).attr('disabled',true);
+	$('#factor'+index).css('color','#CCCCCC');
+	$('#factor'+index).val($('#factor'+index).attr('default'));
+    } else {
+	$('#factor'+index).attr('disabled',false);
+	$('#factor'+index).css('color','black');
+    }
+
 }
 
 function update_weight_labels() {
@@ -123,6 +134,11 @@ function update_weight_labels() {
 	$("#weight-label"+t).html(sprintf("%.1f%%",100*r))
     }
 
+}
+
+function change_customize_label() {
+    $('#custom-search-config').css('color','red');
+    $('#custom-search-config').html('<b>&iexcl; Custom Search !</b>');
 }
 
 function handle_search() {

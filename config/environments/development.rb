@@ -36,10 +36,21 @@ Simsearch::Application.configure do
   config.assets.logger = false
   config.assets.debug = false
 
-  # Show logs on screen when running in unicorn too..
-  config.logger = Logger.new(STDOUT)
-  config.logger.level = Logger.const_get(
-    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
+  # The available log levels are: :debug, :info, :warn, :error, :fatal, and :unknown, 
+  # corresponding to the log level numbers from 0 up to 5 respectively. 0/DEBUG is most verbose.
+
+  # We create two different loggers, to be able to control ActiveRecord logging level 
+  # and general logging level separately. They both write to STDOUT.
+
+  theLogger = Logger.new(STDOUT)
+  theLogger.level = Logger::DEBUG
+
+  config.logger = theLogger
+  config.log_level = Logger.const_get(
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO'
   )
+
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
+  ActiveRecord::Base.logger.level = Logger::DEBUG
 
 end

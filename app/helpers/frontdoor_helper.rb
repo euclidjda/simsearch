@@ -11,15 +11,10 @@ module FrontdoorHelper
     sprintf("%s %02d, %04d",monthname,date.day,date.year)
   end
 
-  def normalized_weights( user_weights ) 
+  def normalized_weights( weights ) 
 
-    sum = 0
-
-    user_weights.each { |weight|
-      sum += weight
-    }
-
-    user_weights.map { |uw| sum > 0 ? uw/sum : 0.0 }
+    weight_sum = weights.inject{ |sum,n| sum + n }
+    weights.map { |w| w / weight_sum } if (weight_sum > 0)
 
   end
 

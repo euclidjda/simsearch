@@ -119,8 +119,8 @@ class Search < ActiveRecord::Base
     end
 
     # normalize weights
-    weight_sum = weights.inject{ |sum,n| sum + n }
-    weights.map! { |w| w / weight_sum } if (weight_sum > 0)
+    # weight_sum = weights.inject{ |sum,n| sum + n }
+    # weights.map! { |w| w / weight_sum } if (weight_sum > 0)
 
     # create mysql connection. no need for pooling here.
     config   = Rails.configuration.database_configuration

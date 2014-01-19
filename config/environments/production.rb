@@ -30,17 +30,26 @@ Simsearch::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # See everything in the log (default is :info)
-  config.log_level = :debug
+  #########
 
-  logger = Logger.new(STDOUT)
-  logger.level = 0
-  Rails.logger = Rails.application.config.logger = ActiveRecord::Base.logger = logger
-  config.logger.level = Logger.const_get(
-    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
-    )
+  # The available log levels are: :debug, :info, :warn, :error, :fatal, and :unknown, 
+  # corresponding to the log level numbers from 0 up to 5 respectively. 0/DEBUG is most verbose.
 
-  ActiveRecord::Base.logger.level = Logger::DEBUG
+  # We create two different loggers, to be able to control ActiveRecord logging level 
+  # and general logging level separately. They both write to STDOUT.
+
+  theLogger = Logger.new(STDOUT)
+  theLogger.level = Logger::INFO
+
+  config.logger = theLogger
+  config.log_level = Logger.const_get(
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO'
+  )
+
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
+  ActiveRecord::Base.logger.level = Logger::INFO
+
+  #########
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]

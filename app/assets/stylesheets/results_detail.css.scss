@@ -240,4 +240,39 @@ a:hover {
 			fill: orange;
 		}
 	}
+
+    #factors-debug {
+
+    	margin: 40px 10px 0px 10px;
+
+	    table.factor-table {
+			
+			width: 100%;
+			background-color: white;
+			white-space: nowrap;
+			font-size: 10pt;
+
+			thead {
+			    font-weight: normal;
+
+			    th {
+			    	font-weight: normal;
+					padding: 4px 4px 8px 8px;
+					font-size: 14pt;
+			    }
+			    text-align: left;
+			}
+
+			tr {
+			    td {
+				text-align: center;
+			    }
+
+			}
+			
+	    }
+
+	}
+
 }
+

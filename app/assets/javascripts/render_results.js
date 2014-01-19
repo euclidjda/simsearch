@@ -159,15 +159,6 @@ function populate_panels(row_obj,data,i) {
     var url = 'search_detail?search_detail_id='+data[i].search_detail_id;
     panel.click( function() { window.location=url } );
 
-    /*****
-    panel_name.click(function() {
-
-        $('#comparable-modal').modal('show');
-        var idx = 10 * row + col;
-
-        $('#comparable-carousel-right').carousel(idx);
-    });***/
-
     var ticker = data[i].ticker;
     var exchg  = exchange_code_to_name(data[i].exchg,ticker);
 
@@ -216,6 +207,7 @@ function populate_panels(row_obj,data,i) {
     var listItem = document.createElement("li");
     $(theList).append(listItem);
     $(listItem).append(panel);
+
 }
 
 function start_spinner( obj ) {

@@ -147,7 +147,7 @@
 				  <th><%= comp_fields['ticker'] %></th>
 				</thead>
 
-				<% weights = normalized_weights( the_search_type.weight_array )%>
+				<% weights = the_search_type.weight_array %>
 				<%  the_search_type.factor_keys.each do |factor_key| %>
 					<% if factor_key != :none %>
 						<tr>
@@ -174,7 +174,84 @@
 		
 	</div>
 
-	<div class="row-fluid" id="detail-content">
+	<% if ( params.has_key?(:debug) ) %>
+	<div id="factors-debug">
 
+
+		    <!-- FACTORS PANEL -->
+		    <table border=1 class="factor-table table-striped">
+
+				<thead>
+				  <th class="col1-factors">Factor</th>
+				  <th>Mean</th>
+				  <th>StdDev</th>
+				  <th>Raw: <%= target_fields['ticker'] %></th>
+				  <th>Raw: <%= comp_fields['ticker'] %></th>
+				  <th>Norm: <%= target_fields['ticker'] %></th>
+				  <th>Norm: <%= comp_fields['ticker'] %></th>
+				  <th>Diff Squared</th>
+
+				</thead>
+
+				<% weights = the_search_type.weight_array %>
+				<% sum = 0 %>
+				<% accum = 0 %>
+				<% (0 .. the_search_type.factor_keys.length-1 ).each do |index|%>
+				<% factor_key =the_search_type.factor_keys[index] %>
+					<% if factor_key != :none %>
+					<% factor_attr = Factors::attributes(factor_key)%>
+					<% weight = weights[index]%>
+					<% target_factor = target_fields[factor_key] %>
+					<% comp_factor = comp_fields[factor_key] %>
+					<% target_norm = SecuritySnapshot::normalize_factor(target_factor,factor_key)%>
+					<% comp_norm = SecuritySnapshot::normalize_factor(comp_factor,factor_key)%>
+					<% norm_diff = (target_norm-comp_norm)*(target_norm-comp_norm) %>
+
+					<% accum += weight*norm_diff %>
+					<% sum += weight %>
+
+						<tr>
+							<td class="col1-factors">
+							  <a href="factor_definitions#<%=factor_key%>">
+							    <%= Factors::factor_name(factor_key) %></a>
+							</td>
+							<td>
+							  <%= Factors::format_factor(factor_key,factor_attr[:mean]) %>
+							  </td>
+							<td>
+							  <%= Factors::format_factor(factor_key,factor_attr[:stdev]) %>
+							  </td>
+							<td>
+							  <%= Factors::format_factor(factor_key,target_factor) %>
+							</td>
+							<td>
+							  <%= Factors::format_factor(factor_key,comp_factor) %>
+							</td>
+
+							<td>
+							  <%=  sprintf("%.2f",target_norm)  %>
+							</td>
+
+							<td>
+							  <%= sprintf("%.2f",comp_norm)  %>
+							</td>
+
+							<td>
+							  <%= sprintf("%.4f",norm_diff)  %>
+							</td>
+
+						</tr>
+					<% else %>
+						<tr><td colspan=8 style="text-align: center">-</td></tr>
+					<% end %>
+				<% end %>
+
+			</table>
+		    <% avg= accum/sum %>
+		    Avg = <%= avg %><br>
+		    <% dist = Math.sqrt(avg/4) %>
+		    Distance =  sqrt(avg/4) = <%= dist %><br>
+		    Score = 100 * (1 - Distance) = <%= 100 * ( 1 - dist ) %>
 	</div>
+	<% end %>
 </div> <!-- closing whole doc -->

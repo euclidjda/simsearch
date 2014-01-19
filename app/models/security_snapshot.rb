@@ -63,6 +63,24 @@ class SecuritySnapshot < Tableless
 
   end
 
+  def self.get_snapshot_via_combined( _cid, _sid, _pricedate )
+
+    obj = nil
+
+    if !_cid.blank? && !_sid.blank?
+
+      sqlstr = SecuritySnapshot::get_snapshot_via_combined_sql(_cid,_sid,_pricedate)
+
+      result = ActiveRecord::Base.connection.select_one(sqlstr)
+
+      obj = new( result ) if !result.nil?
+
+    end
+
+    return obj
+
+  end
+
   def self.each_snapshot_on(_pricedate)
 
     sqlstr = SecuritySnapshot::get_snapshots_on_sql(_pricedate)
@@ -149,8 +167,8 @@ class SecuritySnapshot < Tableless
 
       if !val0.nil? && !val1.nil?
 
-        dist += ( weight * ( val0 - val1 ) * ( val0 - val1 ) )
-        sum += weight
+        dist += weight * ( val0 - val1 ) * ( val0 - val1 )
+        sum  += weight
 
       else
 
@@ -161,7 +179,7 @@ class SecuritySnapshot < Tableless
 
     end
 
-    return (dist >= 0 && sum > 0) ? Math.sqrt(dist/(4*sum)) : 1
+    return (dist >= 0 && sum > 0) ? Math.sqrt( (dist/(4*sum)) ) : 1
 
   end
 
@@ -256,6 +274,15 @@ class SecuritySnapshot < Tableless
 GET_SNAPSHOT_SQL
   end
 
+  def self.get_snapshot_via_combined_sql(_cid,_sid,_pricedate)
+<<GET_SNAPSHOT_VIA_COMBINED_SQL
+  SELECT A.*
+  FROM ex_combined A
+  WHERE A.cid = '#{_cid}' AND A.sid = '#{_sid}'
+  AND A.pricedate = '#{_pricedate}'
+GET_SNAPSHOT_VIA_COMBINED_SQL
+  end
+
   def self.get_snapshots_on_sql(_pricedate)
 <<GET_SNAPSHOTS_ON_SQL
   SELECT A.datadate pricedate, B.datadate fpedate, A.*, B.*, C.*
@@ -331,29 +358,34 @@ GET_MATCH_SQL
 GET_MATCH_SQL
   end
 
-  def self.get_match_sql_SLOWLY(_cid, _target_ind, _target_new, _target_cap,
-                                _begin_date, _end_date)
+  def get_match_sql_SLOWLY(_search_type,_fromdate,_thrudate)
 
-    idxcaph_min = [1000,_target_cap*0.1].min.round()
-    idxcapl_max = (5.0*_target_cap).round()
+    gics_level  = _search_type.gicslevel
+    gics_idx    = "idx#{gics_level}"
+    gics_code   = self.get_field(gics_idx)
+    target_new  = self.get_field('idxnew')
+
+    target_cap =
+      self.get_field('mrkcap') ? Float(self.get_field('mrkcap')).round() : 0
+
+    idxcaph_min = [1000,target_cap*0.1].min.round()
+    idxcapl_max = (5.0*target_cap).round()
+
 
 <<GET_MATCH_SQL
-    SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*, C.*
-    FROM ex_prices A,  ex_factdata B,
-    ex_securities C
+    SELECT A.datadate pricedate, B.datadate fpedate,A.*, B.*
+    FROM ex_prices A,  ex_factdata B
     WHERE A.cid = B.cid
     AND A.sid = B.sid
-    AND A.cid = C.cid
-    AND A.sid = C.sid
     AND A.price IS NOT NULL
     AND A.csho IS NOT NULL
-    AND A.cid != '#{_cid}'
-    AND B.idxind = #{_target_ind}
-    AND B.idxnew = #{_target_new}
+    AND B.#{gics_idx} = '#{gics_code}'
+    AND B.idxnew = #{target_new}
     AND B.idxcaph >= #{idxcaph_min}
     AND B.idxcapl <= #{idxcapl_max}
     AND A.datadate BETWEEN B.fromdate AND B.thrudate
-    AND A.datadate BETWEEN '#{_begin_date}' AND '#{_end_date}'
+    AND A.datadate BETWEEN '#{_fromdate}' AND '#{_thrudate}'
+    AND A.cid != '#{self.cid}'
 GET_MATCH_SQL
   end
 end
