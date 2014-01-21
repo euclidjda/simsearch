@@ -1,7 +1,7 @@
 class Defaults
 
   def self.factors
-    return [:ey,:roc,:grwth,:epscon,:ae,:mom6]
+    return [:ey,:roc,:grwth,:divy,:de,:mom6]
   end
 
   def self.weights
