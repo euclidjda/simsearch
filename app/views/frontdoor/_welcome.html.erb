@@ -26,7 +26,7 @@ Community Searches
 
 <% target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate) %>
 <% search_type = SearchType.where( :id => search.type_id ).first %>
-<% type_name = (search_type.id == 1) ? "Standard" : "Custom #{search_type.id}" %>
+<% type_name = (search_type.id < 360) ? "Standard" : "Custom #{search_type.id}" %>
 <% number_of_wins = "#{search.wins} of #{search.count}" %>
 <% market_cap = pretty_print_mrkcap(  target.get_field('mrkcap').to_i ) %>
 
