@@ -26,11 +26,12 @@ Community Searches
 
 <% target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate) %>
 <% search_type = SearchType.where( :id => search.type_id ).first %>
-<% type_name = (search_type.id < 360) ? "Standard" : "Custom #{search_type.id}" %>
+<% is_standard = (search_type.id < 360)  ? true : false %>
+<% type_name = is_standard ? "Standard" : "Custom #{search_type.id}" %>
 <% number_of_wins = "#{search.wins} of #{search.count}" %>
 <% market_cap = pretty_print_mrkcap(  target.get_field('mrkcap').to_i ) %>
 
-<% type_color =  (search_type.id == 1) ? "green" : "orange" %>
+<% type_color =  is_standard ? "green" : "orange" %>
 <% mean_color =  (search.mean > 0) ? "green" : "red" %>
 
 
