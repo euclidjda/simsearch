@@ -165,6 +165,10 @@ function handle_search() {
         .done(function(search_info) {
             //console.log('search is '+search_info['ticker']);
             _kmq.push(['record', 'Executed Search',search_info]);
+	    _gaq.push(['_trackEvent',
+		       'Executed Search',
+		       search_info.ticker,
+		       search_info.factors+'|'+search_info.weights]);
         });
 
         render_results(search_id);
