@@ -17,7 +17,7 @@ class SecuritySnapshot < Tableless
     price  = @fields['price']      ? Float(@fields['price'])      : nil
     eps    = @fields['epspxq_ttm'] ? Float(@fields['epspxq_ttm']) : nil
     seqq   = @fields['seqq_mrq']   ? Float(@fields['seqq_mrq'])   : nil
-    dvrate = @fields['dvrate_x0'] ?  Float(@fields['dvrate_x0']) : nil
+    dvrate = @fields['dvrate_x0']  ? Float(@fields['dvrate_x0'])  : nil
 
     if (price && csho)
       @fields['mrkcap'] = (csho * price)
