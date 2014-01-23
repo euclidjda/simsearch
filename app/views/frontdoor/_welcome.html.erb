@@ -26,14 +26,13 @@ Community Searches
 
 <% target = SecuritySnapshot::get_snapshot(search.cid,search.sid,search.pricedate) %>
 <% search_type = SearchType.where( :id => search.type_id ).first %>
-<% is_standard = (search_type.id < 360)  ? true : false %>
+<% is_standard = (search_type.id < 10)  ? true : false %>
 <% type_name = is_standard ? "Standard" : "Custom #{search_type.id}" %>
 <% number_of_wins = "#{search.wins} of #{search.count}" %>
 <% market_cap = pretty_print_mrkcap(  target.get_field('mrkcap').to_i ) %>
 
 <% type_color =  is_standard ? "green" : "orange" %>
 <% mean_color =  (search.mean > 0) ? "green" : "red" %>
-
 
 <tr onclick="location.href='/search?search_id=<%=search.id%>'">
 <td style="text-align: left;">
