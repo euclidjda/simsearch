@@ -84,22 +84,18 @@ function init_frontdoor() {
 
     $('#restore-defaults').click( function() {
 
-	var weight = $('.weight-hidden').attr('default');
+	for (var i=1; i<= 6; i++) { 
 
-	$('.weight-slider').slider('value',weight);
-	$('.weight-hidden').attr('value',weight);
+	    $('#factor'+i).val($('#factor'+i).attr('default'))
+
+	    var value = parseInt( $('#weight-hidden'+i).attr('default') );
+	    $('#weight-hidden'+i).attr('value',value);
+	    $('#weight-slider'+i).slider('value',value);
+	    factor_enable_disable(i,value);
+
+	}
 
 	update_weight_labels();
-
-	$('#factor1').val($('#factor1').attr('default'))
-	$('#factor2').val($('#factor2').attr('default'))
-	$('#factor3').val($('#factor3').attr('default'))
-	$('#factor4').val($('#factor4').attr('default'))
-	$('#factor5').val($('#factor5').attr('default'))
-	$('#factor6').val($('#factor6').attr('default'))
-
-	// Depricated JDA Jan 2014
-	// $('.industry-select').val($('.industry-select').attr('default'));
 
     });
 
