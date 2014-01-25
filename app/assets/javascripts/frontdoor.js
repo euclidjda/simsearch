@@ -47,6 +47,22 @@ function init_analytics() {
 
 function init_frontdoor() {
 
+    for (var i=1; i<= 6; i++) { 
+
+	var slider_value = parseInt( $('#weight-hidden'+i).attr('value') );
+
+        $('#weight-slider'+i).slider(
+            { min:   0,
+              max:   10,
+	      step:  1,
+	      value: slider_value,
+	      slide: slider_change
+            });
+
+	factor_enable_disable(i,slider_value);
+
+    }
+
     $('#custom-search-config').click( function() {
 
 	update_weight_labels();
@@ -66,39 +82,35 @@ function init_frontdoor() {
 
     });
 
-    for (var i=1; i<= 6; i++) { 
-
-	var slider_value = $('#weight-hidden'+i).attr('value');
-
-        $('#weight-slider'+i).slider(
-            { min:   0,
-              max:   10,
-	      step:  1,
-	      value: slider_value,
-	      slide: slider_change
-            });
-    }
-
     $('#restore-defaults').click( function() {
 
-	var weight = $('.weight-hidden').attr('default');
+	for (var i=1; i<= 6; i++) { 
 
-	$('.weight-slider').slider('value',weight);
-	$('.weight-hidden').attr('value',weight);
+	    $('#factor'+i).val($('#factor'+i).attr('default'))
+
+	    var value = parseInt( $('#weight-hidden'+i).attr('default') );
+	    $('#weight-hidden'+i).attr('value',value);
+	    $('#weight-slider'+i).slider('value',value);
+	    factor_enable_disable(i,value);
+
+	}
 
 	update_weight_labels();
 
-	$('#factor1').val($('#factor1').attr('default'))
-	$('#factor2').val($('#factor2').attr('default'))
-	$('#factor3').val($('#factor3').attr('default'))
-	$('#factor4').val($('#factor4').attr('default'))
-	$('#factor5').val($('#factor5').attr('default'))
-	$('#factor6').val($('#factor6').attr('default'))
-
-	// Depricated JDA Jan 2014
-	// $('.industry-select').val($('.industry-select').attr('default'));
-
     });
+
+}
+
+function factor_enable_disable(index,value) {
+
+    if (!value) {
+	$('#factor'+index).attr('disabled',true);
+	$('#factor'+index).css('color','#CCCCCC');
+	$('#factor'+index).val($('#factor'+index).attr('default'));
+    } else {
+	$('#factor'+index).attr('disabled',false);
+	$('#factor'+index).css('color','black');
+    }
 
 }
 
@@ -111,16 +123,11 @@ function slider_change(event,ui) {
     update_weight_labels();
     //change_customize_label();
 
-    if (!value) {
-	$('#factor'+index).attr('disabled',true);
-	$('#factor'+index).css('color','#CCCCCC');
-	$('#factor'+index).val($('#factor'+index).attr('default'));
-    } else {
-	$('#factor'+index).attr('disabled',false);
-	$('#factor'+index).css('color','black');
-    }
+    factor_enable_disable(index,value);
 
 }
+
+
 
 function update_weight_labels() {
     var e=0;
@@ -154,6 +161,10 @@ function handle_search() {
         .done(function(search_info) {
             //console.log('search is '+search_info['ticker']);
             _kmq.push(['record', 'Executed Search',search_info]);
+	    _gaq.push(['_trackEvent',
+		       'Executed Search',
+		       search_info.ticker,
+		       search_info.factors+'|'+search_info.weights]);
         });
 
         render_results(search_id);

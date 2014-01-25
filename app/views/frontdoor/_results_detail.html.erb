@@ -41,16 +41,16 @@
 							<tr>
 								<td class="stat-label">Dividend</td>
 								<td class="stat-value"><%= sprintf("%.2f (%.1f%%)",
-						            target_fields['dvpsxm_ttm'],
-						            target_fields['yield']*100); %></td>
+						            target_fields['dvrate_x0'].to_f,
+						            target_fields['yield'].to_f*100); %></td>
 							</tr>
 							<tr>
 								<td class="stat-label">Earnings / Share</td>
-								<td class="stat-value"><%= sprintf("$%.2f",target_fields['epspxq_ttm']); %></td>
+								<td class="stat-value"><%= sprintf("$%.2f",target_fields['epspxq_ttm'].to_f); %></td>
 							</tr>
 							<tr>
 								<td class="stat-label">Price to Earnings</td>
-								<td class="stat-value"><%= sprintf("%.2f",target_fields['pe']); %></td>
+								<td class="stat-value"><%= sprintf("%.2f",target_fields['pe'].to_f); %></td>
 							</tr>
 							<tr>
 								<td class="stat-label">Price-to-Book</td>
@@ -91,16 +91,16 @@
 							<tr>
 								<td class="stat-label">Dividend</td>
 								<td class="stat-value"><%= sprintf("%.2f (%.1f%%)",
-						            comp_fields['dvpsxm_ttm'],
-						            comp_fields['yield']*100); %></td>
+						            comp_fields['dvrate_x0'].to_f,
+						            comp_fields['yield'].to_f*100); %></td>
 							</tr>
 							<tr>
 								<td class="stat-label">Earnings / Share</td>
-								<td class="stat-value"><%= sprintf("$%.2f",comp_fields['epspxq_ttm']); %></td>
+								<td class="stat-value"><%= sprintf("$%.2f",comp_fields['epspxq_ttm'].to_f); %></td>
 							</tr>
 							<tr>
 								<td class="stat-label">Price to Earnings</td>
-								<td class="stat-value"><%= sprintf("%.2f",comp_fields['pe']); %></td>
+								<td class="stat-value"><%= sprintf("%.2f",comp_fields['pe'].to_f); %></td>
 							</tr>
 							<tr>
 								<td class="stat-label">Price-to-Book</td>

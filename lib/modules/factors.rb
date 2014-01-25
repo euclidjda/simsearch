@@ -265,7 +265,7 @@ end
     when :divy # Dividend Yield
 
       price    = _snapshot.get_field('price').to_f
-      dividend = _snapshot.get_field('dvpsxm_ttm').to_f
+      dividend = _snapshot.get_field('dvrate_x0').to_f
 
       factor_value = dividend  / price if (price > 0)
 

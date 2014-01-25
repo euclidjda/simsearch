@@ -1,11 +1,11 @@
 class Defaults
 
   def self.factors
-    return [:ey,:roc,:grwth,:epscon,:ae,:mom6]
+    return [:ey,:roc,:grwth,:mom6,:none,:none]
   end
 
   def self.weights
-    return [5,5,5,5,5,5]
+    return [5,5,5,5,0,0]
   end
 
   def self.gicslevel
