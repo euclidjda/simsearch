@@ -51,13 +51,8 @@ Simsearch::Application.configure do
   )
 
   ActiveRecord::Base.logger = Logger.new(STDOUT)
-<<<<<<< HEAD
-  ActiveRecord::Base.logger.level = Logger::INFO
-
-=======
   ActiveRecord::Base.logger.level = Logger.const_get(
     ENV['DB_LOG_LEVEL'] ? ENV['DB_LOG_LEVEL'].upcase : 'INFO'
   )
   
->>>>>>> 5807e543a254e773cf9eb87d5b9d4c92ce21062c
 end
