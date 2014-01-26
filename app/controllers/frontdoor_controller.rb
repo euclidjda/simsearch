@@ -48,8 +48,9 @@ class FrontdoorController < ApplicationController
     _email = params[:register_email_entry]
     _username = params[:register_username_entry]
     _password = params[:register_password_entry]
+    _password_verify = params[:register_password_entry_verify]
     _captcha_challenge = params[:recaptcha_challenge_field]
-    _captcha_response = params[:recaptcha_response_field]
+    _captcha_response = params[:recaptcha_response_field]  
 
     captcha_uri = URI.parse("https://www.google.com/recaptcha/api/verify")
     http = Net::HTTP.new(captcha_uri.host, captcha_uri.port)

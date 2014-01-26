@@ -53,13 +53,18 @@
             <dd>
               <%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %>
             </dd>
-          </dl>
+          </dl>         
           <dl class="form">
             <dd>
               <%= password_field_tag(:register_password_entry, nil, 
               :placeholder => "Create a password", :maxlength => "30",
               :pattern => ".{6,30}", :title => "Password is minimum 6 characters") %>
             </dd>        
+            <dd>
+              <%= password_field_tag(:register_password_entry_verify, nil, 
+              :placeholder => "Verify password", :maxlength => "30",
+              :pattern => ".{6,30}", :title => "Password is minimum 6 characters") %>
+            </dd>            
           </dl>
         
           <div id="captcha-container">
@@ -67,7 +72,7 @@
 
           <p></p>
 
-          <%= submit_tag("Sign up for Fundamentals", :class => "btn btn-large btn-primary") %>
+          <%= submit_tag("Sign up for Fundamentals", :class => "btn btn-large btn-primary", :id => "signup-button") %>
 
           <% end %>
         </div>
