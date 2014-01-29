@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
     @overunder = _overunder
     @search_id = _search_id
     mail( :to => _target, 
-          :subject => "Shared search results")
+          :subject => "Shared search results for " + _company_name)
   end
 
 end

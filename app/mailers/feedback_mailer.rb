@@ -3,6 +3,7 @@ class FeedbackMailer < ActionMailer::Base
 
   def feedback(feedback)
     @feedback = feedback
-    mail(:to => 'info@euclidean.com', :subject => '[Feedback for Euclidean Fundamentals] #{feedback.subject}')
+    mail(:to => 'info@euclidean.com', 
+         :subject => '[Feedback for Euclidean Fundamentals] #{feedback.subject}')
   end
 end
