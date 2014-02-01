@@ -1,23 +1,43 @@
+<script>
+
+$(document).ready(function() {
+
+	if (document.location.href.indexOf("factor_definitions#") > 0) {
+
+		var target = $(window.location.hash);
+
+		$('html,body').animate({
+          scrollTop: target.offset().top - 40 //offsets for fixed header
+        }, 30);
+	}
+});
+
+</script>
+
 <%= render "frontdoor/searchbar" %>
 
-<div id="factor-definitions-page">
+<div id="factor-definitions">
 <h1>Factor Definitions</h1>
+
 <% Factors.keys.each { |key| %>
 
-<% factor_attr = Factors.attributes(key) %>
+	<% factor_attr = Factors.attributes(key) %>
 
- <%= content_tag(:a, '', :id => key) %>
-<div>
-<hr>
-<b><big><%= factor_attr[:name] %></big></b><br>
-<p>
-<%= factor_attr[:desc].blank? ? "TBD" :  factor_attr[:desc] %> 
-<br>
-<i><b>Average Value:</b></i>
-<%= Factors.format_factor(key,factor_attr[:mean] ) %><br>
-<i><b>Standard Deviation:</b></i>
-<%= Factors.format_factor(key,factor_attr[:stdev] ) %></p>
-</div><br>
+	<%= content_tag(:a, '', :id => key ) %>
+
+	<div class="definition-bookmark">
+		<hr>
+		<b><big><%= factor_attr[:name] %></big></b><br>
+		<p>
+		<%= factor_attr[:desc].blank? ? "TBD" :  factor_attr[:desc] %> 
+		<br>
+		<i><b>Average Value:</b></i>
+		<%= Factors.format_factor(key,factor_attr[:mean] ) %><br>
+		<i><b>Standard Deviation:</b></i>
+		<%= Factors.format_factor(key,factor_attr[:stdev] ) %></p>
+	</div>
+
+	<br>
 
 <% } %>
 
