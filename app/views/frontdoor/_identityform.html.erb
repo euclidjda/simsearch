@@ -44,26 +44,32 @@
           <%=form_tag("/register", :method => "post", :id => "register-form", :autocomplete => "off", ) do %>
           <dl class="form">
             <dd>
-              <%= text_field_tag(:register_username_entry, nil, :placeholder => "Pick a username", :maxlength => "30") %>
+              <%= text_field_tag(:register_username_entry, 
+                                  nil, :placeholder => "Pick a username", :maxlength => "30", 
+                                  :"data-toggle" => "tooltip", :"data-placement" => "left", :title => "Pick a username") %>
             </dd>
             <p class="text-muted">Your username is shown as your identity when you share searches.</p>
 
           </dl>
           <dl class="form">
             <dd>
-              <%= email_field_tag(:register_email_entry, nil, :placeholder => "E-mail address", :maxlength => "30") %>
+              <%= email_field_tag(:register_email_entry, 
+                                    nil, :placeholder => "E-mail address", :maxlength => "30", 
+                                    :"data-toggle" => "tooltip", :"data-placement" => "left", :title => "E-mail address") %>
             </dd>
           </dl>         
           <dl class="form">
             <dd>
               <%= password_field_tag(:register_password_entry, nil, 
               :placeholder => "Create a password", :maxlength => "30",
-              :pattern => ".{6,30}", :title => "Password is minimum 6 characters") %>
+              :pattern => ".{6,30}", :title => "Create a password", 
+              :"data-toggle" => "tooltip", :"data-placement" => "left") %>
             </dd>        
             <dd>
               <%= password_field_tag(:register_password_entry_verify, nil, 
               :placeholder => "Verify password", :maxlength => "30",
-              :pattern => ".{6,30}", :title => "Password is minimum 6 characters") %>
+              :pattern => ".{6,30}", :title => "Verify the password",
+              :"data-toggle" => "tooltip", :"data-placement" => "left") %>
             </dd>            
           </dl>
         
