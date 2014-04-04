@@ -6,12 +6,12 @@ namespace :magicformula do |variable|
 
     require 'net/http'
     require 'uri'
-    require 'Nokogiri'
+    require 'nokogiri'
 
     url = URI.parse('http://magicformulainvesting.com/Account/LogOn')
 
     req = Net::HTTP::Post.new(url.path)
-    req.set_form_data({'Email' => 'ferhane@gmail.com', 'Password' => 'dilvosyola', 'login' => 'Login'})
+    req.set_form_data({'Email' => 'ferhane@gmail.com', 'Password' => 'magicfund', 'login' => 'Login'})
     resp = Net::HTTP.new(url.host, url.port).start {|http| http.request(req) }
 
 

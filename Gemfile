@@ -26,7 +26,7 @@ gem 'bcrypt-ruby', :require => 'bcrypt'
 
 gem 'kmts', "~> 2.0.0"
 
-#gem 'nokogiri', "~> 2.7.3"
+gem 'nokogiri'
 
 # Gems used only for assets and not required
 # in production environments by default.
