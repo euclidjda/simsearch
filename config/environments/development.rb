@@ -43,16 +43,16 @@ Simsearch::Application.configure do
   # and general logging level separately. They both write to STDOUT.
 
   theLogger = Logger.new(STDOUT)
-  theLogger.level = Logger::INFO
+  theLogger.level = Logger::DEBUG
 
   config.logger = theLogger
   config.log_level = Logger.const_get(
-    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO'
+    ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG'
   )
 
   ActiveRecord::Base.logger = Logger.new(STDOUT)
   ActiveRecord::Base.logger.level = Logger.const_get(
-    ENV['DB_LOG_LEVEL'] ? ENV['DB_LOG_LEVEL'].upcase : 'INFO'
+    ENV['DB_LOG_LEVEL'] ? ENV['DB_LOG_LEVEL'].upcase : 'DEBUG'
   )
   
 end

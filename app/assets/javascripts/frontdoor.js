@@ -244,19 +244,68 @@ $(function() {
     function validateIdentityForm(dialogName) {
         var email, username, password;
         var errCount = 0;
+        var errorMessage = "<b>Please correct the following so we can register you: </b><br>";
 
-        if (dialogName == "register") {
-            errCount += validateIdentityField($('#' + dialogName +'_username_entry'));
+        // always need a password and e-mail. no matter what the form type is.
+        var retVal = validateIdentityField($('#' + dialogName + '_email_entry'));
+        if (retVal > 0) {
+            errCount += 1;
+            errorMessage += "Provide a valid and unique e-mail address. <br>";
         }
 
-        errCount += validateIdentityField($('#' + dialogName + '_email_entry'));
-        errCount += validateIdentityField($('#' + dialogName +'_password_entry'));
+        retVal = validateIdentityField($('#' + dialogName +'_password_entry'));
+        if (retVal > 0) {
+            errCount += 1;
+            errorMessage += "Provide a password. <br>";
+        }
+
+        if (dialogName == "register") {
+
+            retVal = validateIdentityField($('#register_username_entry'));
+            if (retVal > 0) {
+                errCount += 1;
+                errorMessage += "Please provide a user name. <br>";
+            }
+
+            retVal = validateIdentityField($('#register_password_entry_verify'));
+            if (retVal > 0) {
+                errCount += 1;
+                errorMessage += "Please re-enter password in the verification field. <br>";
+            }
+
+            var password = $("#register_password_entry").val();
+            var password_verify = $("#register_password_entry_verify").val();
+
+            if (password != password_verify) {
+              $("#register_password_entry_verify").val("");
+              $("#register_password_entry_verify").attr("placeholder", "Passwords need to match");
+              $("#register_password_entry_verify").css("border", "1px solid rgb(255, 0, 0)");
+
+              errCount += 1;  
+              errorMessage += "Passwords do not match. <br>";;
+            }     
+
+            // Make sure there is an entry in the captcha
+            retVal = validateIdentityField($("#recaptcha_response_field"));
+            if (retVal > 0) {
+                errCount += 1;
+                errorMessage += "Captcha text is not entered. <br>"
+            }
+        }
 
         // if there is no content, do not submit the form, save time.
         if (errCount > 0) {
             $('#' + dialogName +'-message').text("  Please complete highlighted fields.");
             $('#' + dialogName +'-message').css("color", "red");
+
+            // show an error dialog
+            $("#errormodal-message").html(errorMessage);
+            $("#errormodal").modal();
+
             return false;
+        }        
+        else {
+            return true;
         }        
     }
 

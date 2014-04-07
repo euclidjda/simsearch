@@ -312,6 +312,10 @@ Any media size specific and resize related rules should be here.
       width: 90%;
     }    
   }
+
+  #captcha-container {
+    padding-left: 0px !important;
+  }
 }
 
 @media  (max-width:979px) { 

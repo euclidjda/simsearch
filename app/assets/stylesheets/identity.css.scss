@@ -42,8 +42,8 @@
 
 		form {
 			float: right;
-			width: 340px;
-			margin-right: 30px;			
+			width: 300px;
+			margin-right: 50px;
 		}	
 
 		.heading {
@@ -102,6 +102,13 @@
 		#captcha-container {
 			padding-left: 10px;
 		}	
+
+		.tooltip {
+		}
+
+		.tooltip-inner {
+			background-color: steelblue;
+		}
 	}
 }
 

@@ -64,6 +64,7 @@ GEM
     multi_json (1.7.9)
     mysql2 (0.3.13)
     nifty-generators (0.4.6)
+    nokogiri (1.5.10)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -134,6 +135,7 @@ DEPENDENCIES
   kmts (~> 2.0.0)
   mysql2 (~> 0.3.11)
   nifty-generators
+  nokogiri
   rack (= 1.4.1)
   rails (= 3.2.8)
   rails3-jquery-autocomplete

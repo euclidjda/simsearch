@@ -64,17 +64,13 @@ $(document).ready(function() {
    });
 
   $( "#register-form" ).submit(function() {
-    var password = $("#register_password_entry").val();
-    var password_verify = $("#register_password_entry_verify").val();
 
-    if (password != password_verify) {
-      $("#register_password_entry_verify").val("");
-      $("#register_password_entry_verify").attr("placeholder", "Passwords need to match");
-      $("#register_password_entry_verify").css("border", "1px solid rgb(255, 0, 0)");
-
-      return false;  
-    }
   });
+
+  $("#register_username_entry").tooltip();
+  $("#register_email_entry").tooltip();
+  $("#register_password_entry").tooltip();
+  $("#register_password_entry_verify").tooltip();
 
 });
 
